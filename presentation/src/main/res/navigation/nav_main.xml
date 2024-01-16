@@ -7,6 +7,6 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.ray.template.presentation.ui.home.HomeFragment"
+        android:name="ac.dnd.bookkeeping.android.presentation.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home" />
 </navigation>

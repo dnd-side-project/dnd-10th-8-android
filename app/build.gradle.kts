@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ray.template"
+    namespace = "ac.dnd.bookkeeping.android"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
-        applicationId = "com.ray.template"
+        applicationId = "ac.dnd.bookkeeping.android"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
         versionCode = libs.versions.app.versioncode.get().toInt()
@@ -62,10 +62,10 @@ sentry {
     debug = false
 
     // The slug of the Sentry organization to use for uploading proguard mappings/source contexts.
-    org = "ray-sample"
+    org = "dnd108-72"
 
     // The slug of the Sentry project to use for uploading proguard mappings/source contexts.
-    projectName = "ray-sample-android"
+    projectName = "android"
 
     // The authentication token to use for uploading proguard mappings/source contexts.
     // WARNING: Do not expose this token in your build.gradle files, but rather set an environment

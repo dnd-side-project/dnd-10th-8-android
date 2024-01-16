@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ray.template.data"
+    namespace = "ac.dnd.bookkeeping.android.data"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {

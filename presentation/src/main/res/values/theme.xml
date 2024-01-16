@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Template" parent="Typography">
-        <item name="confirmButtonStyle">@style/Template.ConfirmButton</item>
+    <style name="Bookkeeping" parent="Typography">
+        <item name="confirmButtonStyle">@style/Bookkeeping.ConfirmButton</item>
     </style>
 
-    <style name="Template.ConfirmButton" parent="Typography.ConfirmButton">
+    <style name="Bookkeeping.ConfirmButton" parent="Typography.ConfirmButton">
         <item name="mainColorType">blue</item>
     </style>
 </resources>

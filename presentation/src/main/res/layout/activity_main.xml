@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.ray.template.presentation.ui.main.MainViewModel" />
+            type="ac.dnd.bookkeeping.android.presentation.ui.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

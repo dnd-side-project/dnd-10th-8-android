@@ -10,7 +10,7 @@ plugins {
 
 // TODO : Android 종속성 제거
 android {
-    namespace = "com.ray.template.domain"
+    namespace = "ac.dnd.bookkeeping.android.domain"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
