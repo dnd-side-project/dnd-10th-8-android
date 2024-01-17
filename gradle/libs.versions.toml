@@ -28,6 +28,7 @@ androidx-room = "2.6.1"
 androidx-paging = "3.1.1"
 # Google
 google-material = "1.11.0"
+system-contoller = "0.20.1"
 # Network
 ktor = "2.3.7"
 kotlinx-serialization = "1.6.1"
@@ -79,6 +80,7 @@ androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", versi
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
 # Google
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+google-system-contoller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "system-contoller" }
 # Network
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -102,7 +104,7 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.re
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3-logging-interceptor" }
 # Compose
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewmodel" }
@@ -131,3 +133,4 @@ androidx-data = ["androidx-room-runtime", "androidx-room-coroutine", "androidx-p
 network = ["ktor-core", "ktor-okhttp", "ktor-resources", "ktor-content-negotiation", "ktor-kotlinx-serialization",
     "ktor-auth", "kotlinx-serialization"]
 logging = ["timber", "sentry"]
+compose-ui = ["compose-ui-ui","compose-ui-preview","compose-ui-tooling","compose-material"]

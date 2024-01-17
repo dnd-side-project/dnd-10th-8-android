@@ -60,11 +60,8 @@ dependencies {
 
     implementation(libs.bundles.logging)
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.ui.preview)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.preview)
+    implementation(libs.bundles.compose.ui)
+
     implementation(libs.compose.bottomsheet)
     implementation(libs.compose.coil)
 
@@ -73,6 +70,8 @@ dependencies {
 
     implementation(libs.compose.navi)
     implementation(libs.compose.hiltnavi)
+
+    implementation(libs.google.system.contoller)
 
 }
 
