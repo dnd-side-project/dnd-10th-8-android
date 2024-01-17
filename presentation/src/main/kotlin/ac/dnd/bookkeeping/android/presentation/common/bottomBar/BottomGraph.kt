@@ -3,7 +3,15 @@ package ac.dnd.bookkeeping.android.presentation.common.bottomBar
 import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -18,23 +26,23 @@ fun NavGraphBuilder.bottomGraph(
     ) {
 
         composable(BottomBarItem.BottomFirst.route) {
-            FirstScreen(appState)
+            SampleScreen(appState,BottomBarItem.BottomFirst.route)
         }
 
         composable(BottomBarItem.BottomSecond.route) {
-            SecondScreen(appState)
+            SampleScreen(appState,BottomBarItem.BottomSecond.route)
         }
 
         composable(BottomBarItem.BottomThird.route) {
-            ThirdScreen(appState)
+            SampleScreen(appState,BottomBarItem.BottomThird.route)
         }
 
         composable(BottomBarItem.BottomFourth.route) {
-            FourthScreen(appState)
+            SampleScreen(appState,BottomBarItem.BottomFourth.route)
         }
 
         composable(BottomBarItem.BottomFifth.route) {
-            FifthScreen(appState)
+            SampleScreen(appState,BottomBarItem.BottomFifth.route)
         }
 
     }
@@ -42,22 +50,20 @@ fun NavGraphBuilder.bottomGraph(
 }
 
 @Composable
-fun FirstScreen(appState: ApplicationState) {
+fun SampleScreen(
+    appState: ApplicationState,
+    text: String
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            fontSize = 20.sp,
+            color = Color.Black
+        )
+    }
 }
-
-@Composable
-fun SecondScreen(appState: ApplicationState) {
-}
-
-@Composable
-fun ThirdScreen(appState: ApplicationState) {
-}
-
-@Composable
-fun FourthScreen(appState: ApplicationState) {
-}
-
-@Composable
-fun FifthScreen(appState: ApplicationState) {
-}
-
