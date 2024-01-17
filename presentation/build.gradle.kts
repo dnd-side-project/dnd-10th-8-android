@@ -59,6 +59,18 @@ dependencies {
     implementation(libs.ted.permission)
 
     implementation(libs.bundles.logging)
+
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.preview)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.preview)
+    implementation(libs.compose.bottomsheet)
+    implementation(libs.compose.coil)
+
+    implementation(libs.compose.viewmodel)
+    implementation(libs.compose.livedata)
+
 }
 
 fun getLocalProperty(propertyKey: String): String {

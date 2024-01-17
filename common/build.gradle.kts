@@ -28,4 +28,7 @@ dependencies {
     implementation(libs.glide)
 
     implementation(libs.bundles.logging)
+
+    implementation(libs.compose.navi)
+    implementation(libs.compose.hiltnavi)
 }
