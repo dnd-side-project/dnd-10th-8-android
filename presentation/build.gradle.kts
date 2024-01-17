@@ -20,10 +20,16 @@ android {
 
     buildTypes {
         debug {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -37,6 +43,10 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.6"
     }
 }
 
@@ -60,16 +70,13 @@ dependencies {
 
     implementation(libs.bundles.logging)
 
-    implementation(libs.bundles.compose.ui)
+    implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test)
 
     implementation(libs.compose.bottomsheet)
     implementation(libs.compose.coil)
-
-    implementation(libs.compose.viewmodel)
     implementation(libs.compose.livedata)
-
-    implementation(libs.compose.navi)
-    implementation(libs.compose.hiltnavi)
 
     implementation(libs.google.system.contoller)
 
