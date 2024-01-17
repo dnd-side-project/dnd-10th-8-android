@@ -102,15 +102,15 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.re
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3-logging-interceptor" }
 # Compose
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose-ui" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui"}
-compose-ui-tooling = {module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui"}
-compose-ui-preview = {module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui"}
-compose-viewmodel = {module = "androidx.lifecycle:lifecycle-viewmodel-compose",version.ref = "compose-viewmodel"}
-compose-bottomsheet = {module = "com.holix.android:bottomsheetdialog-compose", version.ref = "compose-bottomsheet"}
-compose-coil = {module = "io.coil-kt:coil-compose",version.ref = "compose-coil"}
-compose-navi = {module = "androidx.navigation:navigation-compose",version.ref = "compose-navi"}
-compose-hiltnavi = {module = "androidx.hilt:hilt-navigation-compose",version.ref="compose-hiltnavi"}
-compose-livedata = {module = "androidx.compose.runtime:runtime-livedata",version.ref="compose-livedata"}
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
+compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui" }
+compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewmodel" }
+compose-bottomsheet = { module = "com.holix.android:bottomsheetdialog-compose", version.ref = "compose-bottomsheet" }
+compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "compose-coil" }
+compose-navi = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navi" }
+compose-hiltnavi = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hiltnavi" }
+compose-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose-livedata" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "plugin-gradle" }
