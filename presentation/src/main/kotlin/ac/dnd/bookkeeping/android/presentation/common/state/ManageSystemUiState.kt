@@ -11,7 +11,7 @@ fun ManageSystemUiState(
 ) {
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
 
-    when(navBackStackEntry?.destination?.route) {
+    when (navBackStackEntry?.destination?.route) {
 
         ScreenRoot.SPLASH -> {
             appState.systemUiController.isStatusBarVisible = false

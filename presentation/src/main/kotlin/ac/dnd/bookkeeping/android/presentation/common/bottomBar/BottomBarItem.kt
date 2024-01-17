@@ -1,7 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.common.bottomBar
 
-import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
