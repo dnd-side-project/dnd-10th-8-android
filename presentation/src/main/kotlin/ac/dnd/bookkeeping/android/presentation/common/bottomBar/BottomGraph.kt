@@ -15,25 +15,25 @@ fun NavGraphBuilder.bottomGraph(
     navigation(
         startDestination = MainRoot.BOTTOM_FIRST,
         route = ScreenRoot.MAIN_GRAPH
-    ){
+    ) {
 
-        composable(MainRoot.BOTTOM_FIRST){
+        composable(MainRoot.BOTTOM_FIRST) {
             FirstScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_SECOND){
+        composable(MainRoot.BOTTOM_SECOND) {
             SecondScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_THIRD){
+        composable(MainRoot.BOTTOM_THIRD) {
             ThirdScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_FOURTH){
+        composable(MainRoot.BOTTOM_FOURTH) {
             FourthScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_FIFTH){
+        composable(MainRoot.BOTTOM_FIFTH) {
             FifthScreen(appState)
         }
 
@@ -42,17 +42,22 @@ fun NavGraphBuilder.bottomGraph(
 }
 
 @Composable
-fun FirstScreen(appState: ApplicationState){}
+fun FirstScreen(appState: ApplicationState) {
+}
 
 @Composable
-fun SecondScreen(appState: ApplicationState){}
+fun SecondScreen(appState: ApplicationState) {
+}
 
 @Composable
-fun ThirdScreen(appState: ApplicationState){}
+fun ThirdScreen(appState: ApplicationState) {
+}
 
 @Composable
-fun FourthScreen(appState: ApplicationState){}
+fun FourthScreen(appState: ApplicationState) {
+}
 
 @Composable
-fun FifthScreen(appState: ApplicationState){}
+fun FifthScreen(appState: ApplicationState) {
+}
 

@@ -1,0 +1,76 @@
+package ac.dnd.bookkeeping.android.presentation.common.bottomBar
+
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
+import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.currentBackStackEntryAsState
+
+@Composable
+fun BottomBarScreen(
+    appState: ApplicationState
+) {
+
+    AnimatedVisibility(
+        visible = appState.bottomBarState.value,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+    ) {
+
+        BottomNavigation(
+            elevation = 0.dp,
+            backgroundColor = Color.White
+        ) {
+            val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+
+            BottomBarItem.BOTTOM_NAV_ITEMS.forEach { screen ->
+
+                BottomNavigationItem(
+                    selected = currentRoute == screen.route,
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = screen.drawableResId),
+                            contentDescription = "bottom icon"
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = screen.stringResId),
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(0.dp)
+                        )
+                    },
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.White,
+                    onClick = {
+                        appState.navController.navigate(screen.route) {
+                            popUpTo(ScreenRoot.MAIN_GRAPH) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+
+            }
+        }
+
+    }
+}
