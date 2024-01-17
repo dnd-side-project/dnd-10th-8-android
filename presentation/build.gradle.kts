@@ -71,6 +71,9 @@ dependencies {
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.livedata)
 
+    implementation(libs.compose.navi)
+    implementation(libs.compose.hiltnavi)
+
 }
 
 fun getLocalProperty(propertyKey: String): String {
