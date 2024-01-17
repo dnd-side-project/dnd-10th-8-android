@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.state
 
+import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,7 +19,11 @@ fun ManageSystemUiState(
             appState.bottomBarState.value = false
         }
 
-        ScreenRoot.MAIN_GRAPH -> {
+        MainRoot.BOTTOM_FIRST,
+        MainRoot.BOTTOM_SECOND,
+        MainRoot.BOTTOM_THIRD,
+        MainRoot.BOTTOM_FOURTH,
+        MainRoot.BOTTOM_FIFTH -> {
             appState.systemUiController.isStatusBarVisible = false
             appState.bottomBarState.value = true
         }

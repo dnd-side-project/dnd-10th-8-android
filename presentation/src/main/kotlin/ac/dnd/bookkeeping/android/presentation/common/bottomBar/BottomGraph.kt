@@ -17,23 +17,23 @@ fun NavGraphBuilder.bottomGraph(
         route = ScreenRoot.MAIN_GRAPH
     ) {
 
-        composable(MainRoot.BOTTOM_FIRST) {
+        composable(BottomBarItem.BottomFirst.route) {
             FirstScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_SECOND) {
+        composable(BottomBarItem.BottomSecond.route) {
             SecondScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_THIRD) {
+        composable(BottomBarItem.BottomThird.route) {
             ThirdScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_FOURTH) {
+        composable(BottomBarItem.BottomFourth.route) {
             FourthScreen(appState)
         }
 
-        composable(MainRoot.BOTTOM_FIFTH) {
+        composable(BottomBarItem.BottomFifth.route) {
             FifthScreen(appState)
         }
 

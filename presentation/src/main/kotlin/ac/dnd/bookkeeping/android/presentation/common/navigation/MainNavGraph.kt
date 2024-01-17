@@ -31,7 +31,7 @@ fun MainNavGraph(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         scaffoldState = appState.scaffoldState,
-        bottomBar = { BottomBarScreen(appState) }
+        bottomBar = { BottomBarScreen(appState = appState) }
     ) { innerPadding ->
 
         BackHandler(enabled = true, onBack = {})

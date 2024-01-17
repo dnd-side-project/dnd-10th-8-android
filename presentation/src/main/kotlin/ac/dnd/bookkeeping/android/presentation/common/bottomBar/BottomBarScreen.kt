@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.common.bottomBar
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,7 +23,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomBarScreen(
-    appState: ApplicationState
+    appState: ApplicationState,
+    bottomBarItems: List<BottomBarItem> = BottomBarItem.BOTTOM_NAV_ITEMS
 ) {
 
     AnimatedVisibility(
@@ -34,12 +36,13 @@ fun BottomBarScreen(
 
         BottomNavigation(
             elevation = 0.dp,
-            backgroundColor = Color.White
+            backgroundColor = Color.White,
+            modifier = Modifier.fillMaxSize()
         ) {
             val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
 
-            BottomBarItem.BOTTOM_NAV_ITEMS.forEach { screen ->
+            bottomBarItems.forEach { screen ->
 
                 BottomNavigationItem(
                     selected = currentRoute == screen.route,
@@ -53,11 +56,12 @@ fun BottomBarScreen(
                         Text(
                             text = stringResource(id = screen.stringResId),
                             fontSize = 12.sp,
+                            color = Color.Black,
                             modifier = Modifier.padding(0.dp)
                         )
                     },
                     selectedContentColor = Color.Black,
-                    unselectedContentColor = Color.White,
+                    unselectedContentColor = Color.Gray,
                     onClick = {
                         appState.navController.navigate(screen.route) {
                             popUpTo(ScreenRoot.MAIN_GRAPH) {
