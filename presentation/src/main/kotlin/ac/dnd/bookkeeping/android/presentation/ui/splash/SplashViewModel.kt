@@ -24,6 +24,11 @@ class SplashViewModel @Inject constructor(
     fun navigateToLogin(
         navController: NavHostController
     ) {
+        navController.navigate(ScreenRootConstant.LOGIN_GRAPH) {
+            popUpTo(ScreenRootConstant.SPLASH) {
+                inclusive = true
+            }
+        }
     }
 
 }
