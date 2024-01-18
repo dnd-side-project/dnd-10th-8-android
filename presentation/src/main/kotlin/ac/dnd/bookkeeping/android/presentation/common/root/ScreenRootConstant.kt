@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.root
 
-object ScreenRoot {
+object ScreenRootConstant {
 
     const val SPLASH = "splashScreen"
     const val MAIN_GRAPH = "mainGraph"

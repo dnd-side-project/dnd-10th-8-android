@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.common.state
 
-import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
-import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
+import ac.dnd.bookkeeping.android.presentation.common.root.MainRootConstant
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -14,16 +14,16 @@ fun ManageSystemUiState(
 
     when (navBackStackEntry?.destination?.route) {
 
-        ScreenRoot.SPLASH -> {
+        ScreenRootConstant.SPLASH -> {
             appState.systemUiController.isStatusBarVisible = false
             appState.bottomBarState.value = false
         }
 
-        MainRoot.BOTTOM_FIRST,
-        MainRoot.BOTTOM_SECOND,
-        MainRoot.BOTTOM_THIRD,
-        MainRoot.BOTTOM_FOURTH,
-        MainRoot.BOTTOM_FIFTH -> {
+        MainRootConstant.BOTTOM_FIRST,
+        MainRootConstant.BOTTOM_SECOND,
+        MainRootConstant.BOTTOM_THIRD,
+        MainRootConstant.BOTTOM_FOURTH,
+        MainRootConstant.BOTTOM_FIFTH -> {
             appState.systemUiController.isStatusBarVisible = false
             appState.bottomBarState.value = true
         }

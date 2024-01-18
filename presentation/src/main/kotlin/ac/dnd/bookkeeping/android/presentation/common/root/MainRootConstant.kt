@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.root
 
-object MainRoot {
+object MainRootConstant {
 
     const val BOTTOM_FIRST = "firstScreen"
     const val BOTTOM_SECOND = "secondScreen"

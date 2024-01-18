@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.bottombar
 
-import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
-import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
+import ac.dnd.bookkeeping.android.presentation.common.root.MainRootConstant
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,8 +21,8 @@ fun NavGraphBuilder.bottomGraph(
 ) {
 
     navigation(
-        startDestination = MainRoot.BOTTOM_FIRST,
-        route = ScreenRoot.MAIN_GRAPH
+        startDestination = MainRootConstant.BOTTOM_FIRST,
+        route = ScreenRootConstant.MAIN_GRAPH
     ) {
 
         composable(BottomBarItem.BottomFirst.route) {

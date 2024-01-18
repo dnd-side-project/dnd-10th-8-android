@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.navigation
 
 import ac.dnd.bookkeeping.android.presentation.ui.bottombar.BottomBarScreen
 import ac.dnd.bookkeeping.android.presentation.ui.bottombar.bottomGraph
-import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -37,12 +37,12 @@ fun MainNavGraph(
         BackHandler(enabled = true, onBack = {})
         NavHost(
             navController = appState.navController,
-            startDestination = ScreenRoot.SPLASH,
+            startDestination = ScreenRootConstant.SPLASH,
             modifier = Modifier.padding(innerPadding)
         ) {
             bottomGraph(appState)
 
-            composable(route = ScreenRoot.SPLASH) {
+            composable(route = ScreenRootConstant.SPLASH) {
                 SplashScreen(appState)
             }
         }
@@ -59,7 +59,7 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         scope.launch {
             delay(500L)
-            appState.navController.navigate(ScreenRoot.MAIN_GRAPH)
+            appState.navController.navigate(ScreenRootConstant.MAIN_GRAPH)
         }
     }
 

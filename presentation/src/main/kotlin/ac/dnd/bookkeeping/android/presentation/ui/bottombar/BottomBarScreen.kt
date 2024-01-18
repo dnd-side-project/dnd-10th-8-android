@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.bottombar
 
-import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,7 +64,7 @@ fun BottomBarScreen(
                     unselectedContentColor = Color.Gray,
                     onClick = {
                         appState.navController.navigate(screen.route) {
-                            popUpTo(ScreenRoot.MAIN_GRAPH) {
+                            popUpTo(ScreenRootConstant.MAIN_GRAPH) {
                                 saveState = true
                             }
                             launchSingleTop = true
