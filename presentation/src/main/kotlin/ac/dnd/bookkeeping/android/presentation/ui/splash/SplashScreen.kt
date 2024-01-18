@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.splash
 
-import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
+import ac.dnd.bookkeeping.android.presentation.common.root.RootEntryPoint
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,18 +13,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun SplashScreen(
-    appState: ApplicationState
+    appState: ApplicationState,
+    rootEntryPoint: RootEntryPoint,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         scope.launch {
             delay(500L)
-            appState.navController.navigate(ScreenRootConstant.MAIN_GRAPH)
+            when (rootEntryPoint) {
+                RootEntryPoint.LOGIN -> viewModel.navigateToLogin(appState.navController)
+                RootEntryPoint.MAIN -> viewModel.navigateToMain(appState.navController)
+            }
         }
     }
 
