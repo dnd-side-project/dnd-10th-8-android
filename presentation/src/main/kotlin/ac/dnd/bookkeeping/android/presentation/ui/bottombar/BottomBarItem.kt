@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.common.bottomBar
+package ac.dnd.bookkeeping.android.presentation.ui.bottombar
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot

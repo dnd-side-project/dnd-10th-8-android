@@ -70,7 +70,6 @@ dependencies {
 
     implementation(libs.bundles.logging)
 
-    implementation(libs.bundles.compose)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test)
 

@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.common.bottomBar
+package ac.dnd.bookkeeping.android.presentation.ui.bottombar
 
 import ac.dnd.bookkeeping.android.presentation.common.root.MainRoot
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
@@ -26,23 +26,23 @@ fun NavGraphBuilder.bottomGraph(
     ) {
 
         composable(BottomBarItem.BottomFirst.route) {
-            SampleScreen(appState,BottomBarItem.BottomFirst.route)
+            SampleScreen(appState, BottomBarItem.BottomFirst.route)
         }
 
         composable(BottomBarItem.BottomSecond.route) {
-            SampleScreen(appState,BottomBarItem.BottomSecond.route)
+            SampleScreen(appState, BottomBarItem.BottomSecond.route)
         }
 
         composable(BottomBarItem.BottomThird.route) {
-            SampleScreen(appState,BottomBarItem.BottomThird.route)
+            SampleScreen(appState, BottomBarItem.BottomThird.route)
         }
 
         composable(BottomBarItem.BottomFourth.route) {
-            SampleScreen(appState,BottomBarItem.BottomFourth.route)
+            SampleScreen(appState, BottomBarItem.BottomFourth.route)
         }
 
         composable(BottomBarItem.BottomFifth.route) {
-            SampleScreen(appState,BottomBarItem.BottomFifth.route)
+            SampleScreen(appState, BottomBarItem.BottomFifth.route)
         }
 
     }

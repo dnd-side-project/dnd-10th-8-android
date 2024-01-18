@@ -23,7 +23,6 @@ android {
 
 dependencies {
     implementation(libs.bundles.kotlin)
-    implementation(libs.bundles.androidx.presentation)
     implementation(libs.google.material)
     implementation(libs.glide)
 

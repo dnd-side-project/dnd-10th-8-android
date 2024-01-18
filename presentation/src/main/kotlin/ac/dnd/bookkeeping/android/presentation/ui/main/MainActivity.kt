@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main
 
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseActivity
-import ac.dnd.bookkeeping.android.presentation.common.navigation.MainNavGraph
+import ac.dnd.bookkeeping.android.presentation.ui.navigation.MainNavGraph
 import ac.dnd.bookkeeping.android.presentation.common.state.ManageSystemUiState
 import ac.dnd.bookkeeping.android.presentation.common.state.rememberApplicationState
 import ac.dnd.bookkeeping.android.presentation.databinding.ActivityMainBinding

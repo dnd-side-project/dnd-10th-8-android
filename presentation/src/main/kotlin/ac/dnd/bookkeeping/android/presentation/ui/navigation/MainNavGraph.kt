@@ -1,7 +1,7 @@
-package ac.dnd.bookkeeping.android.presentation.common.navigation
+package ac.dnd.bookkeeping.android.presentation.ui.navigation
 
-import ac.dnd.bookkeeping.android.presentation.common.bottomBar.BottomBarScreen
-import ac.dnd.bookkeeping.android.presentation.common.bottomBar.bottomGraph
+import ac.dnd.bookkeeping.android.presentation.ui.bottombar.BottomBarScreen
+import ac.dnd.bookkeeping.android.presentation.ui.bottombar.bottomGraph
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRoot
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.activity.compose.BackHandler

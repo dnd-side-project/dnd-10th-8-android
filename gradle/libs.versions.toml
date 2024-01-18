@@ -129,10 +129,10 @@ sentry = { id = "io.sentry.android.gradle", version.ref = "plugin-sentry" }
 
 [bundles]
 kotlin = ["kotlin", "kotlinx-coroutines-android", "kotlinx-coroutines-core", "kotlinx-datetime"]
-androidx-presentation = ["androidx-core", "androidx-appcompat", "androidx-constraintlayout", "androidx-fragment",
-    "androidx-viewmodel", "androidx-livedata", "androidx-navigation-fragment", "androidx-navigation-ui"]
 androidx-data = ["androidx-room-runtime", "androidx-room-coroutine", "androidx-paging-runtime"]
+androidx-presentation = ["androidx-core", "androidx-appcompat", "androidx-constraintlayout", "androidx-fragment",
+    "androidx-viewmodel", "androidx-livedata", "androidx-navigation-fragment", "androidx-navigation-ui",
+    "compose-ui-ui", "compose-ui-preview", "compose-material", "compose-viewmodel", "compose-hiltnavi", "compose-navi"]
 network = ["ktor-core", "ktor-okhttp", "ktor-resources", "ktor-content-negotiation", "ktor-kotlinx-serialization",
     "ktor-auth", "kotlinx-serialization"]
 logging = ["timber", "sentry"]
-compose = ["compose-ui-ui", "compose-ui-preview", "compose-material", "compose-viewmodel", "compose-hiltnavi", "compose-navi"]
