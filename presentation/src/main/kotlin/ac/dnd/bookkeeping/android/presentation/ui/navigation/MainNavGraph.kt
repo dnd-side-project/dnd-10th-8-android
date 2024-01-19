@@ -29,13 +29,16 @@ fun MainNavGraph(
         BackHandler(enabled = true, onBack = {})
         NavHost(
             navController = appState.navController,
-            startDestination = ScreenRootConstant.SPLASH,
+            startDestination = ScreenRootConstant.LOGIN_GRAPH,
             modifier = Modifier.padding(innerPadding)
         ) {
             bottomGraph(appState)
-
-            composable(route = ScreenRootConstant.SPLASH) {
-                SplashScreen(appState,RootEntryPoint.MAIN)
+            loginNavGraph(appState)
+            composable(route = ScreenRootConstant.MAIN_SPLASH) {
+                SplashScreen(
+                    appState = appState,
+                    rootEntryPoint = RootEntryPoint.MAIN
+                )
             }
         }
 
