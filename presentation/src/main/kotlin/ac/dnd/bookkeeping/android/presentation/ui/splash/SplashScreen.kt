@@ -29,8 +29,15 @@ fun SplashScreen(
         scope.launch {
             delay(1000L)
             when (rootEntryPoint) {
-                RootEntryPoint.LOGIN -> viewModel.navigateToLogin(appState.navController,ScreenRootConstant.LOGIN_SPLASH)
-                RootEntryPoint.MAIN -> viewModel.navigateToMain(appState.navController,ScreenRootConstant.MAIN_SPLASH)
+                RootEntryPoint.LOGIN -> viewModel.navigateToLogin(
+                    appState.navController,
+                    ScreenRootConstant.LOGIN_SPLASH
+                )
+
+                RootEntryPoint.MAIN -> viewModel.navigateToMain(
+                    appState.navController,
+                    ScreenRootConstant.MAIN_SPLASH
+                )
             }
         }
     }

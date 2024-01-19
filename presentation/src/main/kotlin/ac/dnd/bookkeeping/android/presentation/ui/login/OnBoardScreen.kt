@@ -2,13 +2,11 @@ package ac.dnd.bookkeeping.android.presentation.ui.login
 
 import ac.dnd.bookkeeping.android.presentation.common.root.LoginRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.theme.Shapes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -16,7 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,10 +27,9 @@ fun OnBoardScreen(
     appState: ApplicationState,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-
-    val nextStageState = remember{ mutableStateOf(false) }
-    if (nextStageState.value){
-        viewModel.navigateToMain(appState.navController,LoginRootConstant.LOGIN_ONBOARD)
+    val nextStageState = remember { mutableStateOf(false) }
+    if (nextStageState.value) {
+        viewModel.navigateToMain(appState.navController, LoginRootConstant.LOGIN_ONBOARD)
         nextStageState.value = false
     }
 
@@ -59,7 +55,7 @@ fun OnBoardScreen(
                 },
             shape = RoundedCornerShape(10.dp),
             color = Color.White
-        ){
+        ) {
             Text(
                 text = "next",
                 fontSize = 20.sp,

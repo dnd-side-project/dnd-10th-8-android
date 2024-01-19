@@ -1,11 +1,11 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main
 
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseActivity
-import ac.dnd.bookkeeping.android.presentation.ui.navigation.MainNavGraph
 import ac.dnd.bookkeeping.android.presentation.common.state.ManageSystemUiState
 import ac.dnd.bookkeeping.android.presentation.common.state.rememberApplicationState
 import ac.dnd.bookkeeping.android.presentation.databinding.ActivityMainBinding
 import ac.dnd.bookkeeping.android.presentation.ui.main.theme.BookkeepingTheme
+import ac.dnd.bookkeeping.android.presentation.ui.navigation.MainNavGraph
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize

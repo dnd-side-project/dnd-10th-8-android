@@ -10,12 +10,12 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
 
-): ViewModel() {
+) : ViewModel() {
 
     fun navigateToOnBoard(
         navController: NavHostController
-    ){
-        navController.navigate(LoginRootConstant.LOGIN_ONBOARD){
+    ) {
+        navController.navigate(LoginRootConstant.LOGIN_ONBOARD) {
             popUpTo(LoginRootConstant.LOGIN_MAIN) {
                 inclusive = true
             }
@@ -25,11 +25,12 @@ class LoginViewModel @Inject constructor(
     fun navigateToMain(
         navController: NavHostController,
         prevRoot: String
-    ){
-        navController.navigate(ScreenRootConstant.MAIN_SPLASH){
-            popUpTo(prevRoot){
+    ) {
+        navController.navigate(ScreenRootConstant.MAIN_SPLASH) {
+            popUpTo(prevRoot) {
                 inclusive = true
             }
         }
     }
+
 }

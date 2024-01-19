@@ -19,13 +19,11 @@ import androidx.navigation.compose.composable
 fun MainNavGraph(
     appState: ApplicationState
 ) {
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         scaffoldState = appState.scaffoldState,
         bottomBar = { BottomBarScreen(appState = appState) }
     ) { innerPadding ->
-
         BackHandler(enabled = true, onBack = {})
         NavHost(
             navController = appState.navController,
@@ -41,7 +39,5 @@ fun MainNavGraph(
                 )
             }
         }
-
     }
-
 }
