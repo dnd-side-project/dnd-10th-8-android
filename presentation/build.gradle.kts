@@ -20,10 +20,16 @@ android {
 
     buildTypes {
         debug {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -37,6 +43,10 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.6"
     }
 }
 
@@ -59,6 +69,16 @@ dependencies {
     implementation(libs.ted.permission)
 
     implementation(libs.bundles.logging)
+
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test)
+
+    implementation(libs.compose.bottomsheet)
+    implementation(libs.compose.coil)
+    implementation(libs.compose.livedata)
+
+    implementation(libs.google.system.contoller)
+
 }
 
 fun getLocalProperty(propertyKey: String): String {
