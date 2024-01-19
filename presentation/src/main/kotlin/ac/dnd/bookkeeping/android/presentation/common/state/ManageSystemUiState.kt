@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.state
 
+import ac.dnd.bookkeeping.android.presentation.common.root.LoginRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.root.MainRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import androidx.compose.runtime.Composable
@@ -14,8 +15,9 @@ fun ManageSystemUiState(
 
     when (navBackStackEntry?.destination?.route) {
 
-        ScreenRootConstant.SPLASH -> {
+        ScreenRootConstant.LOGIN_SPLASH, ScreenRootConstant.MAIN_SPLASH -> {
             appState.systemUiController.isStatusBarVisible = false
+            appState.systemUiController.isNavigationBarVisible = false
             appState.bottomBarState.value = false
         }
 
@@ -25,7 +27,14 @@ fun ManageSystemUiState(
         MainRootConstant.BOTTOM_FOURTH,
         MainRootConstant.BOTTOM_FIFTH -> {
             appState.systemUiController.isStatusBarVisible = false
+            appState.systemUiController.isNavigationBarVisible = true
             appState.bottomBarState.value = true
+        }
+
+        LoginRootConstant.LOGIN_ONBOARD, LoginRootConstant.LOGIN_MAIN -> {
+            appState.systemUiController.isStatusBarVisible = true
+            appState.systemUiController.isNavigationBarVisible = true
+            appState.bottomBarState.value = false
         }
     }
 
