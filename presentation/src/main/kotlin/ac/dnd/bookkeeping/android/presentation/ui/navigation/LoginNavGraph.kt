@@ -5,9 +5,12 @@ import ac.dnd.bookkeeping.android.presentation.common.root.RootEntryPoint
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.login.LoginScreen
+import ac.dnd.bookkeeping.android.presentation.ui.login.LoginViewModel
 import ac.dnd.bookkeeping.android.presentation.ui.login.OnBoardScreen
 import ac.dnd.bookkeeping.android.presentation.ui.splash.SplashScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -29,11 +32,19 @@ fun NavGraphBuilder.loginNavGraph(
         }
 
         composable(LoginRootConstant.LOGIN_MAIN) {
-            LoginScreen(appState = appState)
+            val backStackEntry = remember(it){
+                appState.navController.getBackStackEntry(ScreenRootConstant.LOGIN_GRAPH)
+            }
+            val loginViewModel: LoginViewModel = hiltViewModel(backStackEntry)
+            LoginScreen(appState = appState, viewModel = loginViewModel)
         }
 
         composable(LoginRootConstant.LOGIN_ONBOARD) {
-            OnBoardScreen(appState = appState)
+            val backStackEntry = remember(it){
+                appState.navController.getBackStackEntry(ScreenRootConstant.LOGIN_GRAPH)
+            }
+            val loginViewModel: LoginViewModel = hiltViewModel(backStackEntry)
+            OnBoardScreen(appState = appState, viewModel = loginViewModel)
         }
 
     }
