@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.splash
 
 import ac.dnd.bookkeeping.android.presentation.common.root.RootEntryPoint
+import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,10 +27,10 @@ fun SplashScreen(
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         scope.launch {
-            delay(500L)
+            delay(1000L)
             when (rootEntryPoint) {
-                RootEntryPoint.LOGIN -> viewModel.navigateToLogin(appState.navController)
-                RootEntryPoint.MAIN -> viewModel.navigateToMain(appState.navController)
+                RootEntryPoint.LOGIN -> viewModel.navigateToLogin(appState.navController,ScreenRootConstant.LOGIN_SPLASH)
+                RootEntryPoint.MAIN -> viewModel.navigateToMain(appState.navController,ScreenRootConstant.MAIN_SPLASH)
             }
         }
     }

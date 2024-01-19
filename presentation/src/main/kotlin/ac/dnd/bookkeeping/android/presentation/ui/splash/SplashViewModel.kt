@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.splash
 
+import ac.dnd.bookkeeping.android.presentation.common.root.LoginRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
@@ -12,20 +13,22 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun navigateToMain(
-        navController: NavHostController
+        navController: NavHostController,
+        rootEntryPoint: String
     ) {
         navController.navigate(ScreenRootConstant.MAIN_GRAPH) {
-            popUpTo(ScreenRootConstant.SPLASH) {
+            popUpTo(rootEntryPoint) {
                 inclusive = true
             }
         }
     }
 
     fun navigateToLogin(
-        navController: NavHostController
+        navController: NavHostController,
+        rootEntryPoint: String
     ) {
-        navController.navigate(ScreenRootConstant.LOGIN_GRAPH) {
-            popUpTo(ScreenRootConstant.SPLASH) {
+        navController.navigate(LoginRootConstant.LOGIN_MAIN) {
+            popUpTo(rootEntryPoint) {
                 inclusive = true
             }
         }
