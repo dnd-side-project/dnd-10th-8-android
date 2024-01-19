@@ -31,12 +31,12 @@ fun BottomBarScreen(
         visible = appState.bottomBarState.value,
         modifier = Modifier
             .fillMaxWidth()
-            .height(90.dp)
+            .height(80.dp)
     ) {
 
         BottomNavigation(
             elevation = 0.dp,
-            backgroundColor = Color.White,
+            backgroundColor = Color.LightGray,
             modifier = Modifier.fillMaxSize()
         ) {
             val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
