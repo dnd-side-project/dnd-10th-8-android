@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.model.bookkeeping
 
-import android.os.Parcelable
 import ac.dnd.bookkeeping.android.domain.model.bookkeeping.BookkeepingInformation
+import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
