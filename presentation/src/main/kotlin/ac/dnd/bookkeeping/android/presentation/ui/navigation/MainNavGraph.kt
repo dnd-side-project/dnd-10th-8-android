@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.navigation
 
+import ac.dnd.bookkeeping.android.presentation.common.root.RootEntryPoint
 import ac.dnd.bookkeeping.android.presentation.common.root.ScreenRootConstant
 import ac.dnd.bookkeeping.android.presentation.common.state.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.bottombar.BottomBarScreen
@@ -34,7 +35,7 @@ fun MainNavGraph(
             bottomGraph(appState)
 
             composable(route = ScreenRootConstant.SPLASH) {
-                SplashScreen(appState)
+                SplashScreen(appState,RootEntryPoint.MAIN)
             }
         }
 
