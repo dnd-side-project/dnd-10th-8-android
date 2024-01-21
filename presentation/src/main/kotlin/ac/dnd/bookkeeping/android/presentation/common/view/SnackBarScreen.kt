@@ -1,14 +1,15 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,15 +55,20 @@ fun SnackBarScreen(
             hostState = snackBarState,
             modifier = Modifier.align(Alignment.BottomCenter)
         ) { snackBarData ->
-            Surface(
-                modifier = Modifier.padding(20.dp),
-                shape = RoundedCornerShape(10.dp),
-                color = Color.LightGray
+            Box(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .fillMaxWidth()
+                    .background(
+                        shape = RoundedCornerShape(10.dp),
+                        color = Color.LightGray
+                    ),
             ) {
                 Text(
                     text = snackBarData.message,
                     fontSize = 20.sp,
-                    color = Color.Black
+                    color = Color.White,
+                    modifier = Modifier.padding(20.dp),
                 )
             }
         }
