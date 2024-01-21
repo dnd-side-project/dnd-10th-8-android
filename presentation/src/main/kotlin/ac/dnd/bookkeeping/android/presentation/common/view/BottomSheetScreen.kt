@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,38 +38,33 @@ fun BottomSheetScreen(
     val animateIn = remember { mutableStateOf(false) }
 
     if (bottomSheetState.value) {
-        BottomSheetDialog(
-            onDismissRequest = {
-                bottomSheetState.value = false
-            },
-            properties = BottomSheetDialogProperties(
-                dismissOnClickOutside = true,
-                dismissOnBackPress = true
-            )
+        LaunchedEffect(Unit) { animateIn.value = true }
+        AnimatedVisibility(
+            visible = animateIn.value && bottomSheetState.value,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+            BottomSheetDialog(
+                onDismissRequest = {
+                    bottomSheetState.value = false
+                },
+                properties = BottomSheetDialogProperties(
+                    dismissOnClickOutside = true,
+                    dismissOnBackPress = true
+                )
             ) {
-                LaunchedEffect(Unit) { animateIn.value = true }
-                AnimatedVisibility(
-                    visible = animateIn.value && bottomSheetState.value,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                Box(
+                    modifier = Modifier
+                        .shadow(
+                            elevation = 8.dp,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        )
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
+                        .background(color = Color.LightGray)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(10.dp)
-                            )
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(color = Color.LightGray),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        content()
-                    }
+                    content()
                 }
             }
         }

@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,6 @@ fun DialogScreen(
     content: @Composable () -> Unit = { SampleDialogComponent(dialogState) }
 ) {
     val animateIn = remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { animateIn.value = true }
 
     if (dialogState.value) {
         Dialog(
@@ -54,6 +51,7 @@ fun DialogScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
+                LaunchedEffect(Unit) { animateIn.value = true }
                 AnimatedVisibility(
                     visible = animateIn.value && dialogState.value,
                     enter = fadeIn(),
@@ -61,11 +59,6 @@ fun DialogScreen(
                 ) {
                     Box(
                         modifier = Modifier
-                            .pointerInput(Unit) {
-                                detectTapGestures {
-                                    dialogState.value = false
-                                }
-                            }
                             .shadow(
                                 elevation = 8.dp,
                                 shape = RoundedCornerShape(10.dp)

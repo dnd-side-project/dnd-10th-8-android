@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,33 +19,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun SnackBarScreen(
     message: String,
-    onDismiss: () -> Unit,
-    onClick: () -> Unit
+    dismiss: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val snackBarState = remember { SnackbarHostState() }
-
     LaunchedEffect(Unit) {
         scope.launch {
-            val result = snackBarState.showSnackbar(
+            snackBarState.showSnackbar(
                 message = message,
                 actionLabel = "Action",
                 duration = SnackbarDuration.Short
             )
-            when (result) {
-                SnackbarResult.ActionPerformed -> {
-                    onClick()
-                }
-
-                SnackbarResult.Dismissed -> {
-                    onDismiss()
-                }
-            }
+            delay(1000L)
+            dismiss()
         }
     }
 
