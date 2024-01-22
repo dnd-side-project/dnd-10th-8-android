@@ -35,16 +35,16 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun DialogScreen(
-    dialogState: MutableState<Boolean>,
+    dialogIsShowingState: MutableState<Boolean>,
     width: Dp = 300.dp,
-    content: @Composable () -> Unit = { SampleDialogComponent(dialogState) }
+    content: @Composable () -> Unit = { SampleDialogComponent(dialogIsShowingState) }
 ) {
     val animateIn = remember { mutableStateOf(false) }
 
-    if (dialogState.value) {
+    if (dialogIsShowingState.value) {
         Dialog(
             onDismissRequest = {
-                dialogState.value = false
+                dialogIsShowingState.value = false
             }
         ) {
             Box(
@@ -53,7 +53,7 @@ fun DialogScreen(
             ) {
                 LaunchedEffect(Unit) { animateIn.value = true }
                 AnimatedVisibility(
-                    visible = animateIn.value && dialogState.value,
+                    visible = animateIn.value && dialogIsShowingState.value,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

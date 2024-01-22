@@ -23,11 +23,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun SettingScreen(
     appState: ApplicationState,
+    onShowSnackBar: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
 
-    val dialogState = remember { mutableStateOf(false) }
-    val bottomSheetState = remember { mutableStateOf(false) }
+    val dialogIsShowingState = remember { mutableStateOf(false) }
+    val bottomSheetIsShowingState = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -49,7 +50,7 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    appState.showSnackBar("setting snack bar")
+                    onShowSnackBar()
                 }
         )
         Text(
@@ -59,7 +60,7 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    dialogState.value = true
+                    dialogIsShowingState.value = true
                 }
         )
         Text(
@@ -69,10 +70,10 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    bottomSheetState.value = true
+                    bottomSheetIsShowingState.value = true
                 }
         )
     }
-    BottomSheetScreen(bottomSheetState = bottomSheetState)
-    DialogScreen(dialogState = dialogState)
+    BottomSheetScreen(bottomSheetIsShowingState = bottomSheetIsShowingState)
+    DialogScreen(dialogIsShowingState = dialogIsShowingState)
 }

@@ -32,24 +32,24 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 
 @Composable
 fun BottomSheetScreen(
-    bottomSheetState: MutableState<Boolean>,
-    content: @Composable () -> Unit = { SampleBottomSheetComponent(bottomSheetState) }
+    bottomSheetIsShowingState: MutableState<Boolean>,
+    content: @Composable () -> Unit = { SampleBottomSheetComponent(bottomSheetIsShowingState) }
 ) {
     val animateIn = remember { mutableStateOf(false) }
 
-    if (bottomSheetState.value) {
+    if (bottomSheetIsShowingState.value) {
         LaunchedEffect(Unit) { animateIn.value = true }
         AnimatedVisibility(
-            visible = animateIn.value && bottomSheetState.value,
+            visible = animateIn.value && bottomSheetIsShowingState.value,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
             BottomSheetDialog(
                 onDismissRequest = {
-                    bottomSheetState.value = false
+                    bottomSheetIsShowingState.value = false
                 },
                 properties = BottomSheetDialogProperties(
-                    dismissOnClickOutside = true,
+                    dismissOnClickOutside = false,
                     dismissOnBackPress = true
                 )
             ) {
