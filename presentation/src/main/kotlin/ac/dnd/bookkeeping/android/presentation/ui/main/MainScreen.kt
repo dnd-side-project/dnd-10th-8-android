@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
+import io.sentry.Sentry
 
 @Composable
 fun MainScreen() {
@@ -21,7 +22,12 @@ fun MainScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            val appState = rememberApplicationState()
+            val appState = rememberApplicationState(
+                coroutineExceptionHandler = { _, throwable ->
+                    Sentry.captureException(throwable)
+                    // TODO : Dialog Screen
+                }
+            )
             ManageSystemUiState(appState = appState)
 
             NavHost(
