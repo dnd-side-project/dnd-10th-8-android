@@ -2,7 +2,6 @@ package ac.dnd.bookkeeping.android.presentation.ui.main
 
 import ac.dnd.bookkeeping.android.presentation.common.theme.BookkeepingTheme
 import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
-import ac.dnd.bookkeeping.android.presentation.common.view.SnackBarScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.homeDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.loginNavGraph
 import ac.dnd.bookkeeping.android.presentation.ui.main.splash.SplashConstant
@@ -35,15 +34,6 @@ fun MainScreen() {
                 loginNavGraph(appState = appState)
                 homeDestination(appState = appState)
                 splashDestination(appState = appState)
-            }
-
-            if (appState.snackBarMessage.value.isNotEmpty()){
-                SnackBarScreen(
-                    message = appState.getSnackBarMessage(),
-                    dismiss = {
-                        appState.resetSnackBarMessage()
-                    }
-                )
             }
         }
     }

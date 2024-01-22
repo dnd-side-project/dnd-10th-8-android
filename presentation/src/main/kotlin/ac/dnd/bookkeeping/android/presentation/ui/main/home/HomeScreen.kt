@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
+import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping.BookkeepingScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.setting.SettingScreen
@@ -9,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,7 +25,6 @@ fun HomeScreen(
     appState: ApplicationState,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(
         pageCount = { 2 }
@@ -38,7 +36,8 @@ fun HomeScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
+        scaffoldState = appState.scaffoldState,
+        snackbarHost = CustomSnackBarHost,
         bottomBar = {
             HomeBottomBarScreen(
                 selectedItem = selectedItem,

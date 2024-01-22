@@ -1,29 +1,29 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main
 
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Stable
 class ApplicationState(
     val navController: NavHostController,
     val systemUiController: SystemUiController,
-    val snackBarMessage: MutableState<String>
-){
-    fun getSnackBarMessage() = snackBarMessage.value
-
-    fun resetSnackBarMessage(){
-        snackBarMessage.value = ""
-    }
-
-    fun setSnackBarMessage(message: String){
-        snackBarMessage.value = message
+    val scaffoldState: ScaffoldState,
+    val coroutineScope: CoroutineScope
+) {
+    fun showSnackBar(message: String) {
+        coroutineScope.launch {
+            scaffoldState.snackbarHostState.showSnackbar(message)
+        }
     }
 }
 
@@ -31,14 +31,18 @@ class ApplicationState(
 fun rememberApplicationState(
     navController: NavHostController = rememberNavController(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    snackBarMessage: MutableState<String> = remember{ mutableStateOf("") }
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) = remember(
     navController,
-    systemUiController
+    systemUiController,
+    scaffoldState,
+    coroutineScope
 ) {
     ApplicationState(
         navController = navController,
         systemUiController = systemUiController,
-        snackBarMessage = snackBarMessage
+        scaffoldState = scaffoldState,
+        coroutineScope = coroutineScope
     )
 }

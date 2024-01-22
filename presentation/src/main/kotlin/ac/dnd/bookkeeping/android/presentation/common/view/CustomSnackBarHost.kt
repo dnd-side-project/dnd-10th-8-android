@@ -2,49 +2,22 @@ package ac.dnd.bookkeeping.android.presentation.common.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-@Composable
-fun SnackBarScreen(
-    message: String,
-    dismiss: () -> Unit
-) {
-    val scope = rememberCoroutineScope()
-    val snackBarState = remember { SnackbarHostState() }
-    LaunchedEffect(Unit) {
-        scope.launch {
-            snackBarState.showSnackbar(
-                message = message,
-                actionLabel = "Action",
-                duration = SnackbarDuration.Short
-            )
-            delay(1000L)
-            dismiss()
-        }
-    }
-
-    Box(modifier = Modifier.fillMaxSize()) {
+val CustomSnackBarHost: @Composable (SnackbarHostState) -> Unit =
+    { snackBarHostState: SnackbarHostState ->
         SnackbarHost(
-            hostState = snackBarState,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            hostState = snackBarHostState,
         ) { snackBarData ->
             Box(
                 modifier = Modifier
@@ -64,4 +37,3 @@ fun SnackBarScreen(
             }
         }
     }
-}

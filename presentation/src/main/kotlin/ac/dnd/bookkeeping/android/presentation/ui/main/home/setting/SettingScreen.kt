@@ -49,7 +49,7 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    appState.setSnackBarMessage("setting snack bar")
+                    appState.showSnackBar("setting snack bar")
                 }
         )
         Text(
