@@ -8,8 +8,9 @@ import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import javax.inject.Inject
 
-class BookkeepingApi(
+class BookkeepingApi @Inject constructor(
     @AuthHttpClient private val client: HttpClient,
     private val baseUrlProvider: BaseUrlProvider,
     private val errorMessageMapper: ErrorMessageMapper

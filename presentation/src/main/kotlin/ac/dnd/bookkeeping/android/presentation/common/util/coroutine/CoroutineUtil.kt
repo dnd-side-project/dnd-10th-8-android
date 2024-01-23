@@ -1,15 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.common.util.coroutine
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
 
 // TODO : 고도화하기
 suspend fun <T1, T2> zip(
@@ -21,14 +14,5 @@ suspend fun <T1, T2> zip(
 
     return@withContext runCatching {
         deferred1.await().getOrThrow() to deferred2.await().getOrThrow()
-    }
-}
-
-fun LifecycleOwner.repeatOnStarted(
-    context: CoroutineContext,
-    block: suspend CoroutineScope.() -> Unit
-) {
-    this.lifecycleScope.launch(context) {
-        repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
 }

@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping
 
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,11 @@ fun BookkeepingScreen(
     appState: ApplicationState,
     viewModel: BookkeepingViewModel = hiltViewModel()
 ) {
+    Observer(
+        appState = appState,
+        viewModel = viewModel
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -29,4 +35,12 @@ fun BookkeepingScreen(
             color = Color.Black
         )
     }
+}
+
+@Composable
+private fun Observer(
+    appState: ApplicationState,
+    viewModel: BookkeepingViewModel
+) {
+    ErrorObserver(viewModel)
 }

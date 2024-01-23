@@ -12,22 +12,19 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
-import io.sentry.Sentry
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel()
+) {
     BookkeepingTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            val appState = rememberApplicationState(
-                coroutineExceptionHandler = { _, throwable ->
-                    Sentry.captureException(throwable)
-                    // TODO : Dialog Screen
-                }
-            )
+            val appState = rememberApplicationState()
             ManageSystemUiState(appState = appState)
 
             NavHost(

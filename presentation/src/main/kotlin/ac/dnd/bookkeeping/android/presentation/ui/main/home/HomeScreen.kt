@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping.BookkeepingScreen
@@ -29,6 +30,11 @@ fun HomeScreen(
     appState: ApplicationState,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    Observer(
+        appState = appState,
+        viewModel = viewModel
+    )
+
     val scaffoldState = rememberScaffoldState()
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     var snackBarIsShowingState by remember { mutableStateOf(false) }
@@ -88,4 +94,12 @@ fun HomeScreen(
                 }
         }
     }
+}
+
+@Composable
+private fun Observer(
+    appState: ApplicationState,
+    viewModel: HomeViewModel
+) {
+    ErrorObserver(viewModel)
 }
