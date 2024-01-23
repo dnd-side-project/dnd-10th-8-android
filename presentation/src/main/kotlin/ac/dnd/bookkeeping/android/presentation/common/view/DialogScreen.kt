@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
+// 수정했음!!!
 @Composable
 fun DialogScreen(
     dialogIsShowingState: MutableState<Boolean>,
