@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 
+import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
@@ -12,11 +13,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +36,7 @@ fun SettingScreen(
         viewModel = viewModel
     )
 
-    val dialogIsShowingState = remember { mutableStateOf(false) }
+    var isDialogShowing by remember { mutableStateOf(false) }
     val bottomSheetIsShowingState = remember { mutableStateOf(false) }
 
     Column(
@@ -65,7 +69,7 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    dialogIsShowingState.value = true
+                    isDialogShowing = true
                 }
         )
         Text(
@@ -80,7 +84,11 @@ fun SettingScreen(
         )
     }
     BottomSheetScreen(bottomSheetIsShowingState = bottomSheetIsShowingState)
-    DialogScreen(dialogIsShowingState = dialogIsShowingState)
+    DialogScreen(
+        isShowing = isDialogShowing,
+        title = stringResource(R.string.setting_dialog_title),
+        onDismissRequest = { isDialogShowing = false }
+    )
 }
 
 @Composable
