@@ -53,6 +53,7 @@ compose-livedata = "1.5.4"
 compose-navi = "2.7.0"
 compose-hiltnavi = "1.1.0"
 compose-bottomsheet = "1.3.1"
+compose-lifecycle = "2.7.0"
 
 [libraries]
 # Kotlin
@@ -109,6 +110,7 @@ compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", versio
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewmodel" }
 compose-navi = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navi" }
 compose-hiltnavi = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hiltnavi" }
+compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
 
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-compose" }
@@ -132,7 +134,8 @@ kotlin = ["kotlin", "kotlinx-coroutines-android", "kotlinx-coroutines-core", "ko
 androidx-data = ["androidx-room-runtime", "androidx-room-coroutine", "androidx-paging-runtime"]
 androidx-presentation = ["androidx-core", "androidx-appcompat", "androidx-constraintlayout", "androidx-fragment",
     "androidx-viewmodel", "androidx-livedata", "androidx-navigation-fragment", "androidx-navigation-ui",
-    "compose-ui-ui", "compose-ui-preview", "compose-material", "compose-viewmodel", "compose-hiltnavi", "compose-navi"]
+    "compose-ui-ui", "compose-ui-preview", "compose-material", "compose-viewmodel",
+    "compose-hiltnavi", "compose-navi", "compose-lifecycle"]
 network = ["ktor-core", "ktor-okhttp", "ktor-resources", "ktor-content-negotiation", "ktor-kotlinx-serialization",
     "ktor-auth", "kotlinx-serialization"]
 logging = ["timber", "sentry"]
