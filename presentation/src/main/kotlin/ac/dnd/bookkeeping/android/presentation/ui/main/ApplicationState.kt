@@ -7,28 +7,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlin.coroutines.CoroutineContext
 
 @Stable
 class ApplicationState(
     val navController: NavHostController,
-    val systemUiController: SystemUiController,
-    val coroutineExceptionHandler: (CoroutineContext, Throwable) -> Unit
+    val systemUiController: SystemUiController
 )
 
 @Composable
 fun rememberApplicationState(
     navController: NavHostController = rememberNavController(),
-    systemUiController: SystemUiController = rememberSystemUiController(),
-    coroutineExceptionHandler: (CoroutineContext, Throwable) -> Unit = { _, _ -> }
+    systemUiController: SystemUiController = rememberSystemUiController()
 ) = remember(
     navController,
-    systemUiController,
-    coroutineExceptionHandler
+    systemUiController
 ) {
     ApplicationState(
         navController = navController,
-        systemUiController = systemUiController,
-        coroutineExceptionHandler = coroutineExceptionHandler
+        systemUiController = systemUiController
     )
 }

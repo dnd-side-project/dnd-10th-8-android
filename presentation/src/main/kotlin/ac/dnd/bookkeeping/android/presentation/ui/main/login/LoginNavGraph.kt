@@ -19,7 +19,7 @@ fun NavGraphBuilder.loginNavGraph(
             route = LoginConstant.ROUTE_STEP_1
         ) {
             val backStackEntry = remember(it) {
-                appState.navController.getBackStackEntry(LoginConstant.ROUTE)
+                appState.navController.getBackStackEntry(LoginConstant.ROUTE_STEP_1)
             }
             val loginViewModel: LoginViewModel = hiltViewModel(backStackEntry)
             LoginScreen(appState = appState, viewModel = loginViewModel)

@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
@@ -26,6 +27,10 @@ fun SettingScreen(
     onShowSnackBar: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
+    Observer(
+        appState = appState,
+        viewModel = viewModel
+    )
 
     val dialogIsShowingState = remember { mutableStateOf(false) }
     val bottomSheetIsShowingState = remember { mutableStateOf(false) }
@@ -76,4 +81,12 @@ fun SettingScreen(
     }
     BottomSheetScreen(bottomSheetIsShowingState = bottomSheetIsShowingState)
     DialogScreen(dialogIsShowingState = dialogIsShowingState)
+}
+
+@Composable
+private fun Observer(
+    appState: ApplicationState,
+    viewModel: SettingViewModel
+) {
+    ErrorObserver(viewModel)
 }

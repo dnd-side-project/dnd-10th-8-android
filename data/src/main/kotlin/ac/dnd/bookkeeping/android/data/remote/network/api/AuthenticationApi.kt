@@ -9,8 +9,9 @@ import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import javax.inject.Inject
 
-class AuthenticationApi(
+class AuthenticationApi @Inject constructor(
     @NoAuthHttpClient private val client: HttpClient,
     private val baseUrlProvider: BaseUrlProvider,
     private val errorMessageMapper: ErrorMessageMapper
