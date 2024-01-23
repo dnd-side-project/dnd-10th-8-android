@@ -1,7 +1,11 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.login
+package ac.dnd.bookkeeping.android.presentation.ui.main.login.main
 
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,8 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,20 +24,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun OnBoardScreen(
+fun LoginMainScreen(
     appState: ApplicationState,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginMainViewModel = hiltViewModel()
 ) {
-    val nextStageState = remember { mutableStateOf(false) }
-    if (nextStageState.value) {
+    Observer(
+        appState = appState,
+        viewModel = viewModel
+    )
+
+    Screen(
+        appState = appState,
+        viewModel = viewModel
+    )
+}
+
+@Composable
+private fun Screen(
+    appState: ApplicationState,
+    viewModel: LoginMainViewModel
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    fun navigateToLogin() {
         appState.navController.navigate(HomeConstant.ROUTE) {
-            popUpTo(LoginConstant.ROUTE_STEP_2) {
+            popUpTo(LoginConstant.ROUTE) {
                 inclusive = true
             }
         }
-        nextStageState.value = false
     }
 
     Box(
@@ -55,7 +75,7 @@ fun OnBoardScreen(
                 .padding(30.dp)
                 .fillMaxWidth()
                 .clickable {
-                    nextStageState.value = true
+                    navigateToLogin()
                 },
             shape = RoundedCornerShape(10.dp),
             color = Color.White
@@ -67,6 +87,38 @@ fun OnBoardScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(5.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun Observer(
+    appState: ApplicationState,
+    viewModel: LoginMainViewModel
+) {
+    ErrorObserver(viewModel)
+
+    fun login(event: LoginMainEvent.Login) {
+        when (event) {
+            LoginMainEvent.Login.Success -> {
+                // TODO : Implement Success Case
+            }
+
+            is LoginMainEvent.Login.Error -> {
+                // TODO : Implement Request Error Case
+            }
+
+            is LoginMainEvent.Login.Failure -> {
+                // TODO : Implement Internal Server Error Case
+            }
+        }
+    }
+
+    LaunchedEffectWithLifecycle(viewModel.event, viewModel.handler) {
+        viewModel.event.eventObserve { event ->
+            when (event) {
+                is LoginMainEvent.Login -> login(event)
+            }
         }
     }
 }
