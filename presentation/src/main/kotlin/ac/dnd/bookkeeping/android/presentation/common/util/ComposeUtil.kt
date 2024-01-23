@@ -1,13 +1,17 @@
 package ac.dnd.bookkeeping.android.presentation.common.util
 
+import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,15 +26,22 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun ErrorObserver(
     viewModel: BaseViewModel
 ) {
-    val dialogIsShowingState = remember { mutableStateOf(false) }
-    DialogScreen(dialogIsShowingState)
+    var isDialogShowing by remember { mutableStateOf(false) }
+
+    DialogScreen(
+        isShowing = isDialogShowing,
+        title = stringResource(id = R.string.error_dialog_title),
+        onDismissRequest = {
+            isDialogShowing = false
+        }
+    )
 
     LaunchedEffectWithLifecycle(viewModel.errorEvent) {
         viewModel.errorEvent.eventObserve { event ->
             Timber.d(event.throwable)
             Sentry.captureException(event.throwable)
 
-            dialogIsShowingState.value = true
+            isDialogShowing = true
         }
     }
 }
