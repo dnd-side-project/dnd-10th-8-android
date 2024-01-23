@@ -21,4 +21,12 @@ class LoginMainViewModel @Inject constructor(
 
     private val _event: MutableEventFlow<LoginMainEvent> = MutableEventFlow()
     val event: EventFlow<LoginMainEvent> = _event.asEventFlow()
+
+    fun onIntent(intent: LoginMainIntent) {
+        when (intent) {
+            LoginMainIntent.Click -> {
+
+            }
+        }
+    }
 }

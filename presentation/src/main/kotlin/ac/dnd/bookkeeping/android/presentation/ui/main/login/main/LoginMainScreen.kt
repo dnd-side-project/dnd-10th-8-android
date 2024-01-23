@@ -1,11 +1,13 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.main
 
-import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,43 +18,43 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun LoginMainScreen(
     appState: ApplicationState,
-    viewModel: LoginMainViewModel = hiltViewModel()
+    model: LoginMainModel,
+    event: EventFlow<LoginMainEvent>,
+    intent: (LoginMainIntent) -> Unit,
+    handler: CoroutineExceptionHandler
 ) {
-    Observer(
-        appState = appState,
-        viewModel = viewModel
-    )
-
-    Screen(
-        appState = appState,
-        viewModel = viewModel
-    )
-}
-
-@Composable
-private fun Screen(
-    appState: ApplicationState,
-    viewModel: LoginMainViewModel
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     fun navigateToLogin() {
         appState.navController.navigate(HomeConstant.ROUTE) {
             popUpTo(LoginConstant.ROUTE) {
                 inclusive = true
+            }
+        }
+    }
+
+    fun login(event: LoginMainEvent.Login) {
+        when (event) {
+            LoginMainEvent.Login.Success -> {
+                // TODO : Implement Success Case
+            }
+
+            is LoginMainEvent.Login.Error -> {
+                // TODO : Implement Request Error Case
+            }
+
+            is LoginMainEvent.Login.Failure -> {
+                // TODO : Implement Internal Server Error Case
             }
         }
     }
@@ -89,36 +91,26 @@ private fun Screen(
             )
         }
     }
-}
 
-@Composable
-private fun Observer(
-    appState: ApplicationState,
-    viewModel: LoginMainViewModel
-) {
-    ErrorObserver(viewModel)
-
-    fun login(event: LoginMainEvent.Login) {
-        when (event) {
-            LoginMainEvent.Login.Success -> {
-                // TODO : Implement Success Case
-            }
-
-            is LoginMainEvent.Login.Error -> {
-                // TODO : Implement Request Error Case
-            }
-
-            is LoginMainEvent.Login.Failure -> {
-                // TODO : Implement Internal Server Error Case
-            }
-        }
-    }
-
-    LaunchedEffectWithLifecycle(viewModel.event, viewModel.handler) {
-        viewModel.event.eventObserve { event ->
+    LaunchedEffectWithLifecycle(event, handler) {
+        event.eventObserve { event ->
             when (event) {
                 is LoginMainEvent.Login -> login(event)
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun LoginMainScreenPreview() {
+    LoginMainScreen(
+        appState = rememberApplicationState(),
+        model = LoginMainModel(
+            state = LoginMainState.Init
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
 }
