@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main
 
 import ac.dnd.bookkeeping.android.presentation.common.util.parseRoute
-import ac.dnd.bookkeeping.android.presentation.ui.main.splash.SplashConstant
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -15,15 +14,9 @@ fun ManageSystemUiState(
         parseRoute(it).first
     }.orEmpty()
 
-    when {
-        route.startsWith(SplashConstant.ROUTE) -> {
-            appState.systemUiController.isStatusBarVisible = false
-            appState.systemUiController.isNavigationBarVisible = false
-        }
-
+    when (route) {
         else -> {
-            appState.systemUiController.isStatusBarVisible = false
-            appState.systemUiController.isNavigationBarVisible = true
+            appState.systemUiController.isStatusBarVisible = true
         }
     }
 }
