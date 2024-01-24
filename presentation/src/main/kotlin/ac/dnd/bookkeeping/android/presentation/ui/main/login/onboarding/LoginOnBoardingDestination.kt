@@ -4,9 +4,9 @@ import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 fun NavGraphBuilder.loginOnBoardingDestination(
     appState: ApplicationState
