@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">장부 관리 앱</string>
+    <string name="kakao_app_key">4a21c9a851ed14755f635bb2ec5ddc75</string>
+    <string name="kakao_oauth_key">kakao4a21c9a851ed14755f635bb2ec5ddc75</string>
 </resources>
