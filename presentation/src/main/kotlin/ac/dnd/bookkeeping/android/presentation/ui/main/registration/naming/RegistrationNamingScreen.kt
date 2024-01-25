@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting.RegistrationCollectingConstant
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -67,12 +68,7 @@ fun RegistrationNamingScreen(
         event.collectLatest { event ->
             when (event.value) {
                 is RegistrationNamingEvent.OnClickSubmit -> {
-                    //fix 필요
-                    appState.navController.navigate(RegistrationNamingConstant.ROUTE) {
-                        popUpTo(RegistrationNamingConstant.ROUTE) {
-                            inclusive = true
-                        }
-                    }
+                    appState.navController.navigate(RegistrationCollectingConstant.ROUTE)
                 }
             }
         }
