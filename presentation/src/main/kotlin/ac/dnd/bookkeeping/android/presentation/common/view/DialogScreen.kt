@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
 import ac.dnd.bookkeeping.android.presentation.R
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,10 +51,8 @@ fun DialogScreen(
             }
         ) {
             Card(
-                modifier = Modifier.background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(10.dp)
-                ),
+                backgroundColor = Color.White,
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -67,7 +62,7 @@ fun DialogScreen(
                 ) {
                     Text(
                         text = title,
-                        fontSize = 16.sp,
+                        fontSize = 24.sp,
                         color = Color.Black
                     )
 
@@ -76,8 +71,9 @@ fun DialogScreen(
 
                         Text(
                             text = message,
-                            fontSize = 12.sp,
-                            color = Color.Black
+                            fontSize = 16.sp,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center
                         )
                     }
 
@@ -85,41 +81,28 @@ fun DialogScreen(
 
                     Row(modifier = Modifier.wrapContentSize()) {
                         if (onCancel != null) {
-                            TextButton(
-                                modifier = Modifier
-                                    .weight(1f),
-                                shape = RoundedCornerShape(4.dp),
-                                colors = ButtonDefaults.textButtonColors(
-                                    backgroundColor = Color.Gray
-                                ),
+                            ConfirmButton(
+                                text = cancelMessage,
+                                isMain = false,
+                                modifier = Modifier.weight(1f),
                                 onClick = {
                                     onCancel()
                                     onDismissRequest()
-                                },
-                            ) {
-                                Text(text = cancelMessage)
-                            }
+                                }
+                            )
 
                             Spacer(modifier = Modifier.width(10.dp))
                         }
 
-                        TextButton(
-                            modifier = Modifier
-                                .weight(1f),
-                            shape = RoundedCornerShape(4.dp),
-                            colors = ButtonDefaults.textButtonColors(
-                                backgroundColor = Color.Gray
-                            ),
+                        ConfirmButton(
+                            text = confirmMessage,
+                            isMain = true,
+                            modifier = Modifier.weight(1f),
                             onClick = {
                                 onConfirm()
                                 onDismissRequest()
                             }
-                        ) {
-                            Text(
-                                text = confirmMessage,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        )
                     }
                 }
             }
@@ -135,7 +118,7 @@ fun DialogScreenPreview1() {
     DialogScreen(
         isShowing = isShowing,
         title = "제목",
-        message = "내용",
+        message = "내용\n여러줄 넘어가면 이렇게 됨.\n가가가가가가가가가가가가가가가가가가가가가가가",
         onCancel = {},
         onDismissRequest = {
             isShowing = false
