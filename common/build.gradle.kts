@@ -23,8 +23,6 @@ android {
 
 dependencies {
     implementation(libs.bundles.kotlin)
-    implementation(libs.google.material)
-    implementation(libs.glide)
 
     implementation(libs.bundles.logging)
 }

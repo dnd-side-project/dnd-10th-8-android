@@ -7,7 +7,6 @@ plugins {
     kotlin("plugin.parcelize")
     kotlin("android")
     kotlin("kapt")
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -46,7 +45,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.6"
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
@@ -57,28 +56,19 @@ dependencies {
     implementation(libs.bundles.kotlin)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.compose)
 
     implementation(libs.bundles.androidx.presentation)
-    implementation(libs.google.material)
-    implementation(libs.glide)
-    ksp(libs.glide.ksp)
     implementation(libs.lottie)
-    implementation(libs.shimmer)
-    implementation(libs.rds)
-
+    implementation(libs.coil.compose)
+    implementation(libs.holix.bottomsheet.compose)
+    implementation(libs.google.system.contoller)
     implementation(libs.ted.permission)
 
     implementation(libs.bundles.logging)
 
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.test)
-
-    implementation(libs.compose.bottomsheet)
-    implementation(libs.compose.coil)
-    implementation(libs.compose.livedata)
-
-    implementation(libs.google.system.contoller)
-
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
 fun getLocalProperty(propertyKey: String): String {
