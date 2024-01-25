@@ -4,7 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetAccessTokenReq(
-    @SerialName("refresh_token")
+data class LoginRes(
+    @SerialName("isNew")
+    val isNew: Boolean,
+    @SerialName("accessToken")
+    val accessToken: String,
+    @SerialName("refreshToken")
     val refreshToken: String
 )

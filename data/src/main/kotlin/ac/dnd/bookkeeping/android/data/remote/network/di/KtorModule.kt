@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.data.remote.network.di
 
+import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,7 +63,8 @@ internal object KtorModule {
         @DebugInterceptor debugInterceptor: Optional<Interceptor>,
         authenticationRepository: AuthenticationRepository
     ): HttpClient {
-        val isDebug: Boolean = (0 != context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)
+        val isDebug: Boolean =
+            (0 != context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)
 
         return HttpClient(OkHttp) {
             // default validation to throw exceptions for non-2xx responses
@@ -89,7 +90,10 @@ internal object KtorModule {
                             return@loadTokens null
                         }
 
-                        BearerTokens(accessToken, refreshToken)
+                        BearerTokens(
+                            accessToken = accessToken,
+                            refreshToken = refreshToken
+                        )
                     }
 
                     refreshTokens {
@@ -98,12 +102,13 @@ internal object KtorModule {
                             return@refreshTokens null
                         }
 
-                        authenticationRepository.getAccessToken(
+                        authenticationRepository.refreshToken(
                             refreshToken
-                        ).getOrNull()?.let { accessToken ->
-                            authenticationRepository.accessToken = accessToken
-
-                            BearerTokens(accessToken, refreshToken)
+                        ).getOrNull()?.let { token ->
+                            BearerTokens(
+                                accessToken = token.accessToken,
+                                refreshToken = token.refreshToken
+                            )
                         }
                     }
                 }

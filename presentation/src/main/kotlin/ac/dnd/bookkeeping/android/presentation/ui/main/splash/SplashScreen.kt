@@ -84,12 +84,12 @@ private fun Observer(
                 navigateToHome()
             }
 
-            is SplashEvent.Login.Error -> {
+            is SplashEvent.Login.Failure -> {
                 navigateToLogin()
             }
 
-            is SplashEvent.Login.Failure -> {
-                // TODO : Dialog Screen
+            is SplashEvent.Login.Error -> {
+                // TODO : Unknown Error (Client Error, Internal Server Error, ...)
             }
         }
     }
