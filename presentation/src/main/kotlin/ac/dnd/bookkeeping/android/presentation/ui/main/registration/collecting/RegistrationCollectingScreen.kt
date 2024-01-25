@@ -3,8 +3,8 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegistrationCollectingScreen(
@@ -52,7 +51,7 @@ fun RegistrationCollectingScreen(
                 .padding(30.dp)
                 .fillMaxWidth()
                 .clickable {
-                    intent(RegistrationCollectingIntent.SubmitUserInput)
+                    intent(RegistrationCollectingIntent.OnClickSubmit)
                 },
             shape = RoundedCornerShape(10.dp),
             color = Color.White
@@ -68,15 +67,9 @@ fun RegistrationCollectingScreen(
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
-        event.collectLatest { event ->
-            when (event.value) {
-                is RegistrationCollectingEvent.OnClickSubmit -> {
-                    appState.navController.navigate(HomeConstant.ROUTE) {
-                        popUpTo(RegistrationCollectingConstant.ROUTE) {
-                            inclusive = true
-                        }
-                    }
-                }
+        event.eventObserve { event ->
+            when (event) {
+                is RegistrationCollectingEvent.GoToNextStep -> {}
             }
         }
     }

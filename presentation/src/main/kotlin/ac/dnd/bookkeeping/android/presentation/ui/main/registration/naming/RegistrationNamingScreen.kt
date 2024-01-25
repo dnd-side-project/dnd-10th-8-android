@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting.RegistrationCollectingConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
@@ -24,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegistrationNamingScreen(
@@ -52,7 +52,7 @@ fun RegistrationNamingScreen(
                 .padding(30.dp)
                 .fillMaxWidth()
                 .clickable {
-                    intent(RegistrationNamingIntent.SubmitUserInput)
+                    intent(RegistrationNamingIntent.OnClickSubmit)
                 },
             shape = RoundedCornerShape(10.dp),
             color = Color.White
@@ -68,9 +68,9 @@ fun RegistrationNamingScreen(
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
-        event.collectLatest { event ->
-            when (event.value) {
-                is RegistrationNamingEvent.OnClickSubmit -> {
+        event.eventObserve { event ->
+            when (event) {
+                is RegistrationNamingEvent.GoToNextStep -> {
                     appState.navController.navigate(RegistrationCollectingConstant.ROUTE)
                 }
             }

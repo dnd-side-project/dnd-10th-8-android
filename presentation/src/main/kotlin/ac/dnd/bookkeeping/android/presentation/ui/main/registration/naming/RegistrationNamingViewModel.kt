@@ -5,12 +5,10 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,11 +25,14 @@ class RegistrationNamingViewModel @Inject constructor(
 
     fun onIntent(intent: RegistrationNamingIntent) {
         when (intent) {
-            RegistrationNamingIntent.SubmitUserInput -> {
-                viewModelScope.launch {
-                    _event.emit(RegistrationNamingEvent.OnClickSubmit)
-                }
-            }
+            RegistrationNamingIntent.OnClickSubmit -> goToNextStep()
+
+        }
+    }
+
+    private fun goToNextStep() {
+        launch {
+            _event.emit(RegistrationNamingEvent.GoToNextStep)
         }
     }
 }
