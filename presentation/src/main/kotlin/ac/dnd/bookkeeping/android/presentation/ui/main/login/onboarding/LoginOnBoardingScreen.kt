@@ -3,8 +3,10 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.main.LoginMainConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginOnBoardingScreen(
@@ -35,21 +36,11 @@ fun LoginOnBoardingScreen(
     handler: CoroutineExceptionHandler
 ) {
 
-
-    fun loading(event: LoginOnBoardingEvent.Loading) {
-        when (event) {
-            LoginOnBoardingEvent.Loading.Success -> {
-                // TODO: loading success
+    fun navigateToHome() {
+        appState.navController.navigate(HomeConstant.ROUTE) {
+            popUpTo(LoginConstant.ROUTE) {
+                inclusive = true
             }
-
-            is LoginOnBoardingEvent.Loading.Error -> {
-                // TODO : Implement Request Error Case
-            }
-
-            is LoginOnBoardingEvent.Loading.Failure -> {
-                // TODO : Implement Internal Server Error Case
-            }
-
         }
     }
 
@@ -71,7 +62,7 @@ fun LoginOnBoardingScreen(
                 .padding(30.dp)
                 .fillMaxWidth()
                 .clickable {
-                    intent(LoginOnBoardingIntent.GoToNextStep)
+                    intent(LoginOnBoardingIntent.OnClickNextStep)
                 },
             shape = RoundedCornerShape(10.dp),
             color = Color.White
@@ -87,16 +78,8 @@ fun LoginOnBoardingScreen(
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
-        event.collectLatest { event ->
-            when (event.value) {
-                is LoginOnBoardingEvent.OnClickNextStep -> {
-                    appState.navController.navigate(LoginMainConstant.ROUTE) {
-                        popUpTo(LoginOnBoardingConstant.ROUTE) {
-                            inclusive = true
-                        }
-                    }
-                }
-            }
+        event.eventObserve { event ->
+            if (event == LoginOnBoardingEvent.GoToNextStep) navigateToHome()
         }
     }
 }
