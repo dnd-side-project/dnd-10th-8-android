@@ -7,6 +7,9 @@
 
     <string name="error_dialog_title">앗, 에러가 발생했어요!</string>
 
+    <string name="setting_bottomsheet_title">테스트</string>
+    <string name="setting_bottomsheet_confirm">확인</string>
+
     <string name="setting_dialog_title">테스트</string>
     <string name="setting_dialog_message">테스트내용\n앗, 에러가 발생했어요!\n이렇게 됩니다.</string>
 
