@@ -4,7 +4,6 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.main.LoginMainConstant
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -70,7 +69,7 @@ fun RegistrationNamingScreen(
             when (event.value) {
                 is RegistrationCollectingEvent.OnClickSubmit -> {
                     appState.navController.navigate(HomeConstant.ROUTE) {
-                        popUpTo(RegistrationCollectingConstant.ROUTE){
+                        popUpTo(RegistrationCollectingConstant.ROUTE) {
                             inclusive = true
                         }
                     }
