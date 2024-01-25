@@ -9,6 +9,7 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         setContent {
             MainScreen()
+//            SampleScreen()
         }
     }
 }
