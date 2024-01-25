@@ -31,7 +31,7 @@ fun NavGraphBuilder.registrationCollectingDestination(
 
         ErrorObserver(viewModel)
 
-        RegistrationNamingScreen(
+        RegistrationCollectingScreen(
             appState = appState,
             model = model,
             event = viewModel.event,

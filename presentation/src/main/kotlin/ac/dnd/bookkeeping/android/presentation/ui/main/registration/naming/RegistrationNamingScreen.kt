@@ -2,8 +2,10 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming
 
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting.RegistrationCollectingConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -73,4 +76,18 @@ fun RegistrationNamingScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun RegistrationNamingScreenPreview() {
+    RegistrationNamingScreen(
+        appState = rememberApplicationState(),
+        model = RegistrationNamingModel(
+            state = RegistrationNamingState.Init
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
 }

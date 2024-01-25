@@ -2,8 +2,10 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting
 
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,13 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun RegistrationNamingScreen(
+fun RegistrationCollectingScreen(
     appState: ApplicationState,
     model: RegistrationCollectingModel,
     event: EventFlow<RegistrationCollectingEvent>,
@@ -77,4 +80,18 @@ fun RegistrationNamingScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun RegistrationCollectingScreenPreview() {
+    RegistrationCollectingScreen(
+        appState = rememberApplicationState(),
+        model = RegistrationCollectingModel(
+            state = RegistrationCollectingState.Init
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
 }
