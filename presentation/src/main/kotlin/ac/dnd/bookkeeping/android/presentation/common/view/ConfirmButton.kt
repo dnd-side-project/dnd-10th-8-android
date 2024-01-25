@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 fun ConfirmButton(
     text: String,
     isMain: Boolean,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isEnabled: Boolean = true,
     onClick: () -> Unit = {}
