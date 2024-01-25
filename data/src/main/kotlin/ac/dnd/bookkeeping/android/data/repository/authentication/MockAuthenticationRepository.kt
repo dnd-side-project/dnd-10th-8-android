@@ -1,6 +1,8 @@
 package ac.dnd.bookkeeping.android.data.repository.authentication
 
 import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
+import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
+import ac.dnd.bookkeeping.android.domain.model.authentication.Login
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -17,11 +19,37 @@ class MockAuthenticationRepository @Inject constructor(
         set(value) = sharedPreferencesManager.setString(ACCESS_TOKEN, value)
         get() = sharedPreferencesManager.getString(ACCESS_TOKEN, "")
 
-    override suspend fun getAccessToken(
+    override suspend fun refreshToken(
         refreshToken: String
-    ): Result<String> {
+    ): Result<JwtToken> {
         randomShortDelay()
-        return Result.success("refresh_token")
+        return Result.success(
+            JwtToken(
+                accessToken = "mock_access_token",
+                refreshToken = "mock_refresh_token"
+            )
+        )
+    }
+
+    override suspend fun login(
+        socialId: String,
+        email: String,
+        profileImageUrl: String
+    ): Result<Login> {
+        randomShortDelay()
+        return Result.success(
+            Login(isNew = true)
+        )
+    }
+
+    override suspend fun logout(): Result<Unit> {
+        randomShortDelay()
+        return Result.success(Unit)
+    }
+
+    override suspend fun withdraw(): Result<Unit> {
+        randomLongDelay()
+        return Result.success(Unit)
     }
 
     private suspend fun randomShortDelay() {
