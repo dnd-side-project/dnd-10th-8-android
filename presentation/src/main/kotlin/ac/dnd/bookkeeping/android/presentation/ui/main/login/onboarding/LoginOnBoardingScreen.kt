@@ -79,7 +79,14 @@ fun LoginOnBoardingScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            if (event == LoginOnBoardingEvent.GoToNextStep) navigateToHome()
+            when (event){
+                is LoginOnBoardingEvent.GoToNextStep ->{
+
+                }
+                else -> {
+
+                }
+            }
         }
     }
 }
