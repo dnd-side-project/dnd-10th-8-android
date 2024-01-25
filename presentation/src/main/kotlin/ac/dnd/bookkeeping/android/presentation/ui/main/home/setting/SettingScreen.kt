@@ -87,6 +87,8 @@ fun SettingScreen(
     DialogScreen(
         isShowing = isDialogShowing,
         title = stringResource(R.string.setting_dialog_title),
+        message = stringResource(R.string.setting_dialog_message),
+        onCancel = {},
         onDismissRequest = { isDialogShowing = false }
     )
 }
