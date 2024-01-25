@@ -3,13 +3,17 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +41,7 @@ fun SettingScreen(
     )
 
     var isDialogShowing by remember { mutableStateOf(false) }
-    val bottomSheetIsShowingState = remember { mutableStateOf(false) }
+    var isBottomSheetShowing by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -79,11 +83,43 @@ fun SettingScreen(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    bottomSheetIsShowingState.value = true
+                    isBottomSheetShowing = true
                 }
         )
     }
-    BottomSheetScreen(bottomSheetIsShowingState = bottomSheetIsShowingState)
+
+    if (isBottomSheetShowing) {
+        BottomSheetScreen(
+            onDismissRequest = { isBottomSheetShowing = false },
+        ) {
+            Column(
+                modifier = Modifier.padding(
+                    top = 25.dp,
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 20.dp
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.setting_bottomsheet_title),
+                    color = Color.Black,
+                    fontSize = 24.sp
+                )
+
+                Spacer(modifier = Modifier.height(60.dp))
+
+                ConfirmButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.setting_bottomsheet_confirm),
+                    isMain = true,
+                    onClick = {
+                        isBottomSheetShowing = false
+                    }
+                )
+            }
+        }
+    }
     DialogScreen(
         isShowing = isDialogShowing,
         title = stringResource(R.string.setting_dialog_title),
