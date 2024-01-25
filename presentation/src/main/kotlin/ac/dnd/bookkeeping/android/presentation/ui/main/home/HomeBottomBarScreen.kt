@@ -33,7 +33,7 @@ fun HomeBottomBarScreen(
                 selected = index == selectedItem,
                 icon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.bottom_sample),
+                        painter = painterResource(id = R.drawable.ic_account),
                         contentDescription = "bottom icon"
                     )
                 },
