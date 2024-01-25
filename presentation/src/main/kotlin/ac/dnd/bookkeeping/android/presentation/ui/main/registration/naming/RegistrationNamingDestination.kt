@@ -17,7 +17,7 @@ fun NavGraphBuilder.registrationNamingDestination(
     composable(
         route = RegistrationNamingConstant.ROUTE
     ) { backStackEntry ->
-        val parentEntry = remember(backStackEntry){
+        val parentEntry = remember(backStackEntry) {
             appState.navController.getBackStackEntry(RegistrationConstant.ROUTE)
         }
         val parentViewModel: RegistrationViewModel = hiltViewModel(parentEntry)
