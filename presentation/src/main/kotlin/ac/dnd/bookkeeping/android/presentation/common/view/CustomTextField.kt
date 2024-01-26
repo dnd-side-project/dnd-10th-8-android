@@ -89,3 +89,55 @@ fun CustomTextField(
         }
     }
 }
+
+@Preview()
+@Composable
+fun CustomTextFieldPreviewNormal() {
+    CustomTextField(
+        text = "custom Text",
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 10.dp)
+    )
+}
+
+@Preview()
+@Composable
+fun CustomTextFieldPreviewWithIcon() {
+    CustomTextField(
+        text = "custom Text",
+        modifier = Modifier.fillMaxSize(),
+        height = 50.dp,
+        leadingIconContent = {
+            IconButton(
+                onClick = {}
+            ) {
+                Box(
+                    modifier = Modifier.size(30.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "",
+                        tint = Color.Black
+                    )
+                }
+            }
+        },
+        trailingIconContent = {
+            IconButton(
+                onClick = {}
+            ) {
+                Box(
+                    modifier = Modifier.size(30.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_close),
+                        contentDescription = "",
+                        tint = Color.Black
+                    )
+                }
+            }
+        }
+    )
+}
