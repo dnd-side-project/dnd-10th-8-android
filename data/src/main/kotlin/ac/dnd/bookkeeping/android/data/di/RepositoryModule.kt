@@ -2,10 +2,10 @@ package ac.dnd.bookkeeping.android.data.di
 
 import ac.dnd.bookkeeping.android.data.repository.bookkeeping.MockBookkeepingRepository
 import ac.dnd.bookkeeping.android.data.repository.authentication.MockAuthenticationRepository
-import ac.dnd.bookkeeping.android.data.repository.social_login.KakaoLoginRepository
+import ac.dnd.bookkeeping.android.data.repository.sociallogin.KakaoLoginRepository
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import ac.dnd.bookkeeping.android.domain.repository.BookkeepingRepository
-import ac.dnd.bookkeeping.android.domain.repository.social_login.SocialLoginRepository
+import ac.dnd.bookkeeping.android.domain.repository.sociallogin.SocialLoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

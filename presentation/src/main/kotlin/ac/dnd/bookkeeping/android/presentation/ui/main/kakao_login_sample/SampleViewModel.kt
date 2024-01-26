@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.kakao_login_sample
 
-import ac.dnd.bookkeeping.android.domain.repository.social_login.SocialLoginRepository
+import ac.dnd.bookkeeping.android.domain.usecase.authentication.sociallogin.SocialLoginUseCases
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,11 +10,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SampleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val socialLoginRepository: SocialLoginRepository
+    private val socialLoginUseCases: SocialLoginUseCases
 ) : BaseViewModel() {
 
     fun login() = launch {
-        socialLoginRepository.login()
+        socialLoginUseCases.kakaoLoginUseCase.invoke()
             .onSuccess {
                 getUserInfo()
                 Timber.d("user token(for check login state): $it")
@@ -25,7 +25,7 @@ class SampleViewModel @Inject constructor(
     }
 
     private fun getUserInfo() = launch {
-        socialLoginRepository.getUserInfo()
+        socialLoginUseCases.getUserInfoUseCase.invoke()
             .onSuccess {
 
                 Timber.d("user email: ${it.email}")
