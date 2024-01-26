@@ -8,6 +8,6 @@ import dagger.hilt.android.HiltAndroidApp
 open class BookkeepingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        KakaoSdk.init(this, getString(R.string.kakao_app_key))
+        KakaoSdk.init(this, BuildConfig.KAKAO_APP_KEY)
     }
 }
