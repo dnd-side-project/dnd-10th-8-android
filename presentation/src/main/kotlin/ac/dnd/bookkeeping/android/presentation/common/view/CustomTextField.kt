@@ -2,15 +2,16 @@ package ac.dnd.bookkeeping.android.presentation.common.view
 
 import ac.dnd.bookkeeping.android.presentation.R
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -43,8 +45,10 @@ fun CustomTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     height: Dp = 40.dp,
     elevation: Dp = 3.dp,
-    contentPadding: PaddingValues = PaddingValues(all = 0.dp),
+    contentOuterPadding: PaddingValues = PaddingValues(all = 0.dp),
+    contentInnerPadding: PaddingValues = PaddingValues(all = 0.dp),
     textStyle: TextStyle = TextStyle(fontSize = 12.sp, color = Color.Black),
+    keyboardType: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     cursorBrush: SolidColor = SolidColor(value = Color.Black),
     cornerShape: Shape = RoundedCornerShape(size = 8.dp),
     cornerBorder: BorderStroke = BorderStroke(width = 1.dp, color = Color.Black),
@@ -60,6 +64,7 @@ fun CustomTextField(
         border = cornerBorder,
         color = backgroundColor,
         modifier = Modifier
+            .padding(contentOuterPadding)
             .height(height)
             .shadow(elevation = elevation, shape = cornerShape)
     ) {
@@ -70,7 +75,8 @@ fun CustomTextField(
             },
             enabled = isEnabled,
             textStyle = textStyle,
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
+            keyboardOptions = keyboardType,
             cursorBrush = cursorBrush,
             interactionSource = interactionSource,
         ) { textField ->
@@ -84,7 +90,7 @@ fun CustomTextField(
                 placeholder = { hintTextContent() },
                 leadingIcon = leadingIconContent,
                 trailingIcon = trailingIconContent,
-                contentPadding = contentPadding
+                contentPadding = contentInnerPadding
             )
         }
     }
@@ -96,7 +102,7 @@ fun CustomTextFieldPreviewNormal() {
     CustomTextField(
         text = "custom Text",
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 10.dp)
+        contentInnerPadding = PaddingValues(horizontal = 10.dp)
     )
 }
 
