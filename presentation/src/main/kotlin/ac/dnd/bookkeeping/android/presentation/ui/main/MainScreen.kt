@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.BookkeepingTheme
 import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.homeDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.loginNavGraph
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.registrationNavGraph
 import ac.dnd.bookkeeping.android.presentation.ui.main.splash.SplashConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.splash.splashDestination
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ fun MainScreen(
             )
         ) {
             loginNavGraph(appState = appState)
+            registrationNavGraph(appState = appState)
             homeDestination(appState = appState)
             splashDestination(appState = appState)
         }
