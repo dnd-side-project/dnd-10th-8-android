@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.domain.model.social_login
+package ac.dnd.bookkeeping.android.domain.model.sociallogin
 
 class UserModel(
     val socialId: Long,

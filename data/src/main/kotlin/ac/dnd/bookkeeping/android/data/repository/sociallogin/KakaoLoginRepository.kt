@@ -1,7 +1,7 @@
-package ac.dnd.bookkeeping.android.data.repository.social_login
+package ac.dnd.bookkeeping.android.data.repository.sociallogin
 
-import ac.dnd.bookkeeping.android.domain.model.social_login.UserModel
-import ac.dnd.bookkeeping.android.domain.repository.social_login.SocialLoginRepository
+import ac.dnd.bookkeeping.android.domain.model.sociallogin.UserModel
+import ac.dnd.bookkeeping.android.domain.repository.sociallogin.SocialLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -18,19 +18,26 @@ class KakaoLoginRepository @Inject constructor(
 
     override suspend fun login(): Result<String> = runCatching {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            try {
-                UserApiClient.loginWithKakaoTalk()
-            } catch (error: Throwable) {
-                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                    throw error
-                } else {
-                    UserApiClient.loginWithKakaoAccount()
-                }
-            }
+            loginWithKakaoTalkFlow()
         } else {
             UserApiClient.loginWithKakaoAccount()
         }
     }
+
+    private suspend fun loginWithKakaoTalkFlow() = runCatching {
+        UserApiClient.loginWithKakaoTalk()
+    }
+        .onSuccess {
+            Result.success(it)
+        }
+        .onFailure { error ->
+            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                throw error
+            } else {
+                UserApiClient.loginWithKakaoAccount()
+            }
+        }
+        .getOrThrow()
 
     private suspend fun UserApiClient.Companion.loginWithKakaoTalk(): String =
         suspendCoroutine { continuation ->
@@ -80,20 +87,20 @@ class KakaoLoginRepository @Inject constructor(
     override suspend fun getUserInfo(): Result<UserModel> = runCatching {
         suspendCoroutine { continuation ->
             UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    continuation.resumeWithException(error)
-                } else if (user != null) {
-                    try {
-                        continuation.resume(
-                            UserModel(
-                                socialId = user.id!!,
-                                email = user.kakaoAccount!!.email!!,
-                                name = user.kakaoAccount!!.profile!!.nickname!!
-                            )
+                val userId = user?.id ?: 0L
+                val userEmail = user?.kakaoAccount?.email ?: ""
+                val userName = user?.kakaoAccount?.profile?.nickname ?: ""
+
+                if (error != null || userId == 0L || userEmail.isEmpty() || userName.isEmpty()) {
+                    continuation.resumeWithException(RuntimeException("Can't Receive User Info"))
+                } else {
+                    continuation.resume(
+                        UserModel(
+                            socialId = userId,
+                            email = userEmail,
+                            name = userName
                         )
-                    } catch (e: Exception) {
-                        continuation.resumeWithException(e)
-                    }
+                    )
                 }
             }
         }

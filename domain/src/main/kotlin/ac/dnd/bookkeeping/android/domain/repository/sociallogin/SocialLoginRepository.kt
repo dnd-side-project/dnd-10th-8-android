@@ -1,6 +1,6 @@
-package ac.dnd.bookkeeping.android.domain.repository.social_login
+package ac.dnd.bookkeeping.android.domain.repository.sociallogin
 
-import ac.dnd.bookkeeping.android.domain.model.social_login.UserModel
+import ac.dnd.bookkeeping.android.domain.model.sociallogin.UserModel
 
 interface SocialLoginRepository {
     suspend fun login(): Result<String>
