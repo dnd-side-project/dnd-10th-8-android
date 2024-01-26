@@ -4,17 +4,21 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.ConfirmButton
+import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +48,7 @@ fun SettingScreen(
 
     var isDialogShowing by remember { mutableStateOf(false) }
     var isBottomSheetShowing by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf(TextFieldValue()) }
 
     Column(
         modifier = Modifier
@@ -50,6 +57,29 @@ fun SettingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        CustomTextField(
+            text = searchText.text,
+            onTextChange = {
+                searchText = TextFieldValue(it)
+            },
+            trailingIconContent = {
+                if (searchText.text.isNotEmpty()) {
+                    IconButton(
+                        onClick = { searchText = TextFieldValue() }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            contentDescription = "bottom icon"
+                        )
+                    }
+                }
+            },
+            hintTextContent = {
+                Text(text = stringResource(R.string.input_user_name), color = Color.LightGray)
+            },
+            contentInnerPadding = PaddingValues(horizontal = 10.dp),
+            contentOuterPadding = PaddingValues(horizontal = 10.dp)
+        )
         Text(
             text = "Setting",
             fontSize = 20.sp,
