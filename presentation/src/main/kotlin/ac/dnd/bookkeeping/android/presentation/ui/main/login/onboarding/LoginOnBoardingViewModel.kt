@@ -25,11 +25,13 @@ class LoginOnBoardingViewModel @Inject constructor(
 
     fun onIntent(intent: LoginOnBoardingIntent) {
         when (intent) {
-            is LoginOnBoardingIntent.OnClickNextStep -> {
-                launch {
-                    _event.emit(LoginOnBoardingEvent.GoToNextStep)
-                }
-            }
+            LoginOnBoardingIntent.OnClickNextStep -> goToNextStep()
+        }
+    }
+
+    private fun goToNextStep(){
+        launch {
+            _event.emit(LoginOnBoardingEvent.GoToNextStep)
         }
     }
 }
