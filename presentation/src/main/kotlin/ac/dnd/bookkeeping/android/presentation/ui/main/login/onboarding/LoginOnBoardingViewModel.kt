@@ -29,7 +29,7 @@ class LoginOnBoardingViewModel @Inject constructor(
         }
     }
 
-    private fun goToNextStep(){
+    private fun goToNextStep() {
         launch {
             _event.emit(LoginOnBoardingEvent.GoToNextStep)
         }
