@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.data.repository.sociallogin
 
 import ac.dnd.bookkeeping.android.domain.model.sociallogin.UserModel
-import ac.dnd.bookkeeping.android.domain.repository.sociallogin.SocialLoginRepository
+import ac.dnd.bookkeeping.android.domain.repository.sociallogin.KakaoLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -12,9 +12,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class KakaoLoginRepository @Inject constructor(
+class KakaoLoginRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : SocialLoginRepository {
+) : KakaoLoginRepository {
 
     override suspend fun login(): Result<String> = runCatching {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {

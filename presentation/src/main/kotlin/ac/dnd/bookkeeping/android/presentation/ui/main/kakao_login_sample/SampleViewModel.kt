@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.kakao_login_sample
 
-import ac.dnd.bookkeeping.android.domain.usecase.authentication.sociallogin.GetUserInfoUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.authentication.sociallogin.KakaoLoginUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.authentication.sociallogin.GetKakaoUserInfoUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.authentication.sociallogin.LoginKakaoUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,12 +11,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SampleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val kakaoLoginUseCase: KakaoLoginUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val loginKakaoUseCase: LoginKakaoUseCase,
+    private val getKakaoUserInfoUseCase: GetKakaoUserInfoUseCase
 ) : BaseViewModel() {
 
     fun login() = launch {
-        kakaoLoginUseCase.invoke()
+        loginKakaoUseCase.invoke()
             .onSuccess {
                 getUserInfo()
                 Timber.d("user token(for check login state): $it")
@@ -27,7 +27,7 @@ class SampleViewModel @Inject constructor(
     }
 
     private fun getUserInfo() = launch {
-        getUserInfoUseCase.invoke()
+        getKakaoUserInfoUseCase.invoke()
             .onSuccess {
 
                 Timber.d("user email: ${it.email}")

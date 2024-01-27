@@ -1,11 +1,11 @@
 package ac.dnd.bookkeeping.android.data.di
 
-import ac.dnd.bookkeeping.android.data.repository.bookkeeping.MockBookkeepingRepository
 import ac.dnd.bookkeeping.android.data.repository.authentication.MockAuthenticationRepository
-import ac.dnd.bookkeeping.android.data.repository.sociallogin.KakaoLoginRepository
+import ac.dnd.bookkeeping.android.data.repository.bookkeeping.MockBookkeepingRepository
+import ac.dnd.bookkeeping.android.data.repository.sociallogin.KakaoLoginRepositoryImpl
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import ac.dnd.bookkeeping.android.domain.repository.BookkeepingRepository
-import ac.dnd.bookkeeping.android.domain.repository.sociallogin.SocialLoginRepository
+import ac.dnd.bookkeeping.android.domain.repository.sociallogin.KakaoLoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -30,6 +30,6 @@ internal abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsKakaoLoginRepository(
-        kakaoLoginRepository: KakaoLoginRepository
-    ): SocialLoginRepository
+        kakaoLoginRepositoryImpl: KakaoLoginRepositoryImpl
+    ): KakaoLoginRepository
 }
