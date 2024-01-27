@@ -117,7 +117,7 @@ fun LoginMainScreen(
 }
 
 @Composable
-private fun SampleComponent(){
+private fun SampleComponent() {
     Box(
         modifier = Modifier
             .width(115.96.dp)
