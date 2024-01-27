@@ -21,6 +21,7 @@ android {
         versionName = libs.versions.app.versionname.get()
 
         manifestPlaceholders["sentryDsnToken"] = getLocalProperty("SENTRY_DSN_TOKEN")
+        manifestPlaceholders["kakaoAppKey"] = getLocalProperty("KAKAO_APP_KEY")
     }
 
     buildTypes {
@@ -28,20 +29,26 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
+            android.buildFeatures.buildConfig =  true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String","KAKAO_APP_KEY" , getLocalProperty("KAKAO_APP_KEY"))
+            resValue ("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
         }
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
+            android.buildFeatures.buildConfig =  true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".debug"
+            buildConfigField("String","KAKAO_APP_KEY" , getLocalProperty("KAKAO_APP_KEY"))
+            resValue ("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
         }
     }
 
@@ -58,6 +65,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -116,6 +124,8 @@ dependencies {
 
     implementation(libs.bundles.logging)
     debugImplementation(libs.leakcanary)
+
+    implementation(libs.kakao.user)
 }
 
 fun getLocalProperty(propertyKey: String): String {

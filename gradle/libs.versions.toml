@@ -29,6 +29,8 @@ androidx-compose-lifecycle = "2.7.0"
 androidx-compose-compiler = "1.5.7"
 # Google
 google-system-contoller = "0.20.1"
+# Kakao
+kakao = "2.12.1"
 # Network
 ktor = "2.3.7"
 kotlinx-serialization = "1.6.1"
@@ -71,6 +73,8 @@ androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", versi
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
 # Google
 google-system-contoller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-system-contoller" }
+# Kakao
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao"}
 # Network
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
