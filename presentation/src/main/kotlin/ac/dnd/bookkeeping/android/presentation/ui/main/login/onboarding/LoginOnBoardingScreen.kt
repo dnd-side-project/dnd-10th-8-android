@@ -30,7 +30,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,7 +55,13 @@ fun LoginOnBoardingScreen(
     handler: CoroutineExceptionHandler
 ) {
 
+    var currentSelectedPage by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { 3 })
+
+
+    LaunchedEffect(currentSelectedPage) {
+        pagerState.animateScrollToPage(currentSelectedPage)
+    }
 
     fun navigateToHome() {
         appState.navController.navigate(HomeConstant.ROUTE) {
@@ -71,8 +81,7 @@ fun LoginOnBoardingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = false
+                state = pagerState
             ) { page ->
                 SampleImageComponent(page.toString())
             }
@@ -83,10 +92,10 @@ fun LoginOnBoardingScreen(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                repeat(pagerState.pageCount) { iteration ->
+                repeat(pagerState.pageCount) { iterationIndex ->
                     val color by animateColorAsState(
                         targetValue =
-                        if (pagerState.currentPage == iteration) Color.LightGray
+                        if (pagerState.currentPage == iterationIndex) Color.LightGray
                         else Color.DarkGray,
                         label = "iteration color"
                     )
@@ -94,8 +103,11 @@ fun LoginOnBoardingScreen(
                         modifier = Modifier
                             .padding(2.dp)
                             .clip(CircleShape)
+                            .clickable {
+                                currentSelectedPage = iterationIndex
+                            }
                             .background(color)
-                            .size(6.dp)
+                            .size(10.dp)
                     )
                 }
             }
@@ -128,7 +140,7 @@ fun LoginOnBoardingScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
-                is LoginOnBoardingEvent.GoToNextStep -> {}
+                is LoginOnBoardingEvent.GoToNextStep -> navigateToHome()
                 else -> {}
             }
         }
