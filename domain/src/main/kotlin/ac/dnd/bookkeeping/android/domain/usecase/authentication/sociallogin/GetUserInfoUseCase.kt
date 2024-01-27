@@ -5,7 +5,7 @@ import ac.dnd.bookkeeping.android.domain.repository.sociallogin.SocialLoginRepos
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
-    private val kakaoLoginRepository: SocialLoginRepository
+    private val socialLoginRepository: SocialLoginRepository
 ) {
-    suspend operator fun invoke(): Result<UserModel> = kakaoLoginRepository.getUserInfo()
+    suspend operator fun invoke(): Result<UserModel> = socialLoginRepository.getUserInfo()
 }
