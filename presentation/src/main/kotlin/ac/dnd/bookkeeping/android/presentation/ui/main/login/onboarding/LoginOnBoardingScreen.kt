@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.view.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
@@ -27,25 +28,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,24 +53,10 @@ fun LoginOnBoardingScreen(
     intent: (LoginOnBoardingIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-    var currentSelectedPage by rememberSaveable { mutableIntStateOf(0) }
-    val pagerState = rememberPagerState(pageCount = { 3 })
-    val buttonColorState = animateColorAsState(
-        targetValue = when (model.buttonState) {
-            is LoginOnBoardingState.Button.Default -> {
-                Color(0xFFDD55FF)
-            }
-
-            is LoginOnBoardingState.Button.Pressed -> {
-                Color(0xFFD401FE)
-            }
-        },
-        label = "pressed button color"
+    val scope = rememberCoroutineScope() + handler
+    val pagerState = rememberPagerState(
+        pageCount = { 3 }
     )
-
-    LaunchedEffect(currentSelectedPage) {
-        pagerState.animateScrollToPage(currentSelectedPage)
-    }
 
     fun navigateToHome() {
         appState.navController.navigate(HomeConstant.ROUTE) {
@@ -82,7 +65,6 @@ fun LoginOnBoardingScreen(
             }
         }
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -95,39 +77,34 @@ fun LoginOnBoardingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HorizontalPager(
-                state = pagerState
+                state = pagerState,
             ) { page ->
-                when (model.loadingState) {
-                    is LoginOnBoardingState.Loading.Progress -> {
-                        SampleImageComponent(page.toString())
-                    }
-
-                    is LoginOnBoardingState.Loading.Success -> {
-
-                    }
-
-                    is LoginOnBoardingState.Loading.Failure -> {
-
-                    }
-                }
+                LoginOnBoardingPage(page.toString())
             }
+
             Spacer(Modifier.height(29.18.dp))
+
             Row(
                 Modifier.wrapContentSize(),
                 horizontalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                repeat(pagerState.pageCount) { iterationIndex ->
+                repeat(pagerState.pageCount) { index ->
+                    val isSelected = pagerState.currentPage == index
+
                     val color by animateColorAsState(
-                        targetValue =
-                        if (pagerState.currentPage == iterationIndex) Color.DarkGray
-                        else Color.LightGray,
+                        targetValue = if (isSelected) Color.DarkGray else Color.LightGray,
                         label = "iteration color"
                     )
+
                     Box(
                         modifier = Modifier
                             .padding(2.dp)
                             .clip(CircleShape)
-                            .clickable { currentSelectedPage = iterationIndex }
+                            .clickable {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }
                             .background(color)
                             .size(8.dp)
                     )
@@ -135,41 +112,29 @@ fun LoginOnBoardingScreen(
             }
         }
 
-        Surface(
+        ConfirmButton(
+            text = stringResource(R.string.next_button_text),
+            isMain = true,
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(
-                    horizontal = 20.dp,
-                    vertical = 12.dp
-                )
                 .fillMaxWidth()
-                .clickable {
-                    intent(LoginOnBoardingIntent.OnClickNextStep)
-                },
-            shape = RoundedCornerShape(8.dp),
-            color = buttonColorState.value
+                .align(Alignment.BottomCenter)
+                .padding(25.dp),
         ) {
-            Text(
-                text = stringResource(R.string.next_button_text),
-                fontSize = 16.sp,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(14.dp)
-            )
+            navigateToHome()
         }
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when (event) {
-                is LoginOnBoardingEvent.GoToNextStep -> navigateToHome()
-            }
+
         }
     }
 }
 
 @Composable
-fun SampleImageComponent(contentIndex: String) {
+private fun LoginOnBoardingPage(
+    text: String
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -179,7 +144,7 @@ fun SampleImageComponent(contentIndex: String) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = contentIndex,
+            text = text,
             fontSize = 16.sp,
             color = Color.Black,
         )
@@ -192,8 +157,7 @@ fun LoginOnBoardingScreenPreview() {
     LoginOnBoardingScreen(
         appState = rememberApplicationState(),
         model = LoginOnBoardingModel(
-            loadingState = LoginOnBoardingState.Loading.Progress,
-            buttonState = LoginOnBoardingState.Button.Default
+            state = LoginOnBoardingState.Init
         ),
         event = MutableEventFlow(),
         intent = {},
