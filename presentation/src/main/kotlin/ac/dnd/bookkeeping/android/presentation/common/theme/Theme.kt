@@ -6,29 +6,30 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = Primary2,
+    primaryVariant = Primary4,
+    secondary = Secondary1,
+    background = Gray600,
+    surface = Gray700,
+    onPrimary = Gray800,
+    onSecondary = Gray800,
+    onBackground = Gray000,
+    onSurface = Gray000,
 )
 
-
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primary = Primary4,
+    primaryVariant = Primary1,
+    secondary = Secondary2,
+    background = Gray200,
+    surface = Gray100,
+    onPrimary = Gray000,
+    onSecondary = Gray000,
+    onBackground = Gray800,
+    onSurface = Gray800,
 )
 
 @Composable
@@ -47,8 +48,9 @@ fun BookkeepingTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
     )
 
     val systemUiController = rememberSystemUiController()
+
     SideEffect {
-        systemUiController.setSystemBarsColor(Color.White)
+        systemUiController.setSystemBarsColor(colors.background)
         systemUiController.isNavigationBarVisible = false
     }
 }
