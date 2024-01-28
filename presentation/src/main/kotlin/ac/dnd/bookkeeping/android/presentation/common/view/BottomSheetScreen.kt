@@ -74,7 +74,6 @@ fun BottomSheetScreenPreview1() {
 
                 ConfirmButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "확인",
                     properties = ConfirmButtonProperties(
                         size = ConfirmButtonSize.Large,
                         type = ConfirmButtonType.Primary
@@ -82,7 +81,12 @@ fun BottomSheetScreenPreview1() {
                     onClick = {
                         isShowing = false
                     }
-                )
+                ) { style ->
+                    Text(
+                        text = "확인",
+                        style = style
+                    )
+                }
             }
         }
     }

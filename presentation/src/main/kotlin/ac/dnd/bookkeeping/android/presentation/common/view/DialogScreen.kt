@@ -86,7 +86,6 @@ fun DialogScreen(
                     Row(modifier = Modifier.wrapContentSize()) {
                         if (onCancel != null) {
                             ConfirmButton(
-                                text = cancelMessage,
                                 properties = ConfirmButtonProperties(
                                     size = ConfirmButtonSize.Large,
                                     type = ConfirmButtonType.Secondary
@@ -96,13 +95,17 @@ fun DialogScreen(
                                     onCancel()
                                     onDismissRequest()
                                 }
-                            )
+                            ) { style ->
+                                Text(
+                                    text = cancelMessage,
+                                    style = style
+                                )
+                            }
 
                             Spacer(modifier = Modifier.width(10.dp))
                         }
 
                         ConfirmButton(
-                            text = confirmMessage,
                             properties = ConfirmButtonProperties(
                                 size = ConfirmButtonSize.Large,
                                 type = ConfirmButtonType.Primary
@@ -112,7 +115,12 @@ fun DialogScreen(
                                 onConfirm()
                                 onDismissRequest()
                             }
-                        )
+                        ) { style ->
+                            Text(
+                                text = confirmMessage,
+                                style = style
+                            )
+                        }
                     }
                 }
             }

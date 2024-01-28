@@ -116,7 +116,6 @@ fun LoginOnBoardingScreen(
         }
 
         ConfirmButton(
-            text = stringResource(R.string.next_button_text),
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Primary
@@ -125,8 +124,14 @@ fun LoginOnBoardingScreen(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(25.dp),
-        ) {
-            navigateToHome()
+            onClick = {
+                navigateToHome()
+            }
+        ) { style ->
+            Text(
+                text = stringResource(R.string.next_button_text),
+                style = style
+            )
         }
     }
 

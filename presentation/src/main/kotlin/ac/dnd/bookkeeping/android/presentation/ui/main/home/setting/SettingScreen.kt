@@ -3,9 +3,9 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
-import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
@@ -144,7 +144,6 @@ fun SettingScreen(
 
                 ConfirmButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.setting_bottomsheet_confirm),
                     properties = ConfirmButtonProperties(
                         size = ConfirmButtonSize.Large,
                         type = ConfirmButtonType.Primary
@@ -152,7 +151,12 @@ fun SettingScreen(
                     onClick = {
                         isBottomSheetShowing = false
                     }
-                )
+                ) { style ->
+                    Text(
+                        text = stringResource(R.string.setting_bottomsheet_confirm),
+                        style = style
+                    )
+                }
             }
         }
     }

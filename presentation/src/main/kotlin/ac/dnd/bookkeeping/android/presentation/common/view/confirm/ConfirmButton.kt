@@ -13,25 +13,25 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ConfirmButton(
-    text: String,
     modifier: Modifier = Modifier,
     properties: ConfirmButtonProperties,
-    isLoading: Boolean = false,
     isEnabled: Boolean = true,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    content: @Composable RowScope.(TextStyle) -> Unit
 ) {
     val textStyle = when (properties.size) {
         ConfirmButtonSize.Xlarge -> Headline2
@@ -61,27 +61,38 @@ fun ConfirmButton(
         ConfirmButtonType.Outline -> BorderStroke(1.dp, Gray800)
     }
 
-    RoundedCornerShape(10.dp)
+    val height = when (properties.size) {
+        ConfirmButtonSize.Xlarge -> 52.dp
+        ConfirmButtonSize.Large -> 48.dp
+        ConfirmButtonSize.Medium -> 34.dp
+        ConfirmButtonSize.Small -> 28.dp
+    }
+
+    val paddingHorizontal = when (properties.size) {
+        ConfirmButtonSize.Xlarge -> 16.dp
+        ConfirmButtonSize.Large -> 16.dp
+        ConfirmButtonSize.Medium -> 8.dp
+        ConfirmButtonSize.Small -> 8.dp
+    }
+
     Button(
-        modifier = modifier,
+        modifier = modifier.height(height),
         shape = Shapes.large,
-        contentPadding = PaddingValues(10.dp),
+        contentPadding = PaddingValues(
+            start = paddingHorizontal,
+            top = 0.dp,
+            bottom = 0.dp,
+            end = paddingHorizontal
+        ),
         colors = ButtonDefaults.textButtonColors(
             backgroundColor = backgroundColor
         ),
         border = border,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
         onClick = onClick,
-        enabled = isEnabled && !isLoading,
+        enabled = isEnabled,
     ) {
-        if (isLoading) {
-            CircularProgressIndicator()
-        } else {
-            Text(
-                text = text,
-                style = textStyle.merge(color = textColor)
-            )
-        }
+        content(textStyle.merge(color = textColor))
     }
 }
 
@@ -90,37 +101,53 @@ fun ConfirmButton(
 fun ConfirmButtonPreview1() {
     Column {
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Xlarge,
                 type = ConfirmButtonType.Primary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Xlarge,
                 type = ConfirmButtonType.Secondary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Xlarge,
                 type = ConfirmButtonType.Tertiary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Xlarge,
                 type = ConfirmButtonType.Outline
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
     }
 }
 
@@ -129,37 +156,53 @@ fun ConfirmButtonPreview1() {
 fun ConfirmButtonPreview2() {
     Column {
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Primary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Secondary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Tertiary
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Outline
             ),
             modifier = Modifier.fillMaxWidth()
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
     }
 }
 
@@ -168,33 +211,49 @@ fun ConfirmButtonPreview2() {
 fun ConfirmButtonPreview3() {
     Column {
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Medium,
                 type = ConfirmButtonType.Primary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Medium,
                 type = ConfirmButtonType.Secondary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Medium,
                 type = ConfirmButtonType.Tertiary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Medium,
                 type = ConfirmButtonType.Outline
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
     }
 }
 
@@ -203,32 +262,48 @@ fun ConfirmButtonPreview3() {
 fun ConfirmButtonPreview4() {
     Column {
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Small,
                 type = ConfirmButtonType.Primary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Small,
                 type = ConfirmButtonType.Secondary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Small,
                 type = ConfirmButtonType.Tertiary
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
         ConfirmButton(
-            text = "확인",
             properties = ConfirmButtonProperties(
                 size = ConfirmButtonSize.Small,
                 type = ConfirmButtonType.Outline
             )
-        )
+        ) { style ->
+            Text(
+                text = "확인",
+                style = style
+            )
+        }
     }
 }
