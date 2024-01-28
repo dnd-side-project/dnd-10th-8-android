@@ -6,6 +6,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Mutab
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,9 +17,13 @@ class LoginOnBoardingViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
 
-    private val _state: MutableStateFlow<LoginOnBoardingState> =
-        MutableStateFlow(LoginOnBoardingState.Init)
-    val state: StateFlow<LoginOnBoardingState> = _state.asStateFlow()
+    private val _loadingState: MutableStateFlow<LoginOnBoardingState.Loading> =
+        MutableStateFlow(LoginOnBoardingState.Loading.Progress)
+    val loadingState: StateFlow<LoginOnBoardingState.Loading> = _loadingState.asStateFlow()
+
+    private val _buttonState: MutableStateFlow<LoginOnBoardingState.Button> =
+        MutableStateFlow(LoginOnBoardingState.Button.Default)
+    val buttonState: StateFlow<LoginOnBoardingState.Button> = _buttonState.asStateFlow()
 
     private val _event: MutableEventFlow<LoginOnBoardingEvent> = MutableEventFlow()
     val event: EventFlow<LoginOnBoardingEvent> = _event.asEventFlow()
@@ -31,6 +36,8 @@ class LoginOnBoardingViewModel @Inject constructor(
 
     private fun goToNextStep() {
         launch {
+            _buttonState.emit(LoginOnBoardingState.Button.Pressed)
+            delay(100L)
             _event.emit(LoginOnBoardingEvent.GoToNextStep)
         }
     }

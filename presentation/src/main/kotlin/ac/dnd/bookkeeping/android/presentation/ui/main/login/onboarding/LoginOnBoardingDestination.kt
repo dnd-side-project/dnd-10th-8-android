@@ -18,8 +18,12 @@ fun NavGraphBuilder.loginOnBoardingDestination(
         val viewModel: LoginOnBoardingViewModel = hiltViewModel()
 
         val model: LoginOnBoardingModel = let {
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            LoginOnBoardingModel(state = state)
+            val loadingState by viewModel.loadingState.collectAsStateWithLifecycle()
+            val buttonState by viewModel.buttonState.collectAsStateWithLifecycle()
+            LoginOnBoardingModel(
+                loadingState = loadingState,
+                buttonState = buttonState
+            )
         }
 
         ErrorObserver(viewModel)
