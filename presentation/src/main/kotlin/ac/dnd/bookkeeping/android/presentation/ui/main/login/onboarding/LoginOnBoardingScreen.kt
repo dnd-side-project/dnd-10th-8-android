@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -74,11 +74,13 @@ fun LoginOnBoardingScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 75.dp)
+                .padding(bottom = 16.82.dp)
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -87,29 +89,25 @@ fun LoginOnBoardingScreen(
             ) { page ->
                 SampleImageComponent(page.toString())
             }
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(29.18.dp))
             Row(
-                Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                Modifier.wrapContentSize(),
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 repeat(pagerState.pageCount) { iterationIndex ->
                     val color by animateColorAsState(
                         targetValue =
-                        if (pagerState.currentPage == iterationIndex) Color.LightGray
-                        else Color.DarkGray,
+                        if (pagerState.currentPage == iterationIndex) Color.DarkGray
+                        else Color.LightGray,
                         label = "iteration color"
                     )
                     Box(
                         modifier = Modifier
                             .padding(2.dp)
                             .clip(CircleShape)
-                            .clickable {
-                                currentSelectedPage = iterationIndex
-                            }
+                            .clickable { currentSelectedPage = iterationIndex }
                             .background(color)
-                            .size(10.dp)
+                            .size(8.dp)
                     )
                 }
             }
@@ -119,22 +117,22 @@ fun LoginOnBoardingScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(
-                    horizontal = 18.dp,
-                    vertical = 28.dp
+                    horizontal = 20.dp,
+                    vertical = 12.dp
                 )
                 .fillMaxWidth()
                 .clickable {
                     intent(LoginOnBoardingIntent.OnClickNextStep)
                 },
             shape = RoundedCornerShape(8.dp),
-            color = Color(0xFFE0E0E0)
+            color = Color(0xFFDD55FF)
         ) {
             Text(
-                text =  stringResource(R.string.next_button_text),
+                text = stringResource(R.string.next_button_text),
                 fontSize = 16.sp,
-                color = Color(0xFF636363),
+                color = Color.White,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(11.5.dp)
+                modifier = Modifier.padding(14.dp)
             )
         }
     }
@@ -143,7 +141,6 @@ fun LoginOnBoardingScreen(
         event.eventObserve { event ->
             when (event) {
                 is LoginOnBoardingEvent.GoToNextStep -> navigateToHome()
-                else -> {}
             }
         }
     }
@@ -173,7 +170,7 @@ fun LoginOnBoardingScreenPreview() {
     LoginOnBoardingScreen(
         appState = rememberApplicationState(),
         model = LoginOnBoardingModel(
-            state = LoginOnBoardingState.Init
+            state = LoginOnBoardingState.Loading
         ),
         event = MutableEventFlow(),
         intent = {},
