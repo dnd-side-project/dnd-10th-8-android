@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.data.repository.sociallogin
 
-import ac.dnd.bookkeeping.android.domain.model.sociallogin.UserModel
+import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
 import ac.dnd.bookkeeping.android.domain.repository.sociallogin.KakaoLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
@@ -84,7 +84,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserInfo(): Result<UserModel> = runCatching {
+    override suspend fun getUserInfo(): Result<KakaoUserInformation> = runCatching {
         suspendCoroutine { continuation ->
             UserApiClient.instance.me { user, error ->
                 val userId = user?.id ?: 0L
@@ -95,7 +95,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                     continuation.resumeWithException(RuntimeException("Can't Receive User Info"))
                 } else {
                     continuation.resume(
-                        UserModel(
+                        KakaoUserInformation(
                             socialId = userId,
                             email = userEmail,
                             name = userName,
