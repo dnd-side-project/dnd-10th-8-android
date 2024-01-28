@@ -8,6 +8,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.event
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding.LoginOnBoardingConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,7 +45,15 @@ fun LoginMainScreen(
     intent: (LoginMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-    fun navigateToLogin() {
+    fun navigateToOnBoarding() {
+        appState.navController.navigate(LoginOnBoardingConstant.ROUTE) {
+            popUpTo(LoginConstant.ROUTE) {
+                inclusive = true
+            }
+        }
+    }
+
+    fun navigateToHome() {
         appState.navController.navigate(HomeConstant.ROUTE) {
             popUpTo(LoginConstant.ROUTE) {
                 inclusive = true
@@ -56,7 +65,9 @@ fun LoginMainScreen(
     fun login(event: LoginMainEvent.Login) {
         when (event) {
             LoginMainEvent.Login.Success -> {
-                navigateToLogin()
+                // TODO : Check user is New ?
+                // isNew True -> navigateToOnBoarding() + with kakaoUserInfoModel
+                // isNew False -> navigateToHome()
             }
 
             is LoginMainEvent.Login.Error -> {
@@ -93,9 +104,6 @@ fun LoginMainScreen(
                     end = 18.dp
                 )
                 .fillMaxWidth()
-                .clickable {
-                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
-                }
                 .clip(RoundedCornerShape(10.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -103,7 +111,10 @@ fun LoginMainScreen(
             Spacer(Modifier.height(20.23.dp))
             Image(
                 painter = painterResource(R.drawable.ic_kakao_login_button),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
+                }
             )
         }
     }
