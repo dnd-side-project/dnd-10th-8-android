@@ -15,8 +15,7 @@ interface AuthenticationRepository {
 
     suspend fun login(
         socialId: String,
-        email: String,
-        profileImageUrl: String
+        email: String
     ): Result<Login>
 
     suspend fun logout(): Result<Unit>

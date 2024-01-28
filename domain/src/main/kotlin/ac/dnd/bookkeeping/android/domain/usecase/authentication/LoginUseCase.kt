@@ -10,12 +10,10 @@ class LoginUseCase @Inject constructor(
     suspend operator fun invoke(
         socialId: String,
         email: String,
-        profileImageUrl: String
     ): Result<Login> {
         return authenticationRepository.login(
             socialId = socialId,
-            email = email,
-            profileImageUrl = profileImageUrl
+            email = email
         )
     }
 }
