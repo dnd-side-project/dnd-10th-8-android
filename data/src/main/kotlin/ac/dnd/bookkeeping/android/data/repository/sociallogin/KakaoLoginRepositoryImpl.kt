@@ -32,7 +32,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
         }
         .onFailure { error ->
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                throw error
+                throw RuntimeException("User Skip Kakao Login")
             } else {
                 UserApiClient.loginWithKakaoAccount()
             }
@@ -47,7 +47,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                 } else {
                     val accessToken = token?.accessToken
                     if (accessToken == null) {
-                        continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
+                        continuation.resumeWithException(RuntimeException("Can't Receive Kakao Access Token"))
                     } else {
                         continuation.resume(accessToken)
                     }
@@ -63,7 +63,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                 } else {
                     val accessToken = token?.accessToken
                     if (accessToken == null) {
-                        continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
+                        continuation.resumeWithException(RuntimeException("Can't Receive Kakao Access Token"))
                     } else {
                         continuation.resume(accessToken)
                     }
