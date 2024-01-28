@@ -65,12 +65,12 @@ fun ConfirmButton(
     Button(
         modifier = modifier,
         shape = Shapes.large,
-        contentPadding = PaddingValues(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp),
+        contentPadding = PaddingValues(10.dp),
         colors = ButtonDefaults.textButtonColors(
             backgroundColor = backgroundColor
         ),
         border = border,
-        elevation = ButtonDefaults.elevation(0.dp),
+        elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
         onClick = onClick,
         enabled = isEnabled && !isLoading,
     ) {

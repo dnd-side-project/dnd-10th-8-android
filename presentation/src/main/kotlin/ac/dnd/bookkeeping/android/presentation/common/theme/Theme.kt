@@ -9,7 +9,7 @@ import androidx.compose.runtime.SideEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Primary2,
+    primary = Gray000,
     primaryVariant = Primary4,
     secondary = Secondary1,
     background = Gray600,
@@ -21,7 +21,7 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Primary4,
+    primary = Gray800,
     primaryVariant = Primary1,
     secondary = Secondary2,
     background = Gray200,
