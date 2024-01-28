@@ -89,7 +89,7 @@ fun DialogScreen(
                                 text = cancelMessage,
                                 properties = ConfirmButtonProperties(
                                     size = ConfirmButtonSize.Large,
-                                    type = ConfirmButtonType.Primary
+                                    type = ConfirmButtonType.Secondary
                                 ),
                                 modifier = Modifier.weight(1f),
                                 onClick = {
@@ -105,7 +105,7 @@ fun DialogScreen(
                             text = confirmMessage,
                             properties = ConfirmButtonProperties(
                                 size = ConfirmButtonSize.Large,
-                                type = ConfirmButtonType.Secondary
+                                type = ConfirmButtonType.Primary
                             ),
                             modifier = Modifier.weight(1f),
                             onClick = {
