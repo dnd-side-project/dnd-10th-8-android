@@ -39,12 +39,10 @@ class RealAuthenticationRepository @Inject constructor(
     override suspend fun login(
         socialId: String,
         email: String,
-        profileImageUrl: String
     ): Result<Login> {
         return authenticationApi.login(
             socialId = socialId,
             email = email,
-            profileImageUrl = profileImageUrl
         ).onSuccess { token ->
             this.refreshToken = token.refreshToken
             this.accessToken = token.accessToken

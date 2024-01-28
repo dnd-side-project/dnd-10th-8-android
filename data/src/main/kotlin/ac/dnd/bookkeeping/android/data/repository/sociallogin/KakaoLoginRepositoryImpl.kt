@@ -90,15 +90,16 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                 val userId = user?.id ?: 0L
                 val userEmail = user?.kakaoAccount?.email ?: ""
                 val userName = user?.kakaoAccount?.profile?.nickname ?: ""
-
-                if (error != null || userId == 0L || userEmail.isEmpty() || userName.isEmpty()) {
+                val userProfile = user?.kakaoAccount?.profile?.profileImageUrl ?: ""
+                if (error != null || userId == 0L || userEmail.isEmpty() || userName.isEmpty() || userProfile.isEmpty()) {
                     continuation.resumeWithException(RuntimeException("Can't Receive User Info"))
                 } else {
                     continuation.resume(
                         UserModel(
                             socialId = userId,
                             email = userEmail,
-                            name = userName
+                            name = userName,
+                            profileImageUrl = userProfile
                         )
                     )
                 }

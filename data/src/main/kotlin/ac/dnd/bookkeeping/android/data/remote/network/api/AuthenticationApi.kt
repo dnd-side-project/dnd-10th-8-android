@@ -33,15 +33,13 @@ class AuthenticationApi @Inject constructor(
 
     suspend fun login(
         socialId: String,
-        email: String,
-        profileImageUrl: String
+        email: String
     ): Result<LoginRes> {
         return noAuthClient.post("$baseUrl/api/v1/auth/login") {
             setBody(
                 LoginReq(
                     socialId = socialId,
                     email = email,
-                    profileImageUrl = profileImageUrl
                 )
             )
         }.convert(errorMessageMapper::map)
