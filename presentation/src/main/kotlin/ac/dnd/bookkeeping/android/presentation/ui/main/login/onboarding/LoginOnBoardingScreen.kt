@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding
 
+import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -128,7 +130,7 @@ fun LoginOnBoardingScreen(
             color = Color(0xFFE0E0E0)
         ) {
             Text(
-                text = "다음",
+                text =  stringResource(R.string.next_button_text),
                 fontSize = 16.sp,
                 color = Color(0xFF636363),
                 textAlign = TextAlign.Center,

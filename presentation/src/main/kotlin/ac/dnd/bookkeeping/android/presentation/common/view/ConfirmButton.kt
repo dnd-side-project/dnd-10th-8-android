@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
+import ac.dnd.bookkeeping.android.presentation.R
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,7 +81,7 @@ fun ConfirmButtonPreview2() {
 @Composable
 fun ConfirmButtonPreview3() {
     ConfirmButton(
-        text = "다음",
+        text = stringResource(R.string.next_button_text),
         isMain = true,
         modifier = Modifier
             .padding(20.dp)
