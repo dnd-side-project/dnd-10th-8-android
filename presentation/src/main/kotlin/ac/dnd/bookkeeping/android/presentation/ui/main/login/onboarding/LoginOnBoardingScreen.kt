@@ -56,10 +56,20 @@ fun LoginOnBoardingScreen(
     intent: (LoginOnBoardingIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-
     var currentSelectedPage by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { 3 })
+    val buttonColorState = animateColorAsState(
+        targetValue = when (model.buttonState) {
+            is LoginOnBoardingState.Button.Default -> {
+                Color(0xFFDD55FF)
+            }
 
+            is LoginOnBoardingState.Button.Pressed -> {
+                Color(0xFFD401FE)
+            }
+        },
+        label = "pressed button color"
+    )
 
     LaunchedEffect(currentSelectedPage) {
         pagerState.animateScrollToPage(currentSelectedPage)
@@ -87,7 +97,19 @@ fun LoginOnBoardingScreen(
             HorizontalPager(
                 state = pagerState
             ) { page ->
-                SampleImageComponent(page.toString())
+                when (model.loadingState) {
+                    is LoginOnBoardingState.Loading.Progress -> {
+                        SampleImageComponent(page.toString())
+                    }
+
+                    is LoginOnBoardingState.Loading.Success -> {
+
+                    }
+
+                    is LoginOnBoardingState.Loading.Failure -> {
+
+                    }
+                }
             }
             Spacer(Modifier.height(29.18.dp))
             Row(
@@ -125,7 +147,7 @@ fun LoginOnBoardingScreen(
                     intent(LoginOnBoardingIntent.OnClickNextStep)
                 },
             shape = RoundedCornerShape(8.dp),
-            color = Color(0xFFDD55FF)
+            color = buttonColorState.value
         ) {
             Text(
                 text = stringResource(R.string.next_button_text),
@@ -170,7 +192,8 @@ fun LoginOnBoardingScreenPreview() {
     LoginOnBoardingScreen(
         appState = rememberApplicationState(),
         model = LoginOnBoardingModel(
-            state = LoginOnBoardingState.Loading
+            loadingState = LoginOnBoardingState.Loading.Progress,
+            buttonState = LoginOnBoardingState.Button.Default
         ),
         event = MutableEventFlow(),
         intent = {},
