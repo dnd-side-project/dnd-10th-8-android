@@ -35,6 +35,10 @@ class SplashViewModel @Inject constructor(
         }
     }
 
+    fun onIntent(intent: SplashIntent) {
+
+    }
+
     private suspend fun checkJwtToken() {
         updateJwtTokenUseCase().onSuccess {
             _event.emit(SplashEvent.Login.Success)
