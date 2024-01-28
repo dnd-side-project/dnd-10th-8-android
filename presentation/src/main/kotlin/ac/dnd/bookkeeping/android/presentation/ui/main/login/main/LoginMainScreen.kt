@@ -52,10 +52,11 @@ fun LoginMainScreen(
         }
     }
 
+
     fun login(event: LoginMainEvent.Login) {
         when (event) {
             LoginMainEvent.Login.Success -> {
-                // TODO : Implement Success Case
+                navigateToLogin()
             }
 
             is LoginMainEvent.Login.Error -> {
@@ -93,7 +94,7 @@ fun LoginMainScreen(
                 )
                 .fillMaxWidth()
                 .clickable {
-                    navigateToLogin()
+                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
                 }
                 .clip(RoundedCornerShape(10.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
