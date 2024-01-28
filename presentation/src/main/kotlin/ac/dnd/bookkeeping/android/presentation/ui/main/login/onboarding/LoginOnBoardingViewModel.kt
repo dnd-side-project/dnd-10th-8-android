@@ -24,12 +24,6 @@ class LoginOnBoardingViewModel @Inject constructor(
     val event: EventFlow<LoginOnBoardingEvent> = _event.asEventFlow()
 
     fun onIntent(intent: LoginOnBoardingIntent) {
-        when (intent) {
-            is LoginOnBoardingIntent.OnClickNextStep -> {
-                launch {
-                    _event.emit(LoginOnBoardingEvent.GoToNextStep)
-                }
-            }
-        }
+
     }
 }

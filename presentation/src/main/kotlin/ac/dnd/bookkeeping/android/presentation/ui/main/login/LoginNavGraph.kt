@@ -14,7 +14,7 @@ fun NavGraphBuilder.loginNavGraph(
         startDestination = LoginMainConstant.ROUTE,
         route = LoginConstant.ROUTE
     ) {
-        loginOnBoardingDestination(appState = appState)
         loginMainDestination(appState = appState)
+        loginOnBoardingDestination(appState = appState)
     }
 }

@@ -19,7 +19,9 @@ fun NavGraphBuilder.loginOnBoardingDestination(
 
         val model: LoginOnBoardingModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
-            LoginOnBoardingModel(state = state)
+            LoginOnBoardingModel(
+                state = state
+            )
         }
 
         ErrorObserver(viewModel)
