@@ -1,5 +1,9 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,7 +75,10 @@ fun BottomSheetScreenPreview1() {
                 ConfirmButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "확인",
-                    isMain = true,
+                    properties = ConfirmButtonProperties(
+                        size = ConfirmButtonSize.Large,
+                        type = ConfirmButtonType.Primary
+                    ),
                     onClick = {
                         isShowing = false
                     }

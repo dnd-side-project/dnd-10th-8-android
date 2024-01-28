@@ -5,7 +5,10 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
-import ac.dnd.bookkeeping.android.presentation.common.view.ConfirmButton
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
@@ -114,7 +117,10 @@ fun LoginOnBoardingScreen(
 
         ConfirmButton(
             text = stringResource(R.string.next_button_text),
-            isMain = true,
+            properties = ConfirmButtonProperties(
+                size = ConfirmButtonSize.Large,
+                type = ConfirmButtonType.Primary
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
