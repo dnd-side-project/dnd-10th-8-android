@@ -1,6 +1,10 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
+import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -82,27 +86,41 @@ fun DialogScreen(
                     Row(modifier = Modifier.wrapContentSize()) {
                         if (onCancel != null) {
                             ConfirmButton(
-                                text = cancelMessage,
-                                isMain = false,
+                                properties = ConfirmButtonProperties(
+                                    size = ConfirmButtonSize.Large,
+                                    type = ConfirmButtonType.Secondary
+                                ),
                                 modifier = Modifier.weight(1f),
                                 onClick = {
                                     onCancel()
                                     onDismissRequest()
                                 }
-                            )
+                            ) { style ->
+                                Text(
+                                    text = cancelMessage,
+                                    style = style
+                                )
+                            }
 
                             Spacer(modifier = Modifier.width(10.dp))
                         }
 
                         ConfirmButton(
-                            text = confirmMessage,
-                            isMain = true,
+                            properties = ConfirmButtonProperties(
+                                size = ConfirmButtonSize.Large,
+                                type = ConfirmButtonType.Primary
+                            ),
                             modifier = Modifier.weight(1f),
                             onClick = {
                                 onConfirm()
                                 onDismissRequest()
                             }
-                        )
+                        ) { style ->
+                            Text(
+                                text = confirmMessage,
+                                style = style
+                            )
+                        }
                     }
                 }
             }
