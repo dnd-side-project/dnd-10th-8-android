@@ -14,7 +14,7 @@ interface AuthenticationRepository {
     ): Result<JwtToken>
 
     suspend fun login(
-        socialId: String,
+        socialId: Long,
         email: String
     ): Result<Login>
 

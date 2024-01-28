@@ -37,7 +37,7 @@ class RealAuthenticationRepository @Inject constructor(
     }
 
     override suspend fun login(
-        socialId: String,
+        socialId: Long,
         email: String,
     ): Result<Login> {
         return authenticationApi.login(

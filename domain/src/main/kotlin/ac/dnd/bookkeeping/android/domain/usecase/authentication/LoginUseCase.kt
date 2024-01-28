@@ -8,7 +8,7 @@ class LoginUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
     suspend operator fun invoke(
-        socialId: String,
+        socialId: Long,
         email: String,
     ): Result<Login> {
         return authenticationRepository.login(
