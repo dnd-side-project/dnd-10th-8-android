@@ -17,4 +17,6 @@
 
     <string name="next_button_text">다음</string>
     <string name="input_user_name">이름 입력 (1~15자)</string>
+
+    <string name="login_main_dialog_message">카카오 로그인 실패 !</string>
 </resources>
