@@ -6,9 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LoginReq(
     @SerialName("socialId")
-    val socialId: String,
+    val socialId: Long,
     @SerialName("email")
-    val email: String,
-    @SerialName("profileImageUrl")
-    val profileImageUrl: String
+    val email: String
 )

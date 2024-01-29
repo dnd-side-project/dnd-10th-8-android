@@ -32,9 +32,8 @@ class MockAuthenticationRepository @Inject constructor(
     }
 
     override suspend fun login(
-        socialId: String,
-        email: String,
-        profileImageUrl: String
+        socialId: Long,
+        email: String
     ): Result<Login> {
         randomShortDelay()
         return Result.success(

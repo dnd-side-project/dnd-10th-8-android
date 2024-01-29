@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.data.repository.sociallogin
 
-import ac.dnd.bookkeeping.android.domain.model.sociallogin.UserModel
+import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
 import ac.dnd.bookkeeping.android.domain.repository.sociallogin.KakaoLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
@@ -32,7 +33,8 @@ class KakaoLoginRepositoryImpl @Inject constructor(
         }
         .onFailure { error ->
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                throw error
+
+                throw ServerException("Cancelled","User Skip Kakao Login")
             } else {
                 UserApiClient.loginWithKakaoAccount()
             }
@@ -47,7 +49,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                 } else {
                     val accessToken = token?.accessToken
                     if (accessToken == null) {
-                        continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
+                        continuation.resumeWithException(RuntimeException("Can't Receive Kakao Access Token"))
                     } else {
                         continuation.resume(accessToken)
                     }
@@ -63,7 +65,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
                 } else {
                     val accessToken = token?.accessToken
                     if (accessToken == null) {
-                        continuation.resumeWithException(RuntimeException("Can't Receive Kaokao Access Token"))
+                        continuation.resumeWithException(RuntimeException("Can't Receive Kakao Access Token"))
                     } else {
                         continuation.resume(accessToken)
                     }
@@ -84,21 +86,22 @@ class KakaoLoginRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserInfo(): Result<UserModel> = runCatching {
+    override suspend fun getUserInfo(): Result<KakaoUserInformation> = runCatching {
         suspendCoroutine { continuation ->
             UserApiClient.instance.me { user, error ->
                 val userId = user?.id ?: 0L
                 val userEmail = user?.kakaoAccount?.email ?: ""
                 val userName = user?.kakaoAccount?.profile?.nickname ?: ""
-
-                if (error != null || userId == 0L || userEmail.isEmpty() || userName.isEmpty()) {
+                val userProfile = user?.kakaoAccount?.profile?.profileImageUrl ?: ""
+                if (error != null || userId == 0L || userEmail.isEmpty() || userName.isEmpty() || userProfile.isEmpty()) {
                     continuation.resumeWithException(RuntimeException("Can't Receive User Info"))
                 } else {
                     continuation.resume(
-                        UserModel(
+                        KakaoUserInformation(
                             socialId = userId,
                             email = userEmail,
-                            name = userName
+                            name = userName,
+                            profileImageUrl = userProfile
                         )
                     )
                 }

@@ -7,15 +7,7 @@ import javax.inject.Inject
 class LogoutUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    suspend operator fun invoke(
-        socialId: String,
-        email: String,
-        profileImageUrl: String
-    ): Result<Login> {
-        return authenticationRepository.login(
-            socialId = socialId,
-            email = email,
-            profileImageUrl = profileImageUrl
-        )
+    suspend operator fun invoke(): Result<Unit> {
+        return authenticationRepository.logout()
     }
 }

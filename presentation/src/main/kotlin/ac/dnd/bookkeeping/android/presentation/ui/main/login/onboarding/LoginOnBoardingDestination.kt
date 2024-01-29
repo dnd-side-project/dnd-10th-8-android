@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,8 +13,14 @@ fun NavGraphBuilder.loginOnBoardingDestination(
     appState: ApplicationState
 ) {
     composable(
-        route = LoginOnBoardingConstant.ROUTE
+        route = LoginOnBoardingConstant.CONTAIN_USER_MODEL
     ) {
+
+        val userModel = appState.navController.previousBackStackEntry
+            ?.savedStateHandle
+            ?.get<KakaoUserInformationModel>(LoginOnBoardingConstant.ROURE_ARGUMENT_USER_MODEL)
+            ?: KakaoUserInformationModel(0L, "", "", "")
+        if (userModel.email.isEmpty()) appState.navController.popBackStack()
 
         val viewModel: LoginOnBoardingViewModel = hiltViewModel()
 

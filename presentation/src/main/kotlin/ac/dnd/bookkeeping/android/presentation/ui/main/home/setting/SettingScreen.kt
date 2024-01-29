@@ -78,7 +78,7 @@ fun SettingScreen(
                 }
             },
             hintTextContent = {
-                Text(text = stringResource(R.string.input_user_name), color = Color.LightGray)
+                Text(text = "이름 입력 (1~15자)", color = Color.LightGray)
             },
             contentInnerPadding = PaddingValues(horizontal = 10.dp),
             contentOuterPadding = PaddingValues(horizontal = 10.dp)
