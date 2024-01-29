@@ -5,6 +5,8 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
+import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
@@ -24,17 +26,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
@@ -45,12 +53,10 @@ fun LoginMainScreen(
     intent: (LoginMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-    fun navigateToOnBoarding() {
-        appState.navController.navigate(LoginOnBoardingConstant.ROUTE) {
-            popUpTo(LoginConstant.ROUTE) {
-                inclusive = true
-            }
-        }
+    var isDialogShowing by remember { mutableStateOf(false) }
+
+    fun navigateToOnBoarding(kakaoUserModel: KakaoUserInformationModel) {
+        appState.navController.sendKakaoUserModel(kakaoUserModel)
     }
 
     fun navigateToHome() {
@@ -64,18 +70,20 @@ fun LoginMainScreen(
 
     fun login(event: LoginMainEvent.Login) {
         when (event) {
-            LoginMainEvent.Login.Success -> {
-                // TODO : Check user is New ?
-                // isNew True -> navigateToOnBoarding() + with kakaoUserInfoModel
-                // isNew False -> navigateToHome()
+            is LoginMainEvent.Login.Success -> {
+                when (event.isNew) {
+                    true -> navigateToOnBoarding(event.kakaoUserModel)
+                    false -> navigateToHome()
+                }
             }
 
             is LoginMainEvent.Login.Error -> {
-                // TODO : Implement Request Error Case
+                isDialogShowing = true
             }
 
             is LoginMainEvent.Login.Failure -> {
-                // TODO : Implement Internal Server Error Case
+
+                isDialogShowing = true
             }
         }
     }
@@ -119,6 +127,14 @@ fun LoginMainScreen(
         }
     }
 
+    DialogScreen(
+        isShowing = isDialogShowing,
+        title = stringResource(R.string.login_main_dialog_message),
+        onDismissRequest = {
+            isDialogShowing = false
+        }
+    )
+
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
@@ -152,6 +168,20 @@ private fun SampleComponent() {
             letterSpacing = 0.2.sp,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInformationModel) {
+    currentBackStackEntry?.savedStateHandle?.apply {
+        set(
+            "kakaoUserModel",
+            kakaoUserModel
+        )
+    }
+    navigate(LoginOnBoardingConstant.ROUTE) {
+        popUpTo(LoginConstant.ROUTE) {
+            inclusive = true
+        }
     }
 }
 

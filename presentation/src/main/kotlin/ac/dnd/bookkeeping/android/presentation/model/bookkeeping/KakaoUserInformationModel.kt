@@ -6,11 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class KakaoUserInformationModel(
-    val socialId: Long = 0L,
-    val email: String = "",
-    val name: String = "",
-    val profileImageUrl: String =""
-): Parcelable
+    val socialId: Long,
+    val email: String,
+    val name: String,
+    val profileImageUrl: String
+) : Parcelable
 
 fun KakaoUserInformation.toUiModel(): KakaoUserInformationModel {
     return KakaoUserInformationModel(
