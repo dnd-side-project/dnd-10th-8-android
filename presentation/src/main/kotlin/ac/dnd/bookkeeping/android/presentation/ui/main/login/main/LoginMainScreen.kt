@@ -144,6 +144,17 @@ fun LoginMainScreen(
     }
 }
 
+private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInformationModel) {
+    currentBackStackEntry?.savedStateHandle?.apply {
+        set(
+            key = LoginOnBoardingConstant.ROURE_ARGUMENT_USER_MODEL,
+            value = kakaoUserModel
+        )
+    }
+    navigate(LoginOnBoardingConstant.CONTAIN_USER_MODEL)
+}
+
+
 @Composable
 private fun SampleComponent() {
     Box(
@@ -171,19 +182,6 @@ private fun SampleComponent() {
     }
 }
 
-private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInformationModel) {
-    currentBackStackEntry?.savedStateHandle?.apply {
-        set(
-            "kakaoUserModel",
-            kakaoUserModel
-        )
-    }
-    navigate(LoginOnBoardingConstant.ROUTE) {
-        popUpTo(LoginConstant.ROUTE) {
-            inclusive = true
-        }
-    }
-}
 
 @Preview
 @Composable
