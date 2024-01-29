@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.data.repository.sociallogin
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
-import ac.dnd.bookkeeping.android.domain.repository.sociallogin.KakaoLoginRepository
+import ac.dnd.bookkeeping.android.domain.repository.KakaoLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause

@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.domain.repository
 
 import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
 import ac.dnd.bookkeeping.android.domain.model.authentication.Login
+import ac.dnd.bookkeeping.android.domain.model.authentication.Register
 
 interface AuthenticationRepository {
 
@@ -19,6 +20,16 @@ interface AuthenticationRepository {
     ): Result<Login>
 
     suspend fun logout(): Result<Unit>
+
+    suspend fun register(
+        socialId: String,
+        email: String,
+        profileImageUrl: String,
+        name: String,
+        nickname: String,
+        gender: String,
+        birth: String
+    ): Result<Register>
 
     suspend fun withdraw(): Result<Unit>
 }

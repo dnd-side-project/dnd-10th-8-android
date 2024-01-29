@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.data.remote.network.api.AuthenticationApi
 import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
 import ac.dnd.bookkeeping.android.domain.model.authentication.Login
+import ac.dnd.bookkeeping.android.domain.model.authentication.Register
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import javax.inject.Inject
 
@@ -57,6 +58,31 @@ class RealAuthenticationRepository @Inject constructor(
                 this.refreshToken = ""
                 this.accessToken = ""
             }
+    }
+
+    override suspend fun register(
+        socialId: String,
+        email: String,
+        profileImageUrl: String,
+        name: String,
+        nickname: String,
+        gender: String,
+        birth: String
+    ): Result<Register> {
+        return authenticationApi.register(
+            socialId = socialId,
+            email = email,
+            profileImageUrl = profileImageUrl,
+            name = name,
+            nickname = nickname,
+            gender = gender,
+            birth = birth
+        ).onSuccess { register ->
+            this.refreshToken = register.refreshToken
+            this.accessToken = register.accessToken
+        }.map { register ->
+            Register(id = register.id)
+        }
     }
 
     override suspend fun withdraw(): Result<Unit> {

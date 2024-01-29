@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.data.repository.authentication
 import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
 import ac.dnd.bookkeeping.android.domain.model.authentication.Login
+import ac.dnd.bookkeeping.android.domain.model.authentication.Register
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -44,6 +45,19 @@ class MockAuthenticationRepository @Inject constructor(
     override suspend fun logout(): Result<Unit> {
         randomShortDelay()
         return Result.success(Unit)
+    }
+
+    override suspend fun register(
+        socialId: String,
+        email: String,
+        profileImageUrl: String,
+        name: String,
+        nickname: String,
+        gender: String,
+        birth: String
+    ): Result<Register> {
+        randomLongDelay()
+        return Result.success(Register(-1L))
     }
 
     override suspend fun withdraw(): Result<Unit> {
