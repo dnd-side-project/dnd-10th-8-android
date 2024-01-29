@@ -8,8 +8,8 @@ import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
-import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
-import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.toUiModel
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
+import ac.dnd.bookkeeping.android.presentation.model.login.toUiModel
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

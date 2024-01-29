@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.data.remote.network.di
 
 import ac.dnd.bookkeeping.android.data.remote.network.environment.ErrorMessageMapper
-import ac.dnd.bookkeeping.android.data.remote.network.api.BookkeepingApi
 import ac.dnd.bookkeeping.android.data.remote.network.environment.BaseUrlProvider
 import dagger.Module
 import dagger.Provides

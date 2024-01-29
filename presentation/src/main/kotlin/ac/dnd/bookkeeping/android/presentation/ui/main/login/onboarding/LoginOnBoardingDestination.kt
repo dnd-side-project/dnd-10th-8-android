@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
-import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel

@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.model.bookkeeping
+package ac.dnd.bookkeeping.android.presentation.model.login
 
 import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
 import android.os.Parcelable

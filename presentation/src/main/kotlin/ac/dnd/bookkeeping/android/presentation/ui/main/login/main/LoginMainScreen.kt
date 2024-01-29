@@ -6,7 +6,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
-import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
