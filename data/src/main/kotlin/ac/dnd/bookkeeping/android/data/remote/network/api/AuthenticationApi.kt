@@ -53,7 +53,7 @@ class AuthenticationApi @Inject constructor(
     }
 
     suspend fun register(
-        socialId: String,
+        socialId: Long,
         email: String,
         profileImageUrl: String,
         name: String,

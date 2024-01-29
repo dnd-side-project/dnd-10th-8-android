@@ -61,7 +61,7 @@ class RealAuthenticationRepository @Inject constructor(
     }
 
     override suspend fun register(
-        socialId: String,
+        socialId: Long,
         email: String,
         profileImageUrl: String,
         name: String,

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RegisterReq(
     @SerialName("socialId")
-    val socialId: String,
+    val socialId: Long,
     @SerialName("email")
     val email: String,
     @SerialName("profileImageUrl")

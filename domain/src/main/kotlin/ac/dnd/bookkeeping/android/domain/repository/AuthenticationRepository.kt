@@ -22,7 +22,7 @@ interface AuthenticationRepository {
     suspend fun logout(): Result<Unit>
 
     suspend fun register(
-        socialId: String,
+        socialId: Long,
         email: String,
         profileImageUrl: String,
         name: String,
