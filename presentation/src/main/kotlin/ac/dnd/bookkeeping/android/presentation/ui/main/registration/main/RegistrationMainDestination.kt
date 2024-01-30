@@ -25,9 +25,10 @@ fun NavGraphBuilder.registrationNamingDestination(
 
         val model: RegistrationMainModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val errorType by viewModel.errorType.collectAsStateWithLifecycle()
             RegistrationMainModel(
                 state = state,
-                namingErrorType = RegistrationMainErrorType.Init
+                errorType = errorType
             )
         }
 

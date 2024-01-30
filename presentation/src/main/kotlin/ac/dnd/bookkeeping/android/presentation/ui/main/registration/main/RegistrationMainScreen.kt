@@ -78,7 +78,7 @@ fun RegistrationNamingScreen(
     var userDayText by remember { mutableStateOf(TextFieldValue("")) }
     var isUserMale by remember { mutableStateOf(true) }
     val userNameColorState = animateColorAsState(
-        targetValue = when (model.namingErrorType) {
+        targetValue = when (model.errorType) {
             RegistrationMainErrorType.Init -> Gray400
             is RegistrationMainErrorType.InValid -> Negative
         },
@@ -88,11 +88,11 @@ fun RegistrationNamingScreen(
     fun applyValidation(event: RegistrationMainEvent.Check) {
         when (event) {
             is RegistrationMainEvent.Check.Valid -> {
-                model.namingErrorType = RegistrationMainErrorType.Init
+
             }
 
             is RegistrationMainEvent.Check.Invalid -> {
-                model.namingErrorType = event.namingErrorType
+
             }
         }
     }
@@ -223,7 +223,7 @@ fun RegistrationNamingScreen(
             }
             Spacer(Modifier.height(Space8))
 
-            ErrorUserNamingComponent(model.namingErrorType)
+            ErrorUserNamingComponent(model.errorType)
             Spacer(Modifier.height(Space32))
 
             RegistraionUserDate(
@@ -317,7 +317,7 @@ fun RegistrationNamingScreenPreview() {
         appState = rememberApplicationState(),
         model = RegistrationMainModel(
             state = RegistrationMainState.Init,
-            namingErrorType = RegistrationMainErrorType.Init
+            errorType = RegistrationMainErrorType.Init
         ),
         event = MutableEventFlow(),
         intent = {},

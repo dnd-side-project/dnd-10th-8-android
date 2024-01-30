@@ -4,7 +4,7 @@ sealed interface RegistrationMainEvent {
 
     sealed interface Check : RegistrationMainEvent {
         data object Valid : Check
-        data class Invalid(val namingErrorType: RegistrationMainErrorType) : Check
+        data object Invalid : Check
     }
 
     sealed interface Submit : RegistrationMainEvent {

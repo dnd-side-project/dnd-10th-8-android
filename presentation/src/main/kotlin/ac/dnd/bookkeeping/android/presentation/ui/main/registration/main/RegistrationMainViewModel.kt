@@ -20,6 +20,10 @@ class RegistrationMainViewModel @Inject constructor(
         MutableStateFlow(RegistrationMainState.Init)
     val state: StateFlow<RegistrationMainState> = _state.asStateFlow()
 
+    private val _errorType: MutableStateFlow<RegistrationMainErrorType> =
+        MutableStateFlow(RegistrationMainErrorType.Init)
+    val errorType: StateFlow<RegistrationMainErrorType> = _errorType.asStateFlow()
+
     private val _event: MutableEventFlow<RegistrationMainEvent> = MutableEventFlow()
     val event: EventFlow<RegistrationMainEvent> = _event.asEventFlow()
 
