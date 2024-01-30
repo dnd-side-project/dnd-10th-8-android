@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
@@ -15,6 +15,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
@@ -22,7 +23,11 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting.RegistrationCollectingConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming.component.ErrorUserNamingComponent
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming.component.RegistraionUserDate
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,6 +55,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,15 +72,24 @@ fun RegistrationNamingScreen(
     intent: (RegistrationNamingIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-
+    val focusManager = LocalFocusManager.current
     var userNameText by remember { mutableStateOf(TextFieldValue("")) }
     var userYearText by remember { mutableStateOf(TextFieldValue("")) }
     var userMonthText by remember { mutableStateOf(TextFieldValue("")) }
     var userDayText by remember { mutableStateOf(TextFieldValue("")) }
+    var isUserMale by remember { mutableStateOf(true) }
+    val userNameColorState = animateColorAsState(
+        targetValue = when (model.namingErrorType) {
+            RegistrationNamingErrorType.Init -> Gray400
+            is RegistrationNamingErrorType.InValid -> Negative
+        },
+        label = "userName color type"
+    )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .addFocusCleaner(focusManager)
             .background(color = Color.White),
     ) {
 
@@ -118,11 +133,22 @@ fun RegistrationNamingScreen(
                 )
             )
             Spacer(Modifier.height(Space12))
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(Space12)
+            ) {
                 CustomTextField(
                     text = userNameText.text,
-                    modifier = Modifier.weight(1f),
+                    onTextChange = {
+                        userNameText = TextFieldValue(it)
+                    },
                     height = Space48,
+                    elevation = 0.dp,
+                    cornerBorder = BorderStroke(
+                        width = 1.dp,
+                        color = userNameColorState.value
+                    ),
+                    modifier = Modifier.background(Color.White),
                     contentInnerPadding = PaddingValues(horizontal = 16.dp),
                     trailingIconContent = {
                         if (userNameText.text.isNotEmpty()) {
@@ -130,16 +156,19 @@ fun RegistrationNamingScreen(
                                 onClick = { userNameText = TextFieldValue() }
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_close_circle),
-                                    modifier = Modifier.size(Space20),
+                                    painter = painterResource(id = R.drawable.ic_close),
                                     contentDescription = "close icon",
-                                    tint = Gray200
                                 )
                             }
                         }
+                    },
+                    hintTextContent = {
+                        Text(
+                            text = stringResource(R.string.input_user_name),
+                            style = Body1.merge(color = Gray600)
+                        )
                     }
                 )
-                Spacer(Modifier.width(Space12))
                 ConfirmButton(
                     modifier = Modifier.wrapContentWidth(),
                     properties = ConfirmButtonProperties(
@@ -148,102 +177,33 @@ fun RegistrationNamingScreen(
                     ),
                     onClick = {
                         //TODO : check user
+                    },
+                    content = { style ->
+                        Text(
+                            text = stringResource(R.string.confirm_button_check_duplication),
+                            style = style.merge(color = Gray600)
+                        )
                     }
-                ) { style ->
-                    Text(
-                        text = stringResource(R.string.confirm_button_check_duplication),
-                        style = style.merge(color = Gray600)
-                    )
-                }
+                )
             }
             Spacer(Modifier.height(Space8))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_alert_triangle),
-                    contentDescription = null
-                )
-                Spacer(Modifier.width(Space4))
-                Text(
-                    text = "sdlkjsdfljsdfl",
-                    style = Body1.merge(color = Negative)
-                )
-            }
+
+            ErrorUserNamingComponent(model.namingErrorType)
             Spacer(Modifier.height(Space32))
 
-            Text(
-                text = "생년월일",
-                style = Body1.merge(
-                    color = Gray600,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-            Spacer(Modifier.height(Space12))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(Space12)
-            ) {
-                CustomTextField(
-                    text = userYearText.text,
-                    modifier = Modifier.weight(1f),
-                    height = Space48,
-                    contentInnerPadding = PaddingValues(horizontal = 16.dp),
-                    trailingIconContent = {
-                        if (userYearText.text.isNotEmpty()) {
-                            IconButton(
-                                onClick = { userYearText = TextFieldValue() }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close_circle),
-                                    modifier = Modifier.size(Space20),
-                                    contentDescription = "close icon",
-                                    tint = Gray200
-                                )
-                            }
-                        }
-                    }
-                )
-                CustomTextField(
-                    text = userMonthText.text,
-                    modifier = Modifier.weight(1f),
-                    height = Space48,
-                    contentInnerPadding = PaddingValues(horizontal = 16.dp),
-                    trailingIconContent = {
-                        if (userMonthText.text.isNotEmpty()) {
-                            IconButton(
-                                onClick = { userMonthText = TextFieldValue() }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close_circle),
-                                    modifier = Modifier.size(Space20),
-                                    contentDescription = "close icon",
-                                    tint = Gray200
-                                )
-                            }
-                        }
-                    }
-                )
-                CustomTextField(
-                    text = userDayText.text,
-                    modifier = Modifier.weight(1f),
-                    height = Space48,
-                    contentInnerPadding = PaddingValues(horizontal = 16.dp),
-                    trailingIconContent = {
-                        if (userDayText.text.isNotEmpty()) {
-                            IconButton(
-                                onClick = { userDayText = TextFieldValue() }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close_circle),
-                                    modifier = Modifier.size(Space20),
-                                    contentDescription = "close icon",
-                                    tint = Gray200
-                                )
-                            }
-                        }
-                    }
-                )
+            RegistraionUserDate(
+                focusManager = focusManager,
+                userYearText = userYearText,
+                userMonthText = userMonthText,
+                userDayText = userDayText,
+                onUserYearTextChange = { newText ->
+                    userYearText = newText
+                },
+                onUserMonthTextChange = { newText ->
+                    userMonthText = newText
+                },
+            ) { newText ->
+                userDayText = newText
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -264,7 +224,10 @@ fun RegistrationNamingScreen(
                     ),
                     content = { style ->
                         Text(text = "남자", style = style)
-                    }
+                    },
+                    onClick = {
+                        isUserMale = true
+                    },
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 ConfirmButton(
@@ -275,6 +238,9 @@ fun RegistrationNamingScreen(
                     ),
                     content = { style ->
                         Text(text = "여자", style = style)
+                    },
+                    onClick = {
+                        isUserMale = false
                     }
                 )
             }
@@ -316,7 +282,8 @@ fun RegistrationNamingScreenPreview() {
     RegistrationNamingScreen(
         appState = rememberApplicationState(),
         model = RegistrationNamingModel(
-            state = RegistrationNamingState.Init
+            state = RegistrationNamingState.Init,
+            namingErrorType = RegistrationNamingErrorType.Init
         ),
         event = MutableEventFlow(),
         intent = {},
