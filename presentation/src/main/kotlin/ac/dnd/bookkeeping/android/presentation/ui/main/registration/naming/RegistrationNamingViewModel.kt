@@ -20,6 +20,10 @@ class RegistrationNamingViewModel @Inject constructor(
         MutableStateFlow(RegistrationNamingState.Init)
     val state: StateFlow<RegistrationNamingState> = _state.asStateFlow()
 
+    private val _namingErrorType: MutableStateFlow<RegistrationNamingErrorType> =
+        MutableStateFlow(RegistrationNamingErrorType.Init)
+    val namingErrorType: StateFlow<RegistrationNamingErrorType> = _namingErrorType.asStateFlow()
+
     private val _event: MutableEventFlow<RegistrationNamingEvent> = MutableEventFlow()
     val event: EventFlow<RegistrationNamingEvent> = _event.asEventFlow()
 
