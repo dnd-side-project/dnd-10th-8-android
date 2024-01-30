@@ -1,26 +1,29 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
-import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
+import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
+import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -34,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,7 +56,8 @@ fun SettingScreen(
     var isDialogShowing by remember { mutableStateOf(false) }
     var isBottomSheetShowing by remember { mutableStateOf(false) }
     var isSearchRelationShowing by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf(TextFieldValue()) }
+    var searchText by remember { mutableStateOf("") }
+    var isErrorText by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -63,28 +66,39 @@ fun SettingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CustomTextField(
-            text = searchText.text,
-            onTextChange = {
-                searchText = TextFieldValue(it)
+        TypingTextField(
+            TypingTextFieldType.Basic,
+            text = searchText,
+            hintText = "이름을 입력하세요.",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            onValueChange = {
+                searchText = it
+                isErrorText = searchText.length > 5
             },
+            isError = isErrorText,
             trailingIconContent = {
-                if (searchText.text.isNotEmpty()) {
-                    IconButton(
-                        onClick = { searchText = TextFieldValue() }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_close),
-                            contentDescription = "bottom icon"
-                        )
+                IconButton(
+                    onClick = {
+                        searchText = ""
+                        isErrorText = false
                     }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_close),
+                        contentDescription = "bottom icon",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             },
-            hintTextContent = {
-                Text(text = "이름 입력 (1~15자)", color = Color.LightGray)
-            },
-            contentInnerPadding = PaddingValues(horizontal = 10.dp),
-            contentOuterPadding = PaddingValues(horizontal = 10.dp)
+            errorMessageContent = {
+                Text(
+                    text = "에러 발생",
+                    style = Body1.merge(color = Negative),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+            }
         )
         Text(
             text = "Setting",
