@@ -25,14 +25,12 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.main.LoginMainConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.RegistrationConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.ErrorUserNamingComponent
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.RegistraionUserDate
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type.RegistrationMainNamingErrorType
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type.UserGender
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.splash.SplashConstant
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -66,7 +64,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -107,7 +104,11 @@ fun RegistrationNamingScreen(
     )
 
     fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE)
+        appState.navController.navigate(HomeConstant.ROUTE) {
+            popUpTo(RegistrationMainConstant.CONTAIN_USER_MODEL) {
+                inclusive = true
+            }
+        }
     }
 
     fun applyValidation(event: RegistrationMainEvent.Check) {
@@ -122,9 +123,17 @@ fun RegistrationNamingScreen(
 
     fun submit(event: RegistrationMainEvent.Submit) {
         when (event) {
-            is RegistrationMainEvent.Submit.Success -> navigateToHome()
-            is RegistrationMainEvent.Submit.Error -> isDialogShowing = true
-            is RegistrationMainEvent.Submit.Failure -> isDialogShowing = true
+            is RegistrationMainEvent.Submit.Success -> {
+                navigateToHome()
+            }
+
+            is RegistrationMainEvent.Submit.Error -> {
+                isDialogShowing = true
+            }
+
+            is RegistrationMainEvent.Submit.Failure -> {
+                isDialogShowing = true
+            }
         }
     }
 
@@ -363,7 +372,6 @@ fun RegistrationNamingScreen(
                                 ).joinToString("-")
                             )
                         )
-                        buttonClickState = false
                     }
                 },
                 elevation = null

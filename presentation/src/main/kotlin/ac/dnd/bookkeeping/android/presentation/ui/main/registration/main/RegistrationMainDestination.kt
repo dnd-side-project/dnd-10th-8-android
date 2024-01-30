@@ -3,12 +3,8 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.onboarding.LoginOnBoardingConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.RegistrationConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.RegistrationViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -28,10 +24,10 @@ fun NavGraphBuilder.registrationNamingDestination(
 
         val viewModel: RegistrationMainViewModel = hiltViewModel()
 
-        if (userModel.email.isEmpty()){
+        if (userModel.email.isEmpty()) {
             appState.navController.popBackStack()
         } else {
-            LaunchedEffect(Unit){
+            LaunchedEffect(Unit) {
                 viewModel.initKakaoUserInfo(userModel)
             }
         }

@@ -22,7 +22,7 @@ fun NavGraphBuilder.loginOnBoardingDestination(
             ?: KakaoUserInformationModel(0L, "", "", "")
 
         val viewModel: LoginOnBoardingViewModel = hiltViewModel()
-        if (userModel.email.isEmpty()){
+        if (userModel.email.isEmpty()) {
             appState.navController.popBackStack()
         } else {
             viewModel.initKakaoUserInfo(userModel)

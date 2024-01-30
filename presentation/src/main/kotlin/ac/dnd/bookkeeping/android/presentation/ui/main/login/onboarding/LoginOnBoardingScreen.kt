@@ -135,7 +135,7 @@ fun LoginOnBoardingScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when(event){
+            when (event) {
                 is LoginOnBoardingEvent.Submit -> {
                     navigateToRegistration(event.kakaoUserModel)
                 }

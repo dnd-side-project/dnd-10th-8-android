@@ -28,12 +28,12 @@ class LoginOnBoardingViewModel @Inject constructor(
         MutableStateFlow(KakaoUserInformationModel(0L, "", "", ""))
     private val kakaoUserInfo: StateFlow<KakaoUserInformationModel> = _kakaoUserInfo.asStateFlow()
 
-    fun initKakaoUserInfo(userModel:KakaoUserInformationModel){
+    fun initKakaoUserInfo(userModel: KakaoUserInformationModel) {
         _kakaoUserInfo.value = userModel
     }
 
     fun onIntent(intent: LoginOnBoardingIntent) {
-        when(intent){
+        when (intent) {
             LoginOnBoardingIntent.Click -> {
                 launch {
                     _event.emit(LoginOnBoardingEvent.Submit(kakaoUserInfo.value))

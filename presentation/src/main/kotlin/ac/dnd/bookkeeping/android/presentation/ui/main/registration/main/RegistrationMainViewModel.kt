@@ -41,7 +41,7 @@ class RegistrationMainViewModel @Inject constructor(
     fun onIntent(intent: RegistrationMainIntent) {
         when (intent) {
             is RegistrationMainIntent.OnCheckUserName -> checkUserNameValid(intent.name)
-            is RegistrationMainIntent.OnClickSubmit ->{
+            is RegistrationMainIntent.OnClickSubmit -> {
                 registerUser(
                     nickName = intent.nickName,
                     gender = intent.gender,
@@ -51,7 +51,7 @@ class RegistrationMainViewModel @Inject constructor(
         }
     }
 
-    fun initKakaoUserInfo(userModel:KakaoUserInformationModel){
+    fun initKakaoUserInfo(userModel: KakaoUserInformationModel) {
         _kakaoUserInfo.value = userModel
     }
 
@@ -59,9 +59,9 @@ class RegistrationMainViewModel @Inject constructor(
         launch {
             checkNicknameUseCase(name)
                 .onSuccess {
-                    if (it){
+                    if (it) {
                         _event.emit(RegistrationMainEvent.Check.Valid)
-                    }else {
+                    } else {
                         _event.emit(RegistrationMainEvent.Check.Invalid)
                         _namingErrorType.value = RegistrationMainNamingErrorType.InValid.Duplication
                     }
@@ -83,7 +83,7 @@ class RegistrationMainViewModel @Inject constructor(
                     socialId = userModel.socialId,
                     email = userModel.email,
                     profileImageUrl = userModel.profileImageUrl,
-                    name =  userModel.name,
+                    name = userModel.name,
                     nickname = nickName,
                     gender = gender,
                     birth = birth
