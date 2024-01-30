@@ -1,5 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 
+import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+
 sealed interface RegistrationMainEvent {
 
     sealed interface Check : RegistrationMainEvent {
@@ -9,7 +11,7 @@ sealed interface RegistrationMainEvent {
 
     sealed interface Submit : RegistrationMainEvent {
         data object Success : Submit
-        data object Failure : Submit
-        data object Error : Submit
+        data class Failure(val exception: ServerException) : Submit
+        data class Error(val exception: Throwable) : Submit
     }
 }

@@ -37,9 +37,7 @@ class LoginMainViewModel @Inject constructor(
 
     fun onIntent(intent: LoginMainIntent) {
         when (intent) {
-            LoginMainIntent.Click -> {
-                loginFlow()
-            }
+            LoginMainIntent.Click -> loginFlow()
         }
     }
 

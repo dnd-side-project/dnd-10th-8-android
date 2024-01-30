@@ -9,9 +9,9 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.RegistrationMainConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -61,13 +62,10 @@ fun LoginOnBoardingScreen(
         pageCount = { 3 }
     )
 
-    fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE) {
-            popUpTo(LoginConstant.ROUTE) {
-                inclusive = true
-            }
-        }
+    fun navigateToRegistration(kakaoUserModel: KakaoUserInformationModel) {
+        appState.navController.sendKakaoUserModel(kakaoUserModel)
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -125,7 +123,7 @@ fun LoginOnBoardingScreen(
                 .align(Alignment.BottomCenter)
                 .padding(25.dp),
             onClick = {
-                navigateToHome()
+                intent(LoginOnBoardingIntent.Click)
             }
         ) { style ->
             Text(
@@ -137,7 +135,11 @@ fun LoginOnBoardingScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-
+            when (event) {
+                is LoginOnBoardingEvent.Submit -> {
+                    navigateToRegistration(event.kakaoUserModel)
+                }
+            }
         }
     }
 }
@@ -160,6 +162,16 @@ private fun LoginOnBoardingPage(
             color = Color.Black,
         )
     }
+}
+
+private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInformationModel) {
+    currentBackStackEntry?.savedStateHandle?.apply {
+        set(
+            key = RegistrationMainConstant.ROURE_ARGUMENT_USER_MODEL,
+            value = kakaoUserModel
+        )
+    }
+    navigate(RegistrationMainConstant.CONTAIN_USER_MODEL)
 }
 
 @Preview
