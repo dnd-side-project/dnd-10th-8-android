@@ -10,6 +10,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import timber.log.Timber
 
 @Composable
 fun SettingScreen(
@@ -51,6 +53,7 @@ fun SettingScreen(
 
     var isDialogShowing by remember { mutableStateOf(false) }
     var isBottomSheetShowing by remember { mutableStateOf(false) }
+    var isSearchRelationShowing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf(TextFieldValue()) }
 
     Column(
@@ -118,6 +121,26 @@ fun SettingScreen(
                 .clickable {
                     isBottomSheetShowing = true
                 }
+        )
+        Text(
+            text = "SearchRelation",
+            fontSize = 20.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .clickable {
+                    isSearchRelationShowing = true
+                }
+        )
+    }
+
+    if (isSearchRelationShowing) {
+        SearchRelationScreen(
+            onDismissRequest = { isSearchRelationShowing = false },
+            appState = appState,
+            onResult = {
+                Timber.d("onResult: $it")
+            },
         )
     }
 
