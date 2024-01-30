@@ -20,9 +20,13 @@ fun NavGraphBuilder.loginOnBoardingDestination(
             ?.savedStateHandle
             ?.get<KakaoUserInformationModel>(LoginOnBoardingConstant.ROURE_ARGUMENT_USER_MODEL)
             ?: KakaoUserInformationModel(0L, "", "", "")
-        if (userModel.email.isEmpty()) appState.navController.popBackStack()
 
         val viewModel: LoginOnBoardingViewModel = hiltViewModel()
+        if (userModel.email.isEmpty()){
+            appState.navController.popBackStack()
+        } else {
+            viewModel.initKakaoUserInfo(userModel)
+        }
 
         val model: LoginOnBoardingModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()

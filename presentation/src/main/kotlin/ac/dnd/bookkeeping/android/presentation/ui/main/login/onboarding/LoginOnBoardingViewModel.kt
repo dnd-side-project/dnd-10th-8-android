@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,21 @@ class LoginOnBoardingViewModel @Inject constructor(
     private val _event: MutableEventFlow<LoginOnBoardingEvent> = MutableEventFlow()
     val event: EventFlow<LoginOnBoardingEvent> = _event.asEventFlow()
 
-    fun onIntent(intent: LoginOnBoardingIntent) {
+    private val _kakaoUserInfo: MutableStateFlow<KakaoUserInformationModel> =
+        MutableStateFlow(KakaoUserInformationModel(0L, "", "", ""))
+    private val kakaoUserInfo: StateFlow<KakaoUserInformationModel> = _kakaoUserInfo.asStateFlow()
 
+    fun initKakaoUserInfo(userModel:KakaoUserInformationModel){
+        _kakaoUserInfo.value = userModel
+    }
+
+    fun onIntent(intent: LoginOnBoardingIntent) {
+        when(intent){
+            LoginOnBoardingIntent.Click -> {
+                launch {
+                    _event.emit(LoginOnBoardingEvent.Submit(kakaoUserInfo.value))
+                }
+            }
+        }
     }
 }
