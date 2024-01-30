@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.RegistrationMainErrorType
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type.RegistrationMainNamingErrorType
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,16 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ErrorUserNamingComponent(namingErrorType: RegistrationMainErrorType) {
-    Row {
-        when (namingErrorType) {
-            RegistrationMainErrorType.Init -> Spacer(Modifier.height(21.dp))
-            is RegistrationMainErrorType.InValid.Duplication -> {
+fun ErrorUserNamingComponent(namingType: RegistrationMainNamingErrorType) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        when (namingType) {
+            RegistrationMainNamingErrorType.Init -> Spacer(Modifier.height(21.dp))
+            is RegistrationMainNamingErrorType.InValid.Duplication -> {
                 Image(
                     painter = painterResource(R.drawable.ic_alert_triangle),
                     contentDescription = null
@@ -33,7 +34,7 @@ fun ErrorUserNamingComponent(namingErrorType: RegistrationMainErrorType) {
                 )
             }
 
-            is RegistrationMainErrorType.InValid.NumberOutOfRange -> {
+            is RegistrationMainNamingErrorType.InValid.NumberOutOfRange -> {
                 Image(
                     painter = painterResource(R.drawable.ic_alert_triangle),
                     contentDescription = null

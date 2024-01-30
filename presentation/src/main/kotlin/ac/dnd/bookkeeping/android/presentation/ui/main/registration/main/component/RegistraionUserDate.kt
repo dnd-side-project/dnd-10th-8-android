@@ -2,42 +2,40 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.compon
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space48
-import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
+import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
+import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun RegistraionUserDate(
     focusManager: FocusManager,
-    userYearText: TextFieldValue,
-    userMonthText: TextFieldValue,
-    userDayText: TextFieldValue,
-    onUserYearTextChange: (TextFieldValue) -> Unit,
-    onUserMonthTextChange: (TextFieldValue) -> Unit,
-    onUserDayTextChange: (TextFieldValue) -> Unit,
+    userYearText: String,
+    userMonthText: String,
+    userDayText: String,
+    onUserYearTextChange: (String) -> Unit,
+    onUserMonthTextChange: (String) -> Unit,
+    onUserDayTextChange: (String) -> Unit,
 ) {
     Text(
         text = "생년월일",
@@ -50,99 +48,93 @@ fun RegistraionUserDate(
 
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(Space12)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Surface(modifier = Modifier.weight(114f), color = Color.Transparent) {
-            CustomTextField(
-                text = userYearText.text,
-                modifier = Modifier.background(Color.White),
-                elevation = 0.dp,
-                onTextChange = {
-                    onUserYearTextChange(TextFieldValue(it))
+        Box(modifier = Modifier.weight(114f)) {
+            TypingTextField(
+                textType = TypingTextFieldType.Basic,
+                text = userYearText,
+                hintText = "YYYY",
+                onValueChange = {
+                    if (userYearText.length < 4) {
+                        onUserYearTextChange(it)
+                        if (it.length == 4) focusManager.moveFocus(FocusDirection.Right)
+                    }
                 },
-                height = Space48,
-                cornerBorder = BorderStroke(
-                    width = 1.dp,
-                    color = Gray400
-                ),
-                contentInnerPadding = PaddingValues(horizontal = 16.dp),
                 trailingIconContent = {
-                    if (userYearText.text.isNotEmpty()) {
+                    if (userYearText.isNotEmpty()) {
                         IconButton(
                             onClick = {
-                                onUserYearTextChange(TextFieldValue())
+                                onUserYearTextChange("")
                             }
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close_circle),
                                 contentDescription = "close icon",
+                                modifier = Modifier.size(Space20)
                             )
                         }
                     }
                 },
-                hintTextContent = { Text(text = "YYYY", style = Body1.merge(Gray600)) }
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
-        Surface(modifier = Modifier.weight(90f), color = Color.Transparent) {
-            CustomTextField(
-                text = userMonthText.text,
-                modifier = Modifier.background(Color.White),
-                elevation = 0.dp,
-                height = Space48,
-                onTextChange = {
-                    onUserMonthTextChange(TextFieldValue(it))
+        Spacer(Modifier.weight(10f))
+        Box(modifier = Modifier.weight(90f)) {
+            TypingTextField(
+                textType = TypingTextFieldType.Basic,
+                text = userMonthText,
+                hintText = "MM",
+                onValueChange = {
+                    if (userMonthText.length < 2) {
+                        onUserMonthTextChange(it)
+                        if (it.length == 2) focusManager.moveFocus(FocusDirection.Right)
+                    }
                 },
-                cornerBorder = BorderStroke(
-                    width = 1.dp,
-                    color = Gray400
-                ),
-                contentInnerPadding = PaddingValues(horizontal = 16.dp),
                 trailingIconContent = {
-                    if (userMonthText.text.isNotEmpty()) {
+                    if (userMonthText.isNotEmpty()) {
                         IconButton(
                             onClick = {
-                                onUserMonthTextChange(TextFieldValue())
+                                onUserMonthTextChange("")
                             }
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close_circle),
                                 contentDescription = "close icon",
+                                modifier = Modifier.size(Space20)
                             )
                         }
                     }
                 },
-                hintTextContent = { Text(text = "MM", style = Body1.merge(Gray600)) }
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
-        Surface(modifier = Modifier.weight(90f), color = Color.Transparent) {
-            CustomTextField(
-                text = userDayText.text,
-                height = Space48,
-                elevation = 0.dp,
-                modifier = Modifier.background(Color.White),
-                onTextChange = {
-                    onUserDayTextChange(TextFieldValue(it))
+        Spacer(Modifier.weight(10f))
+        Box(modifier = Modifier.weight(90f)) {
+            TypingTextField(
+                textType = TypingTextFieldType.Basic,
+                text = userDayText,
+                hintText = "DD",
+                onValueChange = {
+                    if (userDayText.length < 2) onUserDayTextChange(it)
                 },
-                contentInnerPadding = PaddingValues(horizontal = 16.dp),
-                cornerBorder = BorderStroke(
-                    width = 1.dp,
-                    color = Gray400
-                ),
                 trailingIconContent = {
-                    if (userDayText.text.isNotEmpty()) {
+                    if (userDayText.isNotEmpty()) {
                         IconButton(
                             onClick = {
-                                onUserDayTextChange(TextFieldValue())
+                                onUserDayTextChange("")
                             }
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close_circle),
                                 contentDescription = "close icon",
+                                modifier = Modifier.size(Space20)
                             )
+
                         }
                     }
                 },
-                hintTextContent = { Text(text = "DD", style = Body1.merge(Gray600)) }
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
     }
