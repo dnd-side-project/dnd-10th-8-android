@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming
+package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -8,7 +8,6 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space32
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space48
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -22,9 +21,8 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting.RegistrationCollectingConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming.component.ErrorUserNamingComponent
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming.component.RegistraionUserDate
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.ErrorUserNamingComponent
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.RegistraionUserDate
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -46,6 +44,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,9 +66,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 @Composable
 fun RegistrationNamingScreen(
     appState: ApplicationState,
-    model: RegistrationNamingModel,
-    event: EventFlow<RegistrationNamingEvent>,
-    intent: (RegistrationNamingIntent) -> Unit,
+    model: RegistrationMainModel,
+    event: EventFlow<RegistrationMainEvent>,
+    intent: (RegistrationMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
     val focusManager = LocalFocusManager.current
@@ -80,11 +79,39 @@ fun RegistrationNamingScreen(
     var isUserMale by remember { mutableStateOf(true) }
     val userNameColorState = animateColorAsState(
         targetValue = when (model.namingErrorType) {
-            RegistrationNamingErrorType.Init -> Gray400
-            is RegistrationNamingErrorType.InValid -> Negative
+            RegistrationMainErrorType.Init -> Gray400
+            is RegistrationMainErrorType.InValid -> Negative
         },
         label = "userName color type"
     )
+
+    fun applyValidation(event: RegistrationMainEvent.Check) {
+        when (event) {
+            is RegistrationMainEvent.Check.Valid -> {
+                model.namingErrorType = RegistrationMainErrorType.Init
+            }
+
+            is RegistrationMainEvent.Check.Invalid -> {
+                model.namingErrorType = event.namingErrorType
+            }
+        }
+    }
+
+    fun submit(event: RegistrationMainEvent.Submit) {
+        when (event) {
+            is RegistrationMainEvent.Submit.Success -> {
+                // TODO : Implement Success Case
+            }
+
+            is RegistrationMainEvent.Submit.Error -> {
+                // TODO : Implement Request Error Case
+            }
+
+            is RegistrationMainEvent.Submit.Failure -> {
+                // TODO : Implement Internal Server Error Case
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -137,38 +164,43 @@ fun RegistrationNamingScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(Space12)
             ) {
-                CustomTextField(
-                    text = userNameText.text,
-                    onTextChange = {
-                        userNameText = TextFieldValue(it)
-                    },
-                    height = Space48,
-                    elevation = 0.dp,
-                    cornerBorder = BorderStroke(
-                        width = 1.dp,
-                        color = userNameColorState.value
-                    ),
-                    modifier = Modifier.background(Color.White),
-                    contentInnerPadding = PaddingValues(horizontal = 16.dp),
-                    trailingIconContent = {
-                        if (userNameText.text.isNotEmpty()) {
-                            IconButton(
-                                onClick = { userNameText = TextFieldValue() }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close),
-                                    contentDescription = "close icon",
-                                )
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    color = Color.Transparent
+                ) {
+                    CustomTextField(
+                        text = userNameText.text,
+                        onTextChange = {
+                            userNameText = TextFieldValue(it)
+                        },
+                        height = Space48,
+                        elevation = 0.dp,
+                        cornerBorder = BorderStroke(
+                            width = 1.dp,
+                            color = userNameColorState.value
+                        ),
+                        modifier = Modifier.background(Color.White),
+                        contentInnerPadding = PaddingValues(horizontal = 16.dp),
+                        trailingIconContent = {
+                            if (userNameText.text.isNotEmpty()) {
+                                IconButton(
+                                    onClick = { userNameText = TextFieldValue() }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_close),
+                                        contentDescription = "close icon",
+                                    )
+                                }
                             }
+                        },
+                        hintTextContent = {
+                            Text(
+                                text = stringResource(R.string.input_user_name),
+                                style = Body1.merge(color = Gray600)
+                            )
                         }
-                    },
-                    hintTextContent = {
-                        Text(
-                            text = stringResource(R.string.input_user_name),
-                            style = Body1.merge(color = Gray600)
-                        )
-                    }
-                )
+                    )
+                }
                 ConfirmButton(
                     modifier = Modifier.wrapContentWidth(),
                     properties = ConfirmButtonProperties(
@@ -181,7 +213,10 @@ fun RegistrationNamingScreen(
                     content = { style ->
                         Text(
                             text = stringResource(R.string.confirm_button_check_duplication),
-                            style = style.merge(color = Gray600)
+                            style = style.merge(
+                                color = Gray600,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         )
                     }
                 )
@@ -268,9 +303,8 @@ fun RegistrationNamingScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
-                is RegistrationNamingEvent.GoToNextStep -> {
-                    appState.navController.navigate(RegistrationCollectingConstant.ROUTE)
-                }
+                is RegistrationMainEvent.Check -> applyValidation(event)
+                is RegistrationMainEvent.Submit -> submit(event)
             }
         }
     }
@@ -281,9 +315,9 @@ fun RegistrationNamingScreen(
 fun RegistrationNamingScreenPreview() {
     RegistrationNamingScreen(
         appState = rememberApplicationState(),
-        model = RegistrationNamingModel(
-            state = RegistrationNamingState.Init,
-            namingErrorType = RegistrationNamingErrorType.Init
+        model = RegistrationMainModel(
+            state = RegistrationMainState.Init,
+            namingErrorType = RegistrationMainErrorType.Init
         ),
         event = MutableEventFlow(),
         intent = {},

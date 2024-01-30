@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting
+package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -12,26 +12,33 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationCollectingViewModel @Inject constructor(
+class RegistrationMainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
 
-    private val _state: MutableStateFlow<RegistrationCollectingState> =
-        MutableStateFlow(RegistrationCollectingState.Init)
-    val state: StateFlow<RegistrationCollectingState> = _state.asStateFlow()
+    private val _state: MutableStateFlow<RegistrationMainState> =
+        MutableStateFlow(RegistrationMainState.Init)
+    val state: StateFlow<RegistrationMainState> = _state.asStateFlow()
 
-    private val _event: MutableEventFlow<RegistrationCollectingEvent> = MutableEventFlow()
-    val event: EventFlow<RegistrationCollectingEvent> = _event.asEventFlow()
+    private val _event: MutableEventFlow<RegistrationMainEvent> = MutableEventFlow()
+    val event: EventFlow<RegistrationMainEvent> = _event.asEventFlow()
 
-    fun onIntent(intent: RegistrationCollectingIntent) {
+    fun onIntent(intent: RegistrationMainIntent) {
         when (intent) {
-            RegistrationCollectingIntent.OnClickSubmit -> goToNextStep()
+            RegistrationMainIntent.OnCheckUserName -> checkUserNameValid()
+            RegistrationMainIntent.OnClickSubmit -> goToNextStep()
+        }
+    }
+
+    private fun checkUserNameValid() {
+        launch {
+
         }
     }
 
     private fun goToNextStep() {
         launch {
-            _event.emit(RegistrationCollectingEvent.GoToNextStep)
+
         }
     }
 }

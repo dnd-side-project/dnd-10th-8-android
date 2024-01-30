@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.registration.naming.component
+package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -59,7 +59,6 @@ fun RegistraionUserDate(
                 elevation = 0.dp,
                 onTextChange = {
                     onUserYearTextChange(TextFieldValue(it))
-                    if (userYearText.text.length == 4) focusManager.moveFocus(FocusDirection.Right)
                 },
                 height = Space48,
                 cornerBorder = BorderStroke(
@@ -92,9 +91,6 @@ fun RegistraionUserDate(
                 height = Space48,
                 onTextChange = {
                     onUserMonthTextChange(TextFieldValue(it))
-                    if (userMonthText.text.length == 2) focusManager.moveFocus(
-                        FocusDirection.Right
-                    )
                 },
                 cornerBorder = BorderStroke(
                     width = 1.dp,

@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.registration.collecting
+package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
@@ -11,27 +11,29 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.registrationCollectingDestination(
+fun NavGraphBuilder.registrationNamingDestination(
     appState: ApplicationState
 ) {
     composable(
-        route = RegistrationCollectingConstant.ROUTE
+        route = RegistrationMainConstant.ROUTE
     ) { backStackEntry ->
-
         val parentEntry = remember(backStackEntry) {
             appState.navController.getBackStackEntry(RegistrationConstant.ROUTE)
         }
         val parentViewModel: RegistrationViewModel = hiltViewModel(parentEntry)
-        val viewModel: RegistrationCollectingViewModel = hiltViewModel()
+        val viewModel: RegistrationMainViewModel = hiltViewModel()
 
-        val model: RegistrationCollectingModel = let {
+        val model: RegistrationMainModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
-            RegistrationCollectingModel(state = state)
+            RegistrationMainModel(
+                state = state,
+                namingErrorType = RegistrationMainErrorType.Init
+            )
         }
 
         ErrorObserver(viewModel)
 
-        RegistrationCollectingScreen(
+        RegistrationNamingScreen(
             appState = appState,
             model = model,
             event = viewModel.event,

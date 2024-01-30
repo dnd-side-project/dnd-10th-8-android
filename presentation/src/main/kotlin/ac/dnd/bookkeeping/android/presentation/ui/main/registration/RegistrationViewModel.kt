@@ -8,4 +8,4 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
-): BaseViewModel()
+) : BaseViewModel()
