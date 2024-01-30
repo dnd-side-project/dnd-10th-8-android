@@ -61,7 +61,7 @@ class AuthenticationApi @Inject constructor(
         gender: String,
         birth: String
     ): Result<RegisterRes> {
-        return client.post("$baseUrl/api/v1/members") {
+        return noAuthClient.post("$baseUrl/api/v1/members") {
             setBody(
                 RegisterReq(
                     socialId = socialId,
