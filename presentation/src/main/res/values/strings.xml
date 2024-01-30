@@ -14,9 +14,11 @@
 
     <string name="setting_dialog_title">테스트</string>
     <string name="setting_dialog_message">테스트내용\n앗, 에러가 발생했어요!\n이렇게 됩니다.</string>
+    
+    <string name="confirm_button_check_duplication">중복 확인</string>
 
     <string name="login_main_dialog_message">카카오 로그인 실패 !</string>
 
     <string name="next_button_text">다음</string>
-    <string name="input_user_name">이름 입력 (1~15자)</string>
+    <string name="input_user_name">닉네임 입력 (15자 이내)</string>
 </resources>
