@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.domain.repository.sociallogin
+package ac.dnd.bookkeeping.android.domain.repository
 
 import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
 

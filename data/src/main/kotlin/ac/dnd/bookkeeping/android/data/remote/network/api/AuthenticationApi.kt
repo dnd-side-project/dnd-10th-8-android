@@ -7,6 +7,8 @@ import ac.dnd.bookkeeping.android.data.remote.network.environment.ErrorMessageMa
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.GetAccessTokenRes
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.LoginReq
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.LoginRes
+import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterReq
+import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterRes
 import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -48,6 +50,30 @@ class AuthenticationApi @Inject constructor(
     suspend fun logout(): Result<Unit> {
         return client.post("$baseUrl/api/v1/auth/logout")
             .convert(errorMessageMapper::map)
+    }
+
+    suspend fun register(
+        socialId: Long,
+        email: String,
+        profileImageUrl: String,
+        name: String,
+        nickname: String,
+        gender: String,
+        birth: String
+    ): Result<RegisterRes> {
+        return noAuthClient.post("$baseUrl/api/v1/members") {
+            setBody(
+                RegisterReq(
+                    socialId = socialId,
+                    email = email,
+                    profileImageUrl = profileImageUrl,
+                    name = name,
+                    nickname = nickname,
+                    gender = gender,
+                    birth = birth
+                )
+            )
+        }.convert(errorMessageMapper::map)
     }
 
     suspend fun withdraw(): Result<Unit> {

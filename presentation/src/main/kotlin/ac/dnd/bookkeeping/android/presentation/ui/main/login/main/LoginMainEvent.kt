@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.main
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.presentation.model.bookkeeping.KakaoUserInformationModel
+import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationModel
 
 sealed interface LoginMainEvent {
     sealed interface Login : LoginMainEvent {
