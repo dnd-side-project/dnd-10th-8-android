@@ -136,7 +136,9 @@ fun CalendarComponent(
                             )
                         )
                     }
-                    itemContent(dayItem)
+                    if (dayItem.dayType != CalendarDayType.OTHER_MONTH) {
+                        itemContent(dayItem)
+                    }
                 }
             }
         }
