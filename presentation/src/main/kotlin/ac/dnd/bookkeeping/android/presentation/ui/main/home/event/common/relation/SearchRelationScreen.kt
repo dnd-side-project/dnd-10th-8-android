@@ -63,7 +63,6 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-
 @Composable
 fun SearchRelationScreen(
     appState: ApplicationState,
@@ -118,7 +117,7 @@ private fun SearchRelationScreen(
 //        appState.navController.navigate(EditRelationConstant.ROUTE)
     }
 
-    fun login(event: SearchRelationEvent.GetGroup) {
+    fun getGroup(event: SearchRelationEvent.GetGroup) {
         when (event) {
             is SearchRelationEvent.GetGroup.Failure -> {
                 // TODO : ERROR
@@ -230,7 +229,7 @@ private fun SearchRelationScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
-                is SearchRelationEvent.GetGroup -> login(event)
+                is SearchRelationEvent.GetGroup -> getGroup(event)
             }
         }
     }

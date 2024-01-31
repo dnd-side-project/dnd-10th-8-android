@@ -13,6 +13,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.group.AddGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,6 +57,7 @@ fun SettingScreen(
     var isDialogShowing by remember { mutableStateOf(false) }
     var isBottomSheetShowing by remember { mutableStateOf(false) }
     var isSearchRelationShowing by remember { mutableStateOf(false) }
+    var isAddGroupShowing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     var isErrorText by remember { mutableStateOf(false) }
 
@@ -146,6 +148,16 @@ fun SettingScreen(
                     isSearchRelationShowing = true
                 }
         )
+        Text(
+            text = "AddGroup",
+            fontSize = 20.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .clickable {
+                    isAddGroupShowing = true
+                }
+        )
     }
 
     if (isSearchRelationShowing) {
@@ -158,6 +170,15 @@ fun SettingScreen(
         )
     }
 
+    if (isAddGroupShowing) {
+        AddGroupScreen(
+            appState = appState,
+            onDismissRequest = { isAddGroupShowing = false },
+            onResult = {
+                Timber.d("onResult")
+            }
+        )
+    }
     if (isBottomSheetShowing) {
         BottomSheetScreen(
             onDismissRequest = { isBottomSheetShowing = false },
