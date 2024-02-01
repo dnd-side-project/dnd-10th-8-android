@@ -132,7 +132,7 @@ private fun AddGroupScreen(
                 },
                 modifier = Modifier.height(48.dp),
                 maxTextLength = 8,
-                leadingIconContent = {
+                trailingIconContent = {
                     if (text.isNotEmpty()) {
                         IconButton(
                             onClick = {
