@@ -1,11 +1,16 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray100
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
+import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.HistoryDetailScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,8 +45,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryScreen() {
-
+fun HistoryScreen(
+    appState: ApplicationState
+) {
+    val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
     val pages = listOf("전체", "받은 마음", "보낸 마음")
     val pagerState = rememberPagerState(
@@ -51,13 +59,15 @@ fun HistoryScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .addFocusCleaner(focusManager)
+            .background(Gray100)
     ) {
         Box(
             modifier = Modifier
                 .height(56.dp)
-                .padding(horizontal = 20.dp)
                 .fillMaxWidth()
+                .background(Gray000)
+                .padding(horizontal = 20.dp)
         ) {
             Text(
                 text = "MUR",
@@ -87,8 +97,10 @@ fun HistoryScreen() {
             )
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier.padding(horizontal = 20.dp),
                 backgroundColor = Color.White,
+                modifier = Modifier
+                    .background(Color.White)
+                    .padding(horizontal = 20.dp),
                 divider = {
                     Box(
                         modifier = Modifier
@@ -140,5 +152,5 @@ fun getAlarmImage(alarmOnState: Boolean): Painter {
 @Composable
 @Preview
 fun HistoryScreenPreview() {
-    HistoryScreen()
+    HistoryScreen(appState = rememberApplicationState())
 }
