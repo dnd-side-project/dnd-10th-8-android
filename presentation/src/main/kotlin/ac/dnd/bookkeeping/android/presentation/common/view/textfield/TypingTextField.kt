@@ -61,6 +61,12 @@ fun TypingTextField(
     maxTextLength: Int = 100,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    backgroundColor: Color = Color.White,
+    basicBorderColor: Color = Gray400,
+    contentPadding: PaddingValues = PaddingValues(
+        vertical = 13.5.dp,
+        horizontal = 16.dp
+    ),
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
@@ -73,7 +79,7 @@ fun TypingTextField(
         TypingTextFieldType.LongSentence -> false
     }
 
-    val currentColor = if (isError) Negative else if (isTextFieldFocused) Primary3 else Gray400
+    val currentColor = if (isError) Negative else if (isTextFieldFocused) Primary3 else basicBorderColor
     val currentColorState = animateColorAsState(
         targetValue = currentColor,
         label = "color state"
@@ -83,7 +89,7 @@ fun TypingTextField(
         Column(
             modifier = modifier
                 .background(
-                    color = Color.White,
+                    color = backgroundColor,
                     shape = Shapes.medium
                 )
                 .border(
@@ -107,7 +113,6 @@ fun TypingTextField(
                 singleLine = isSingleLine,
                 minLines = if (isSingleLine) 1 else 3,
                 keyboardOptions = keyboardOptions,
-
                 cursorBrush = SolidColor(value = currentColorState.value),
                 interactionSource = interactionSource,
             ) { textField ->
@@ -126,12 +131,8 @@ fun TypingTextField(
                     },
                     leadingIcon = leadingIconContent,
                     trailingIcon = trailingIconContent,
-                    contentPadding = PaddingValues(
-                        vertical = 13.5.dp,
-                        horizontal = 16.dp
-                    )
+                    contentPadding = contentPadding
                 )
-
             }
 
             if (textType == TypingTextFieldType.LongSentence) {
@@ -153,8 +154,7 @@ fun TypingTextField(
         if (textType == TypingTextFieldType.Basic) {
             Spacer(Modifier.height(Space8))
             Box(
-                modifier = Modifier
-                    .alpha(if (isError) 1f else 0f)
+                modifier = Modifier.alpha(if (isError) 1f else 0f)
             ) {
                 errorMessageContent()
             }
