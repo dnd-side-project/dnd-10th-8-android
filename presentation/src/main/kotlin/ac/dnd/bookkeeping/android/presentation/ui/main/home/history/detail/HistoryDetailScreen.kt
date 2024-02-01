@@ -1,6 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
 
 import ac.dnd.bookkeeping.android.domain.model.event.Group
+import ac.dnd.bookkeeping.android.domain.model.event.Relation
+import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -20,11 +22,14 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
-import ac.dnd.bookkeeping.android.presentation.common.view.GroupItemComponent
+import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
+import ac.dnd.bookkeeping.android.presentation.common.view.chip.GroupChipListComponent
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryViewState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.item.HistoryRelationItem
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.type.HistorySortedType
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,7 +46,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
@@ -62,10 +69,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("InvalidColorHexValue")
 @Composable
 fun HistoryDetailScreen(
     viewState: HistoryViewState
@@ -110,6 +119,49 @@ fun HistoryDetailScreen(
             listOf()
         )
     )
+    val relations = listOf(
+        Relation(
+            id = 9922,
+            name = "Patty Meadows",
+            group = RelationGroup(
+                id = 2337,
+                name = "Angelia McBride",
+            ),
+            giveMoney = 8246,
+            takeMoney = 5441
+        ),
+        Relation(
+            id = 1447,
+            name = "Margery Hyde",
+            group = RelationGroup(
+                id = 2337,
+                name = "Angelia McBride",
+            ),
+            giveMoney = 2859,
+            takeMoney = 1341
+        ),
+        Relation(
+            id = 8446,
+            name = "Harlan Yang",
+            group = RelationGroup(
+                id = 2337,
+                name = "Angelia McBride",
+            ),
+            giveMoney = 8327,
+            takeMoney = 4954
+        ),
+        Relation(
+            id = 3679,
+            name = "Jerome Pitts",
+            group = RelationGroup(
+                id = 6599,
+                name = "Andrea Serrano",
+            ),
+            giveMoney = 4190,
+            takeMoney = 4010
+        )
+    )
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -197,6 +249,7 @@ fun HistoryDetailScreen(
                             horizontal = Space20,
                             vertical = Space16
                         )
+
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_close_circle),
@@ -255,9 +308,9 @@ fun HistoryDetailScreen(
                 horizontal = 20.dp
             )
         ) {
-            GroupItemComponent(
-                isViewNumbering = true,
-                selectedId = selectedCategoryId,
+            GroupChipListComponent(
+                chipType = ChipType.MAIN,
+                currentSelectedId = selectedCategoryId,
                 groups = groups,
                 onSelectChip = { group ->
                     selectedCategoryId = group.id
@@ -359,8 +412,48 @@ fun HistoryDetailScreen(
                 }
             }
         }
+        if (relations.size ==0) {
+            EmptyRelationView()
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(Space16),
+                verticalArrangement = Arrangement.spacedBy(Space16),
+                contentPadding = PaddingValues(
+                    horizontal = 20.dp,
+                    vertical = 16.dp
+                )
+            ){
+                items(relations){ relation ->
+                    HistoryRelationItem(
+                        relation,
+                        onSelectCard = {
+
+                        }
+                    )
+                }
+            }
+        }
     }
 }
+
+@Composable
+fun EmptyRelationView(){
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.weight(107.66f))
+        Text(
+            text = "아직 경조사비 내역이 입력되지 않았어요.",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = Body1.merge(
+                color = Gray600,
+                fontWeight = FontWeight.SemiBold
+            )
+        )
+        Spacer(modifier = Modifier.weight(188.34f))
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
