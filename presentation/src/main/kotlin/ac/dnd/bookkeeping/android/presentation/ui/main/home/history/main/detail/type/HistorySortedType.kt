@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.type
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.type
 
 enum class HistorySortedType(
     val typeName: String

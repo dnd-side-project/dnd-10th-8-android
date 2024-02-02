@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.item
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.item
 
 import ac.dnd.bookkeeping.android.domain.model.event.Relation
 import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
