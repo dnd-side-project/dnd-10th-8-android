@@ -1,8 +1,6 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
-import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
+import ac.dnd.bookkeeping.android.domain.model.history.HistoryInfo
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -26,9 +24,11 @@ import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.GroupChipListComponent
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryViewState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.item.HistoryRelationItem
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.type.HistorySortedType
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainModel
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.item.HistoryRelationItem
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.type.HistorySortedType
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.type.HistoryViewType
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,6 +55,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -73,94 +74,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @SuppressLint("InvalidColorHexValue")
 @Composable
 fun HistoryDetailScreen(
-    viewState: HistoryViewState
+    viewType: HistoryViewType,
+    mainModel: HistoryMainModel,
+    viewModel: HistoryDetailViewModel = hiltViewModel()
 ) {
-    var searchText by remember { mutableStateOf("") }
-    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    var selectedCategoryId by remember { mutableLongStateOf(1) }
-    var viewSortType by remember { mutableStateOf(HistorySortedType.LATEST) }
+    val model: HistoryDetailModel = Unit.let {
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        val groups by viewModel.groups.collectAsStateWithLifecycle()
 
-    //TODO to model
-    val unwrittenCount = 5
-    val totalHeart = 32
-    val groups = listOf(
-        Group(
-            1,
-            "전체",
-            listOf()
-        ),
-        Group(
-            2,
-            "친구",
-            listOf()
-        ),
-        Group(
-            3,
-            "가족",
-            listOf()
-        ),
-        Group(
-            4,
-            "지인",
-            listOf()
-        ),
-        Group(
-            5,
-            "직장",
-            listOf()
-        ),
-        Group(
-            6,
-            "사촌",
-            listOf()
+        HistoryDetailModel(
+            state = state,
+            viewType = viewType,
+            historyGroups = groups,
         )
-    )
-    val relations = listOf(
-        Relation(
-            id = 9922,
-            name = "Patty Meadows",
-            group = RelationGroup(
-                id = 2337,
-                name = "Angelia McBride",
-            ),
-            giveMoney = 8246,
-            takeMoney = 5441
-        ),
-        Relation(
-            id = 1447,
-            name = "Margery Hyde",
-            group = RelationGroup(
-                id = 2337,
-                name = "Angelia McBride",
-            ),
-            giveMoney = 2859,
-            takeMoney = 1341
-        ),
-        Relation(
-            id = 8446,
-            name = "Harlan Yang",
-            group = RelationGroup(
-                id = 2337,
-                name = "Angelia McBride",
-            ),
-            giveMoney = 8327,
-            takeMoney = 4954
-        ),
-        Relation(
-            id = 3679,
-            name = "Jerome Pitts",
-            group = RelationGroup(
-                id = 6599,
-                name = "Andrea Serrano",
-            ),
-            giveMoney = 4190,
-            takeMoney = 4010
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadHistoryData(viewType)
+    }
+
+    var searchText by remember { mutableStateOf("") }
+    var selectedGroupId by remember {
+        mutableLongStateOf(
+            model.historyGroups.firstOrNull()?.id ?: 0
         )
-    )
+    }
+    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+    var viewSortType by remember { mutableStateOf(HistorySortedType.LATEST) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -187,7 +133,7 @@ fun HistoryDetailScreen(
                         SpanStyle(color = Primary4)
                     ) {
                         //TODO load
-                        append(totalHeart.toString())
+                        append(mainModel.historyInfo.totalHeartCount.toString())
                     }
                     append("의 마음을\n주고 받았어요 ")
                 },
@@ -235,7 +181,7 @@ fun HistoryDetailScreen(
                     }
                 } else null
             )
-            if (unwrittenCount > 0) {
+            if (mainModel.historyInfo.unWrittenCount > 0) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier
@@ -272,7 +218,7 @@ fun HistoryDetailScreen(
                                     withStyle(
                                         SpanStyle(color = Gray800)
                                     ) {
-                                        append("${unwrittenCount}개")
+                                        append("${mainModel.historyInfo.unWrittenCount}개")
                                     }
                                 },
                                 style = Body1.merge(
@@ -310,10 +256,10 @@ fun HistoryDetailScreen(
         ) {
             GroupChipListComponent(
                 chipType = ChipType.MAIN,
-                currentSelectedId = selectedCategoryId,
-                groups = groups,
+                currentSelectedId = selectedGroupId,
+                groups = model.historyGroups,
                 onSelectChip = { group ->
-                    selectedCategoryId = group.id
+                    selectedGroupId = group.id
                 }
             )
         }
@@ -412,9 +358,8 @@ fun HistoryDetailScreen(
                 }
             }
         }
-        if (relations.size ==0) {
-            EmptyRelationView()
-        } else {
+
+        model.historyGroups.find { it.id == selectedGroupId }?.let {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(Space16),
@@ -423,8 +368,8 @@ fun HistoryDetailScreen(
                     horizontal = 20.dp,
                     vertical = 16.dp
                 )
-            ){
-                items(relations){ relation ->
+            ) {
+                items(it.relations) { relation ->
                     HistoryRelationItem(
                         relation,
                         onSelectCard = {
@@ -433,12 +378,12 @@ fun HistoryDetailScreen(
                     )
                 }
             }
-        }
+        } ?: EmptyRelationView()
     }
 }
 
 @Composable
-fun EmptyRelationView(){
+fun EmptyRelationView() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(107.66f))
         Text(
@@ -459,6 +404,14 @@ fun EmptyRelationView(){
 @Composable
 fun HistoryDetailPreview() {
     HistoryDetailScreen(
-        HistoryViewState.TOTAL
+        HistoryViewType.TOTAL,
+        mainModel = HistoryMainModel(
+            state = HistoryMainState.Init,
+            historyInfo = HistoryInfo(
+                unReadAlarm = true,
+                totalHeartCount = 30,
+                unWrittenCount = 5
+            )
+        ),
     )
 }

@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
 sealed interface HistoryDetailState {
     data object Init : HistoryDetailState
