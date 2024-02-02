@@ -7,6 +7,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class HistoryDetailModel(
     val state: HistoryDetailState,
-    val viewType : HistoryViewType,
+    val viewType: HistoryViewType,
     val historyGroups: List<Group>,
 )

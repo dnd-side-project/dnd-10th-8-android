@@ -7,7 +7,6 @@ import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationEvent
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.type.HistoryViewType
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,20 +25,34 @@ class HistoryDetailViewModel @Inject constructor(
         MutableStateFlow(HistoryDetailState.Init)
     val state: StateFlow<HistoryDetailState> = _state.asStateFlow()
 
-    private val _event: MutableEventFlow<HistoryDetailEvent > = MutableEventFlow()
+    private val _event: MutableEventFlow<HistoryDetailEvent> = MutableEventFlow()
     val event: EventFlow<HistoryDetailEvent> = _event.asEventFlow()
 
-    private val _groups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
-    val groups: StateFlow<List<Group>> = _groups.asStateFlow()
+    private val _totalGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
+    val totalGroups: StateFlow<List<Group>> = _totalGroups.asStateFlow()
 
-    fun loadHistoryData(
-        historyViewType: HistoryViewType
-    ){
+    private val _takeGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
+    val takeGroups: StateFlow<List<Group>> = _takeGroups.asStateFlow()
+
+    private val _giveGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
+    val giveGroups: StateFlow<List<Group>> = _giveGroups.asStateFlow()
+
+    init {
+        HistoryViewType.entries.forEach {
+            loadHistoryData(it)
+        }
+    }
+
+    private fun loadHistoryData(historyViewType: HistoryViewType) {
         launch {
             _state.value = HistoryDetailState.Loading
             getHistoryGroupListUseCase(historyViewType.typeName)
                 .onSuccess {
-                    _groups.value = it
+                    when (historyViewType) {
+                        HistoryViewType.TOTAL -> _totalGroups.value = it
+                        HistoryViewType.TAKE -> _takeGroups.value = it
+                        HistoryViewType.GIVE -> _giveGroups.value = it
+                    }
                 }
                 .onFailure { exception ->
                     when (exception) {

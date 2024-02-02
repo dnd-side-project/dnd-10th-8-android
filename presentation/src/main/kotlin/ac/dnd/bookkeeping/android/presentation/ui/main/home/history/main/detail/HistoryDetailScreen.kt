@@ -55,7 +55,6 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -86,17 +85,17 @@ fun HistoryDetailScreen(
 ) {
     val model: HistoryDetailModel = Unit.let {
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val groups by viewModel.groups.collectAsStateWithLifecycle()
+        val groups by when (viewType) {
+            HistoryViewType.TOTAL -> viewModel.totalGroups.collectAsStateWithLifecycle()
+            HistoryViewType.TAKE -> viewModel.takeGroups.collectAsStateWithLifecycle()
+            HistoryViewType.GIVE -> viewModel.giveGroups.collectAsStateWithLifecycle()
+        }
 
         HistoryDetailModel(
             state = state,
             viewType = viewType,
             historyGroups = groups,
         )
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.loadHistoryData(viewType)
     }
 
     var searchText by remember { mutableStateOf("") }
@@ -132,8 +131,7 @@ fun HistoryDetailScreen(
                     withStyle(
                         SpanStyle(color = Primary4)
                     ) {
-                        //TODO load
-                        append(mainModel.historyInfo.totalHeartCount.toString())
+                        append("${mainModel.historyInfo.totalHeartCount}번")
                     }
                     append("의 마음을\n주고 받았어요 ")
                 },
@@ -149,9 +147,8 @@ fun HistoryDetailScreen(
                 onValueChange = {
                     searchText = it
                 },
+                modifier = Modifier.height(39.dp),
                 contentPadding = PaddingValues(
-                    top = 9.dp,
-                    bottom = 9.dp,
                     start = if (searchText.isEmpty()) 0.dp else 12.dp,
                     end = 20.dp,
                 ),
@@ -182,7 +179,6 @@ fun HistoryDetailScreen(
                 } else null
             )
             if (mainModel.historyInfo.unWrittenCount > 0) {
-                Spacer(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier
                         .border(

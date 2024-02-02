@@ -12,7 +12,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
         historyType: String
     ): Result<List<Group>> {
         return Result.success(
-            when(historyType){
+            when (historyType) {
                 "take" -> {
                     listOf(
                         Group(
@@ -27,7 +27,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
-                                    takeMoney = 10000000
+                                    takeMoney = 1000000
                                 ),
                                 Relation(
                                     id = 5,
@@ -36,7 +36,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 4,
                                         name = "친구",
                                     ),
-                                    giveMoney = 1000000,
+                                    giveMoney = 100000,
                                     takeMoney = 0
                                 ),
                                 Relation(
@@ -46,7 +46,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 0,
                                         name = "가족",
                                     ),
-                                    giveMoney = 10000000,
+                                    giveMoney = 100000,
                                     takeMoney = 23
                                 ),
                                 Relation(
@@ -66,7 +66,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 12312223,
                                     takeMoney = 12
                                 ),
                                 Relation(
@@ -77,7 +77,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 4345346
                                 ),
                             )
                         ),
@@ -92,7 +92,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 4,
                                         name = "친구",
                                     ),
-                                    giveMoney = 1000000,
+                                    giveMoney = 100000,
                                     takeMoney = 0
                                 ),
                             )
@@ -108,7 +108,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 0,
                                         name = "가족",
                                     ),
-                                    giveMoney = 10000000,
+                                    giveMoney = 1000000,
                                     takeMoney = 23
                                 ),
                             )
@@ -134,7 +134,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 12231223,
                                     takeMoney = 12
                                 ),
                             )
@@ -151,7 +151,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 4345346
                                 ),
                             )
                         ),
@@ -167,12 +167,13 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
-                                    takeMoney = 10000000
+                                    takeMoney = 1000000
                                 ),
                             )
                         )
                     )
                 }
+
                 "give" -> {
                     listOf(
                         Group(
@@ -187,7 +188,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
-                                    takeMoney = 10000000
+                                    takeMoney = 1000000
                                 ),
                                 Relation(
                                     id = 5,
@@ -196,7 +197,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 4,
                                         name = "친구",
                                     ),
-                                    giveMoney = 1000000,
+                                    giveMoney = 100000,
                                     takeMoney = 0
                                 ),
                                 Relation(
@@ -206,7 +207,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 0,
                                         name = "가족",
                                     ),
-                                    giveMoney = 10000000,
+                                    giveMoney = 100000,
                                     takeMoney = 23
                                 ),
                                 Relation(
@@ -226,7 +227,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 12231223,
                                     takeMoney = 12
                                 ),
                                 Relation(
@@ -237,7 +238,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 0
                                 ),
                             )
                         ),
@@ -252,7 +253,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 4,
                                         name = "친구",
                                     ),
-                                    giveMoney = 1000000,
+                                    giveMoney = 10000,
                                     takeMoney = 0
                                 ),
                             )
@@ -268,7 +269,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 0,
                                         name = "가족",
                                     ),
-                                    giveMoney = 10000000,
+                                    giveMoney = 100000,
                                     takeMoney = 23
                                 ),
                             )
@@ -294,7 +295,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 1231223,
                                     takeMoney = 12
                                 ),
                             )
@@ -311,7 +312,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 4345346
                                 ),
                             )
                         ),
@@ -333,6 +334,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                         )
                     )
                 }
+
                 else -> {
                     listOf(
                         Group(
@@ -386,7 +388,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 123121223,
                                     takeMoney = 12
                                 ),
                                 Relation(
@@ -397,7 +399,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 43534346
                                 ),
                             )
                         ),
@@ -454,7 +456,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         id = 1,
                                         name = "지인",
                                     ),
-                                    giveMoney = 1231231223,
+                                    giveMoney = 1231223,
                                     takeMoney = 12
                                 ),
                             )
@@ -471,7 +473,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "직장",
                                     ),
                                     giveMoney = 1000,
-                                    takeMoney = 435345346
+                                    takeMoney = 43534546
                                 ),
                             )
                         ),
@@ -487,7 +489,7 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
-                                    takeMoney = 10000000
+                                    takeMoney = 1000000
                                 ),
                             )
                         )

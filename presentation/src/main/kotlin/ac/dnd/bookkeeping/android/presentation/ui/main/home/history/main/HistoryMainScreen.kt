@@ -93,7 +93,11 @@ fun HistoryMainScreen(
                     }
             )
         }
-        Box {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Gray000)
+        ) {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -103,9 +107,9 @@ fun HistoryMainScreen(
             )
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                backgroundColor = Color.White,
+                backgroundColor = Color.Transparent,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(Color.Transparent)
                     .padding(horizontal = 20.dp),
                 divider = {
                     Box(
@@ -149,16 +153,18 @@ fun HistoryMainScreen(
                         mainModel = model
                     )
                 }
+
                 1 -> {
                     HistoryDetailScreen(
                         viewType = HistoryViewType.TAKE,
                         mainModel = model
                     )
                 }
+
                 2 -> {
                     HistoryDetailScreen(
                         viewType = HistoryViewType.GIVE,
-                        mainModel =  model
+                        mainModel = model
                     )
                 }
             }

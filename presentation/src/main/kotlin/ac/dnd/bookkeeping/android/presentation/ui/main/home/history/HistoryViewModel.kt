@@ -30,8 +30,8 @@ class HistoryViewModel @Inject constructor(
     val event: EventFlow<HistoryMainEvent> = _event.asEventFlow()
 
     private val _historyInfo: MutableStateFlow<HistoryInfo> =
-        MutableStateFlow(HistoryInfo(0,0,false))
-    val historyInfo : StateFlow<HistoryInfo> = _historyInfo.asStateFlow()
+        MutableStateFlow(HistoryInfo(0, 0, false))
+    val historyInfo: StateFlow<HistoryInfo> = _historyInfo.asStateFlow()
 
     init {
         launch {
@@ -41,12 +41,13 @@ class HistoryViewModel @Inject constructor(
                     _historyInfo.value = it
                 }
                 .onFailure { exception ->
-                    when(exception){
+                    when (exception) {
                         is ServerException -> _event.emit(
                             HistoryMainEvent.GetHistoryInfoMain.Failure(
                                 exception
                             )
                         )
+
                         else -> _event.emit(HistoryMainEvent.GetHistoryInfoMain.Error(exception))
                     }
                 }
@@ -54,7 +55,7 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun onIntent(intent: HistoryMainIntent){
+    fun onIntent(intent: HistoryMainIntent) {
 
     }
 }
