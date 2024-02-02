@@ -67,7 +67,7 @@ fun HomeScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    HistoryScreen(
+                    BookkeepingScreen(
                         appState = appState
                     )
                 }
