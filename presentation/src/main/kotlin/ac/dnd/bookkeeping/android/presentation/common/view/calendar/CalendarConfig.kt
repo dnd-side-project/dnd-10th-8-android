@@ -28,6 +28,7 @@ class CalendarConfig {
 
     private fun makeMonthDate(dataSet: ArrayList<CalendarDay>) {
         calendar.set(Calendar.DATE, 1)
+        todayDay = 0
         val prevTail = calendar.get(Calendar.DAY_OF_WEEK) - 1
         makeBeforeDays(prevTail, dataSet)
         makeCurrentDays(dataSet)
