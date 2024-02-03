@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.usecase.relation
 
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
-import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
 import javax.inject.Inject
 
 class GetRelationUseCase @Inject constructor(
@@ -9,13 +9,13 @@ class GetRelationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         id: Long
-    ): Result<Relation> {
+    ): Result<RelationLegacy> {
         // TODO
         return Result.success(
-            Relation(
+            RelationLegacy(
                 id = 6710,
                 name = "Harrison House",
-                group = RelationGroup(
+                group = RelationGroupLegacy(
                     id = 5104,
                     name = "Casandra Reynolds"
                 ),

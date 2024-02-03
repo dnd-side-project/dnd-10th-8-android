@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail.type.HistoryViewType
 import androidx.compose.runtime.Immutable
 
@@ -8,5 +8,5 @@ import androidx.compose.runtime.Immutable
 data class HistoryDetailModel(
     val state: HistoryDetailState,
     val viewType: HistoryViewType,
-    val historyGroups: List<Group>,
+    val historyGroups: List<GroupLegacy>,
 )

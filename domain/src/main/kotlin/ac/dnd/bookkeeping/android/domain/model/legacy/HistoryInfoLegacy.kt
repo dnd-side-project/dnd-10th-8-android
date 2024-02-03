@@ -1,6 +1,6 @@
-package ac.dnd.bookkeeping.android.domain.model.history
+package ac.dnd.bookkeeping.android.domain.model.legacy
 
-data class HistoryInfo(
+data class HistoryInfoLegacy(
     val unWrittenCount: Int,
     val totalHeartCount: Int,
     val unReadAlarm: Boolean

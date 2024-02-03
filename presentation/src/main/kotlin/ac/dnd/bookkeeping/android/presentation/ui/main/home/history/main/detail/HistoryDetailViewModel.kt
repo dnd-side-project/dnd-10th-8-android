@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.event.Group
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
 import ac.dnd.bookkeeping.android.domain.usecase.history.GetHistoryGroupListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -28,14 +28,14 @@ class HistoryDetailViewModel @Inject constructor(
     private val _event: MutableEventFlow<HistoryDetailEvent> = MutableEventFlow()
     val event: EventFlow<HistoryDetailEvent> = _event.asEventFlow()
 
-    private val _totalGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
-    val totalGroups: StateFlow<List<Group>> = _totalGroups.asStateFlow()
+    private val _totalGroups: MutableStateFlow<List<GroupLegacy>> = MutableStateFlow(emptyList())
+    val totalGroups: StateFlow<List<GroupLegacy>> = _totalGroups.asStateFlow()
 
-    private val _takeGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
-    val takeGroups: StateFlow<List<Group>> = _takeGroups.asStateFlow()
+    private val _takeGroups: MutableStateFlow<List<GroupLegacy>> = MutableStateFlow(emptyList())
+    val takeGroups: StateFlow<List<GroupLegacy>> = _takeGroups.asStateFlow()
 
-    private val _giveGroups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
-    val giveGroups: StateFlow<List<Group>> = _giveGroups.asStateFlow()
+    private val _giveGroups: MutableStateFlow<List<GroupLegacy>> = MutableStateFlow(emptyList())
+    val giveGroups: StateFlow<List<GroupLegacy>> = _giveGroups.asStateFlow()
 
     init {
         HistoryViewType.entries.forEach {
