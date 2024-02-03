@@ -18,7 +18,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 
 class HeartApi @Inject constructor(
