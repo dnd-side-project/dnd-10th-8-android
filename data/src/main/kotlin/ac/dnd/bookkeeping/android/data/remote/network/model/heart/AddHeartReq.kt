@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.heart
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
 data class AddHeartReq(
