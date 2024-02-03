@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration
 
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.RegistrationMainConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.registrationNamingDestination
+import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.registrationMainDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 
@@ -13,6 +13,6 @@ fun NavGraphBuilder.registrationNavGraph(
         startDestination = RegistrationMainConstant.ROUTE,
         route = RegistrationConstant.ROUTE
     ) {
-        registrationNamingDestination(appState)
+        registrationMainDestination(appState)
     }
 }
