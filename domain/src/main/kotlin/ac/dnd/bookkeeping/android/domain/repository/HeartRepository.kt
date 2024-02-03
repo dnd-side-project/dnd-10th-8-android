@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.domain.repository
 
 import ac.dnd.bookkeeping.android.domain.model.heart.Heart
 import ac.dnd.bookkeeping.android.domain.model.heart.RelatedHeart
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 interface HeartRepository {
 
@@ -38,10 +38,10 @@ interface HeartRepository {
     suspend fun getHeartList(
         sort: String = "recent",
         name: String = ""
-    ): Result<Heart>
+    ): Result<List<Heart>>
 
     suspend fun getRelatedHeartList(
         id: Long,
         sort: String = "recent"
-    ): Result<RelatedHeart>
+    ): Result<List<RelatedHeart>>
 }

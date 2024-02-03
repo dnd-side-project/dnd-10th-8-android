@@ -1,5 +1,6 @@
-package ac.dnd.bookkeeping.android.data.remote.network.model.error
+package ac.dnd.bookkeeping.android.data.remote.network.model.authentication
 
+import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,4 +12,9 @@ data class RegisterRes(
     val accessToken: String,
     @SerialName("refreshToken")
     val refreshToken: String
-)
+) : DataMapper<Long> {
+    override fun toDomain(): Long {
+        return id
+    }
+}
+

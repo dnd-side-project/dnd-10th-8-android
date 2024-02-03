@@ -7,8 +7,8 @@ import ac.dnd.bookkeeping.android.data.remote.network.environment.ErrorMessageMa
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.GetAccessTokenRes
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.LoginReq
 import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.LoginRes
-import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterReq
-import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterRes
+import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.RegisterReq
+import ac.dnd.bookkeeping.android.data.remote.network.model.authentication.RegisterRes
 import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete

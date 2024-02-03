@@ -1,5 +1,7 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.heart
 
+import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
+import ac.dnd.bookkeeping.android.domain.model.heart.RelatedHeart
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,7 +10,11 @@ import kotlinx.serialization.Serializable
 data class GetRelatedHeartListRes(
     @SerialName("result")
     val result: List<GetRelatedHeartItemRes>
-)
+) : DataMapper<List<RelatedHeart>> {
+    override fun toDomain(): List<RelatedHeart> {
+        return result.map { it.toDomain() }
+    }
+}
 
 @Serializable
 data class GetRelatedHeartItemRes(
@@ -26,5 +32,16 @@ data class GetRelatedHeartItemRes(
     val memo: String,
     @SerialName("tags")
     val tags: List<String>
-)
-
+) : DataMapper<RelatedHeart> {
+    override fun toDomain(): RelatedHeart {
+        return RelatedHeart(
+            id = id,
+            give = give,
+            money = money,
+            day = day,
+            event = event,
+            memo = memo,
+            tags = tags
+        )
+    }
+}

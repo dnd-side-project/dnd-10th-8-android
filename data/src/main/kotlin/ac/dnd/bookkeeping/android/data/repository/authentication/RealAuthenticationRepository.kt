@@ -3,8 +3,8 @@ package ac.dnd.bookkeeping.android.data.repository.authentication
 import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.data.remote.network.api.AuthenticationApi
 import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
-import ac.dnd.bookkeeping.android.domain.model.authentication.Login
-import ac.dnd.bookkeeping.android.domain.model.authentication.Register
+import ac.dnd.bookkeeping.android.domain.model.legacy.Login
+import ac.dnd.bookkeeping.android.domain.model.legacy.Register
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import javax.inject.Inject
 
