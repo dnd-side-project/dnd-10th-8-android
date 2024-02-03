@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainViewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun HistoryScreen(
     appState: ApplicationState,
-    viewModel: HistoryViewModel = hiltViewModel()
+    viewModel: HistoryMainViewModel = hiltViewModel()
 ) {
 
     val model: HistoryMainModel = Unit.let {
