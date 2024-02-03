@@ -13,7 +13,9 @@ class NumberCommaTransformation : VisualTransformation {
         NumberFormat.getNumberInstance(Locale.US).format(this ?: 0)
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val newText = AnnotatedString(text.text.toLongOrNull().formatWithComma() + "원")
+        val newText = AnnotatedString(
+            text = if (text.text.isEmpty()) "" else text.text.toLongOrNull().formatWithComma() + "원"
+        )
         return TransformedText(
             text = newText,
             offsetMapping = object : OffsetMapping {

@@ -61,15 +61,13 @@ fun TypingPriceField(
     innerPadding: PaddingValues = PaddingValues(0.dp),
     textFieldHeight: Dp = 35.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+    textFormat : VisualTransformation = NumberCommaTransformation(),
     fieldSubjectContent: (@Composable () -> Unit) = { FieldSubject() },
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    val numberCommaTransFormation = remember { NumberCommaTransformation() }
-    val textFormat =
-        if (textValue.isEmpty()) VisualTransformation.None else numberCommaTransFormation
     var isTextFieldFocused by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val currentColor = if (isError) Negative else if (isTextFieldFocused) Primary3 else Gray500
