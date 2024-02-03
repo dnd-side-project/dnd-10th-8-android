@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.domain.usecase.member
+package ac.dnd.bookkeeping.android.domain.usecase.feature.member
 
 import ac.dnd.bookkeeping.android.domain.repository.MemberRepository
 import javax.inject.Inject

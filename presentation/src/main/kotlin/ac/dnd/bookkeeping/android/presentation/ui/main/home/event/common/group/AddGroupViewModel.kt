@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.group
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.usecase.member.AddGroupUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.group.AddGroupUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
