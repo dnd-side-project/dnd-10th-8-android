@@ -11,6 +11,7 @@ import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterReq
 import ac.dnd.bookkeeping.android.data.remote.network.model.error.RegisterRes
 import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -77,7 +78,7 @@ class AuthenticationApi @Inject constructor(
     }
 
     suspend fun withdraw(): Result<Unit> {
-        return client.post("$baseUrl/api/v1/members/me")
+        return client.delete("$baseUrl/api/v1/members/me")
             .convert(errorMessageMapper::map)
     }
 }
