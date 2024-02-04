@@ -18,7 +18,6 @@ val HttpResponse.isSuccessful: Boolean
 val HttpResponse.isBadRequest: Boolean
     get() = status.value in 400..499
 
-
 val HttpResponse.isInternalServerError: Boolean
     get() = status.value in 500..599
 

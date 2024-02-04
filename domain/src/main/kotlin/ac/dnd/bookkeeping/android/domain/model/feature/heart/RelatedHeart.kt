@@ -11,4 +11,3 @@ data class RelatedHeart(
     val memo: String,
     val tags: List<String>
 )
-

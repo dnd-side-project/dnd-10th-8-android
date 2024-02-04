@@ -13,4 +13,3 @@ data class AddHeartRes(
         return result
     }
 }
-

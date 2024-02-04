@@ -12,4 +12,3 @@ data class RelationDetailGroup(
     val id: Long,
     val name: String
 )
-

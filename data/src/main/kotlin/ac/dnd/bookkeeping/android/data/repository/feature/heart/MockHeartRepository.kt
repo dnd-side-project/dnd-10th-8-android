@@ -1,7 +1,8 @@
 package ac.dnd.bookkeeping.android.data.repository.feature.heart
 
 import ac.dnd.bookkeeping.android.domain.model.feature.heart.Heart
-import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartRelationGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.domain.repository.HeartRepository
 import kotlinx.coroutines.delay
@@ -59,13 +60,13 @@ class MockHeartRepository @Inject constructor() : HeartRepository {
         return Result.success(
             listOf(
                 Heart(
-                    id = 2059,
-                    relationId = 4920,
-                    give = false,
-                    name = "Lorie Adams",
-                    group = HeartGroup(
-                        id = 7435,
-                        name = "Octavio Hayes"
+                    relation = HeartRelation(
+                        id = 2059,
+                        name = "Lorie Adams",
+                        group = HeartRelationGroup(
+                            id = 7435,
+                            name = "Octavio Hayes"
+                        )
                     ),
                     giveHistories = listOf(
                         1_000L,
@@ -85,13 +86,13 @@ class MockHeartRepository @Inject constructor() : HeartRepository {
                     )
                 ),
                 Heart(
-                    id = 6007,
-                    relationId = 5328,
-                    give = true,
-                    name = "Jody Huffman",
-                    group = HeartGroup(
-                        id = 1855,
-                        name = "Randi Sweet"
+                    relation = HeartRelation(
+                        id = 6007,
+                        name = "Jody Huffman",
+                        group = HeartRelationGroup(
+                            id = 1855,
+                            name = "Randi Sweet"
+                        ),
                     ),
                     giveHistories = listOf(
                         1_000L,

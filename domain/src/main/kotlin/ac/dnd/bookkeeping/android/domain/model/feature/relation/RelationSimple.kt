@@ -10,4 +10,3 @@ data class RelationSimpleGroup(
     val id: Long,
     val name: String
 )
-

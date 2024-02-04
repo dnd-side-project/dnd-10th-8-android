@@ -1,17 +1,18 @@
 package ac.dnd.bookkeeping.android.domain.model.feature.heart
 
 data class Heart(
-    val id: Long,
-    val relationId: Long,
-    val give: Boolean,
-    val name: String,
-    val group: HeartGroup,
+    val relation: HeartRelation,
     val giveHistories: List<Long>,
     val takeHistories: List<Long>
 )
 
-data class HeartGroup(
+data class HeartRelation(
+    val id: Long,
+    val name: String,
+    val group: HeartRelationGroup
+)
+
+data class HeartRelationGroup(
     val id: Long,
     val name: String
 )
-

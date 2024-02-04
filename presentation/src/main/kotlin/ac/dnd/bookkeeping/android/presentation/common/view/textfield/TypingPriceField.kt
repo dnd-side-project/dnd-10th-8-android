@@ -207,7 +207,6 @@ fun EnterMoneyField2Preivew() {
     )
 }
 
-
 @Composable
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 fun EnterMoneyField3Preview() {

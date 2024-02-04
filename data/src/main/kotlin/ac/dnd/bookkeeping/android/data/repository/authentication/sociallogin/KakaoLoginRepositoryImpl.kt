@@ -73,7 +73,6 @@ class KakaoLoginRepositoryImpl @Inject constructor(
             }
         }
 
-
     override suspend fun logout(): Result<Boolean> = runCatching {
         suspendCoroutine { continuation ->
             UserApiClient.instance.logout { error ->

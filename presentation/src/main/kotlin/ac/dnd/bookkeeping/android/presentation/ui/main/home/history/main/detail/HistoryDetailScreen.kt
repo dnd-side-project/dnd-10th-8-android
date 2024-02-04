@@ -395,7 +395,6 @@ fun EmptyRelationView() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun HistoryDetailPreview() {
