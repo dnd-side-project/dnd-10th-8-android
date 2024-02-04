@@ -15,6 +15,10 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space56
+import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
@@ -64,7 +68,6 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,21 +80,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.plus
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryRegistrationScreen(
     appState: ApplicationState,
-    calendarConfig: CalendarConfig = CalendarConfig(),
-    handler: CoroutineExceptionHandler
+    model: HistoryRegistrationModel,
+    event: EventFlow<HistoryRegistrationEvent>,
+    intent: (HistoryRegistrationIntent) -> Unit,
+    handler: CoroutineExceptionHandler,
+    calendarConfig: CalendarConfig = CalendarConfig()
 ) {
-    val scope = rememberCoroutineScope() + handler
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
     var historyTypeState by remember { mutableStateOf(HistoryRegistrationType.TAKE) }
     var priceText by remember { mutableStateOf("") }
     var userNameText by remember { mutableStateOf("이름 선택") }
+    var relationId by remember { mutableLongStateOf(-1) }
     var selectedYear by remember { mutableIntStateOf(calendarConfig.getCalendarYear()) }
     var selectedMonth by remember { mutableIntStateOf(calendarConfig.getCalendarMonth()) }
     var selectedDay by remember { mutableIntStateOf(calendarConfig.getCalendarDay()) }
@@ -99,8 +104,13 @@ fun HistoryRegistrationScreen(
     var selectedEventId by remember { mutableLongStateOf(-1) }
     var memoText by remember { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
+
     var isCalendarShowingState by remember { mutableStateOf(false) }
     var isAddNameShowingState by remember { mutableStateOf(false) }
+    val typePositionState = animateDpAsState(
+        targetValue = if (historyTypeState == HistoryRegistrationType.TAKE) 0.dp else 106.dp,
+        label = "type background color "
+    )
 
     @Composable
     fun getTypeTextColor(currentType: HistoryRegistrationType) = animateColorAsState(
@@ -108,10 +118,22 @@ fun HistoryRegistrationScreen(
         label = "type text color"
     )
 
-    val typePositionState = animateDpAsState(
-        targetValue = if (historyTypeState == HistoryRegistrationType.TAKE) 0.dp else 106.dp,
-        label = "type background color "
-    )
+    fun navigateToHistory() {
+
+    }
+
+    fun submit(event: HistoryRegistrationEvent.Submit) {
+        when (event) {
+            is HistoryRegistrationEvent.Submit.Success -> navigateToHistory()
+            is HistoryRegistrationEvent.Submit.Error -> {
+                // TODO Error
+            }
+
+            is HistoryRegistrationEvent.Submit.Failure -> {
+                // TODO Failure
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -348,6 +370,40 @@ fun HistoryRegistrationScreen(
                     size = ConfirmButtonSize.Xlarge,
                     type = ConfirmButtonType.Primary
                 ),
+                onClick = {
+                    if (
+                        checkRegistrable(
+                            relationId = relationId,
+                            money = priceText.toLongOrNull() ?: 0L,
+                            day = listOf(
+                                selectedYear,
+                                selectedMonth,
+                                selectedDay
+                            ).joinToString("-"),
+                            event = eventTypeText
+                        )
+                    ) {
+                        intent(
+                            HistoryRegistrationIntent.OnClickSubmit(
+                                relationId = relationId,
+                                money = priceText.toLongOrNull() ?: 0L,
+                                give = HistoryRegistrationType.getHistoryRegistration(
+                                    historyTypeState
+                                ),
+                                day = listOf(
+                                    selectedYear,
+                                    selectedMonth,
+                                    selectedDay
+                                ).joinToString("-"),
+                                event = eventTypeText,
+                                memo = if (memoText.isEmpty()) null else memoText,
+                                tags = if (tagIdList.isEmpty()) null else HistoryRegistrationTagType.getTagNameList(
+                                    tagIdList
+                                )
+                            )
+                        )
+                    }
+                },
                 content = {
                     Text(
                         text = "저장하기",
@@ -385,11 +441,29 @@ fun HistoryRegistrationScreen(
                 },
                 onResult = {
                     userNameText = it.name
+                    relationId = it.id
                     isAddNameShowingState = false
                 },
             )
         }
     }
+
+    LaunchedEffectWithLifecycle(event, handler) {
+        event.eventObserve { event ->
+            when (event) {
+                is HistoryRegistrationEvent.Submit -> (submit(event))
+            }
+        }
+    }
+}
+
+private fun checkRegistrable(
+    relationId: Long,
+    money: Long,
+    day: String,
+    event: String
+): Boolean {
+    return relationId != -1L && money != 0L && day.isNotEmpty() && event.isNotEmpty()
 }
 
 @Preview(
@@ -401,6 +475,11 @@ fun HistoryRegistrationScreen(
 fun HistoryRegistrationScreenPreview() {
     HistoryRegistrationScreen(
         appState = rememberApplicationState(),
+        model = HistoryRegistrationModel(
+            state = HistoryRegistrationState.Init
+        ),
+        event = MutableEventFlow(),
+        intent = {},
         handler = CoroutineExceptionHandler { _, _ -> }
     )
 }
