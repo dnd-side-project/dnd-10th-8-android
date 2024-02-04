@@ -38,7 +38,7 @@ class ScheduleApi @Inject constructor(
         time: LocalTime,
         link: String,
         location: String,
-        memo: String = "",
+        memo: String
     ): Result<AddScheduleRes> {
         return client.post("$baseUrl/api/v1/schedules") {
             setBody(
@@ -69,7 +69,7 @@ class ScheduleApi @Inject constructor(
         time: LocalTime,
         link: String,
         location: String,
-        memo: String = "",
+        memo: String
     ): Result<Unit> {
         return client.patch("$baseUrl/api/v1/schedules/$id") {
             setBody(
@@ -97,7 +97,7 @@ class ScheduleApi @Inject constructor(
     }
 
     suspend fun getUnrecordedScheduleList(
-        name: String = ""
+        name: String
     ): Result<GetUnrecordedScheduleListRes> {
         return client.get("$baseUrl/api/v1/schedules/unrecorded") {
             parameter("name", name)

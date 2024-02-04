@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.usecase.feature.heart
 
-import ac.dnd.bookkeeping.android.domain.model.heart.Heart
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.Heart
 import ac.dnd.bookkeeping.android.domain.repository.HeartRepository
 import javax.inject.Inject
 

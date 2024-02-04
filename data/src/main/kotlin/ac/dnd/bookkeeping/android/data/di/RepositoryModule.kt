@@ -2,13 +2,13 @@ package ac.dnd.bookkeeping.android.data.di
 
 import ac.dnd.bookkeeping.android.data.repository.authentication.MockAuthenticationRepository
 import ac.dnd.bookkeeping.android.data.repository.file.MockFileRepository
-import ac.dnd.bookkeeping.android.data.repository.group.MockGroupRepository
-import ac.dnd.bookkeeping.android.data.repository.heart.MockHeartRepository
+import ac.dnd.bookkeeping.android.data.repository.feature.group.MockGroupRepository
+import ac.dnd.bookkeeping.android.data.repository.feature.heart.MockHeartRepository
 import ac.dnd.bookkeeping.android.data.repository.member.MockMemberRepository
-import ac.dnd.bookkeeping.android.data.repository.relation.MockRelationRepository
-import ac.dnd.bookkeeping.android.data.repository.schedule.MockScheduleRepository
-import ac.dnd.bookkeeping.android.data.repository.sociallogin.KakaoLoginRepositoryImpl
-import ac.dnd.bookkeeping.android.data.repository.statistics.MockStatisticsRepository
+import ac.dnd.bookkeeping.android.data.repository.feature.relation.MockRelationRepository
+import ac.dnd.bookkeeping.android.data.repository.feature.schedule.MockScheduleRepository
+import ac.dnd.bookkeeping.android.data.repository.authentication.sociallogin.KakaoLoginRepositoryImpl
+import ac.dnd.bookkeeping.android.data.repository.feature.statistics.MockStatisticsRepository
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import ac.dnd.bookkeeping.android.domain.repository.FileRepository
 import ac.dnd.bookkeeping.android.domain.repository.GroupRepository

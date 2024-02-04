@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.heart
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.heart.RelatedHeart
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

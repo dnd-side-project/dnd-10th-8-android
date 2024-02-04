@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
-import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
+import ac.dnd.bookkeeping.android.domain.model.authentication.sociallogin.KakaoUserInformation
 
 interface KakaoLoginRepository {
     suspend fun login(): Result<String>

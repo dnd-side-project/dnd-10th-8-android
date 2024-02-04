@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.usecase.feature.statistics
 
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatistics
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
 import ac.dnd.bookkeeping.android.domain.repository.StatisticsRepository
 import javax.inject.Inject
 
