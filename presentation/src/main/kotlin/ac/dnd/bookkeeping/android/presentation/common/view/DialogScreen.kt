@@ -16,10 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +29,6 @@ import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun DialogScreen(
-    isShowing: Boolean,
     isCancelable: Boolean = true,
     title: String = "",
     message: String = "",
@@ -43,84 +38,81 @@ fun DialogScreen(
     onCancel: (() -> Unit)? = null,
     onDismissRequest: (() -> Unit),
 ) {
-
-    if (isShowing) {
-        Dialog(
-            properties = DialogProperties(
-                dismissOnBackPress = isCancelable,
-                dismissOnClickOutside = isCancelable
-            ),
-            onDismissRequest = {
-                onDismissRequest()
-            }
+    Dialog(
+        properties = DialogProperties(
+            dismissOnBackPress = isCancelable,
+            dismissOnClickOutside = isCancelable
+        ),
+        onDismissRequest = {
+            onDismissRequest()
+        }
+    ) {
+        Card(
+            backgroundColor = Color.White,
+            shape = RoundedCornerShape(10.dp)
         ) {
-            Card(
-                backgroundColor = Color.White,
-                shape = RoundedCornerShape(10.dp)
+            Column(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 25.dp, start = 20.dp, end = 20.dp, bottom = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(top = 25.dp, start = 20.dp, end = 20.dp, bottom = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                Text(
+                    text = title,
+                    fontSize = 24.sp,
+                    color = Color.Black
+                )
+
+                if (message.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(15.dp))
+
                     Text(
-                        text = title,
-                        fontSize = 24.sp,
-                        color = Color.Black
+                        text = message,
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
                     )
+                }
 
-                    if (message.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                        Text(
-                            text = message,
-                            fontSize = 16.sp,
-                            color = Color.Black,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(modifier = Modifier.wrapContentSize()) {
-                        if (onCancel != null) {
-                            ConfirmButton(
-                                properties = ConfirmButtonProperties(
-                                    size = ConfirmButtonSize.Large,
-                                    type = ConfirmButtonType.Secondary
-                                ),
-                                modifier = Modifier.weight(1f),
-                                onClick = {
-                                    onCancel()
-                                    onDismissRequest()
-                                }
-                            ) { style ->
-                                Text(
-                                    text = cancelMessage,
-                                    style = style
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(10.dp))
-                        }
-
+                Row(modifier = Modifier.wrapContentSize()) {
+                    if (onCancel != null) {
                         ConfirmButton(
                             properties = ConfirmButtonProperties(
                                 size = ConfirmButtonSize.Large,
-                                type = ConfirmButtonType.Primary
+                                type = ConfirmButtonType.Secondary
                             ),
                             modifier = Modifier.weight(1f),
                             onClick = {
-                                onConfirm()
+                                onCancel()
                                 onDismissRequest()
                             }
                         ) { style ->
                             Text(
-                                text = confirmMessage,
+                                text = cancelMessage,
                                 style = style
                             )
                         }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
+
+                    ConfirmButton(
+                        properties = ConfirmButtonProperties(
+                            size = ConfirmButtonSize.Large,
+                            type = ConfirmButtonType.Primary
+                        ),
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onConfirm()
+                            onDismissRequest()
+                        }
+                    ) { style ->
+                        Text(
+                            text = confirmMessage,
+                            style = style
+                        )
                     }
                 }
             }
@@ -131,29 +123,19 @@ fun DialogScreen(
 @Preview
 @Composable
 fun DialogScreenPreview1() {
-    var isShowing by remember { mutableStateOf(true) }
-
     DialogScreen(
-        isShowing = isShowing,
         title = "제목",
         message = "내용\n여러줄 넘어가면 이렇게 됨.\n가가가가가가가가가가가가가가가가가가가가가가가",
         onCancel = {},
-        onDismissRequest = {
-            isShowing = false
-        }
+        onDismissRequest = {}
     )
 }
 
 @Preview
 @Composable
 fun DialogScreenPreview2() {
-    var isShowing by remember { mutableStateOf(true) }
-
     DialogScreen(
-        isShowing = isShowing,
         title = "제목",
-        onDismissRequest = {
-            isShowing = false
-        }
+        onDismissRequest = {}
     )
 }

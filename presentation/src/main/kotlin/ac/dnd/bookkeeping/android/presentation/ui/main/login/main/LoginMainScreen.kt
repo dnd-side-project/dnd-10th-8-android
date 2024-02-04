@@ -127,13 +127,14 @@ fun LoginMainScreen(
         }
     }
 
-    DialogScreen(
-        isShowing = isDialogShowing,
-        title = stringResource(R.string.login_main_dialog_message),
-        onDismissRequest = {
-            isDialogShowing = false
-        }
-    )
+    if (isDialogShowing) {
+        DialogScreen(
+            title = stringResource(R.string.login_main_dialog_message),
+            onDismissRequest = {
+                isDialogShowing = false
+            }
+        )
+    }
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->

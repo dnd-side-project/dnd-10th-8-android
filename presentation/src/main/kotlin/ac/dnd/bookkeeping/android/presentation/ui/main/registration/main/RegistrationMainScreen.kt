@@ -25,7 +25,6 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
-import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.ErrorUserNamingComponent
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.component.RegistraionUserDate
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type.RegistrationMainNamingErrorType
@@ -314,7 +313,9 @@ fun RegistrationNamingScreen(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Button(
-                    modifier = Modifier.weight(1f).height(48.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp),
                     shape = Shapes.large,
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = if (userGender == UserGender.FEMALE) Primary1 else Gray000
@@ -388,13 +389,14 @@ fun RegistrationNamingScreen(
         }
     }
 
-    DialogScreen(
-        isShowing = isDialogShowing,
-        title = "회원 가입에 실패하였습니다.",
-        onDismissRequest = {
-            isDialogShowing = false
-        }
-    )
+    if (isDialogShowing) {
+        DialogScreen(
+            title = "회원 가입에 실패하였습니다.",
+            onDismissRequest = {
+                isDialogShowing = false
+            }
+        )
+    }
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
