@@ -28,13 +28,14 @@ fun ErrorObserver(
 ) {
     var isDialogShowing by remember { mutableStateOf(false) }
 
-    DialogScreen(
-        isShowing = isDialogShowing,
-        title = stringResource(id = R.string.error_dialog_title),
-        onDismissRequest = {
-            isDialogShowing = false
-        }
-    )
+    if (isDialogShowing) {
+        DialogScreen(
+            title = stringResource(id = R.string.error_dialog_title),
+            onDismissRequest = {
+                isDialogShowing = false
+            }
+        )
+    }
 
     LaunchedEffectWithLifecycle(viewModel.errorEvent) {
         viewModel.errorEvent.eventObserve { event ->
