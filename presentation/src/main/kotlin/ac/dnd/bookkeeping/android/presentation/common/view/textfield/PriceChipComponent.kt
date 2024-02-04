@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,10 +59,8 @@ fun PriceChipComponent(
             )
             Row(
                 modifier = Modifier
-                    .background(
-                        color = backgroundColorState.value,
-                        shape = Shapes.medium
-                    )
+                    .clip(Shapes.medium)
+                    .background(color = backgroundColorState.value)
                     .clickable {
                         onClickChip(money)
                         scope.launch {

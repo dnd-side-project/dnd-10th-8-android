@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -113,6 +114,9 @@ fun TypingTextField(
                 singleLine = isSingleLine,
                 minLines = if (isSingleLine) 1 else 3,
                 keyboardOptions = keyboardOptions,
+                keyboardActions = KeyboardActions(
+
+                ),
                 cursorBrush = SolidColor(value = currentColorState.value),
                 interactionSource = interactionSource,
             ) { textField ->

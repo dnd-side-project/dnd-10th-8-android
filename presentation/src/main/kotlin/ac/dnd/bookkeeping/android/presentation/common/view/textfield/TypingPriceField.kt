@@ -9,6 +9,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.NumberCommaTransformation
+import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSubject
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,7 +63,7 @@ fun TypingPriceField(
     textFieldHeight: Dp = 35.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
     textFormat : VisualTransformation = NumberCommaTransformation(),
-    fieldSubjectContent: (@Composable () -> Unit) = { FieldSubject() },
+    fieldSubjectContent: (@Composable () -> Unit) = { FieldSubject("금액") },
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
@@ -153,37 +154,6 @@ fun TypingPriceField(
             }
         )
         errorMessageContent()
-    }
-
-}
-
-@Composable
-private fun FieldSubject() {
-    Column {
-        Row {
-            Text(
-                text = "금액",
-                style = Body1.merge(
-                    color = Gray700,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-            Spacer(modifier = Modifier.width(1.dp))
-            Box(
-                modifier = Modifier
-                    .height(21.dp)
-                    .padding(bottom = 3.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_essential_field),
-                    contentDescription = null
-                )
-            }
-        }
-        Spacer(
-            modifier = Modifier.height(18.dp)
-        )
     }
 }
 

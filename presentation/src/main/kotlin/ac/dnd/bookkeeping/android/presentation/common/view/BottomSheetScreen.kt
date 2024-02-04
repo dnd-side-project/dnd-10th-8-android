@@ -42,7 +42,10 @@ fun BottomSheetScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             color = Color.White,
-            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+            shape = RoundedCornerShape(
+                topStart = 12.dp,
+                topEnd = 12.dp
+            )
         ) {
             content()
         }

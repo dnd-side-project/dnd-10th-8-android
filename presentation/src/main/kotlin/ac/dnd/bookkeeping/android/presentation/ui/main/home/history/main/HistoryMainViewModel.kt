@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
@@ -8,9 +8,6 @@ import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainEvent
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainIntent
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainState
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HistoryViewModel @Inject constructor(
+class HistoryMainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getHistoryInfoUseCase: GetHistoryInfoUseCase
 ) : BaseViewModel() {

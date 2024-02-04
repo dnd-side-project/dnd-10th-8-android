@@ -21,7 +21,7 @@ fun GroupChipListComponent(
         items(groups) { group ->
             ChipItem(
                 chipType = chipType,
-                currentSelectedId = currentSelectedId,
+                currentSelectedId = setOf(currentSelectedId),
                 chipId = group.id,
                 chipText = group.name,
                 chipCount = group.relations.size,

@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.registrationNamingDestination(
+fun NavGraphBuilder.registrationMainDestination(
     appState: ApplicationState
 ) {
     composable(
