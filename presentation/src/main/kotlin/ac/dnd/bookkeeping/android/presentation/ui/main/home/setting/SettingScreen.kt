@@ -1,9 +1,11 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.CHANNEL_1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.showNotification
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
@@ -32,15 +34,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
@@ -49,6 +54,8 @@ fun SettingScreen(
     onShowSnackBar: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     Observer(
         appState = appState,
         viewModel = viewModel
@@ -156,6 +163,22 @@ fun SettingScreen(
                 .padding(vertical = 10.dp)
                 .clickable {
                     isAddGroupShowing = true
+                }
+        )
+        Text(
+            text = "Notification",
+            fontSize = 20.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .clickable {
+                    scope.launch {
+                        context.showNotification(
+                            channelId = CHANNEL_1,
+                            title = "title",
+                            content = "content"
+                        )
+                    }
                 }
         )
     }
