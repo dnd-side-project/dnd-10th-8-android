@@ -17,4 +17,3 @@ data class RegisterRes(
         return id
     }
 }
-

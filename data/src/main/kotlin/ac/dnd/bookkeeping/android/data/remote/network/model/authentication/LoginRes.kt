@@ -17,4 +17,3 @@ data class LoginRes(
         return isNew
     }
 }
-

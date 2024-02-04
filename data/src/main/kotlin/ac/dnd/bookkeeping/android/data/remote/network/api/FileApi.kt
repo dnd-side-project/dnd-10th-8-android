@@ -18,7 +18,6 @@ import io.ktor.http.HttpHeaders
 import java.io.File
 import javax.inject.Inject
 
-
 class FileApi @Inject constructor(
     @NoAuthHttpClient private val noAuthClient: HttpClient,
     @AuthHttpClient private val client: HttpClient,

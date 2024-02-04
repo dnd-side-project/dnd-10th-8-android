@@ -13,4 +13,3 @@ data class AddScheduleRes(
         return result
     }
 }
-

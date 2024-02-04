@@ -67,7 +67,6 @@ fun LoginMainScreen(
         }
     }
 
-
     fun login(event: LoginMainEvent.Login) {
         when (event) {
             is LoginMainEvent.Login.Success -> {
@@ -155,7 +154,6 @@ private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInform
     navigate(LoginOnBoardingConstant.CONTAIN_USER_MODEL)
 }
 
-
 @Composable
 private fun SampleComponent() {
     Box(
@@ -182,7 +180,6 @@ private fun SampleComponent() {
         )
     }
 }
-
 
 @Preview
 @Composable

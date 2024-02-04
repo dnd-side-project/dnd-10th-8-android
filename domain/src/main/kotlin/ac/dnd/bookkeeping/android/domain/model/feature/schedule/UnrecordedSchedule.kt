@@ -19,4 +19,3 @@ data class UnrecordedScheduleRelation(
     val id: Long,
     val name: String
 )
-

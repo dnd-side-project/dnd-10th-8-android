@@ -2,7 +2,8 @@ package ac.dnd.bookkeeping.android.data.remote.network.model.heart
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
 import ac.dnd.bookkeeping.android.domain.model.feature.heart.Heart
-import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartRelationGroup
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,19 +17,10 @@ data class GetHeartListRes(
     }
 }
 
-
 @Serializable
 data class GetHeartItemRes(
-    @SerialName("id")
-    val id: Long,
-    @SerialName("relationId")
-    val relationId: Long,
-    @SerialName("give")
-    val give: Boolean,
-    @SerialName("name")
-    val name: String,
-    @SerialName("group")
-    val group: GetHeartItemGroupRes,
+    @SerialName("relation")
+    val relation: GetHeartItemRelationRes,
     @SerialName("giveHistories")
     val giveHistories: List<Long>,
     @SerialName("takeHistories")
@@ -36,11 +28,7 @@ data class GetHeartItemRes(
 ) : DataMapper<Heart> {
     override fun toDomain(): Heart {
         return Heart(
-            id = id,
-            relationId = relationId,
-            give = give,
-            name = name,
-            group = group.toDomain(),
+            relation = relation.toDomain(),
             giveHistories = giveHistories,
             takeHistories = takeHistories
         )
@@ -48,17 +36,34 @@ data class GetHeartItemRes(
 }
 
 @Serializable
-data class GetHeartItemGroupRes(
+data class GetHeartItemRelationRes(
+    @SerialName("id")
+    val id: Long,
+    @SerialName("name")
+    val name: String,
+    @SerialName("group")
+    val group: GetHeartItemRelationGroupRes
+) : DataMapper<HeartRelation> {
+    override fun toDomain(): HeartRelation {
+        return HeartRelation(
+            id = id,
+            name = name,
+            group = group.toDomain()
+        )
+    }
+}
+
+@Serializable
+data class GetHeartItemRelationGroupRes(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
     val name: String
-) : DataMapper<HeartGroup> {
-    override fun toDomain(): HeartGroup {
-        return HeartGroup(
+) : DataMapper<HeartRelationGroup> {
+    override fun toDomain(): HeartRelationGroup {
+        return HeartRelationGroup(
             id = id,
             name = name
         )
     }
 }
-
