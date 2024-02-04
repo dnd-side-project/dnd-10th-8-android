@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.event.Group
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
 import ac.dnd.bookkeeping.android.domain.usecase.member.CheckNicknameUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.member.GetGroupListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
@@ -29,8 +29,8 @@ class SearchRelationViewModel @Inject constructor(
     private val _event: MutableEventFlow<SearchRelationEvent> = MutableEventFlow()
     val event: EventFlow<SearchRelationEvent> = _event.asEventFlow()
 
-    private val _groups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
-    val groups: StateFlow<List<Group>> = _groups.asStateFlow()
+    private val _groups: MutableStateFlow<List<GroupLegacy>> = MutableStateFlow(emptyList())
+    val groups: StateFlow<List<GroupLegacy>> = _groups.asStateFlow()
 
     init {
         launch {

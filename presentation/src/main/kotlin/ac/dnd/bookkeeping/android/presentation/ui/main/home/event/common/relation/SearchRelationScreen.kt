@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -67,7 +67,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 fun SearchRelationScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
-    onResult: (Relation) -> Unit,
+    onResult: (RelationLegacy) -> Unit,
     viewModel: SearchRelationViewModel = hiltViewModel()
 ) {
     val model: SearchRelationModel = Unit.let {
@@ -100,10 +100,10 @@ private fun SearchRelationScreen(
     intent: (SearchRelationIntent) -> Unit,
     handler: CoroutineExceptionHandler,
     onDismissRequest: () -> Unit,
-    onResult: (Relation) -> Unit,
+    onResult: (RelationLegacy) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
-    var selectedRelation: Relation? by remember { mutableStateOf(null) }
+    var selectedRelation: RelationLegacy? by remember { mutableStateOf(null) }
 
     val lowerText = text.lowercase()
     val filteredGroups = model.groups.filter { group ->
@@ -238,11 +238,11 @@ private fun SearchRelationScreen(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun SearchRelationGroup(
-    group: Group,
-    selectedRelation: Relation?,
+    group: GroupLegacy,
+    selectedRelation: RelationLegacy?,
     isExpanded: Boolean,
     onExpandRequest: () -> Unit,
-    onClick: (Relation) -> Unit
+    onClick: (RelationLegacy) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -316,9 +316,9 @@ private fun SearchRelationGroup(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun SearchRelationRelation(
-    relation: Relation,
-    selectedRelation: Relation?,
-    onClick: (Relation) -> Unit
+    relation: RelationLegacy,
+    selectedRelation: RelationLegacy?,
+    onClick: (RelationLegacy) -> Unit
 ) {
     Surface(
         modifier = Modifier

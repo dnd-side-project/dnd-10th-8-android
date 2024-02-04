@@ -1,46 +1,46 @@
 package ac.dnd.bookkeeping.android.domain.usecase.member
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
-import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
 import ac.dnd.bookkeeping.android.domain.repository.MemberRepository
 import javax.inject.Inject
 
 class GetGroupListUseCase @Inject constructor(
     private val memberRepository: MemberRepository
 ) {
-    suspend operator fun invoke(): Result<List<Group>> {
+    suspend operator fun invoke(): Result<List<GroupLegacy>> {
         // TODO
         return Result.success(
             listOf(
-                Group(
+                GroupLegacy(
                     id = 2337,
                     name = "Angelia McBride",
                     relations = listOf(
-                        Relation(
+                        RelationLegacy(
                             id = 9922,
                             name = "Patty Meadows",
-                            group = RelationGroup(
+                            group = RelationGroupLegacy(
                                 id = 2337,
                                 name = "Angelia McBride",
                             ),
                             giveMoney = 8246,
                             takeMoney = 5441
                         ),
-                        Relation(
+                        RelationLegacy(
                             id = 1447,
                             name = "Margery Hyde",
-                            group = RelationGroup(
+                            group = RelationGroupLegacy(
                                 id = 2337,
                                 name = "Angelia McBride",
                             ),
                             giveMoney = 2859,
                             takeMoney = 1341
                         ),
-                        Relation(
+                        RelationLegacy(
                             id = 8446,
                             name = "Harlan Yang",
-                            group = RelationGroup(
+                            group = RelationGroupLegacy(
                                 id = 2337,
                                 name = "Angelia McBride",
                             ),
@@ -49,14 +49,14 @@ class GetGroupListUseCase @Inject constructor(
                         )
                     )
                 ),
-                Group(
+                GroupLegacy(
                     id = 6599,
                     name = "Andrea Serrano",
                     relations = listOf(
-                        Relation(
+                        RelationLegacy(
                             id = 3679,
                             name = "Jerome Pitts",
-                            group = RelationGroup(
+                            group = RelationGroupLegacy(
                                 id = 6599,
                                 name = "Andrea Serrano",
                             ),

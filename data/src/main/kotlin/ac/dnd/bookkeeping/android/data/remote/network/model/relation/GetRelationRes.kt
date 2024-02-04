@@ -1,5 +1,8 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.relation
 
+import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
+import ac.dnd.bookkeeping.android.domain.model.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.relation.RelationDetailGroup
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,7 +18,17 @@ data class GetRelationRes(
     val giveMoney: Long,
     @SerialName("takeMoney")
     val takeMoney: Long
-)
+) : DataMapper<RelationDetail> {
+    override fun toDomain(): RelationDetail {
+        return RelationDetail(
+            id = id,
+            name = name,
+            group = group.toDomain(),
+            giveMoney = giveMoney,
+            takeMoney = takeMoney
+        )
+    }
+}
 
 @Serializable
 data class GetRelationGroupRes(
@@ -23,5 +36,11 @@ data class GetRelationGroupRes(
     val id: Long,
     @SerialName("name")
     val name: String
-)
-
+) : DataMapper<RelationDetailGroup> {
+    override fun toDomain(): RelationDetailGroup {
+        return RelationDetailGroup(
+            id = id,
+            name = name
+        )
+    }
+}

@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.domain.usecase.history
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
-import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
 import javax.inject.Inject
 
 class GetHistoryGroupListUseCase @Inject constructor(
@@ -10,69 +10,69 @@ class GetHistoryGroupListUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         historyType: String
-    ): Result<List<Group>> {
+    ): Result<List<GroupLegacy>> {
         return Result.success(
             when (historyType) {
                 "take" -> {
                     listOf(
-                        Group(
+                        GroupLegacy(
                             1,
                             "전체-받은 마음",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
                                     takeMoney = 1000000
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
                                     giveMoney = 100000,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
                                     giveMoney = 100000,
                                     takeMoney = 23
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 12312223,
                                     takeMoney = 12
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -81,14 +81,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             2,
                             "친구",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
@@ -97,14 +97,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             3,
                             "가족",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
@@ -113,24 +113,24 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             4,
                             "지인",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
@@ -139,14 +139,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             5,
                             "직장",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -155,14 +155,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             6,
                             "사촌",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),
@@ -176,64 +176,64 @@ class GetHistoryGroupListUseCase @Inject constructor(
 
                 "give" -> {
                     listOf(
-                        Group(
+                        GroupLegacy(
                             1,
                             "전체-준마음",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
                                     takeMoney = 1000000
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
                                     giveMoney = 100000,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
                                     giveMoney = 100000,
                                     takeMoney = 23
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 12231223,
                                     takeMoney = 12
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -242,14 +242,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             2,
                             "친구",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
@@ -258,14 +258,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             3,
                             "가족",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
@@ -274,24 +274,24 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             4,
                             "지인",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
@@ -300,14 +300,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             5,
                             "직장",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -316,14 +316,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             6,
                             "사촌",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),
@@ -337,64 +337,64 @@ class GetHistoryGroupListUseCase @Inject constructor(
 
                 else -> {
                     listOf(
-                        Group(
+                        GroupLegacy(
                             1,
                             "전체-전체",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),
                                     giveMoney = 20,
                                     takeMoney = 10000000
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
                                     giveMoney = 1000000,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
                                     giveMoney = 10000000,
                                     takeMoney = 23
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 123121223,
                                     takeMoney = 12
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -403,14 +403,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             2,
                             "친구",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 5,
                                     name = "김경민",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 4,
                                         name = "친구",
                                     ),
@@ -419,14 +419,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             3,
                             "가족",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 0,
                                     name = "김진우",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 0,
                                         name = "가족",
                                     ),
@@ -435,24 +435,24 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             4,
                             "지인",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 1,
                                     name = "박예리나",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
                                     giveMoney = 0,
                                     takeMoney = 0
                                 ),
-                                Relation(
+                                RelationLegacy(
                                     id = 2,
                                     name = "이다빈",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 1,
                                         name = "지인",
                                     ),
@@ -461,14 +461,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             5,
                             "직장",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 3,
                                     name = "장성혁",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 2,
                                         name = "직장",
                                     ),
@@ -477,14 +477,14 @@ class GetHistoryGroupListUseCase @Inject constructor(
                                 ),
                             )
                         ),
-                        Group(
+                        GroupLegacy(
                             6,
                             "사촌",
                             listOf(
-                                Relation(
+                                RelationLegacy(
                                     id = 4,
                                     name = "서지원",
-                                    group = RelationGroup(
+                                    group = RelationGroupLegacy(
                                         id = 3,
                                         name = "사촌",
                                     ),

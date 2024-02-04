@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.chip
 
-import ac.dnd.bookkeeping.android.domain.model.event.Group
-import ac.dnd.bookkeeping.android.domain.model.event.Relation
-import ac.dnd.bookkeeping.android.domain.model.event.RelationGroup
+import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
+import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 fun GroupChipListComponent(
     chipType: ChipType = ChipType.LESS_BORDER,
     currentSelectedId: Long,
-    onSelectChip: (Group) -> Unit,
-    groups : List<Group>
+    onSelectChip: (GroupLegacy) -> Unit,
+    groups : List<GroupLegacy>
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         items(groups) { group ->
@@ -42,14 +42,14 @@ fun GroupChipPreview() {
         currentSelectedId = 0,
         onSelectChip = {},
         groups = listOf(
-            Group(
+            GroupLegacy(
                 0,
                 "전체",
                 relations = listOf(
-                    Relation(
+                    RelationLegacy(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationGroup(
+                        group = RelationGroupLegacy(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -58,14 +58,14 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            Group(
+            GroupLegacy(
                 1,
                 "친구",
                 relations = listOf(
-                    Relation(
+                    RelationLegacy(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationGroup(
+                        group = RelationGroupLegacy(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -74,7 +74,7 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            Group(
+            GroupLegacy(
                 2,
                 "가족",
                 listOf()

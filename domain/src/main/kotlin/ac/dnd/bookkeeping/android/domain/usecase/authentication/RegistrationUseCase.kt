@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.usecase.authentication
 
-import ac.dnd.bookkeeping.android.domain.model.authentication.Register
+import ac.dnd.bookkeeping.android.domain.model.legacy.Register
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import javax.inject.Inject
 

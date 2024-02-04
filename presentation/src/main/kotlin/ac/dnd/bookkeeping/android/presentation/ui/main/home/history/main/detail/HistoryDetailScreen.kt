@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
-import ac.dnd.bookkeeping.android.domain.model.history.HistoryInfo
+import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -403,7 +403,7 @@ fun HistoryDetailPreview() {
         HistoryViewType.TOTAL,
         mainModel = HistoryMainModel(
             state = HistoryMainState.Init,
-            historyInfo = HistoryInfo(
+            historyInfo = HistoryInfoLegacy(
                 unReadAlarm = true,
                 totalHeartCount = 30,
                 unWrittenCount = 5
