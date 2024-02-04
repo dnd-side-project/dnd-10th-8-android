@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
     val handler = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch {
-            _errorEvent.emit(ErrorEvent(throwable))
+            _errorEvent.emit(ErrorEvent.Client(throwable))
         }
     }
 
-    private val _errorEvent: MutableEventFlow<ErrorEvent> = MutableEventFlow()
+    protected val _errorEvent: MutableEventFlow<ErrorEvent> = MutableEventFlow()
     val errorEvent: EventFlow<ErrorEvent> = _errorEvent.asEventFlow()
 
     fun launch(block: suspend CoroutineScope.() -> Unit) {

@@ -13,6 +13,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -79,6 +80,7 @@ fun SearchRelationScreen(
             groups = groups
         )
     }
+    ErrorObserver(viewModel)
 
     SearchRelationScreen(
         appState = appState,
@@ -115,18 +117,6 @@ private fun SearchRelationScreen(
     fun navigateToEditRelation() {
         // TODO : EmptyCase
 //        appState.navController.navigate(EditRelationConstant.ROUTE)
-    }
-
-    fun getGroup(event: SearchRelationEvent.GetGroup) {
-        when (event) {
-            is SearchRelationEvent.GetGroup.Failure -> {
-                // TODO : ERROR
-            }
-
-            is SearchRelationEvent.GetGroup.Error -> {
-                // TODO : ERROR
-            }
-        }
     }
 
     BottomSheetScreen(
@@ -228,9 +218,7 @@ private fun SearchRelationScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when (event) {
-                is SearchRelationEvent.GetGroup -> getGroup(event)
-            }
+
         }
     }
 }

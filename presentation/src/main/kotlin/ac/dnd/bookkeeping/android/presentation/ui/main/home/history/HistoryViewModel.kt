@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
 import ac.dnd.bookkeeping.android.domain.usecase.legacy.GetHistoryInfoUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
@@ -42,13 +43,13 @@ class HistoryViewModel @Inject constructor(
                 }
                 .onFailure { exception ->
                     when (exception) {
-                        is ServerException -> _event.emit(
-                            HistoryMainEvent.GetHistoryInfoMain.Failure(
-                                exception
-                            )
-                        )
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
 
-                        else -> _event.emit(HistoryMainEvent.GetHistoryInfoMain.Error(exception))
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
                     }
                 }
             _state.value = HistoryMainState.Init

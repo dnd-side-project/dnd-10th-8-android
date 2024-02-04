@@ -93,14 +93,14 @@ class LoginMainViewModel @Inject constructor(
             }
     }
 
-    private fun submitError(error: Throwable) = launch {
-        when (error) {
+    private fun submitError(exception: Throwable) = launch {
+        when (exception) {
             is ServerException -> {
-                _event.emit(LoginMainEvent.Login.Failure(error))
+                _event.emit(LoginMainEvent.Login.Failure(exception))
             }
 
             else -> {
-                _event.emit(LoginMainEvent.Login.Error(error))
+                _event.emit(LoginMainEvent.Login.Error(exception))
             }
         }
         _state.emit(LoginMainState.Init)

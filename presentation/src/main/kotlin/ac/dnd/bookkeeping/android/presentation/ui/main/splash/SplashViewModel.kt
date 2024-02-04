@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.splash
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.usecase.authentication.UpdateJwtTokenUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
@@ -49,7 +50,7 @@ class SplashViewModel @Inject constructor(
                 }
 
                 else -> {
-                    _event.emit(SplashEvent.Login.Error(exception))
+                    _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
                 }
             }
         }

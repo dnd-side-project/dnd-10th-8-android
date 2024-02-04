@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.common.util
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import androidx.compose.runtime.Composable
@@ -26,23 +27,48 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun ErrorObserver(
     viewModel: BaseViewModel
 ) {
-    var isDialogShowing by remember { mutableStateOf(false) }
+    var _error: ErrorEvent? by remember { mutableStateOf(null) }
+    val error = _error
 
-    if (isDialogShowing) {
-        DialogScreen(
-            title = stringResource(id = R.string.error_dialog_title),
-            onDismissRequest = {
-                isDialogShowing = false
-            }
-        )
+    when (error) {
+        is ErrorEvent.Client -> {
+            DialogScreen(
+                title = stringResource(id = R.string.error_dialog_client_title),
+                message = stringResource(id = R.string.error_dialog_client_content),
+                onDismissRequest = {
+                    _error = null
+                }
+            )
+        }
+
+        is ErrorEvent.InvalidRequest -> {
+            DialogScreen(
+                title = stringResource(id = R.string.error_dialog_invalid_request_title),
+                message = error.exception.message,
+                onDismissRequest = {
+                    _error = null
+                }
+            )
+        }
+
+        is ErrorEvent.UnavailableServer -> {
+            DialogScreen(
+                title = stringResource(id = R.string.error_dialog_unavailable_server_title),
+                message = stringResource(id = R.string.error_dialog_unavailable_server_content),
+                onDismissRequest = {
+                    _error = null
+                }
+            )
+        }
+
+        else -> Unit
     }
 
     LaunchedEffectWithLifecycle(viewModel.errorEvent) {
         viewModel.errorEvent.eventObserve { event ->
-            Timber.d(event.throwable)
-            Sentry.captureException(event.throwable)
-
-            isDialogShowing = true
+            _error = event
+            Timber.d(event.exception)
+            Sentry.captureException(event.exception)
         }
     }
 }
