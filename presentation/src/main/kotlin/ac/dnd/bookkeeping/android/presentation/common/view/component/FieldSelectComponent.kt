@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
+import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
@@ -21,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,18 +30,17 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FieldSelectComponent(
-    text : String,
+    isSelected: Boolean,
+    text: String,
     onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
-            .background(
-                color = Gray000,
-                shape = Shapes.medium
-            )
+            .clip(Shapes.medium)
+            .background(color = Gray000)
             .border(
                 width = 1.dp,
-                color = Gray400,
+                color = if (isSelected) Primary4 else Gray400,
                 shape = Shapes.medium
             )
             .fillMaxWidth()
@@ -53,7 +54,7 @@ fun FieldSelectComponent(
                 top = Space12,
                 bottom = Space12
             )
-    ){
+    ) {
         Text(
             text = text,
             style = Body1.merge(
@@ -73,8 +74,9 @@ fun FieldSelectComponent(
 
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 @Composable
-fun FieldSelectComponentPreview(){
+fun FieldSelectComponentPreview() {
     FieldSelectComponent(
+        isSelected = true,
         text = "2024/01/10",
         onClick = {}
     )

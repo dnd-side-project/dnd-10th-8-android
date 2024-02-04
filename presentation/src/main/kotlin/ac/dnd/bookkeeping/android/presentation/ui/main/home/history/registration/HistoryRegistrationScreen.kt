@@ -29,6 +29,8 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingPrice
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.calendar.HistoryCalendarScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationEventType
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationTagType
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationType
@@ -57,6 +59,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -89,17 +92,15 @@ fun HistoryRegistrationScreen(
     var historyTypeState by remember { mutableStateOf(HistoryRegistrationType.TAKE) }
     var priceText by remember { mutableStateOf("") }
     var userNameText by remember { mutableStateOf("이름 선택") }
-    val selectedDate = remember {
-        listOf(
-            calendarConfig.getCalendarYear(),
-            calendarConfig.getCalendarMonth(),
-            calendarConfig.getCalendarDay()
-        )
-    }
+    var selectedYear by remember { mutableIntStateOf(calendarConfig.getCalendarYear()) }
+    var selectedMonth by remember { mutableIntStateOf(calendarConfig.getCalendarMonth()) }
+    var selectedDay by remember { mutableIntStateOf(calendarConfig.getCalendarDay()) }
     var eventTypeText by remember { mutableStateOf("") }
     var selectedEventId by remember { mutableLongStateOf(-1) }
     var memoText by remember { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
+    var isCalendarShowingState by remember { mutableStateOf(false) }
+    var isAddNameShowingState by remember { mutableStateOf(false) }
 
     @Composable
     fun getTypeTextColor(currentType: HistoryRegistrationType) = animateColorAsState(
@@ -145,9 +146,7 @@ fun HistoryRegistrationScreen(
         CompositionLocalProvider(LocalOverscrollConfiguration.provides(null)) {
             Column(
                 modifier = Modifier
-                    .padding(
-                        top = Space56
-                    )
+                    .padding(top = Space56)
                     .fillMaxWidth()
                     .verticalScroll(state = scrollState)
                     .padding(horizontal = Space20)
@@ -168,9 +167,9 @@ fun HistoryRegistrationScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(100.dp))
                                 .padding(2.dp)
                                 .padding(start = typePositionState.value)
+                                .clip(RoundedCornerShape(100.dp))
                                 .width(104.dp)
                                 .height(34.dp)
                                 .background(color = Gray000),
@@ -187,13 +186,11 @@ fun HistoryRegistrationScreen(
                                     .padding(2.dp)
                                     .width(104.dp)
                                     .height(34.dp)
+                                    .clip(RoundedCornerShape(100.dp))
                                     .clickable {
                                         historyTypeState = registrationType
                                     }
-                                    .background(
-                                        color = Color.Transparent,
-                                        shape = RoundedCornerShape(100.dp)
-                                    ),
+                                    .background(color = Color.Transparent),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -225,9 +222,10 @@ fun HistoryRegistrationScreen(
                 FieldSubject("이름")
                 Spacer(modifier = Modifier.height(6.dp))
                 FieldSelectComponent(
+                    isSelected = isAddNameShowingState,
                     text = userNameText,
                     onClick = {
-
+                        isAddNameShowingState = true
                     }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -235,9 +233,10 @@ fun HistoryRegistrationScreen(
                 FieldSubject("날짜")
                 Spacer(modifier = Modifier.height(6.dp))
                 FieldSelectComponent(
-                    text = selectedDate.joinToString(" / "),
+                    isSelected = isCalendarShowingState,
+                    text = listOf(selectedYear, selectedMonth, selectedDay).joinToString(" / "),
                     onClick = {
-
+                        isCalendarShowingState = true
                     }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -265,7 +264,8 @@ fun HistoryRegistrationScreen(
                                 onSelectChip = { selectId ->
                                     selectedEventId =
                                         if (selectedEventId == selectId) -1 else selectId
-                                    eventTypeText = HistoryRegistrationEventType.getEventName(selectId)
+                                    eventTypeText =
+                                        HistoryRegistrationEventType.getEventName(selectId)
                                 },
                             )
                         }
@@ -316,53 +316,87 @@ fun HistoryRegistrationScreen(
                 Spacer(modifier = Modifier.height(104.dp))
             }
         }
-            Row(
-                modifier = Modifier
-                    .background(color = Gray000)
-                    .align(Alignment.BottomCenter)
-                    .padding(
-                        vertical = Space12,
-                        horizontal = Space20
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(Space12)
-            ) {
-                ConfirmButton(
-                    modifier = Modifier.weight(1f),
-                    properties = ConfirmButtonProperties(
-                        size = ConfirmButtonSize.Xlarge,
-                        type = ConfirmButtonType.Secondary
-                    ),
-                    content = {
-                        Text(
-                            text = "연속저장",
-                            style = Headline3.merge(
-                                color = Gray700,
-                                fontWeight = FontWeight.SemiBold
-                            )
+        Row(
+            modifier = Modifier
+                .background(color = Gray000)
+                .align(Alignment.BottomCenter)
+                .padding(
+                    vertical = Space12,
+                    horizontal = Space20
+                ),
+            horizontalArrangement = Arrangement.spacedBy(Space12)
+        ) {
+            ConfirmButton(
+                modifier = Modifier.weight(1f),
+                properties = ConfirmButtonProperties(
+                    size = ConfirmButtonSize.Xlarge,
+                    type = ConfirmButtonType.Secondary
+                ),
+                content = {
+                    Text(
+                        text = "연속저장",
+                        style = Headline3.merge(
+                            color = Gray700,
+                            fontWeight = FontWeight.SemiBold
                         )
-                    }
-                )
-                ConfirmButton(
-                    modifier = Modifier.weight(1f),
-                    properties = ConfirmButtonProperties(
-                        size = ConfirmButtonSize.Xlarge,
-                        type = ConfirmButtonType.Primary
-                    ),
-                    content = {
-                        Text(
-                            text = "저장하기",
-                            style = Headline3.merge(
-                                color = Gray700,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                    )
+                }
+            )
+            ConfirmButton(
+                modifier = Modifier.weight(1f),
+                properties = ConfirmButtonProperties(
+                    size = ConfirmButtonSize.Xlarge,
+                    type = ConfirmButtonType.Primary
+                ),
+                content = {
+                    Text(
+                        text = "저장하기",
+                        style = Headline3.merge(
+                            color = Gray700,
+                            fontWeight = FontWeight.SemiBold
                         )
-                    }
-                )
-            }
+                    )
+                }
+            )
+        }
+
+        if (isCalendarShowingState) {
+            HistoryCalendarScreen(
+                calendarConfig = calendarConfig,
+                selectedYear = selectedYear,
+                selectedMonth = selectedMonth,
+                selectedDay = selectedDay,
+                onClose = {
+                    isCalendarShowingState = false
+                },
+                onConfirm = { year, month, day ->
+                    selectedYear = year
+                    selectedMonth = month
+                    selectedDay = day
+                }
+            )
+        }
+
+        if (isAddNameShowingState) {
+            SearchRelationScreen(
+                appState = appState,
+                onDismissRequest = {
+                    isAddNameShowingState = false
+                },
+                onResult = {
+                    userNameText = it.name
+                    isAddNameShowingState = false
+                },
+            )
+        }
     }
 }
 
-@Preview(backgroundColor = 0xFFFFFF, showBackground = true)
+@Preview(
+    backgroundColor = 0xFFFFFF,
+    showBackground = true,
+    apiLevel = 33
+)
 @Composable
 fun HistoryRegistrationScreenPreview() {
     HistoryRegistrationScreen(
