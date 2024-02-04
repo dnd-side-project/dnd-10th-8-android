@@ -1,9 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
-import ac.dnd.bookkeeping.android.domain.usecase.feature.member.CheckNicknameUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.legacy.GetGroupListUseCase
+import ac.dnd.bookkeeping.android.domain.model.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -18,8 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchRelationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getGroupListUseCase: GetGroupListUseCase,
-    private val checkNicknameUseCase: CheckNicknameUseCase
+    private val getGroupListWithRelationUseCase: GetGroupListWithRelationUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<SearchRelationState> =
@@ -29,13 +27,13 @@ class SearchRelationViewModel @Inject constructor(
     private val _event: MutableEventFlow<SearchRelationEvent> = MutableEventFlow()
     val event: EventFlow<SearchRelationEvent> = _event.asEventFlow()
 
-    private val _groups: MutableStateFlow<List<GroupLegacy>> = MutableStateFlow(emptyList())
-    val groups: StateFlow<List<GroupLegacy>> = _groups.asStateFlow()
+    private val _groups: MutableStateFlow<List<GroupWithRelation>> = MutableStateFlow(emptyList())
+    val groups: StateFlow<List<GroupWithRelation>> = _groups.asStateFlow()
 
     init {
         launch {
             _state.value = SearchRelationState.Loading
-            getGroupListUseCase()
+            getGroupListWithRelationUseCase()
                 .onSuccess {
                     _groups.value = it
                 }.onFailure { exception ->

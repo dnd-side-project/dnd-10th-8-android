@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
-import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
-import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
+import ac.dnd.bookkeeping.android.domain.model.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.relation.RelationSimple
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -67,7 +67,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 fun SearchRelationScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
-    onResult: (RelationLegacy) -> Unit,
+    onResult: (RelationSimple) -> Unit,
     viewModel: SearchRelationViewModel = hiltViewModel()
 ) {
     val model: SearchRelationModel = Unit.let {
@@ -100,14 +100,14 @@ private fun SearchRelationScreen(
     intent: (SearchRelationIntent) -> Unit,
     handler: CoroutineExceptionHandler,
     onDismissRequest: () -> Unit,
-    onResult: (RelationLegacy) -> Unit,
+    onResult: (RelationSimple) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
-    var selectedRelation: RelationLegacy? by remember { mutableStateOf(null) }
+    var selectedRelation: RelationSimple? by remember { mutableStateOf(null) }
 
     val lowerText = text.lowercase()
     val filteredGroups = model.groups.filter { group ->
-        group.relations.any { relation ->
+        group.relationList.any { relation ->
             relation.name.lowercase().contains(lowerText)
         } || group.name.lowercase().contains(lowerText)
     }
@@ -238,11 +238,11 @@ private fun SearchRelationScreen(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun SearchRelationGroup(
-    group: GroupLegacy,
-    selectedRelation: RelationLegacy?,
+    group: GroupWithRelation,
+    selectedRelation: RelationSimple?,
     isExpanded: Boolean,
     onExpandRequest: () -> Unit,
-    onClick: (RelationLegacy) -> Unit
+    onClick: (RelationSimple) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -273,7 +273,7 @@ private fun SearchRelationGroup(
                 )
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = group.relations.size.toString(),
+                    text = group.relationList.size.toString(),
                     style = Headline3.merge(Gray700)
                 )
                 if (isExpanded) {
@@ -299,9 +299,9 @@ private fun SearchRelationGroup(
                 shape = Shapes.large
             ) {
                 Column {
-                    group.relations.forEachIndexed { index, relation ->
+                    group.relationList.forEachIndexed { index, relation ->
                         SearchRelationRelation(relation, selectedRelation, onClick)
-                        if (index < group.relations.size - 1) {
+                        if (index < group.relationList.size - 1) {
                             Divider(modifier = Modifier.height(1.dp))
                         }
                     }
@@ -316,9 +316,9 @@ private fun SearchRelationGroup(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun SearchRelationRelation(
-    relation: RelationLegacy,
-    selectedRelation: RelationLegacy?,
-    onClick: (RelationLegacy) -> Unit
+    relation: RelationSimple,
+    selectedRelation: RelationSimple?,
+    onClick: (RelationSimple) -> Unit
 ) {
     Surface(
         modifier = Modifier
