@@ -2,8 +2,8 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relati
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
-import ac.dnd.bookkeeping.android.domain.usecase.member.CheckNicknameUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.member.GetGroupListUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.member.CheckNicknameUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.legacy.GetGroupListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow

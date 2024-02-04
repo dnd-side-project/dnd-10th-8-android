@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.usecase.authentication.RegistrationUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.member.CheckNicknameUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.member.CheckNicknameUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow

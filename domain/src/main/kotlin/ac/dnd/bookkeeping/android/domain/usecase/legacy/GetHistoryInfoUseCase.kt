@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.domain.usecase.history
+package ac.dnd.bookkeeping.android.domain.usecase.legacy
 
 import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
 import javax.inject.Inject

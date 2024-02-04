@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.domain.usecase.history
+package ac.dnd.bookkeeping.android.domain.usecase.legacy
 
 import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
 import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy

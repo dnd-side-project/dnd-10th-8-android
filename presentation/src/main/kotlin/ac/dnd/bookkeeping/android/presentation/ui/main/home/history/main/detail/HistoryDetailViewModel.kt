@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.detail
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
-import ac.dnd.bookkeeping.android.domain.usecase.history.GetHistoryGroupListUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.legacy.GetHistoryGroupListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
