@@ -13,12 +13,14 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
+import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
@@ -55,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,6 +82,17 @@ fun SearchRelationScreen(
             groups = groups
         )
     }
+    ErrorObserver(viewModel)
+
+    var isDialogShowing by remember { mutableStateOf(false) }
+
+    DialogScreen(
+        isShowing = isDialogShowing,
+        title = stringResource(id = R.string.error_dialog_title),
+        onDismissRequest = {
+            isDialogShowing = false
+        }
+    )
 
     SearchRelationScreen(
         appState = appState,
@@ -115,18 +129,6 @@ private fun SearchRelationScreen(
     fun navigateToEditRelation() {
         // TODO : EmptyCase
 //        appState.navController.navigate(EditRelationConstant.ROUTE)
-    }
-
-    fun getGroup(event: SearchRelationEvent.GetGroup) {
-        when (event) {
-            is SearchRelationEvent.GetGroup.Failure -> {
-                // TODO : ERROR
-            }
-
-            is SearchRelationEvent.GetGroup.Error -> {
-                // TODO : ERROR
-            }
-        }
     }
 
     BottomSheetScreen(
@@ -228,9 +230,7 @@ private fun SearchRelationScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when (event) {
-                is SearchRelationEvent.GetGroup -> getGroup(event)
-            }
+
         }
     }
 }

@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.group
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.AddGroupUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
@@ -46,11 +47,11 @@ class AddGroupViewModel @Inject constructor(
                 _state.value = AddGroupState.Init
                 when (exception) {
                     is ServerException -> {
-                        _event.emit(AddGroupEvent.AddGroup.Failure(exception))
+                        _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
                     }
 
                     else -> {
-                        _event.emit(AddGroupEvent.AddGroup.Error(exception))
+                        _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
                     }
                 }
             }

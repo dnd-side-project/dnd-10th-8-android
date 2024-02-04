@@ -58,10 +58,6 @@ fun SplashScreen(
             is SplashEvent.Login.Failure -> {
                 navigateToLogin()
             }
-
-            is SplashEvent.Login.Error -> {
-                // TODO : Unknown Error (Client Error, Internal Server Error, ...)
-            }
         }
     }
 

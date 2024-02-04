@@ -89,14 +89,6 @@ private fun AddGroupScreen(
                 onResult()
                 onDismissRequest()
             }
-
-            is AddGroupEvent.AddGroup.Failure -> {
-                // TODO : ERROR
-            }
-
-            is AddGroupEvent.AddGroup.Error -> {
-                // TODO : ERROR
-            }
         }
     }
 

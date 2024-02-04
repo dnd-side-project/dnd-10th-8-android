@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.usecase.authentication.RegistrationUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.member.CheckNicknameUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow

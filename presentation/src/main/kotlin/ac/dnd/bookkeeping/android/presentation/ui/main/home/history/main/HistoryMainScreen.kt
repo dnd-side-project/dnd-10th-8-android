@@ -173,11 +173,7 @@ fun HistoryMainScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when (event) {
-                is HistoryMainEvent.GetHistoryInfoMain -> {
 
-                }
-            }
         }
     }
 }

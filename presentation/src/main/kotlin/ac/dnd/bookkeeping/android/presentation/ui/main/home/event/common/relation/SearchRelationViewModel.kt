@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
@@ -39,11 +40,11 @@ class SearchRelationViewModel @Inject constructor(
                 }.onFailure { exception ->
                     when (exception) {
                         is ServerException -> {
-                            _event.emit(SearchRelationEvent.GetGroup.Failure(exception))
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
                         }
 
                         else -> {
-                            _event.emit(SearchRelationEvent.GetGroup.Error(exception))
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
                         }
                     }
                 }
