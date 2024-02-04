@@ -32,6 +32,8 @@ class CalendarConfig {
         val prevTail = calendar.get(Calendar.DAY_OF_WEEK) - 1
         makeBeforeDays(prevTail, dataSet)
         makeCurrentDays(dataSet)
+        val nextHead = LOW_OF_CALENDAR * WEEK_DAY_COUNT - (prevTail + maxDate)
+        makeNextHeadDays(nextHead, dataSet)
     }
 
     private fun makeBeforeDays(
@@ -68,7 +70,16 @@ class CalendarConfig {
         }
     }
 
+    private fun makeNextHeadDays(
+        nextHead: Int,
+        dataSet: ArrayList<CalendarDay>
+    ) {
+        for (i in 1..nextHead) dataSet.add(CalendarDay(i, CalendarDayType.OTHER_MONTH))
+    }
+
     companion object {
         private val DAY_OF_WEEK = listOf("일", "월", "화", "수", "목", "금", "토")
+        const val WEEK_DAY_COUNT = 7
+        const val LOW_OF_CALENDAR = 6
     }
 }
