@@ -20,6 +20,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.GroupChipListComponent
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
@@ -97,6 +98,7 @@ fun HistoryDetailScreen(
             historyGroups = groups,
         )
     }
+    ErrorObserver(viewModel)
 
     var searchText by remember { mutableStateOf("") }
     var selectedGroupId by remember {

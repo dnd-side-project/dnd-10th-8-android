@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.main.HistoryMainScreen
@@ -22,6 +23,7 @@ fun HistoryScreen(
             historyInfo = historyInfo
         )
     }
+    ErrorObserver(viewModel)
 
     HistoryMainScreen(
         appState = appState,

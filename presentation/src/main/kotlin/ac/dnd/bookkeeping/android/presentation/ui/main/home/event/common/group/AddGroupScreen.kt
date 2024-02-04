@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.group
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -58,6 +59,7 @@ fun AddGroupScreen(
             state = state
         )
     }
+    ErrorObserver(viewModel)
 
     AddGroupScreen(
         appState = appState,

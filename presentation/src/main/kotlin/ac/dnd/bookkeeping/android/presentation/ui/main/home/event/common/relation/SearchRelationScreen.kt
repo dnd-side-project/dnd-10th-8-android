@@ -20,7 +20,6 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Mutab
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomTextField
-import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
@@ -57,7 +56,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,16 +81,6 @@ fun SearchRelationScreen(
         )
     }
     ErrorObserver(viewModel)
-
-    var isDialogShowing by remember { mutableStateOf(false) }
-
-    DialogScreen(
-        isShowing = isDialogShowing,
-        title = stringResource(id = R.string.error_dialog_title),
-        onDismissRequest = {
-            isDialogShowing = false
-        }
-    )
 
     SearchRelationScreen(
         appState = appState,
