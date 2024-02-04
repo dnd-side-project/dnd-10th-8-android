@@ -30,7 +30,7 @@ class RelationApi @Inject constructor(
         groupId: Long,
         name: String,
         imageUrl: String,
-        memo: String = ""
+        memo: String
     ): Result<AddRelationRes> {
         return client.post("$baseUrl/api/v1/relations") {
             setBody(
@@ -49,7 +49,7 @@ class RelationApi @Inject constructor(
         groupId: Long,
         name: String,
         imageUrl: String,
-        memo: String = ""
+        memo: String
     ): Result<Unit> {
         return client.patch("$baseUrl/api/v1/relations/$id") {
             setBody(
@@ -78,7 +78,7 @@ class RelationApi @Inject constructor(
     }
 
     suspend fun getRelationList(
-        name: String = ""
+        name: String
     ): Result<GetRelationListRes> {
         return client.get("$baseUrl/api/v1/relations/me") {
             parameter("name", name)

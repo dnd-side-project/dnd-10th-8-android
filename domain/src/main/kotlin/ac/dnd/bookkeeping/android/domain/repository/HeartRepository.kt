@@ -21,7 +21,7 @@ interface HeartRepository {
         money: Long,
         day: LocalDate,
         event: String,
-        memo: String = "",
+        memo: String,
         tags: List<String>
     ): Result<Unit>
 
@@ -36,12 +36,12 @@ interface HeartRepository {
     ): Result<Long>
 
     suspend fun getHeartList(
-        sort: String = "recent",
-        name: String = ""
+        sort: String,
+        name: String
     ): Result<List<Heart>>
 
     suspend fun getRelatedHeartList(
         id: Long,
-        sort: String = "recent"
+        sort: String
     ): Result<List<RelatedHeart>>
 }

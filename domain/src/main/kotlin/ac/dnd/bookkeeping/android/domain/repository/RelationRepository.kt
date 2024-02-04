@@ -9,7 +9,7 @@ interface RelationRepository {
         groupId: Long,
         name: String,
         imageUrl: String,
-        memo: String = ""
+        memo: String
     ): Result<Long>
 
     suspend fun editRelation(
@@ -17,7 +17,7 @@ interface RelationRepository {
         groupId: Long,
         name: String,
         imageUrl: String,
-        memo: String = ""
+        memo: String
     ): Result<Unit>
 
     suspend fun deleteRelation(
@@ -29,6 +29,6 @@ interface RelationRepository {
     ): Result<RelationDetail>
 
     suspend fun getRelationList(
-        name: String = ""
+        name: String
     ): Result<List<RelationSimple>>
 }

@@ -58,7 +58,7 @@ class HeartApi @Inject constructor(
         money: Long,
         day: LocalDate,
         event: String,
-        memo: String = "",
+        memo: String,
         tags: List<String>
     ): Result<Unit> {
         return client.patch("$baseUrl/api/v1/hearts/$id") {
@@ -98,8 +98,8 @@ class HeartApi @Inject constructor(
     }
 
     suspend fun getHeartList(
-        sort: String = "recent",
-        name: String = ""
+        sort: String,
+        name: String
     ): Result<GetHeartListRes> {
         return client.get("$baseUrl/api/v1/hearts/me") {
             parameter("sort", sort) // recent, intimacy
@@ -109,7 +109,7 @@ class HeartApi @Inject constructor(
 
     suspend fun getRelatedHeartList(
         id: Long,
-        sort: String = "recent"
+        sort: String
     ): Result<GetRelatedHeartListRes> {
         return client.get("$baseUrl/api/v1/hearts/me/$id") {
             parameter("sort", sort) // recent, old

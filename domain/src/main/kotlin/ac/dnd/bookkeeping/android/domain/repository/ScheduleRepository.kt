@@ -17,7 +17,7 @@ interface ScheduleRepository {
         time: LocalTime,
         link: String,
         location: String,
-        memo: String = "",
+        memo: String,
     ): Result<Long>
 
     suspend fun editSchedule(
@@ -31,7 +31,7 @@ interface ScheduleRepository {
         time: LocalTime,
         link: String,
         location: String,
-        memo: String = "",
+        memo: String,
     ): Result<Unit>
 
     suspend fun deleteSchedule(
@@ -39,6 +39,6 @@ interface ScheduleRepository {
     ): Result<Unit>
 
     suspend fun getUnrecordedScheduleList(
-        name: String = ""
+        name: String
     ): Result<List<UnrecordedSchedule>>
 }
