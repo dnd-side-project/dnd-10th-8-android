@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type
+package ac.dnd.bookkeeping.android.presentation.model.history
 
 enum class HistoryRegistrationType(
     val typeName: String

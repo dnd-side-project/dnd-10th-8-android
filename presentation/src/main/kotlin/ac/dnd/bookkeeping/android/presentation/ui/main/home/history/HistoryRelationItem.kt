@@ -1,7 +1,7 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.item
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
-import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
-import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption1
@@ -38,8 +38,8 @@ import java.text.DecimalFormat
 
 @Composable
 fun HistoryRelationItem(
-    relation: RelationLegacy,
-    onSelectCard: (RelationLegacy) -> Unit
+    relation: RelationSimple,
+    onSelectCard: (RelationSimple) -> Unit
 ) {
     Card(
         shape = Shapes.medium,
@@ -145,10 +145,10 @@ fun HistoryRelationItem(
 @Composable
 fun HeartItemPreview() {
     HistoryRelationItem(
-        relation = RelationLegacy(
+        relation = RelationSimple(
             id = 8446,
             name = "Harlan Yang",
-            group = RelationGroupLegacy(
+            group = RelationSimpleGroup(
                 id = 2337,
                 name = "Angelia McBride",
             ),

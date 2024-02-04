@@ -14,9 +14,8 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.HistoryDetailScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.type.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -59,9 +58,13 @@ fun HistoryScreen(
     val model: HistoryModel = Unit.let {
         val state by viewModel.state.collectAsStateWithLifecycle()
         val historyInfo by viewModel.historyInfo.collectAsStateWithLifecycle()
+        val historyType by viewModel.historyType.collectAsStateWithLifecycle()
+        val groups by viewModel.groups.collectAsStateWithLifecycle()
         HistoryModel(
             state = state,
-            historyInfo = historyInfo
+            info = historyInfo,
+            viewType = historyType,
+            groups = groups
         )
     }
     ErrorObserver(viewModel)
@@ -113,7 +116,7 @@ private fun HistoryScreen(
                 modifier = Modifier.align(Alignment.CenterStart)
             )
             Image(
-                painter = getAlarmImage(model.historyInfo.unReadAlarm),
+                painter = getAlarmImage(model.info.unReadAlarm),
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
@@ -175,28 +178,15 @@ private fun HistoryScreen(
             state = pagerState,
             userScrollEnabled = false
         ) { pageIndex ->
-            when (pageIndex) {
-                0 -> {
-                    HistoryDetailScreen(
-                        viewType = HistoryViewType.TOTAL,
-                        mainModel = model
-                    )
-                }
-
-                1 -> {
-                    HistoryDetailScreen(
-                        viewType = HistoryViewType.TAKE,
-                        mainModel = model
-                    )
-                }
-
-                2 -> {
-                    HistoryDetailScreen(
-                        viewType = HistoryViewType.GIVE,
-                        mainModel = model
-                    )
-                }
-            }
+            val viewType = HistoryViewType.entries.getOrNull(pageIndex)
+            HistoryPageScreen(
+                appState = appState,
+                model = model,
+                event = event,
+                intent = intent,
+                handler = handler,
+                viewType = viewType ?: HistoryViewType.TOTAL
+            )
         }
     }
 
@@ -219,11 +209,13 @@ private fun HistoryScreenPreview() {
         appState = rememberApplicationState(),
         model = HistoryModel(
             state = HistoryState.Init,
-            historyInfo = HistoryInfoLegacy(
+            info = HistoryInfoLegacy(
                 unReadAlarm = true,
                 totalHeartCount = 30,
                 unWrittenCount = 5
-            )
+            ),
+            viewType = HistoryViewType.TOTAL,
+            groups = emptyList()
         ),
         event = MutableEventFlow(),
         intent = {},

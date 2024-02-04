@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.chip
 
-import ac.dnd.bookkeeping.android.domain.model.legacy.GroupLegacy
-import ac.dnd.bookkeeping.android.domain.model.legacy.RelationLegacy
-import ac.dnd.bookkeeping.android.domain.model.legacy.RelationGroupLegacy
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 fun GroupChipListComponent(
     chipType: ChipType = ChipType.LESS_BORDER,
     currentSelectedId: Long,
-    onSelectChip: (GroupLegacy) -> Unit,
-    groups : List<GroupLegacy>
+    onSelectChip: (GroupWithRelation) -> Unit,
+    groups: List<GroupWithRelation>
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         items(groups) { group ->
@@ -24,7 +24,7 @@ fun GroupChipListComponent(
                 currentSelectedId = setOf(currentSelectedId),
                 chipId = group.id,
                 chipText = group.name,
-                chipCount = group.relations.size,
+                chipCount = group.relationList.size,
                 onSelectChip = {
                     onSelectChip(group)
                 }
@@ -41,14 +41,14 @@ fun GroupChipPreview() {
         currentSelectedId = 0,
         onSelectChip = {},
         groups = listOf(
-            GroupLegacy(
+            GroupWithRelation(
                 0,
                 "전체",
-                relations = listOf(
-                    RelationLegacy(
+                relationList = listOf(
+                    RelationSimple(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationGroupLegacy(
+                        group = RelationSimpleGroup(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -57,14 +57,14 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            GroupLegacy(
+            GroupWithRelation(
                 1,
                 "친구",
-                relations = listOf(
-                    RelationLegacy(
+                relationList = listOf(
+                    RelationSimple(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationGroupLegacy(
+                        group = RelationSimpleGroup(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -73,7 +73,7 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            GroupLegacy(
+            GroupWithRelation(
                 2,
                 "가족",
                 listOf()
