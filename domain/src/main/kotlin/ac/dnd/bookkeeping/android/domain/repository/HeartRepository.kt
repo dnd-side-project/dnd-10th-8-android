@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
-import ac.dnd.bookkeeping.android.domain.model.heart.Heart
-import ac.dnd.bookkeeping.android.domain.model.heart.RelatedHeart
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.Heart
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import kotlinx.datetime.LocalDate
 
 interface HeartRepository {

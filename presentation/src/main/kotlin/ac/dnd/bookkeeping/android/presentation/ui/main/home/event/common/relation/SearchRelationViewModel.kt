@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow

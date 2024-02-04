@@ -1,10 +1,10 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.statistics
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatistics
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatisticsEvent
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatisticsGive
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatisticsTake
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsEvent
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsGive
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsTake
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

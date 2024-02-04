@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.usecase.feature.relation
 
-import ac.dnd.bookkeeping.android.domain.model.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.bookkeeping.android.domain.repository.RelationRepository
 import javax.inject.Inject
 

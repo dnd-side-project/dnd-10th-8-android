@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
-import ac.dnd.bookkeeping.android.domain.model.statistics.GroupStatistics
-import ac.dnd.bookkeeping.android.domain.model.statistics.MyStatistics
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.GroupStatistics
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
 
 interface StatisticsRepository {
 

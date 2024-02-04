@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.model.login
 
-import ac.dnd.bookkeeping.android.domain.model.sociallogin.KakaoUserInformation
+import ac.dnd.bookkeeping.android.domain.model.authentication.sociallogin.KakaoUserInformation
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 

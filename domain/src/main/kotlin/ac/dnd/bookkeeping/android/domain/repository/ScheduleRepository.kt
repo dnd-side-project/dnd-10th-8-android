@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
-import ac.dnd.bookkeeping.android.domain.model.schedule.UnrecordedSchedule
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime

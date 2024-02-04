@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
-import ac.dnd.bookkeeping.android.domain.model.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
 import androidx.compose.runtime.Immutable
 
 @Immutable

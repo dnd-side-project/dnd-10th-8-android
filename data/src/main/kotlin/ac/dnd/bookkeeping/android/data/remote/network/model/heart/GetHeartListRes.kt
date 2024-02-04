@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.heart
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.heart.Heart
-import ac.dnd.bookkeeping.android.domain.model.heart.HeartGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.Heart
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.HeartGroup
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

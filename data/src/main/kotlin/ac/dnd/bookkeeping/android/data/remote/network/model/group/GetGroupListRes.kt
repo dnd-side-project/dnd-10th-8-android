@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.group
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.group.Group
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

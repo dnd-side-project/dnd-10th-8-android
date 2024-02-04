@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.schedule
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.schedule.UnrecordedSchedule
-import ac.dnd.bookkeeping.android.domain.model.schedule.UnrecordedScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime

@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation
 
-import ac.dnd.bookkeeping.android.domain.model.group.GroupWithRelation
-import ac.dnd.bookkeeping.android.domain.model.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1

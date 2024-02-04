@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
-import ac.dnd.bookkeeping.android.domain.model.relation.RelationDetail
-import ac.dnd.bookkeeping.android.domain.model.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 
 interface RelationRepository {
 
