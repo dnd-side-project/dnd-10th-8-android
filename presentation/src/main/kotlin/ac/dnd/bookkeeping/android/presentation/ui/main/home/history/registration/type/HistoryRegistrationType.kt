@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type
 
-enum class RegistrationType(
+enum class HistoryRegistrationType(
     val typeName: String
 ) {
     TAKE("받은 마음"),

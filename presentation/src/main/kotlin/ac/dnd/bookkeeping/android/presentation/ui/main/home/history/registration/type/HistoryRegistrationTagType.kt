@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type
 
-enum class RegistrationTagType(
+enum class HistoryRegistrationTagType(
     val id: Long,
     val tagName: String
 ) {

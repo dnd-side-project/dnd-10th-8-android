@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type
 
-enum class RegistrationEventType(
+enum class HistoryRegistrationEventType(
     val id: Long,
     val eventName: String
 ) {

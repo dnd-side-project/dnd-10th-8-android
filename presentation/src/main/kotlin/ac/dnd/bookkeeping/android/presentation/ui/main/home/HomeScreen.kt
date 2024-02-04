@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping.BookkeepingScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.setting.SettingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -67,9 +69,13 @@ fun HomeScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    BookkeepingScreen(
-                        appState = appState
+                    HistoryRegistrationScreen(
+                        appState = appState,
+                        handler = CoroutineExceptionHandler { _, _ -> }
                     )
+//                    BookkeepingScreen(
+//                        appState = appState
+//                    )
                 }
 
                 1 -> {
