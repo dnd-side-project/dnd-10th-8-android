@@ -15,13 +15,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun FieldSubject(
-    subject: String
+    subject: String,
+    isViewIcon: Boolean = true
 ) {
     Column {
         Row {
@@ -36,6 +38,7 @@ fun FieldSubject(
             Box(
                 modifier = Modifier
                     .height(21.dp)
+                    .alpha(if (isViewIcon) 100f else 0f)
                     .padding(bottom = 3.dp),
                 contentAlignment = Alignment.Center
             ) {

@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,13 +29,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ChipItem(
     chipType: ChipType = ChipType.LESS_BORDER,
-    currentSelectedId: Long,
+    currentSelectedId: Set<Long>,
     chipId: Long,
     chipText: String,
     chipCount: Int = 0,
     onSelectChip: (chipId: Long) -> Unit
 ) {
-    val isSelected = currentSelectedId == chipId
+    val isSelected = chipId in currentSelectedId
     val backgroundColor = animateColorAsState(
         targetValue = when (chipType) {
             ChipType.MAIN -> if (isSelected) Gray700 else Gray000
@@ -59,6 +60,7 @@ fun ChipItem(
 
     Row(
         modifier = Modifier
+            .clip(RoundedCornerShape(100.dp))
             .background(
                 color = backgroundColor.value,
                 shape = RoundedCornerShape(100.dp)
@@ -68,13 +70,13 @@ fun ChipItem(
                 width = 1.dp,
                 shape = RoundedCornerShape(100.dp)
             )
+            .clickable {
+                onSelectChip(chipId)
+            }
             .padding(
                 horizontal = 14.dp,
                 vertical = 6.5.dp
-            )
-            .clickable {
-                onSelectChip(chipId)
-            },
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -102,7 +104,7 @@ fun ChipsType1Preview(){
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
         ChipItem(
             chipType = ChipType.LESS_BORDER,
-        currentSelectedId = 0,
+        currentSelectedId = setOf(0),
         chipId = 0,
         chipText = "가족",
         chipCount = 5,
@@ -110,7 +112,7 @@ fun ChipsType1Preview(){
         )
         ChipItem(
             chipType = ChipType.LESS_BORDER,
-            currentSelectedId = 0,
+            currentSelectedId = setOf(0),
             chipId = 1,
             chipText = "친구",
             chipCount = 0,
@@ -125,7 +127,7 @@ fun ChipsType2Preview(){
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
         ChipItem(
             chipType = ChipType.BORDER,
-            currentSelectedId = 0,
+            currentSelectedId = setOf(0),
             chipId = 0,
             chipText = "가족",
             chipCount = 5,
@@ -133,7 +135,7 @@ fun ChipsType2Preview(){
         )
         ChipItem(
             chipType = ChipType.BORDER,
-            currentSelectedId = 0,
+            currentSelectedId = setOf(0),
             chipId = 1,
             chipText = "친구",
             chipCount = 0,
@@ -148,7 +150,7 @@ fun ChipsType3Preview(){
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
         ChipItem(
             chipType = ChipType.MAIN,
-            currentSelectedId = 0,
+            currentSelectedId = setOf(0),
             chipId = 0,
             chipText = "가족",
             chipCount = 5,
@@ -156,7 +158,7 @@ fun ChipsType3Preview(){
         )
         ChipItem(
             chipType = ChipType.MAIN,
-            currentSelectedId = 0,
+            currentSelectedId = setOf(0),
             chipId = 1,
             chipText = "친구",
             chipCount = 0,
