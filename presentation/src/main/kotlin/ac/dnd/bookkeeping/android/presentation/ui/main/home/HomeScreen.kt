@@ -1,10 +1,14 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping.BookkeepingScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.setting.SettingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,6 +75,11 @@ fun HomeScreen(
                 0 -> {
                     HistoryRegistrationScreen(
                         appState = appState,
+                        model = HistoryRegistrationModel(
+                            state = HistoryRegistrationState.Init
+                        ),
+                        event = MutableEventFlow(),
+                        intent = {},
                         handler = CoroutineExceptionHandler { _, _ -> }
                     )
 //                    BookkeepingScreen(

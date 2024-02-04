@@ -408,7 +408,7 @@ fun HistoryRegistrationScreen(
                     Text(
                         text = "저장하기",
                         style = Headline3.merge(
-                            color = Gray700,
+                            color = Gray000,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -429,6 +429,7 @@ fun HistoryRegistrationScreen(
                     selectedYear = year
                     selectedMonth = month
                     selectedDay = day
+                    isCalendarShowingState = false
                 }
             )
         }
