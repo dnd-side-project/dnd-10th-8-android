@@ -1,15 +1,15 @@
 package ac.dnd.bookkeeping.android.data.di
 
 import ac.dnd.bookkeeping.android.data.repository.authentication.MockAuthenticationRepository
-import ac.dnd.bookkeeping.android.data.repository.file.MockFileRepository
+import ac.dnd.bookkeeping.android.data.repository.authentication.sociallogin.KakaoLoginRepositoryImpl
 import ac.dnd.bookkeeping.android.data.repository.feature.group.MockGroupRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.heart.MockHeartRepository
-import ac.dnd.bookkeeping.android.data.repository.member.MockMemberRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.relation.MockRelationRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.schedule.MockScheduleRepository
-import ac.dnd.bookkeeping.android.data.repository.authentication.sociallogin.KakaoLoginRepositoryImpl
 import ac.dnd.bookkeeping.android.data.repository.feature.statistics.MockStatisticsRepository
+import ac.dnd.bookkeeping.android.data.repository.file.MockFileRepository
 import ac.dnd.bookkeeping.android.data.repository.gallery.GalleryImageRepositoryImpl
+import ac.dnd.bookkeeping.android.data.repository.member.MockMemberRepository
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import ac.dnd.bookkeeping.android.domain.repository.FileRepository
 import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
@@ -23,7 +23,6 @@ import ac.dnd.bookkeeping.android.domain.repository.StatisticsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 

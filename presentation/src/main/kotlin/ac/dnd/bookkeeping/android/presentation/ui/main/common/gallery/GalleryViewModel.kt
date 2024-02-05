@@ -1,13 +1,11 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery
 
-import ac.dnd.bookkeeping.android.domain.usecase.gallery.LoadFolderListUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.gallery.LoadPhotoListUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.gallery.GetFolderListUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.gallery.GetPhotoListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GalleryViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val loadFolderListUseCase: LoadFolderListUseCase,
-    private val loadPhotoListUseCase: LoadPhotoListUseCase
+    private val getFolderListUseCase: GetFolderListUseCase,
+    private val getPhotoListUseCase: GetPhotoListUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<GalleryState> =
@@ -53,7 +51,7 @@ class GalleryViewModel @Inject constructor(
 
     private fun getGalleryPagingImages() {
         launch {
-            loadPhotoListUseCase(currentFolder.value)
+            getPhotoListUseCase(currentFolder.value)
                 .collectLatest {
                     _galleryPhotoList.value = it
                 }
@@ -61,11 +59,10 @@ class GalleryViewModel @Inject constructor(
     }
 
     private fun getFolders() {
-        _folders.value = loadFolderListUseCase().map {
-            if (it=="최근 항목"){
+        _folders.value = getFolderListUseCase().map {
+            if (it == "최근 항목") {
                 it to null
-            }
-            else {
+            } else {
                 it.split("/").last() to it
             }
         }

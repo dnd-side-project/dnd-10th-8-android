@@ -1,8 +1,7 @@
-package com.dnd_9th_3_android.gooding.record.tabGallery
+package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
@@ -12,9 +11,6 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.GalleryIntent
-import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.GalleryModel
-import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.GalleryViewModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.item.GalleryItemContent
 import android.Manifest
 import android.os.Build
@@ -42,7 +38,6 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf

@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
 import androidx.paging.PagingData
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import kotlinx.coroutines.flow.Flow
 
 interface GalleryImageRepository {

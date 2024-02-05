@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.data.repository.gallery
 
 import ac.dnd.bookkeeping.android.data.remote.gallery.GalleryPagingSource
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
 import android.annotation.SuppressLint
 import android.content.ContentResolver
@@ -13,7 +14,6 @@ import androidx.core.os.bundleOf
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -97,7 +97,7 @@ class GalleryImageRepositoryImpl @Inject constructor(
     }
 
     override fun getFolderList(): List<String> {
-        val folderList : ArrayList<String> = arrayListOf("최근 항목")
+        val folderList: ArrayList<String> = arrayListOf("최근 항목")
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = context.contentResolver.query(uri, projection, null, null, null)
@@ -106,8 +106,8 @@ class GalleryImageRepositoryImpl @Inject constructor(
                 val columnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
                 val filePath = cursor.getString(columnIndex)
                 val folder = File(filePath).parent
-                folder?.let{
-                    if (!folderList.contains(folder)){
+                folder?.let {
+                    if (!folderList.contains(folder)) {
                         folderList.add(folder)
                     }
                 }

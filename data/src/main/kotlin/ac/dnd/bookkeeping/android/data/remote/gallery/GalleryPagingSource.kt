@@ -1,9 +1,9 @@
 package ac.dnd.bookkeeping.android.data.remote.gallery
 
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
 
 class GalleryPagingSource(
     private val imageRepository: GalleryImageRepository,

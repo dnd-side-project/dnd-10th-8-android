@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 
 @Composable
 fun GalleryItemContent(

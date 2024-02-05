@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery
 
 import androidx.paging.compose.LazyPagingItems
-import com.dnd_9th_3_android.gooding.model.record.GalleryImage
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 
 class GalleryModel(
     val state: GalleryState,
