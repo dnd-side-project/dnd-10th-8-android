@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
@@ -84,9 +85,10 @@ fun ConfirmButton(
             bottom = 0.dp,
             end = paddingHorizontal
         ),
-        colors = ButtonDefaults.textButtonColors(
-            backgroundColor = backgroundColor
-        ),
+        colors = ButtonDefaults
+            .textButtonColors(
+                backgroundColor = if (isEnabled) backgroundColor else Gray400
+            ),
         border = border,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),
         onClick = onClick,

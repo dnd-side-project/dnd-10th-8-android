@@ -92,6 +92,7 @@ fun TypingPriceField(
             }
     ) {
         fieldSubjectContent()
+        Spacer(modifier = Modifier.height(18.dp))
         BasicTextField(
             value = TextFieldValue(
                 text = textValue,
