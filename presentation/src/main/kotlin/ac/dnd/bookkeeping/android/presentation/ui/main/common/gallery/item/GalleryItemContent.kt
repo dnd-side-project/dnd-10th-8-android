@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.common.view.gallery.item
+package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.item
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
@@ -63,15 +63,17 @@ fun GalleryItemContent(
                         onSelectImage(galleryImage)
                     }
                 },
-            alpha = if (selected) 1f else 0.4f
+            alpha = if (selected || currentSelectedImageId==-1L ) 1f else 0.4f
         )
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Image(
-                painter = painterResource(R.drawable.ic_check_circle),
-                contentDescription = null
-            )
+        if (selected) {
+            Box(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_check_circle),
+                    contentDescription = null
+                )
+            }
         }
     }
 }

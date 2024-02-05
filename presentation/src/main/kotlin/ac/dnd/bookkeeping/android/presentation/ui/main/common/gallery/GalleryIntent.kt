@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.common.view.gallery
+package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery
 
 sealed interface GalleryIntent {
     data object OnGrantPermission : GalleryIntent
