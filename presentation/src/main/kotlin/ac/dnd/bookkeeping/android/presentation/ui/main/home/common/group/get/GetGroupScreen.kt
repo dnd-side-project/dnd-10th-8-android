@@ -16,12 +16,15 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
+import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,18 +57,50 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun GetGroupScreen(
+    appState: ApplicationState,
+    groups: List<Group>,
+    onDismissRequest: () -> Unit,
+    onResult: (Group) -> Unit,
+    viewModel: GetGroupViewModel = hiltViewModel()
+){
+    val model : GetGroupModel = Unit.let {
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        GetGroupModel(
+            state = state,
+            groups = groups
+        )
+    }
+    ErrorObserver(viewModel)
+
+    GetGroupScreen(
+        appState = appState,
+        onDismissRequest = onDismissRequest,
+        onResult = onResult,
+        model = model,
+        intent = viewModel::onIntent,
+        event = viewModel.event,
+        handler =  viewModel.handler,
+    )
+}
+
+@Composable
+private fun GetGroupScreen(
+    appState: ApplicationState,
     onDismissRequest: () -> Unit,
     onResult: (Group) -> Unit,
     model: GetGroupModel,
-    handler: CoroutineExceptionHandler,
     intent: (GetGroupIntent) -> Unit,
-    event: EventFlow<GetGroupEvent>
+    event: EventFlow<GetGroupEvent>,
+    handler: CoroutineExceptionHandler
 ) {
 
     BottomSheetScreen(
@@ -264,8 +299,10 @@ fun GetGroupScreen(
 
 @Preview(apiLevel = 33)
 @Composable
-fun GetGroupScreenPreivew() {
+private fun GetGroupScreenPreivew() {
     GetGroupScreen(
+        appState = rememberApplicationState(),
+
         onDismissRequest = {},
         event = MutableEventFlow(),
         intent = {},
