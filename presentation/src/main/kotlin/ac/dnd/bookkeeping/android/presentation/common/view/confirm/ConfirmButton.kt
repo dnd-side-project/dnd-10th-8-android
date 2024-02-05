@@ -87,7 +87,7 @@ fun ConfirmButton(
         ),
         colors = ButtonDefaults
             .textButtonColors(
-                backgroundColor = if (isEnabled) backgroundColor else Gray400
+                backgroundColor =  backgroundColor
             ),
         border = border,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),

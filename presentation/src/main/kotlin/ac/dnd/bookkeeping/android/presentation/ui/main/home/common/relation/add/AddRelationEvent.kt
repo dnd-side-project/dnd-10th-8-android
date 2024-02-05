@@ -5,7 +5,5 @@ import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 sealed interface AddRelationEvent {
     sealed interface Submit : AddRelationEvent {
         data object Success : Submit
-        data class Failure(val exception: ServerException) : Submit
-        data class Error(val exception: Throwable) : Submit
     }
 }

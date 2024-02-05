@@ -326,7 +326,7 @@ fun AddRelationScreen(
 
 @Preview
 @Composable
-fun AddRelationScreenPreview() {
+private fun AddRelationScreenPreview() {
     AddRelationScreen(
         appState = rememberApplicationState()
     )
