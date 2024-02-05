@@ -15,8 +15,8 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.group.AddGroupScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

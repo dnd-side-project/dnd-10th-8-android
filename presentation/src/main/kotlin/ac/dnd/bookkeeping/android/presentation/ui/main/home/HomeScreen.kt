@@ -3,7 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.bookkeeping.BookkeepingScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.setting.SettingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -67,7 +67,7 @@ fun HomeScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    BookkeepingScreen(
+                    HistoryScreen(
                         appState = appState
                     )
                 }

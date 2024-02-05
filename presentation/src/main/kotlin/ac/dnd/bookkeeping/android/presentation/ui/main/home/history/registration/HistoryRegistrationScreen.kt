@@ -33,7 +33,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingPrice
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.event.common.relation.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.calendar.HistoryCalendarScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationEventType
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationTagType
