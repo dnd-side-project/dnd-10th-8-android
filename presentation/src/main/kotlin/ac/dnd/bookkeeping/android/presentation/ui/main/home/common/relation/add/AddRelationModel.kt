@@ -5,6 +5,6 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class AddRelationModel(
-    val state : AddRelationState,
-    val groups : List<Group>
+    val state: AddRelationState,
+    val groups: List<Group>
 )

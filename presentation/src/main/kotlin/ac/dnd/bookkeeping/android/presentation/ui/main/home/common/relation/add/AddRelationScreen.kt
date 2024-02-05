@@ -2,12 +2,10 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.add
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Caption1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
@@ -21,8 +19,9 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space56
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space80
-import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
@@ -70,24 +69,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun AddRelationScreen(
     appState: ApplicationState,
-    viewModel: AddRelationViewModel = hiltViewModel()
+    model: AddRelationModel,
+    event: EventFlow<AddRelationEvent>,
+    intent: (AddRelationIntent) -> Unit,
+    handler: CoroutineExceptionHandler
 ) {
-    val model :AddRelationModel = Unit.let {
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val groups by viewModel.groups.collectAsStateWithLifecycle()
-
-        AddRelationModel(
-            state = state,
-            groups = groups
-        )
-    }
-    ErrorObserver(viewModel)
 
     val focusManager = LocalFocusManager.current
     val isRecordState by remember { mutableStateOf(false) }
@@ -213,7 +204,7 @@ fun AddRelationScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                items(model.groups){ group ->
+                items(model.groups) { group ->
                     ChipItem(
                         chipType = ChipType.BORDER,
                         currentSelectedId = setOf(currentGroupId),
@@ -238,7 +229,7 @@ fun AddRelationScreen(
                         horizontal = Space8,
                         vertical = 5.dp
                     )
-            ){
+            ) {
                 Image(
                     painter = painterResource(R.drawable.ic_edit),
                     contentDescription = null
@@ -254,7 +245,7 @@ fun AddRelationScreen(
             }
             Spacer(modifier = Modifier.height(Space24))
             FieldSubject(
-                subject  = "메모",
+                subject = "메모",
                 isViewIcon = false
             )
             Spacer(
@@ -317,9 +308,9 @@ fun AddRelationScreen(
 
     }
 
-    LaunchedEffectWithLifecycle(viewModel.event, viewModel.handler) {
-        viewModel.event.eventObserve { event ->
-
+    LaunchedEffectWithLifecycle(event, handler) {
+        event.eventObserve { event ->
+            // TODO event
         }
     }
 }
@@ -328,6 +319,34 @@ fun AddRelationScreen(
 @Composable
 private fun AddRelationScreenPreview() {
     AddRelationScreen(
-        appState = rememberApplicationState()
+        appState = rememberApplicationState(),
+        model = AddRelationModel(
+            groups = listOf(
+                Group(
+                    id = 0,
+                    name = "친구"
+                ),
+                Group(
+                    id = 0,
+                    name = "가족"
+                ),
+                Group(
+                    id = 0,
+                    name = "지인"
+                ),
+                Group(
+                    id = 0,
+                    name = "직장"
+                ),
+                Group(
+                    id = 0,
+                    name = "label"
+                )
+            ),
+            state = AddRelationState.Init
+        ),
+        intent = {},
+        event = MutableEventFlow(),
+        handler = CoroutineExceptionHandler { _, _ -> }
     )
 }

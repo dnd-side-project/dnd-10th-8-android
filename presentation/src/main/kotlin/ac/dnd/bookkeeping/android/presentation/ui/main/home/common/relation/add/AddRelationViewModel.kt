@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRelationViewModel  @Inject constructor(
+class AddRelationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getGroupListUseCase: GetGroupListUseCase,
     private val addRelationUseCase: AddRelationUseCase
@@ -41,7 +41,7 @@ class AddRelationViewModel  @Inject constructor(
                     _groups.value = it
                 }
                 .onFailure { exception ->
-                    when(exception){
+                    when (exception) {
                         is ServerException -> {
                             _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
                         }
@@ -53,8 +53,9 @@ class AddRelationViewModel  @Inject constructor(
                 }
         }
     }
+
     fun onIntent(intent: AddRelationIntent) {
-        when (intent){
+        when (intent) {
             is AddRelationIntent.OnClickSubmit -> addRelation(
                 intent.groupId,
                 intent.name,
@@ -65,11 +66,11 @@ class AddRelationViewModel  @Inject constructor(
     }
 
     private fun addRelation(
-        groupId : Long,
-        name : String,
-        imageUrl : String,
+        groupId: Long,
+        name: String,
+        imageUrl: String,
         memo: String,
-    ){
+    ) {
         launch {
             _state.value = AddRelationState.Loading
             addRelationUseCase(
@@ -82,7 +83,7 @@ class AddRelationViewModel  @Inject constructor(
                     _state.value = AddRelationState.Init
                     _event.emit(AddRelationEvent.Submit.Success)
                 }
-                .onFailure {  exception ->
+                .onFailure { exception ->
                     _state.value = AddRelationState.Init
                     when (exception) {
                         is ServerException -> {
