@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get
 
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationSimple
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
@@ -226,7 +226,7 @@ private fun SearchRelationScreen(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun SearchRelationGroup(
-    group: GroupWithRelation,
+    group: GroupWithRelationSimple,
     selectedRelation: RelationSimple?,
     isExpanded: Boolean,
     onExpandRequest: () -> Unit,

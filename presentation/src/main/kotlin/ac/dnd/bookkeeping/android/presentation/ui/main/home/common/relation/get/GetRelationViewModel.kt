@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
-import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationUseCase
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationSimple
+import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationSimpleUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GetRelationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getGroupListWithRelationUseCase: GetGroupListWithRelationUseCase
+    private val getGroupListWithRelationSimpleUseCase: GetGroupListWithRelationSimpleUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<GetRelationState> =
@@ -28,13 +28,13 @@ class GetRelationViewModel @Inject constructor(
     private val _event: MutableEventFlow<GetRelationEvent> = MutableEventFlow()
     val event: EventFlow<GetRelationEvent> = _event.asEventFlow()
 
-    private val _groups: MutableStateFlow<List<GroupWithRelation>> = MutableStateFlow(emptyList())
-    val groups: StateFlow<List<GroupWithRelation>> = _groups.asStateFlow()
+    private val _groups: MutableStateFlow<List<GroupWithRelationSimple>> = MutableStateFlow(emptyList())
+    val groups: StateFlow<List<GroupWithRelationSimple>> = _groups.asStateFlow()
 
     init {
         launch {
             _state.value = GetRelationState.Loading
-            getGroupListWithRelationUseCase()
+            getGroupListWithRelationSimpleUseCase()
                 .onSuccess {
                     _groups.value = it
                 }.onFailure { exception ->

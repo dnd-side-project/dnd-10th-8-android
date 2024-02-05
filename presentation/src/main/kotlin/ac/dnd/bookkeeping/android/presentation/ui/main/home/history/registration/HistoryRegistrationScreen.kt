@@ -34,10 +34,10 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.calendar.HistoryCalendarScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationEventType
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationTagType
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.type.HistoryRegistrationType
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationEventType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationTagType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationType
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -125,13 +125,6 @@ fun HistoryRegistrationScreen(
     fun submit(event: HistoryRegistrationEvent.Submit) {
         when (event) {
             is HistoryRegistrationEvent.Submit.Success -> navigateToHistory()
-            is HistoryRegistrationEvent.Submit.Error -> {
-                // TODO Error
-            }
-
-            is HistoryRegistrationEvent.Submit.Failure -> {
-                // TODO Failure
-            }
         }
     }
 

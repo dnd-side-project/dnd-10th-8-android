@@ -1,6 +1,6 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
-import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDetail
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -20,16 +20,14 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
-import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.GroupChipListComponent
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryModel
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.item.HistoryRelationItem
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.type.HistorySortedType
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.item.type.HistoryViewType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistorySortedType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
+import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,7 +47,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
@@ -72,38 +69,40 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @SuppressLint("InvalidColorHexValue")
 @Composable
-fun HistoryDetailScreen(
-    viewType: HistoryViewType,
-    mainModel: HistoryModel,
-    viewModel: HistoryDetailViewModel = hiltViewModel()
+fun HistoryPageScreen(
+    appState: ApplicationState,
+    model: HistoryModel,
+    event: EventFlow<HistoryEvent>,
+    intent: (HistoryIntent) -> Unit,
+    handler: CoroutineExceptionHandler,
+    viewType: HistoryViewType
 ) {
-    val model: HistoryDetailModel = Unit.let {
-        val state by viewModel.state.collectAsStateWithLifecycle()
-        val groups by when (viewType) {
-            HistoryViewType.TOTAL -> viewModel.totalGroups.collectAsStateWithLifecycle()
-            HistoryViewType.TAKE -> viewModel.takeGroups.collectAsStateWithLifecycle()
-            HistoryViewType.GIVE -> viewModel.giveGroups.collectAsStateWithLifecycle()
-        }
-
-        HistoryDetailModel(
-            state = state,
-            viewType = viewType,
-            historyGroups = groups,
+    val groups = model.groups.map { group ->
+        GroupWithRelationDetail(
+            id = group.id,
+            name = group.name,
+            relationList = group.relationList.filter { relation ->
+                return@filter when (viewType) {
+                    HistoryViewType.TOTAL -> true
+                    HistoryViewType.GIVE -> relation.giveMoney > 0
+                    HistoryViewType.TAKE -> relation.takeMoney > 0
+                }
+                true
+            }
         )
+    }.filter { group ->
+        group.relationList.isNotEmpty()
     }
-    ErrorObserver(viewModel)
 
     var searchText by remember { mutableStateOf("") }
     var selectedGroupId by remember {
         mutableLongStateOf(
-            model.historyGroups.firstOrNull()?.id ?: 0
+            groups.firstOrNull()?.id ?: 0
         )
     }
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
@@ -133,7 +132,7 @@ fun HistoryDetailScreen(
                     withStyle(
                         SpanStyle(color = Primary4)
                     ) {
-                        append("${mainModel.historyInfo.totalHeartCount}번")
+                        append("${model.info.totalHeartCount}번")
                     }
                     append("의 마음을\n주고 받았어요 ")
                 },
@@ -180,7 +179,7 @@ fun HistoryDetailScreen(
                     }
                 } else null
             )
-            if (mainModel.historyInfo.unWrittenCount > 0) {
+            if (model.info.unWrittenCount > 0) {
                 Box(
                     modifier = Modifier
                         .border(
@@ -216,7 +215,7 @@ fun HistoryDetailScreen(
                                     withStyle(
                                         SpanStyle(color = Gray800)
                                     ) {
-                                        append("${mainModel.historyInfo.unWrittenCount}개")
+                                        append("${model.info.unWrittenCount}개")
                                     }
                                 },
                                 style = Body1.merge(
@@ -255,7 +254,7 @@ fun HistoryDetailScreen(
             GroupChipListComponent(
                 chipType = ChipType.MAIN,
                 currentSelectedId = selectedGroupId,
-                groups = model.historyGroups,
+                groups = groups,
                 onSelectChip = { group ->
                     selectedGroupId = group.id
                 }
@@ -328,7 +327,8 @@ fun HistoryDetailScreen(
                                         )
                                     } else {
                                         Box(
-                                            modifier = Modifier.size(Space24)
+                                            modifier = Modifier
+                                                .size(Space24)
                                                 .background(Color.White)
                                         )
                                     }
@@ -357,7 +357,7 @@ fun HistoryDetailScreen(
             }
         }
 
-        model.historyGroups.find { it.id == selectedGroupId }?.let {
+        groups.find { it.id == selectedGroupId }?.let {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(Space16),
@@ -367,9 +367,9 @@ fun HistoryDetailScreen(
                     vertical = 16.dp
                 )
             ) {
-                items(it.relations) { relation ->
+                items(it.relationList.size) { index ->
                     HistoryRelationItem(
-                        relation,
+                        it.relationList[index],
                         onSelectCard = {
 
                         }
@@ -381,7 +381,7 @@ fun HistoryDetailScreen(
 }
 
 @Composable
-fun EmptyRelationView() {
+private fun EmptyRelationView() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(107.66f))
         Text(
@@ -395,20 +395,4 @@ fun EmptyRelationView() {
         )
         Spacer(modifier = Modifier.weight(188.34f))
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HistoryDetailPreview() {
-    HistoryDetailScreen(
-        HistoryViewType.TOTAL,
-        mainModel = HistoryModel(
-            state = HistoryState.Init,
-            historyInfo = HistoryInfoLegacy(
-                unReadAlarm = true,
-                totalHeartCount = 30,
-                unWrittenCount = 5
-            )
-        ),
-    )
 }
