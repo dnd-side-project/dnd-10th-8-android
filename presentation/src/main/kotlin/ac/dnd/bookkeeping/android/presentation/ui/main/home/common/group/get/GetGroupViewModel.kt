@@ -1,18 +1,12 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.usecase.feature.group.AddGroupUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.DeleteGroupUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.feature.group.EditGroupUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupEvent
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupIntent
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupState
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,8 +33,8 @@ class GetGroupViewModel @Inject constructor(
     }
 
     private fun deleteGroup(
-        id : Long
-    ){
+        id: Long
+    ) {
         launch {
             _state.value = GetGroupState.Loading
             deleteGroupUseCase(

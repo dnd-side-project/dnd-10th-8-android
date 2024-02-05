@@ -6,5 +6,5 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class GetGroupModel(
     val state: GetGroupState,
-    val groups : List<Group>
+    val groups: List<Group>
 )

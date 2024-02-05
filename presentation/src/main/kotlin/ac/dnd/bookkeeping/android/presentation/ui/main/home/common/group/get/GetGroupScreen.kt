@@ -21,7 +21,6 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupEvent
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,8 +64,8 @@ fun GetGroupScreen(
     onResult: (Group) -> Unit,
     model: GetGroupModel,
     handler: CoroutineExceptionHandler,
-    intent : (GetGroupIntent) -> Unit,
-    event : EventFlow<GetGroupEvent>
+    intent: (GetGroupIntent) -> Unit,
+    event: EventFlow<GetGroupEvent>
 ) {
 
     BottomSheetScreen(
@@ -150,8 +149,8 @@ fun GetGroupScreen(
                                     ),
                                 expanded = isDropDownMenuExpanded,
                                 onDismissRequest = { isDropDownMenuExpanded = false }
-                            ){
-                                Column(verticalArrangement = Arrangement.Center){
+                            ) {
+                                Column(verticalArrangement = Arrangement.Center) {
                                     DropdownMenuItem(
                                         onClick = {
                                             // TODO 수정
@@ -161,7 +160,7 @@ fun GetGroupScreen(
                                         modifier = Modifier
                                             .width(100.dp)
                                             .height(40.dp)
-                                    ){
+                                    ) {
                                         Box(
                                             modifier = Modifier
                                                 .padding(
@@ -169,7 +168,7 @@ fun GetGroupScreen(
                                                     horizontal = Space12
                                                 )
                                                 .fillMaxWidth()
-                                        ){
+                                        ) {
                                             Text(
                                                 text = "수정",
                                                 style = Body0.merge(
@@ -194,14 +193,14 @@ fun GetGroupScreen(
                                         modifier = Modifier
                                             .width(100.dp)
                                             .height(40.dp)
-                                    ){
+                                    ) {
                                         Box(
                                             modifier = Modifier
                                                 .padding(
                                                     vertical = Space8,
                                                     horizontal = Space12
                                                 )
-                                        ){
+                                        ) {
                                             Text(
                                                 text = "삭제",
                                                 style = Body0.merge(
