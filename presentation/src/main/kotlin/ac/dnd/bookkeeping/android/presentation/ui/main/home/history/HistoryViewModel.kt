@@ -1,9 +1,9 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDetail
 import ac.dnd.bookkeeping.android.domain.model.legacy.HistoryInfoLegacy
-import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListWithRelationUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupHeartHistoryUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.legacy.GetHistoryInfoUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getHistoryInfoUseCase: GetHistoryInfoUseCase,
-    private val getHistoryGroupListUseCase: GetGroupListWithRelationUseCase
+    private val getGroupHeartHistoryUseCase: GetGroupHeartHistoryUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HistoryState> = MutableStateFlow(HistoryState.Init)
@@ -41,15 +41,15 @@ class HistoryViewModel @Inject constructor(
         MutableStateFlow(HistoryViewType.TOTAL)
     val historyType: StateFlow<HistoryViewType> = _historyType.asStateFlow()
 
-    private val _groups: MutableStateFlow<List<GroupWithRelation>> =
+    private val _groups: MutableStateFlow<List<GroupWithRelationDetail>> =
         MutableStateFlow(emptyList())
-    val groups: StateFlow<List<GroupWithRelation>> = _groups.asStateFlow()
+    val groups: StateFlow<List<GroupWithRelationDetail>> = _groups.asStateFlow()
 
     init {
         launch {
             _state.value = HistoryState.Loading
             zip(
-                { getHistoryGroupListUseCase() },
+                { getGroupHeartHistoryUseCase() },
                 { getHistoryInfoUseCase() }
             ).onSuccess { (groups, historyInfo) ->
                 _state.value = HistoryState.Init

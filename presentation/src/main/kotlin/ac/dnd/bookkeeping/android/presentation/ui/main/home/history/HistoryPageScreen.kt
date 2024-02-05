@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDetail
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -83,7 +83,7 @@ fun HistoryPageScreen(
     viewType: HistoryViewType
 ) {
     val groups = model.groups.map { group ->
-        GroupWithRelation(
+        GroupWithRelationDetail(
             id = group.id,
             name = group.name,
             relationList = group.relationList.filter { relation ->

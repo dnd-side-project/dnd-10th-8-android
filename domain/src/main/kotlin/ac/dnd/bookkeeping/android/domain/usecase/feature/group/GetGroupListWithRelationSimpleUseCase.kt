@@ -1,19 +1,19 @@
 package ac.dnd.bookkeeping.android.domain.usecase.feature.group
 
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationSimple
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.GetRelationListUseCase
 import javax.inject.Inject
 
-class GetGroupListWithRelationUseCase @Inject constructor(
+class GetGroupListWithRelationSimpleUseCase @Inject constructor(
     private val getRelationListUseCase: GetRelationListUseCase
 ) {
-    suspend operator fun invoke(): Result<List<GroupWithRelation>> {
+    suspend operator fun invoke(): Result<List<GroupWithRelationSimple>> {
         return getRelationListUseCase("").map { relationList ->
             relationList.groupBy {
                 it.group.id
             }.map { (_, relationList) ->
                 val group = relationList.first().group
-                GroupWithRelation(
+                GroupWithRelationSimple(
                     id = group.id,
                     name = group.name,
                     relationList = relationList

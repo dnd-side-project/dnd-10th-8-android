@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.chip
 
-import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
-import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 fun GroupChipListComponent(
     chipType: ChipType = ChipType.LESS_BORDER,
     currentSelectedId: Long,
-    onSelectChip: (GroupWithRelation) -> Unit,
-    groups: List<GroupWithRelation>
+    onSelectChip: (GroupWithRelationDetail) -> Unit,
+    groups: List<GroupWithRelationDetail>
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         items(groups) { group ->
@@ -41,14 +41,14 @@ fun GroupChipPreview() {
         currentSelectedId = 0,
         onSelectChip = {},
         groups = listOf(
-            GroupWithRelation(
+            GroupWithRelationDetail(
                 0,
                 "전체",
                 relationList = listOf(
-                    RelationSimple(
+                    RelationDetail(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationSimpleGroup(
+                        group = RelationDetailGroup(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -57,14 +57,14 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            GroupWithRelation(
+            GroupWithRelationDetail(
                 1,
                 "친구",
                 relationList = listOf(
-                    RelationSimple(
+                    RelationDetail(
                         id = 3679,
                         name = "Jerome Pitts",
-                        group = RelationSimpleGroup(
+                        group = RelationDetailGroup(
                             id = 6599,
                             name = "Andrea Serrano",
                         ),
@@ -73,7 +73,7 @@ fun GroupChipPreview() {
                     )
                 )
             ),
-            GroupWithRelation(
+            GroupWithRelationDetail(
                 2,
                 "가족",
                 listOf()
