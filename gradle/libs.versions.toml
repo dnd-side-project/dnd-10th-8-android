@@ -22,7 +22,7 @@ hilt-compose = "1.1.0"
 androidx-core = "1.12.0"
 androidx-appcompat = "1.6.1"
 androidx-room = "2.6.1"
-androidx-paging = "3.1.1"
+androidx-paging = "3.2.1"
 androidx-compose = "1.5.4"
 androidx-compose-navigation = "2.7.0"
 androidx-compose-lifecycle = "2.7.0"
@@ -65,6 +65,7 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androi
 androidx-compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-compose-navigation" }
 androidx-compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-compose-lifecycle" }
+androidx-compose-paging =  { module = "androidx.paging:paging-compose",version.ref = "androidx-paging"}
 # AndroidX Data
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
