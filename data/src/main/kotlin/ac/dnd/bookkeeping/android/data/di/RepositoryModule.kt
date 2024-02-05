@@ -9,8 +9,10 @@ import ac.dnd.bookkeeping.android.data.repository.feature.relation.MockRelationR
 import ac.dnd.bookkeeping.android.data.repository.feature.schedule.MockScheduleRepository
 import ac.dnd.bookkeeping.android.data.repository.authentication.sociallogin.KakaoLoginRepositoryImpl
 import ac.dnd.bookkeeping.android.data.repository.feature.statistics.MockStatisticsRepository
+import ac.dnd.bookkeeping.android.data.repository.gallery.GalleryImageRepositoryImpl
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
 import ac.dnd.bookkeeping.android.domain.repository.FileRepository
+import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
 import ac.dnd.bookkeeping.android.domain.repository.GroupRepository
 import ac.dnd.bookkeeping.android.domain.repository.HeartRepository
 import ac.dnd.bookkeeping.android.domain.repository.KakaoLoginRepository
@@ -21,6 +23,7 @@ import ac.dnd.bookkeeping.android.domain.repository.StatisticsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -81,4 +84,10 @@ internal abstract class RepositoryModule {
     abstract fun bindsFileRepository(
         fileRepository: MockFileRepository
     ): FileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGalleryImageRepository(
+        galleryImageRepositoryImpl: GalleryImageRepositoryImpl
+    ): GalleryImageRepository
 }

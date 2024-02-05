@@ -1,7 +1,12 @@
 package ac.dnd.bookkeeping.android.domain.usecase.gallery
 
-class LoadFolderListUseCase {
-    suspend operator fun invoke(): List<String> {
-        return emptyList()
+import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
+import javax.inject.Inject
+
+class LoadFolderListUseCase @Inject constructor(
+    private val galleryImageRepository : GalleryImageRepository
+) {
+    operator fun invoke(): List<String> {
+        return galleryImageRepository.getFolderList()
     }
 }
