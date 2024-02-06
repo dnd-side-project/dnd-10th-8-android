@@ -155,7 +155,7 @@ private fun AddGroupScreen(
                 maxTextLength = 8,
                 trailingIconContent = {
                     Row(
-                      verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = "${text.length}/8",
