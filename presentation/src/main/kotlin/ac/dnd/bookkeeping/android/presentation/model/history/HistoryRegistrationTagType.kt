@@ -20,5 +20,13 @@ enum class HistoryRegistrationTagType(
                 it.tagName
             }
         }
+
+        fun getTagIdList(nameList: List<String>): List<Long>{
+            return entries.filter {
+                it.tagName in nameList
+            }.map {
+                it.id
+            }
+        }
     }
 }
