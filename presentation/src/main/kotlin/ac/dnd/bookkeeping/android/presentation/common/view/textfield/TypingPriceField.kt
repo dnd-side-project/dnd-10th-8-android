@@ -59,6 +59,7 @@ fun TypingPriceField(
     hintText: String = "지출하신 금액을 입력해주세요",
     isError: Boolean = false,
     isEnabled: Boolean = true,
+    isAddFiledEnabled : Boolean = true ,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     textFieldHeight: Dp = 35.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
@@ -146,15 +147,17 @@ fun TypingPriceField(
                 .height(1.dp),
             color = currentColorState.value
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        PriceChipComponent(
-            scope = scope,
-            onClickChip = { addPrice ->
-                val newText = addPriceFormat(addPrice)
-                onValueChange(newText)
-            }
-        )
-        errorMessageContent()
+        if (isAddFiledEnabled || isTextFieldFocused) {
+            Spacer(modifier = Modifier.height(6.dp))
+            PriceChipComponent(
+                scope = scope,
+                onClickChip = { addPrice ->
+                    val newText = addPriceFormat(addPrice)
+                    onValueChange(newText)
+                }
+            )
+            errorMessageContent()
+        }
     }
 }
 

@@ -20,12 +20,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogWindowProvider
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
+import com.holix.android.bottomsheetdialog.compose.NavigationBarProperties
 
 @Composable
 fun BottomSheetScreen(
@@ -33,26 +37,39 @@ fun BottomSheetScreen(
     properties: BottomSheetDialogProperties = BottomSheetDialogProperties(),
     content: @Composable () -> Unit
 ) {
+
     BottomSheetDialog(
         onDismissRequest = onDismissRequest,
-        properties = properties
+        properties  = properties,
     ) {
         Surface(
             modifier = Modifier
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 12.dp,
+                        topEnd = 12.dp
+                    )
+                )
+                .padding(
+                    top = 1.dp,
+                    start = 1.dp,
+                    end = 1.dp
+                )
                 .fillMaxWidth()
                 .wrapContentHeight(),
+            elevation = 30.dp,
             color = Color.White,
-            shape = RoundedCornerShape(
-                topStart = 12.dp,
-                topEnd = 12.dp
-            )
         ) {
             content()
         }
     }
 }
 
-@Preview
+@Preview(
+    apiLevel = 33,
+    backgroundColor = 0xFFFFFFFF,
+    showBackground = true
+)
 @Composable
 fun BottomSheetScreenPreview1() {
     var isShowing by remember { mutableStateOf(true) }
