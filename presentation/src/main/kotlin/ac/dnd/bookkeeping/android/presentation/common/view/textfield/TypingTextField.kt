@@ -80,7 +80,8 @@ fun TypingTextField(
         TypingTextFieldType.LongSentence -> false
     }
 
-    val currentColor = if (isError) Negative else if (isTextFieldFocused) Primary3 else basicBorderColor
+    val currentColor =
+        if (isError) Negative else if (isTextFieldFocused) Primary3 else basicBorderColor
     val currentColorState = animateColorAsState(
         targetValue = currentColor,
         label = "color state"
@@ -105,7 +106,11 @@ fun TypingTextField(
         ) {
             BasicTextField(
                 value = text,
-                onValueChange = onValueChange,
+                onValueChange = {
+                    if (maxTextLength >= it.length) {
+                        onValueChange(it)
+                    }
+                },
                 enabled = isEnabled,
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = Body1.merge(

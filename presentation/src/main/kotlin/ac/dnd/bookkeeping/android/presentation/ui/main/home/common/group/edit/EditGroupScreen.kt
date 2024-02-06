@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.edit
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
@@ -58,22 +58,23 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
-fun AddGroupScreen(
+fun EditGroupScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
-    onResult: (Group) -> Unit,
-    viewModel: AddGroupViewModel = hiltViewModel()
+    prevGroup: Group,
+    onResult: (group: Group) -> Unit,
+    viewModel: EditGroupViewModel = hiltViewModel()
 ) {
-    val model: AddGroupModel = Unit.let {
+    val model: EditGroupModel = Unit.let {
         val state by viewModel.state.collectAsStateWithLifecycle()
-
-        AddGroupModel(
-            state = state
+        EditGroupModel(
+            state = state,
+            group = prevGroup
         )
     }
     ErrorObserver(viewModel)
 
-    AddGroupScreen(
+    EditGroupScreen(
         appState = appState,
         model = model,
         event = viewModel.event,
@@ -85,19 +86,20 @@ fun AddGroupScreen(
 }
 
 @Composable
-private fun AddGroupScreen(
+private fun EditGroupScreen(
     appState: ApplicationState,
-    model: AddGroupModel,
-    event: EventFlow<AddGroupEvent>,
-    intent: (AddGroupIntent) -> Unit,
+    model: EditGroupModel,
+    event: EventFlow<EditGroupEvent>,
+    intent: (EditGroupIntent) -> Unit,
     handler: CoroutineExceptionHandler,
     onDismissRequest: () -> Unit,
-    onResult: (Group) -> Unit,
+    onResult: (group: Group) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
-    fun addGroup(event: AddGroupEvent.AddGroup) {
+    var nameText by remember { mutableStateOf(model.group.name) }
+
+    fun editGroup(event: EditGroupEvent.EditGroup) {
         when (event) {
-            is AddGroupEvent.AddGroup.Success -> {
+            is EditGroupEvent.EditGroup.Success -> {
                 onResult(event.group)
                 onDismissRequest()
             }
@@ -117,13 +119,15 @@ private fun AddGroupScreen(
             modifier = Modifier
                 .wrapContentHeight()
                 .background(Gray000)
-                .padding(horizontal = Space20)
+                .padding(
+                    horizontal = Space20
+                )
         ) {
             Spacer(modifier = Modifier.height(Space20))
             Box(
                 modifier = Modifier
-                    .padding(Space8)
                     .fillMaxWidth()
+                    .padding(Space8)
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_close),
@@ -136,7 +140,7 @@ private fun AddGroupScreen(
                 )
             }
             Text(
-                text = "새 그룹 추가",
+                text = "그룹 수정",
                 style = Headline2.merge(
                     color = Gray800,
                     fontWeight = FontWeight.SemiBold
@@ -145,11 +149,11 @@ private fun AddGroupScreen(
             )
             Spacer(modifier = Modifier.height(Space20))
             TypingTextField(
-                text = text,
+                text = nameText,
                 textType = TypingTextFieldType.Basic,
-                hintText = "새 그룹명을 입력해주세요.",
+                hintText = "그룹명을 입력해주세요.",
                 onValueChange = {
-                    text = it
+                    nameText = it
                 },
                 modifier = Modifier.height(48.dp),
                 maxTextLength = 8,
@@ -158,21 +162,21 @@ private fun AddGroupScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "${text.length}/8",
+                            text = "${nameText.length}/8",
                             style = Body1.merge(
                                 color = Gray600,
                                 fontWeight = FontWeight.Normal
                             )
                         )
                         Spacer(modifier = Modifier.width(7.dp))
-                        if (text.isNotEmpty()) {
+                        if (nameText.isNotEmpty()) {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_close_circle),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(Space20)
                                     .clickable {
-                                        text = ""
+                                        nameText = ""
                                     }
                             )
                         }
@@ -190,9 +194,15 @@ private fun AddGroupScreen(
                     size = ConfirmButtonSize.Xlarge,
                     type = ConfirmButtonType.Primary
                 ),
-                isEnabled = text.isNotEmpty(),
+                isEnabled = nameText.isNotEmpty(),
                 onClick = {
-                    intent(AddGroupIntent.OnConfirm(text))
+                    intent(
+                        EditGroupIntent
+                            .OnEdit(
+                                groupId = model.group.id,
+                                name = nameText
+                            )
+                    )
                 }
             ) {
                 Text(
@@ -209,7 +219,7 @@ private fun AddGroupScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
-                is AddGroupEvent.AddGroup -> addGroup(event)
+                is EditGroupEvent.EditGroup -> editGroup(event)
             }
         }
     }
@@ -217,14 +227,17 @@ private fun AddGroupScreen(
 
 @Preview(apiLevel = 33)
 @Composable
-private fun AddGroupScreenPreview() {
-    AddGroupScreen(
+private fun EditGroupScreenPreview() {
+    EditGroupScreen(
         appState = rememberApplicationState(),
-        model = AddGroupModel(state = AddGroupState.Init),
+        model = EditGroupModel(
+            state = EditGroupState.Init,
+            group = Group(0, "이전 그룹 네임")
+        ),
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },
         onDismissRequest = {},
-        onResult = {}
+        onResult = {},
     )
 }
