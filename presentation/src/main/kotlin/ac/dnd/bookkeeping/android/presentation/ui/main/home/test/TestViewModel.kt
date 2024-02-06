@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.test
 
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -12,17 +12,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class TestViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel() {
 
-    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Init)
-    val state: StateFlow<HomeState> = _state.asStateFlow()
+    private val _state: MutableStateFlow<TestState> = MutableStateFlow(TestState.Init)
+    val state: StateFlow<TestState> = _state.asStateFlow()
 
-    private val _event: MutableEventFlow<HomeEvent> = MutableEventFlow()
-    val event: EventFlow<HomeEvent> = _event.asEventFlow()
+    private val _event: MutableEventFlow<TestEvent> = MutableEventFlow()
+    val event: EventFlow<TestEvent> = _event.asEventFlow()
 
-    fun onIntent(intent: HomeIntent) {
+    fun onIntent(intent: TestIntent) {
 
     }
 }
