@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.data.repository.authentication.MockAuthenticat
 import ac.dnd.bookkeeping.android.data.repository.authentication.sociallogin.KakaoLoginRepositoryImpl
 import ac.dnd.bookkeeping.android.data.repository.feature.group.MockGroupRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.heart.MockHeartRepository
+import ac.dnd.bookkeeping.android.data.repository.feature.relation.KakaoFriendRepositoryImpl
 import ac.dnd.bookkeeping.android.data.repository.feature.relation.MockRelationRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.schedule.MockScheduleRepository
 import ac.dnd.bookkeeping.android.data.repository.feature.statistics.MockStatisticsRepository
@@ -17,6 +18,7 @@ import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
 import ac.dnd.bookkeeping.android.domain.repository.GalleryRepository
 import ac.dnd.bookkeeping.android.domain.repository.GroupRepository
 import ac.dnd.bookkeeping.android.domain.repository.HeartRepository
+import ac.dnd.bookkeeping.android.domain.repository.KakaoFriendRepository
 import ac.dnd.bookkeeping.android.domain.repository.KakaoLoginRepository
 import ac.dnd.bookkeeping.android.domain.repository.MemberRepository
 import ac.dnd.bookkeeping.android.domain.repository.RelationRepository
@@ -79,6 +81,12 @@ internal abstract class RepositoryModule {
     abstract fun bindsKakaoLoginRepository(
         kakaoLoginRepositoryImpl: KakaoLoginRepositoryImpl
     ): KakaoLoginRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsKakaoFriendRepository(
+        kakaoFriendRepositoryImpl: KakaoFriendRepositoryImpl
+    ): KakaoFriendRepository
 
     @Binds
     @Singleton

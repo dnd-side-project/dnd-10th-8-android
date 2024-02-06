@@ -26,7 +26,7 @@ class KakaoFriendRepositoryImpl @Inject constructor(
                 Result.success(it)
             }
             .onFailure { error ->
-                throw ServerException("Error",error.message.toString())
+                throw ServerException("Error", error.message.toString())
             }
     }
 

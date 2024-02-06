@@ -6,7 +6,7 @@ import ac.dnd.bookkeeping.android.domain.repository.KakaoFriendRepository
 class GetKakaoFriendInfoUseCase(
     private val kakaoFriendRepository: KakaoFriendRepository
 ) {
-    suspend operator fun invoke(): Result<KakaoFriendInfo>{
+    suspend operator fun invoke(): Result<KakaoFriendInfo> {
         return kakaoFriendRepository.loadFriendInfo()
     }
 }
