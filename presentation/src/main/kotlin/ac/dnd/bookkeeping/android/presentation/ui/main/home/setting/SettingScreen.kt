@@ -1,10 +1,12 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
 
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.CHANNEL_1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.showNotification
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
@@ -14,9 +16,14 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationTagType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.edit.HistoryDetailEditModel
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.edit.HistoryDetailEditScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.edit.HistoryDetailEditState
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +52,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import timber.log.Timber
 
 @Composable
@@ -194,11 +203,34 @@ fun SettingScreen(
     }
 
     if (isAddGroupShowing) {
-        AddGroupScreen(
+//        AddGroupScreen(
+//            appState = appState,
+//            onDismissRequest = { isAddGroupShowing = false },
+//            onResult = {
+//                Timber.d("onResult")
+//            }
+//        )
+        HistoryDetailEditScreen(
             appState = appState,
-            onDismissRequest = { isAddGroupShowing = false },
-            onResult = {
-                Timber.d("onResult")
+            relatedHeart = RelatedHeart(
+                id = 0,
+                give = true,
+                money = 500_000L,
+                day = LocalDate(2023, 1, 1),
+                event = "참석",
+                memo = "답례품으로 와인을 받았다",
+                tags = listOf(
+                    HistoryRegistrationTagType.ATTEND.tagName
+                )
+            ),
+            onDismissRequest = {
+                isAddGroupShowing = false
+            },
+            onDelete = {
+                isAddGroupShowing = false
+            },
+            onEdit = {
+                isAddGroupShowing = false
             }
         )
     }

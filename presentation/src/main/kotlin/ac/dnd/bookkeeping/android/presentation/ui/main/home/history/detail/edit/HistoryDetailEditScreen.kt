@@ -6,6 +6,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
@@ -17,6 +18,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
@@ -31,11 +33,13 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationTagType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.EventTypeScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +51,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -117,6 +123,7 @@ private fun HistoryDetailEditScreen(
     calendarConfig: CalendarConfig = CalendarConfig()
 ) {
     val scope = rememberCoroutineScope()
+    var scrollState = rememberScrollState()
     var moneyText by remember {
         mutableStateOf("${DecimalFormat("#,###").format(model.relatedHeart.money)}원")
     }
@@ -132,10 +139,34 @@ private fun HistoryDetailEditScreen(
     var isEventSelected by remember { mutableStateOf(false) }
     var isMemoSelected by remember { mutableStateOf(false) }
     var isCalendarSelected by remember { mutableStateOf(false) }
+    var isShowingOutPageDialog by remember { mutableStateOf(false) }
+    var isShowingDeleteDialog by remember { mutableStateOf(false) }
+    var isShowingSuccessDeleteDialog by remember { mutableStateOf(false) }
+    var isShowingSuccessEditDialog by remember { mutableStateOf(false) }
+
+    fun delete(event: HistoryDetailEditEvent.DeleteRelatedHeart) {
+        when (event) {
+            is HistoryDetailEditEvent.DeleteRelatedHeart.Success -> {
+                isShowingSuccessDeleteDialog = true
+                onDelete(model.relatedHeart.id)
+            }
+        }
+    }
+
+    fun edit(event: HistoryDetailEditEvent.EditRelatedHeart) {
+        when (event) {
+            is HistoryDetailEditEvent.EditRelatedHeart.Success -> {
+                isShowingSuccessEditDialog = true
+                onEdit(event.relatedHeart)
+            }
+        }
+    }
 
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
         properties = BottomSheetDialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
             behaviorProperties = BottomSheetBehaviorProperties(
                 state = BottomSheetBehaviorProperties.State.Expanded,
                 skipCollapsed = true
@@ -148,7 +179,9 @@ private fun HistoryDetailEditScreen(
                 .background(Gray000)
                 .padding(horizontal = Space20)
         ) {
-            Column {
+            Column(
+                modifier = Modifier.verticalScroll(state = scrollState)
+            ) {
                 Spacer(modifier = Modifier.height(Space20))
                 Box(
                     modifier = Modifier
@@ -202,7 +235,6 @@ private fun HistoryDetailEditScreen(
                     text = eventText,
                     onClick = {
                         isEventSelected = true
-                        // TODO event
                     }
                 )
                 Spacer(modifier = Modifier.height(Space24))
@@ -215,10 +247,10 @@ private fun HistoryDetailEditScreen(
                         text = memoText,
                         onClick = {
                             isMemoSelected = true
-                            // TODO memo
                         }
                     )
                 } else {
+                    // TODO memo focus out -> isMemoSelected = false
                     TypingTextField(
                         textType = TypingTextFieldType.LongSentence,
                         text = memoText,
@@ -270,6 +302,9 @@ private fun HistoryDetailEditScreen(
                             color = Gray400,
                             shape = Shapes.large
                         )
+                        .clickable {
+                            isShowingDeleteDialog = true
+                        }
                         .padding(
                             vertical = 14.dp,
                             horizontal = 24.dp
@@ -290,23 +325,133 @@ private fun HistoryDetailEditScreen(
                         type = ConfirmButtonType.Primary
                     ),
                     onClick = {
-
+                        if (
+                            checkRegistrable(
+                                money = moneyText.toLongOrNull() ?: 0L,
+                                event = eventText
+                            )
+                        ) {
+                            intent(
+                                HistoryDetailEditIntent
+                                    .OnEdit(
+                                        id = model.relatedHeart.id,
+                                        money = moneyText.toLongOrNull() ?: 0L,
+                                        give = model.relatedHeart.give,
+                                        day = LocalDate(
+                                            year = selectedYear,
+                                            monthNumber = selectedMonth,
+                                            dayOfMonth = selectedDay
+                                        ),
+                                        event = eventText,
+                                        memo = memoText,
+                                        tags = HistoryRegistrationTagType.getTagNameList(tagIdList)
+                                    )
+                            )
+                        }
                     }
-                ) { style ->
+                ) {
                     Text(
                         text = "확인",
-                        style = style
+                        style = Headline3.merge(
+                            color = Gray000,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
                 }
             }
         }
     }
 
+    if (isEventSelected){
+        EventTypeScreen(
+            onDismissRequest = {
+                isEventSelected = false
+            },
+            onConfirm = {
+                isEventSelected = false
+                eventText = it
+            }
+        )
+    }
+
+    if (isShowingOutPageDialog) {
+        DialogScreen(
+            isCancelable = true,
+            title = "페이지를 나가면 수정중인 내용이 삭제돼요.",
+            confirmMessage = "나가기",
+            cancelMessage = "계속 수정",
+            onCancel = {
+                onDismissRequest()
+            },
+            onConfirm = {
+                isShowingOutPageDialog = false
+            },
+            onDismissRequest = {
+                isShowingOutPageDialog = false
+            }
+        )
+    }
+
+    if (isShowingDeleteDialog) {
+        DialogScreen(
+            isCancelable = true,
+            title = "${if (model.relatedHeart.give) "보낸" else "받은"} 마음 내역을 삭제하시겠어요?",
+            confirmMessage = "삭제",
+            cancelMessage = "취소",
+            onCancel = {
+                isShowingDeleteDialog = false
+            },
+            onConfirm = {
+                intent(HistoryDetailEditIntent.OnDelete(model.relatedHeart.id))
+                isShowingDeleteDialog = false
+            },
+            onDismissRequest = {
+                isShowingDeleteDialog = false
+            }
+        )
+    }
+    if (isShowingSuccessDeleteDialog) {
+        DialogScreen(
+            isCancelable = false,
+            title = "삭제가 완료되었습니다.",
+            confirmMessage = "확인",
+            onConfirm = {
+                isShowingSuccessDeleteDialog = false
+            },
+            onDismissRequest = {
+                isShowingSuccessDeleteDialog = false
+            }
+        )
+    }
+    if (isShowingSuccessEditDialog) {
+        DialogScreen(
+            isCancelable = false,
+            title = "수정이 완료되었습니다.",
+            confirmMessage = "확인",
+            onConfirm = {
+                isShowingSuccessEditDialog = false
+            },
+            onDismissRequest = {
+                isShowingSuccessEditDialog = false
+            }
+        )
+    }
+
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-
+            when (event) {
+                is HistoryDetailEditEvent.EditRelatedHeart.Success -> edit(event)
+                is HistoryDetailEditEvent.DeleteRelatedHeart.Success -> delete(event)
+            }
         }
     }
+}
+
+private fun checkRegistrable(
+    money: Long,
+    event: String
+): Boolean {
+    return money != 0L && event.isNotEmpty()
 }
 
 @Preview(apiLevel = 33)
