@@ -1,10 +1,14 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.setting
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.test
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.CHANNEL_1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
+import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.util.showNotification
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
@@ -17,6 +21,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,24 +47,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+// TODO : Debug 로 이동
 @Composable
-fun SettingScreen(
+fun TestScreen(
     appState: ApplicationState,
-    onShowSnackBar: () -> Unit,
-    viewModel: SettingViewModel = hiltViewModel()
+    viewModel: TestViewModel = hiltViewModel()
+) {
+    val model: TestModel = Unit.let {
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        TestModel(
+            state = state
+        )
+    }
+    ErrorObserver(viewModel)
+
+    TestScreen(
+        appState = appState,
+        model = model,
+        event = viewModel.event,
+        intent = viewModel::onIntent,
+        handler = viewModel.handler
+    )
+}
+
+@Composable
+private fun TestScreen(
+    appState: ApplicationState,
+    model: TestModel,
+    event: EventFlow<TestEvent>,
+    intent: (TestIntent) -> Unit,
+    handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    Observer(
-        appState = appState,
-        viewModel = viewModel
-    )
 
     var isDialogShowing by remember { mutableStateOf(false) }
     var isBottomSheetShowing by remember { mutableStateOf(false) }
@@ -114,16 +143,6 @@ fun SettingScreen(
             fontSize = 20.sp,
             color = Color.Black,
             modifier = Modifier.padding(vertical = 10.dp)
-        )
-        Text(
-            text = "snackBarState",
-            fontSize = 20.sp,
-            color = Color.Black,
-            modifier = Modifier
-                .padding(vertical = 10.dp)
-                .clickable {
-                    onShowSnackBar()
-                }
         )
         Text(
             text = "dialogState",
@@ -250,12 +269,24 @@ fun SettingScreen(
             onDismissRequest = { isDialogShowing = false }
         )
     }
+
+    LaunchedEffectWithLifecycle(event, handler) {
+        event.eventObserve { event ->
+
+        }
+    }
 }
 
+@Preview
 @Composable
-private fun Observer(
-    appState: ApplicationState,
-    viewModel: SettingViewModel
-) {
-    ErrorObserver(viewModel)
+private fun TestScreenPreview() {
+    TestScreen(
+        appState = rememberApplicationState(),
+        model = TestModel(
+            state = TestState.Init
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
 }
