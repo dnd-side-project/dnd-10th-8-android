@@ -2,11 +2,14 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.edit
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
@@ -28,11 +31,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -92,7 +97,7 @@ private fun EditGroupScreen(
     onDismissRequest: () -> Unit,
     onResult: (group: Group) -> Unit,
 ) {
-    var nameText by remember { mutableStateOf("") }
+    var nameText by remember { mutableStateOf(model.group.name) }
 
     fun editGroup(event: EditGroupEvent.EditGroup) {
         when (event) {
@@ -155,21 +160,29 @@ private fun EditGroupScreen(
                 modifier = Modifier.height(48.dp),
                 maxTextLength = 8,
                 trailingIconContent = {
-                    Text(
-                        text = "${nameText.length}/8"
-                    )
-                    if (nameText.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                nameText = ""
-                            }
-                        ) {
-                            Icon(
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${nameText.length}/8",
+                            style = Body1.merge(
+                                color = Gray600,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
+                        if (nameText.isNotEmpty()) {
+                            Image(
                                 painter = painterResource(id = R.drawable.ic_close_circle),
                                 contentDescription = null,
-                                modifier = Modifier.size(Space20)
+                                modifier = Modifier
+                                    .size(Space20)
+                                    .clickable {
+                                        nameText = ""
+                                    }
                             )
                         }
+                        Spacer(modifier = Modifier.width(Space16))
                     }
                 }
             )

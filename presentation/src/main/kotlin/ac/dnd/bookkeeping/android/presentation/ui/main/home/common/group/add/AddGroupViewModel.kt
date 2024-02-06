@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.AddGroupUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
@@ -40,9 +41,18 @@ class AddGroupViewModel @Inject constructor(
             _state.value = AddGroupState.Loading
             addGroupUseCase(
                 name = name
-            ).onSuccess {
+            ).onSuccess { groupId ->
                 _state.value = AddGroupState.Init
-                _event.emit(AddGroupEvent.AddGroup.Success)
+                _event.emit(
+                    AddGroupEvent
+                        .AddGroup
+                        .Success(
+                            Group(
+                                id = groupId,
+                                name = name
+                            )
+                        )
+                )
             }.onFailure { exception ->
                 _state.value = AddGroupState.Init
                 when (exception) {

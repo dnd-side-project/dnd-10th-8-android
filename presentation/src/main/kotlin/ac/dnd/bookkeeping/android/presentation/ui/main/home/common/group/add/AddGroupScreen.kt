@@ -2,8 +2,16 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -18,16 +26,19 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,7 +95,6 @@ private fun AddGroupScreen(
     onResult: (Group) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
-    val
     fun addGroup(event: AddGroupEvent.AddGroup) {
         when (event) {
             is AddGroupEvent.AddGroup.Success -> {
@@ -105,17 +116,34 @@ private fun AddGroupScreen(
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Gray200)
-                .padding(20.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
+                .background(Gray000)
+                .padding(horizontal = Space20)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Space20))
+            Box(
+                modifier = Modifier
+                    .padding(Space8)
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            onDismissRequest()
+                        }
+                )
+            }
             Text(
                 text = "새 그룹 추가",
-                style = Headline2
+                style = Headline2.merge(
+                    color = Gray800,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                modifier = Modifier.padding(vertical = Space8)
             )
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(Space20))
             TypingTextField(
                 text = text,
                 textType = TypingTextFieldType.Basic,
@@ -126,24 +154,38 @@ private fun AddGroupScreen(
                 modifier = Modifier.height(48.dp),
                 maxTextLength = 8,
                 trailingIconContent = {
-                    if (text.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                text = ""
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
-                                contentDescription = null
+                    Row(
+                      verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${text.length}/8",
+                            style = Body1.merge(
+                                color = Gray600,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
+                        if (text.isNotEmpty()) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_close_circle),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(Space20)
+                                    .clickable {
+                                        text = ""
+                                    }
                             )
                         }
+                        Spacer(modifier = Modifier.width(Space16))
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             ConfirmButton(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = Space12),
                 properties = ConfirmButtonProperties(
                     size = ConfirmButtonSize.Xlarge,
                     type = ConfirmButtonType.Primary
@@ -152,13 +194,15 @@ private fun AddGroupScreen(
                 onClick = {
                     intent(AddGroupIntent.OnConfirm(text))
                 }
-            ) { style ->
+            ) {
                 Text(
                     text = "등록",
-                    style = style
+                    style = Headline3.merge(
+                        color = Gray000,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 

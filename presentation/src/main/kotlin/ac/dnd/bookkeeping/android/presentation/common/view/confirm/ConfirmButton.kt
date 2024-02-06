@@ -32,7 +32,7 @@ fun ConfirmButton(
     modifier: Modifier = Modifier,
     properties: ConfirmButtonProperties,
     isEnabled: Boolean = true,
-    enableBackgroundColor : Color = Gray400,
+    enableBackgroundColor: Color = Gray400,
     onClick: () -> Unit = {},
     content: @Composable RowScope.(TextStyle) -> Unit
 ) {
@@ -44,8 +44,8 @@ fun ConfirmButton(
     }
 
     val backgroundColor = when (properties.type) {
-        ConfirmButtonType.Primary -> Primary4
-        ConfirmButtonType.Secondary -> if (isEnabled) enableBackgroundColor else Gray300
+        ConfirmButtonType.Primary -> if (isEnabled) Primary4 else enableBackgroundColor
+        ConfirmButtonType.Secondary -> Gray300
         ConfirmButtonType.Tertiary -> Primary1
         ConfirmButtonType.Outline -> Gray000
     }
