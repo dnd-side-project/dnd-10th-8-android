@@ -173,9 +173,9 @@ private fun AddGroupScreen(
 }
 
 // TODO : Preview 안보임.
-@Preview
+@Preview(apiLevel = 33)
 @Composable
-fun AddGroupScreenPreview() {
+private fun AddGroupScreenPreview() {
     AddGroupScreen(
         appState = rememberApplicationState(),
         model = AddGroupModel(state = AddGroupState.Init),
