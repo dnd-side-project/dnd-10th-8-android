@@ -70,12 +70,11 @@ fun GalleryScreen(
             galleryImages = images
         )
     }
-    var isCheckPermission by remember { mutableStateOf(false) }
     val perMissionAlbumLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) {
         if (it) {
-            isCheckPermission = true
+            viewModel.onIntent(GalleryIntent.OnGrantPermission)
         }
     }
     var currentSelectedId by remember { mutableLongStateOf(-1) }
@@ -91,11 +90,6 @@ fun GalleryScreen(
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         }
-    }
-
-    if (isCheckPermission) {
-        viewModel.onIntent(GalleryIntent.OnGrantPermission)
-        isCheckPermission = false
     }
 
     Column(
@@ -131,7 +125,7 @@ fun GalleryScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = model.currentFolder.first,
+                    text = model.currentFolder.name,
                     style = Headline1.merge(
                         color = Gray800,
                         fontWeight = FontWeight.SemiBold
@@ -166,7 +160,7 @@ fun GalleryScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = folder.first,
+                                        text = folder.name,
                                         style = Headline3
                                     )
                                 }

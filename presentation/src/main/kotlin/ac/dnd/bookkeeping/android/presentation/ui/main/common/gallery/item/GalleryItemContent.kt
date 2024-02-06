@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.item
 
+import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
@@ -21,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 
 @Composable
 fun GalleryItemContent(
@@ -34,7 +34,7 @@ fun GalleryItemContent(
     Box {
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(galleryImage.uri)
+                .data(galleryImage.filePath)
                 .crossfade(true)
                 .build(),
             loading = {
@@ -63,7 +63,7 @@ fun GalleryItemContent(
                         onSelectImage(galleryImage)
                     }
                 },
-            alpha = if (selected || currentSelectedImageId==-1L ) 1f else 0.4f
+            alpha = if (selected || currentSelectedImageId == -1L) 1f else 0.4f
         )
         if (selected) {
             Box(

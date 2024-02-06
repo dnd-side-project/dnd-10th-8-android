@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.data.remote.gallery
+package ac.dnd.bookkeeping.android.data.remote.local.gallery
 
 import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import ac.dnd.bookkeeping.android.domain.repository.GalleryImageRepository
@@ -20,7 +20,7 @@ class GalleryPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GalleryImage> {
         return try {
             val position = params.key ?: STARTING_PAGE_IDX
-            val data = imageRepository.getAllPhotos(
+            val data = imageRepository.getPhotoList(
                 page = position,
                 loadSize = params.loadSize,
                 currentLocation = currentLocation
