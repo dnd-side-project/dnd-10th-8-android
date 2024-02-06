@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add
 
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
@@ -25,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -49,7 +49,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 fun AddGroupScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
-    onResult: () -> Unit,
+    onResult: (Group) -> Unit,
     viewModel: AddGroupViewModel = hiltViewModel()
 ) {
     val model: AddGroupModel = Unit.let {
@@ -73,7 +73,6 @@ fun AddGroupScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
 private fun AddGroupScreen(
     appState: ApplicationState,
     model: AddGroupModel,
@@ -81,14 +80,14 @@ private fun AddGroupScreen(
     intent: (AddGroupIntent) -> Unit,
     handler: CoroutineExceptionHandler,
     onDismissRequest: () -> Unit,
-    onResult: () -> Unit,
+    onResult: (Group) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
-
+    val
     fun addGroup(event: AddGroupEvent.AddGroup) {
         when (event) {
-            AddGroupEvent.AddGroup.Success -> {
-                onResult()
+            is AddGroupEvent.AddGroup.Success -> {
+                onResult(event.group)
                 onDismissRequest()
             }
         }
@@ -172,7 +171,6 @@ private fun AddGroupScreen(
     }
 }
 
-// TODO : Preview 안보임.
 @Preview(apiLevel = 33)
 @Composable
 private fun AddGroupScreenPreview() {

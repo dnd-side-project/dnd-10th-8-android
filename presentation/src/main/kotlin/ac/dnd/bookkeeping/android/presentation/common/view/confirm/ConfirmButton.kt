@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
@@ -21,6 +22,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ fun ConfirmButton(
     modifier: Modifier = Modifier,
     properties: ConfirmButtonProperties,
     isEnabled: Boolean = true,
+    enableBackgroundColor : Color = Gray400,
     onClick: () -> Unit = {},
     content: @Composable RowScope.(TextStyle) -> Unit
 ) {
@@ -42,7 +45,7 @@ fun ConfirmButton(
 
     val backgroundColor = when (properties.type) {
         ConfirmButtonType.Primary -> Primary4
-        ConfirmButtonType.Secondary -> Gray300
+        ConfirmButtonType.Secondary -> if (isEnabled) enableBackgroundColor else Gray300
         ConfirmButtonType.Tertiary -> Primary1
         ConfirmButtonType.Outline -> Gray000
     }
