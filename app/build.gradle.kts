@@ -29,26 +29,26 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
-            android.buildFeatures.buildConfig =  true
+            android.buildFeatures.buildConfig = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String","KAKAO_APP_KEY" , getLocalProperty("KAKAO_APP_KEY"))
-            resValue ("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
+            buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("KAKAO_APP_KEY"))
+            resValue("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
         }
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
-            android.buildFeatures.buildConfig =  true
+            android.buildFeatures.buildConfig = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".debug"
-            buildConfigField("String","KAKAO_APP_KEY" , getLocalProperty("KAKAO_APP_KEY"))
-            resValue ("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
+            buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("KAKAO_APP_KEY"))
+            resValue("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
         }
     }
 
@@ -125,7 +125,7 @@ dependencies {
     implementation(libs.bundles.logging)
     debugImplementation(libs.leakcanary)
 
-    implementation(libs.kakao.user)
+    implementation(libs.bundles.kakao)
 }
 
 fun getLocalProperty(propertyKey: String): String {
