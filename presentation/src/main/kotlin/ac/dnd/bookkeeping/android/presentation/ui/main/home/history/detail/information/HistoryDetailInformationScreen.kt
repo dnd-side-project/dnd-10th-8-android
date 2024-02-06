@@ -95,17 +95,6 @@ private fun HistoryDetailInformationScreen(
     onDismissRequest: () -> Unit,
     onResult: () -> Unit,
 ) {
-
-    val scope = rememberCoroutineScope()
-    var moneyText by remember { mutableStateOf("") }
-    var dateText by remember{ mutableStateOf("") }
-    var eventText by remember { mutableStateOf("") }
-
-    var isEventSelected by remember { mutableStateOf(false) }
-    var isMemoSelected by remember{ mutableStateOf(false) }
-    var isCalendarSelected by remember { mutableStateOf(false) }
-
-    val tagIdList = remember { mutableStateListOf<Long>() }
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
         properties = BottomSheetDialogProperties(
@@ -119,82 +108,33 @@ private fun HistoryDetailInformationScreen(
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Gray000)
-                .padding(horizontal = Space20),
+                .background(Gray200)
+                .padding(20.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(Space20))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Space8)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .clickable {
-                            onDismissRequest()
-                        }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "",
+                style = Headline2
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            ConfirmButton(
+                modifier = Modifier.fillMaxWidth(),
+                properties = ConfirmButtonProperties(
+                    size = ConfirmButtonSize.Xlarge,
+                    type = ConfirmButtonType.Primary
+                ),
+                onClick = {
+                    onResult()
+                }
+            ) { style ->
+                Text(
+                    text = "확인",
+                    style = style
                 )
             }
-            Text(
-                text = "받은 마음 내역",
-                style = Headline2.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.padding(vertical = Space8)
-            )
-            Spacer(modifier = Modifier.height(Space20))
-            TypingPriceField(
-                textValue = moneyText,
-                onValueChange = {
-                    moneyText = it
-                },
-                isAddFiledEnabled = false,
-            )
-            Spacer(modifier = Modifier.height(Space24))
-
-            FieldSubject(subject = "날짜")
-            FieldSelectComponent(
-                isSelected = isCalendarSelected,
-                text = dateText,
-                onClick = {
-                    // TODO picker
-                }
-            )
-            Spacer(modifier = Modifier.height(Space24))
-
-            FieldSubject(subject = "경사 종류")
-
-            Spacer(modifier = Modifier.height(Space24))
-
-            FieldSubject(subject = "메모")
-
-            Spacer(modifier = Modifier.height(Space24))
-
-            FieldSubject("태그")
-            HistoryRegistrationTagType.entries.chunked(5).forEach { registrationTagTypes ->
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    registrationTagTypes.forEach { type ->
-                        ChipItem(
-                            chipType = ChipType.BORDER,
-                            chipText = type.tagName,
-                            currentSelectedId = tagIdList.toSet(),
-                            chipId = type.id,
-                            onSelectChip = { selectId ->
-                                if (tagIdList.contains(selectId)) {
-                                    tagIdList.remove(selectId)
-                                } else {
-                                    tagIdList.add(selectId)
-                                }
-                            },
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(6.dp))
-            }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 
