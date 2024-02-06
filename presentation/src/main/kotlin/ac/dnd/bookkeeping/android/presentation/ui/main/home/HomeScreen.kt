@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.view.CustomSnackBarHost
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.GalleryScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.setting.SettingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -68,6 +69,9 @@ fun HomeScreen(
             when (page) {
                 0 -> {
                     HistoryScreen(
+                        appState = appState
+                    )
+                    GalleryScreen(
                         appState = appState
                     )
                 }
