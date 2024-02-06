@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.bundles.logging)
     debugImplementation(libs.okhttp3.logging.interceptor)
 
-    implementation(libs.kakao.user)
+    implementation(libs.bundles.kakao)
 }
 
 fun getLocalProperty(propertyKey: String): String {

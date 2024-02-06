@@ -75,7 +75,8 @@ androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version
 # Google
 google-system-contoller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-system-contoller" }
 # Kakao
-kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao" }
+kakao-user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao"}
+kakao-friend = {module = "com.kakao.sdk:v2-friend", version.ref = "kakao"}
 # Network
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -117,3 +118,4 @@ androidx-presentation = ["androidx-core", "androidx-appcompat", "androidx-compos
 network = ["ktor-core", "ktor-okhttp", "ktor-resources", "ktor-content-negotiation", "ktor-kotlinx-serialization",
     "ktor-auth", "kotlinx-serialization"]
 logging = ["timber", "sentry"]
+kakao = ["kakao-user","kakao-friend"]

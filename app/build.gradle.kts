@@ -125,7 +125,7 @@ dependencies {
     implementation(libs.bundles.logging)
     debugImplementation(libs.leakcanary)
 
-    implementation(libs.kakao.user)
+    implementation(libs.bundles.kakao)
 }
 
 fun getLocalProperty(propertyKey: String): String {
