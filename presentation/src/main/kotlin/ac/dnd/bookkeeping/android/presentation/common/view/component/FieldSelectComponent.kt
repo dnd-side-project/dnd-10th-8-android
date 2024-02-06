@@ -9,6 +9,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space40
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space48
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -61,7 +63,10 @@ fun FieldSelectComponent(
                 color = Gray800,
                 fontWeight = FontWeight.Normal
             ),
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(end = Space40),
+            overflow = TextOverflow.Ellipsis
         )
 
         Image(
