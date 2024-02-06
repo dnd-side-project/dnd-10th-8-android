@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,15 +72,14 @@ private fun HistoryDetailInformationScreen(
     onDismissRequest: () -> Unit,
     onResult: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
-
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
         properties = BottomSheetDialogProperties(
             behaviorProperties = BottomSheetBehaviorProperties(
                 state = BottomSheetBehaviorProperties.State.Expanded,
                 skipCollapsed = true
-            )
+            ),
+            dismissOnBackPress = false
         )
     ) {
         Column(

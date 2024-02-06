@@ -1,9 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.textfield
 
-import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
@@ -11,18 +8,14 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.NumberCommaTransformation
 import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSubject
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
@@ -35,12 +28,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -59,10 +50,11 @@ fun TypingPriceField(
     hintText: String = "지출하신 금액을 입력해주세요",
     isError: Boolean = false,
     isEnabled: Boolean = true,
+    isAddFiledEnabled: Boolean = true,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     textFieldHeight: Dp = 35.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-    textFormat : VisualTransformation = NumberCommaTransformation(),
+    textFormat: VisualTransformation = NumberCommaTransformation(),
     fieldSubjectContent: (@Composable () -> Unit) = { FieldSubject("금액") },
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
@@ -140,21 +132,24 @@ fun TypingPriceField(
                 contentPadding = innerPadding
             )
         }
+        Spacer(modifier = Modifier.height(12.dp))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp),
             color = currentColorState.value
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        PriceChipComponent(
-            scope = scope,
-            onClickChip = { addPrice ->
-                val newText = addPriceFormat(addPrice)
-                onValueChange(newText)
-            }
-        )
-        errorMessageContent()
+        if (isAddFiledEnabled || isTextFieldFocused) {
+            Spacer(modifier = Modifier.height(6.dp))
+            PriceChipComponent(
+                scope = scope,
+                onClickChip = { addPrice ->
+                    val newText = addPriceFormat(addPrice)
+                    onValueChange(newText)
+                }
+            )
+            errorMessageContent()
+        }
     }
 }
 

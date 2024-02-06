@@ -1,9 +1,12 @@
 package ac.dnd.bookkeeping.android.presentation.common.view
 
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.util.expansion.customOuterShadow
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,30 +37,40 @@ fun BottomSheetScreen(
     properties: BottomSheetDialogProperties = BottomSheetDialogProperties(),
     content: @Composable () -> Unit
 ) {
+
     BottomSheetDialog(
         onDismissRequest = onDismissRequest,
-        properties = properties
+        properties = properties,
     ) {
         Surface(
+            color = Gray000,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
-            color = Color.White,
-            shape = RoundedCornerShape(
-                topStart = 12.dp,
-                topEnd = 12.dp
-            )
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 12.dp,
+                        topEnd = 12.dp
+                    )
+                )
+                .padding(top = 0.68.dp)
+                .padding(horizontal = 0.68.dp)
+                .customOuterShadow(
+                    color =  Color(0x4D888888),
+                    offsetX = 0.68.dp,
+                    offsetY = 0.68.dp,
+                    blurRadius = 6.8f
+                )
+                .wrapContentHeight()
         ) {
             content()
         }
     }
 }
 
-@Preview
+@Preview(apiLevel = 33)
 @Composable
 fun BottomSheetScreenPreview1() {
     var isShowing by remember { mutableStateOf(true) }
-
     if (isShowing) {
         BottomSheetScreen(
             onDismissRequest = { isShowing = false },

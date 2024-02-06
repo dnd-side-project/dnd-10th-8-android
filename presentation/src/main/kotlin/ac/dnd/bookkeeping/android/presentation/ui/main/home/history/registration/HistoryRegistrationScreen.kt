@@ -35,8 +35,8 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationEventType
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationTagType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationType
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
@@ -261,14 +261,14 @@ fun HistoryRegistrationScreen(
                     textType = TypingTextFieldType.Basic,
                     text = eventTypeText,
                     onValueChange = {
-                        selectedEventId = HistoryRegistrationEventType.getEventId(it)
+                        selectedEventId = HistoryEventType.getEventId(it)
                         eventTypeText = it
                     },
                     modifier = Modifier.fillMaxWidth(),
                     hintText = "직접 입력",
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                HistoryRegistrationEventType.entries.chunked(5).forEach { registrationEventTypes ->
+                HistoryEventType.entries.chunked(5).forEach { registrationEventTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationEventTypes.forEach { type ->
                             ChipItem(
@@ -280,7 +280,7 @@ fun HistoryRegistrationScreen(
                                     selectedEventId =
                                         if (selectedEventId == selectId) -1 else selectId
                                     eventTypeText =
-                                        HistoryRegistrationEventType.getEventName(selectId)
+                                        HistoryEventType.getEventName(selectId)
                                 },
                             )
                         }
@@ -308,7 +308,7 @@ fun HistoryRegistrationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 FieldSubject("태그")
-                HistoryRegistrationTagType.entries.chunked(5).forEach { registrationTagTypes ->
+                HistoryTagType.entries.chunked(5).forEach { registrationTagTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationTagTypes.forEach { type ->
                             ChipItem(
@@ -390,7 +390,7 @@ fun HistoryRegistrationScreen(
                                 ).joinToString("-"),
                                 event = eventTypeText,
                                 memo = if (memoText.isEmpty()) null else memoText,
-                                tags = if (tagIdList.isEmpty()) null else HistoryRegistrationTagType.getTagNameList(
+                                tags = if (tagIdList.isEmpty()) null else HistoryTagType.getTagNameList(
                                     tagIdList
                                 )
                             )

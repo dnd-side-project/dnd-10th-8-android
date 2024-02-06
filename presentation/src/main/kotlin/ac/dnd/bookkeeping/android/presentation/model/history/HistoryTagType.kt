@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.model.history
 
-enum class HistoryRegistrationTagType(
+enum class HistoryTagType(
     val id: Long,
     val tagName: String
 ) {
@@ -18,6 +18,14 @@ enum class HistoryRegistrationTagType(
                 it.id in idList
             }.map {
                 it.tagName
+            }
+        }
+
+        fun getTagIdList(nameList: List<String>): List<Long> {
+            return entries.filter {
+                it.tagName in nameList
+            }.map {
+                it.id
             }
         }
     }
