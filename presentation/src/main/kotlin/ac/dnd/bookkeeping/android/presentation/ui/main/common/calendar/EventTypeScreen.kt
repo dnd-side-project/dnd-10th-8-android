@@ -10,7 +10,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationEventType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -90,14 +89,14 @@ fun EventTypeScreen(
                         .clickable {
                             if (selectedEventId!= -1L){
                                 onConfirm(
-                                    HistoryRegistrationEventType.getEventName(selectedEventId)
+                                    HistoryEventType.getEventName(selectedEventId)
                                 )
                             }
                         }
                 )
             }
             LazyColumn {
-                items(HistoryRegistrationEventType.entries) { type ->
+                items(HistoryEventType.entries) { type ->
                     var clickState by remember { mutableStateOf(false) }
                     val backgroundColor = animateColorAsState(
                         targetValue =

@@ -31,7 +31,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingPriceField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationTagType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.EventTypeScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
@@ -39,7 +39,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -133,7 +132,7 @@ private fun HistoryDetailEditScreen(
     var eventText by remember { mutableStateOf(model.relatedHeart.event) }
     var memoText by remember { mutableStateOf(model.relatedHeart.memo) }
     val tagIdList = remember {
-        HistoryRegistrationTagType.getTagIdList(model.relatedHeart.tags).toMutableStateList()
+        HistoryTagType.getTagIdList(model.relatedHeart.tags).toMutableStateList()
     }
 
     var isEventSelected by remember { mutableStateOf(false) }
@@ -263,7 +262,7 @@ private fun HistoryDetailEditScreen(
 
                 FieldSubject("태그")
                 Spacer(modifier = Modifier.height(6.dp))
-                HistoryRegistrationTagType.entries.chunked(5).forEach { registrationTagTypes ->
+                HistoryTagType.entries.chunked(5).forEach { registrationTagTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationTagTypes.forEach { type ->
                             ChipItem(
@@ -344,7 +343,7 @@ private fun HistoryDetailEditScreen(
                                         ),
                                         event = eventText,
                                         memo = memoText,
-                                        tags = HistoryRegistrationTagType.getTagNameList(tagIdList)
+                                        tags = HistoryTagType.getTagNameList(tagIdList)
                                     )
                             )
                         }
@@ -362,7 +361,7 @@ private fun HistoryDetailEditScreen(
         }
     }
 
-    if (isEventSelected){
+    if (isEventSelected) {
         EventTypeScreen(
             onDismissRequest = {
                 isEventSelected = false
@@ -469,7 +468,7 @@ private fun HistoryDetailEditScreenPreview() {
                 event = "참석",
                 memo = "답례품으로 와인을 받았다",
                 tags = listOf(
-                    HistoryRegistrationTagType.ATTEND.tagName
+                    HistoryTagType.ATTEND.tagName
                 )
             )
         ),

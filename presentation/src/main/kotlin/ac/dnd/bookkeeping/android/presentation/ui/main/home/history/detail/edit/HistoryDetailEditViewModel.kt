@@ -30,11 +30,12 @@ class HistoryDetailEditViewModel @Inject constructor(
     val event: EventFlow<HistoryDetailEditEvent> = _event.asEventFlow()
 
     fun onIntent(intent: HistoryDetailEditIntent) {
-        when(intent){
+        when (intent) {
             is HistoryDetailEditIntent.OnEdit -> {
 
             }
-            is HistoryDetailEditIntent.OnDelete ->{
+
+            is HistoryDetailEditIntent.OnDelete -> {
 
             }
         }
@@ -42,21 +43,21 @@ class HistoryDetailEditViewModel @Inject constructor(
 
     private fun onEdit(
         id: Long,
-        give : Boolean,
+        give: Boolean,
         money: Long,
         day: LocalDate,
         event: String,
         memo: String,
         tags: List<String>
-    ){
+    ) {
         launch {
             _state.value = HistoryDetailEditState.Loading
             editHeartUseCase(
                 id = id,
                 money = money,
                 day = day,
-                event =  event ,
-                memo =  memo,
+                event = event,
+                memo = memo,
                 tags = tags,
             )
                 .onSuccess {
@@ -83,7 +84,7 @@ class HistoryDetailEditViewModel @Inject constructor(
 
     private fun onDelete(
         id: Long
-    ){
+    ) {
         launch {
             _state.value = HistoryDetailEditState.Loading
             deleteHeartUseCase(

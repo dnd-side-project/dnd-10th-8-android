@@ -7,7 +7,7 @@ sealed interface HistoryDetailEditEvent {
         data class Success(val relatedHeart: RelatedHeart) : EditRelatedHeart
     }
 
-    sealed interface DeleteRelatedHeart : HistoryDetailEditEvent{
+    sealed interface DeleteRelatedHeart : HistoryDetailEditEvent {
         data object Success : DeleteRelatedHeart
     }
 }
