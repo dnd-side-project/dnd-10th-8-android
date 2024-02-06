@@ -14,6 +14,8 @@ import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryConst
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.HistoryScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.mypage.MyPageConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.mypage.MyPageScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.ScheduleConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.ScheduleScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.StatisticsConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.StatisticsScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.test.TestConstant
@@ -65,11 +67,11 @@ fun HomeScreen(
             name = "내역",
             icon = R.drawable.ic_launcher
         ),
-//        MainBottomBarItem(
-//            route = ScheduleConstant.ROUTE,
-//            name = "통계",
-//            icon = R.drawable.ic_launcher
-//        ),
+        MainBottomBarItem(
+            route = ScheduleConstant.ROUTE,
+            name = "통계",
+            icon = R.drawable.ic_launcher
+        ),
         MainBottomBarItem(
             route = StatisticsConstant.ROUTE,
             name = "일정",
@@ -121,9 +123,11 @@ fun HomeScreen(
                         appState = appState
                     )
                 }
-//                ScheduleConstant.ROUTE -> {
-//
-//                }
+                ScheduleConstant.ROUTE -> {
+                    ScheduleScreen(
+                        appState = appState
+                    )
+                }
                 StatisticsConstant.ROUTE -> {
                     StatisticsScreen(
                         appState = appState
