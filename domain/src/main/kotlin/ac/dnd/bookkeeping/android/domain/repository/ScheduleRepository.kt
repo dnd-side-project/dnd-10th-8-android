@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -11,7 +12,7 @@ interface ScheduleRepository {
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,
@@ -25,7 +26,7 @@ interface ScheduleRepository {
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,

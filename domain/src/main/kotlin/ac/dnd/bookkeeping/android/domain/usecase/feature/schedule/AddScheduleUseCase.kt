@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.usecase.feature.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -13,7 +14,7 @@ class AddScheduleUseCase @Inject constructor(
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,
