@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.data.repository.feature.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
@@ -15,7 +16,7 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,
@@ -32,7 +33,7 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,

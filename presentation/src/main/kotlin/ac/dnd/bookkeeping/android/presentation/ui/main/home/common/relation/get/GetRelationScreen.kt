@@ -350,8 +350,7 @@ private fun SearchRelationRelation(
     }
 }
 
-// TODO : Preview 안보임.
-@Preview
+@Preview(apiLevel = 33)
 @Composable
 fun SearchRelationScreenPreview() {
     SearchRelationScreen(

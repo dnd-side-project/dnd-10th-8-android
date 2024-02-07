@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.data.remote.network.api.ScheduleApi
 import ac.dnd.bookkeeping.android.data.remote.network.util.toDomain
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.repository.GroupRepository
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
@@ -20,7 +21,7 @@ class RealScheduleRepository @Inject constructor(
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,
@@ -32,7 +33,7 @@ class RealScheduleRepository @Inject constructor(
             relationId = relationId,
             day = day,
             event = event,
-            repeatType = repeatType,
+            repeatType = repeatType.value,
             repeatFinish = repeatFinish,
             alarm = alarm,
             time = time,
@@ -47,7 +48,7 @@ class RealScheduleRepository @Inject constructor(
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: String,
+        repeatType: AlarmRepeatType,
         repeatFinish: LocalDate,
         alarm: LocalDateTime,
         time: LocalTime,
@@ -60,7 +61,7 @@ class RealScheduleRepository @Inject constructor(
             relationId = relationId,
             day = day,
             event = event,
-            repeatType = repeatType,
+            repeatType = repeatType.value,
             repeatFinish = repeatFinish,
             alarm = alarm,
             time = time,

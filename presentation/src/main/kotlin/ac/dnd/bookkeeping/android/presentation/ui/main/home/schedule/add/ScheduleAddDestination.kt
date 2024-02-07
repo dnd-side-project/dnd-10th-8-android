@@ -15,6 +15,7 @@ fun NavGraphBuilder.scheduleAddDestination(
     composable(
         route = ScheduleAddConstant.ROUTE
     ) {
+        // TODO : 수정 argument 추가
         val viewModel: ScheduleAddViewModel = hiltViewModel()
 
         val model: ScheduleAddModel = let {
