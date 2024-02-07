@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.data.repository.feature.relation
 
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.repository.RelationRepository
@@ -40,10 +41,10 @@ class MockRelationRepository @Inject constructor() : RelationRepository {
 
     override suspend fun getRelation(
         id: Long
-    ): Result<RelationDetail> {
+    ): Result<RelationDetailWithUserInfo> {
         randomShortDelay()
         return Result.success(
-            RelationDetail(
+            RelationDetailWithUserInfo(
                 id = 5902,
                 name = "Mandy Dillard",
                 group = RelationDetailGroup(
@@ -51,7 +52,9 @@ class MockRelationRepository @Inject constructor() : RelationRepository {
                     name = "Alba Sargent"
                 ),
                 giveMoney = 5834,
-                takeMoney = 9884
+                takeMoney = 9884,
+                imageUrl = "",
+                memo = ""
             )
         )
     }
