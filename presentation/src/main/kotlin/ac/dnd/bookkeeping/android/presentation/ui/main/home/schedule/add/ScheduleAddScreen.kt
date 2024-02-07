@@ -28,7 +28,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationEventType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
@@ -89,7 +89,7 @@ fun ScheduleAddScreen(
 ) {
     val scope = rememberCoroutineScope()
     val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
-    val eventTypeList: List<HistoryRegistrationEventType> = HistoryRegistrationEventType.entries
+    val eventTypeList: List<HistoryEventType> = HistoryEventType.entries
 
     // TODO : rememberSaveable 을 위한 Parcelable Presentation Model
     var relation: RelationDetail? by remember { mutableStateOf(null) }
@@ -124,7 +124,7 @@ fun ScheduleAddScreen(
             }
         }.getOrDefault("???? / ?? / ??")
     }
-    val currentEvent: HistoryRegistrationEventType? = eventTypeList.find {
+    val currentEvent: HistoryEventType? = eventTypeList.find {
         it.eventName == eventName
     }
     val formattedAlarm = Unit.let {
