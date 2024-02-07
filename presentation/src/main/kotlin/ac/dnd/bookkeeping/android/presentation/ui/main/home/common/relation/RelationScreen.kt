@@ -1,8 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
-import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
-import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
@@ -78,7 +76,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun RelationScreen(
-    relationType : RelationType,
+    relationType: RelationType,
     appState: ApplicationState,
     model: RelationModel,
     event: EventFlow<RelationEvent>,
