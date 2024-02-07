@@ -71,6 +71,7 @@ fun TypingTextField(
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
+    textFieldFocus : () -> Unit = {}
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
@@ -109,6 +110,7 @@ fun TypingTextField(
                 onValueChange = {
                     if (maxTextLength >= it.length) {
                         onValueChange(it)
+                        textFieldFocus()
                     }
                 },
                 enabled = isEnabled,
