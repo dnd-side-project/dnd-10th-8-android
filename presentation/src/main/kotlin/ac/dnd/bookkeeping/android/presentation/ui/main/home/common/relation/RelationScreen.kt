@@ -36,6 +36,9 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
+import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailGroupModel
+import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailWithUserInfoModel
+import ac.dnd.bookkeeping.android.presentation.model.relation.RelationType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
@@ -75,6 +78,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun RelationScreen(
+    relationType : RelationType,
     appState: ApplicationState,
     model: RelationModel,
     event: EventFlow<RelationEvent>,
@@ -321,6 +325,7 @@ fun RelationScreen(
 @Composable
 private fun AddRelationScreenPreview() {
     RelationScreen(
+        relationType = RelationType.ADD,
         appState = rememberApplicationState(),
         model = RelationModel(
             groups = listOf(
@@ -346,12 +351,12 @@ private fun AddRelationScreenPreview() {
                 )
             ),
             state = RelationState.Init,
-            relationDetail = RelationDetailWithUserInfo(
+            relationDetail = RelationDetailWithUserInfoModel(
                 id = 0L,
                 name = "김진우",
                 imageUrl = "",
                 memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
-                group = RelationDetailGroup(
+                group = RelationDetailGroupModel(
                     id = 0,
                     name = "친척"
                 ),
