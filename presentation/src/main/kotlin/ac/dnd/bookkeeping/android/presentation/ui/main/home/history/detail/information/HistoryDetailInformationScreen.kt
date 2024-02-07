@@ -1,7 +1,20 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.information
 
+import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
+import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
+import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -14,23 +27,36 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -85,33 +111,124 @@ private fun HistoryDetailInformationScreen(
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Gray200)
-                .padding(20.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
+                .background(Gray000)
+                .padding(horizontal = Space20),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "",
-                style = Headline2
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            ConfirmButton(
-                modifier = Modifier.fillMaxWidth(),
-                properties = ConfirmButtonProperties(
-                    size = ConfirmButtonSize.Xlarge,
-                    type = ConfirmButtonType.Primary
-                ),
-                onClick = {
-                    onResult()
-                }
-            ) { style ->
-                Text(
-                    text = "확인",
-                    style = style
+            Spacer(modifier = Modifier.height(Space20))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Space8)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            onDismissRequest()
+                        }
                 )
             }
+
             Spacer(modifier = Modifier.height(10.dp))
+            // TODO image input
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(80.dp)
+                    .background(color = Gray200)
+            ){
+                AsyncImage(
+                    model = null,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Spacer(modifier = Modifier.height(7.dp))
+            Row(verticalAlignment = Alignment.CenterVertically){
+                // TODO name input
+                Text(
+                    text = "이름",
+                    style = Headline3.merge(
+                        color = Gray700,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(
+                    text = "•",
+                    style = Headline3.merge(
+                        color = Gray700,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Spacer(modifier = Modifier.width(3.dp))
+                // TODO relation input
+                Text(
+                    text = "관계",
+                    style = Headline3.merge(
+                        color = Gray700,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(7.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .border(
+                        shape = Shapes.medium,
+                        width = 1.dp,
+                        color = Gray300
+                    )
+                    .clickable {
+                        onResult()
+                    }
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 5.dp
+                    )
+            ){
+                Image(
+                    painter = painterResource(R.drawable.ic_edit),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text ="편집",
+                    style = Caption2.merge(
+                        color = Gray500,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(
+                        color = Gray150,
+                        shape = Shapes.large
+                    )
+            ){
+                // TODO memo input
+                Text(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    text = "memo text ",
+                    minLines = 3,
+                    style =Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
         }
     }
 
