@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.data.remote.network.api.RelationApi
 import ac.dnd.bookkeeping.android.data.remote.network.util.toDomain
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.domain.repository.GroupRepository
 import ac.dnd.bookkeeping.android.domain.repository.RelationRepository
@@ -54,7 +55,7 @@ class RealRelationRepository @Inject constructor(
 
     override suspend fun getRelation(
         id: Long
-    ): Result<RelationDetail> {
+    ): Result<RelationDetailWithUserInfo> {
         return relationApi.getRelation(
             id = id
         ).toDomain()

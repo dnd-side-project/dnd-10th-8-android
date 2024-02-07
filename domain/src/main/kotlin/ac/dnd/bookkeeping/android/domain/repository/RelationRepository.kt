@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 
 interface RelationRepository {
@@ -26,7 +27,7 @@ interface RelationRepository {
 
     suspend fun getRelation(
         id: Long
-    ): Result<RelationDetail>
+    ): Result<RelationDetailWithUserInfo>
 
     suspend fun getRelationList(
         name: String
