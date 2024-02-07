@@ -1,6 +1,8 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.add
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
@@ -72,14 +74,13 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
-fun AddRelationScreen(
+fun RelationScreen(
     appState: ApplicationState,
-    model: AddRelationModel,
-    event: EventFlow<AddRelationEvent>,
-    intent: (AddRelationIntent) -> Unit,
+    model: RelationModel,
+    event: EventFlow<RelationEvent>,
+    intent: (RelationIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-
     val focusManager = LocalFocusManager.current
     val isRecordState by remember { mutableStateOf(false) }
     val isSaveState by remember { mutableStateOf(false) }
@@ -204,6 +205,7 @@ fun AddRelationScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
+
                 items(model.groups) { group ->
                     ChipItem(
                         chipType = ChipType.BORDER,
@@ -318,9 +320,9 @@ fun AddRelationScreen(
 @Preview
 @Composable
 private fun AddRelationScreenPreview() {
-    AddRelationScreen(
+    RelationScreen(
         appState = rememberApplicationState(),
-        model = AddRelationModel(
+        model = RelationModel(
             groups = listOf(
                 Group(
                     id = 0,
@@ -343,7 +345,19 @@ private fun AddRelationScreenPreview() {
                     name = "label"
                 )
             ),
-            state = AddRelationState.Init
+            state = RelationState.Init,
+            relationDetail = RelationDetailWithUserInfo(
+                id = 0L,
+                name = "김진우",
+                imageUrl = "",
+                memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
+                group = RelationDetailGroup(
+                    id = 0,
+                    name = "친척"
+                ),
+                giveMoney = 1000L,
+                takeMoney = 1000L
+            )
         ),
         intent = {},
         event = MutableEventFlow(),

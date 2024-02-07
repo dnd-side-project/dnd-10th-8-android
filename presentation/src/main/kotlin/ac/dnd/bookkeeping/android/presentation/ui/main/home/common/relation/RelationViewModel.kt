@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.add
+package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
@@ -17,25 +17,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRelationViewModel @Inject constructor(
+class RelationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getGroupListUseCase: GetGroupListUseCase,
     private val addRelationUseCase: AddRelationUseCase
 ) : BaseViewModel() {
 
-    private val _state: MutableStateFlow<AddRelationState> =
-        MutableStateFlow(AddRelationState.Init)
-    val state: StateFlow<AddRelationState> = _state.asStateFlow()
+    private val _state: MutableStateFlow<RelationState> =
+        MutableStateFlow(RelationState.Init)
+    val state: StateFlow<RelationState> = _state.asStateFlow()
 
-    private val _event: MutableEventFlow<AddRelationEvent> = MutableEventFlow()
-    val event: EventFlow<AddRelationEvent> = _event.asEventFlow()
+    private val _event: MutableEventFlow<RelationEvent> = MutableEventFlow()
+    val event: EventFlow<RelationEvent> = _event.asEventFlow()
 
     private val _groups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
     val groups: StateFlow<List<Group>> = _groups.asStateFlow()
 
     init {
         launch {
-            _state.value = AddRelationState.Loading
+            _state.value = RelationState.Loading
             getGroupListUseCase()
                 .onSuccess {
                     _groups.value = it
@@ -54,9 +54,9 @@ class AddRelationViewModel @Inject constructor(
         }
     }
 
-    fun onIntent(intent: AddRelationIntent) {
+    fun onIntent(intent: RelationIntent) {
         when (intent) {
-            is AddRelationIntent.OnClickSubmit -> addRelation(
+            is RelationIntent.OnClickSubmit -> addRelation(
                 intent.groupId,
                 intent.name,
                 intent.imageUrl,
@@ -72,7 +72,7 @@ class AddRelationViewModel @Inject constructor(
         memo: String,
     ) {
         launch {
-            _state.value = AddRelationState.Loading
+            _state.value = RelationState.Loading
             addRelationUseCase(
                 groupId = groupId,
                 name = name,
@@ -80,11 +80,11 @@ class AddRelationViewModel @Inject constructor(
                 memo = memo
             )
                 .onSuccess {
-                    _state.value = AddRelationState.Init
-                    _event.emit(AddRelationEvent.Submit.Success)
+                    _state.value = RelationState.Init
+                    _event.emit(RelationEvent.Submit.Success)
                 }
                 .onFailure { exception ->
-                    _state.value = AddRelationState.Init
+                    _state.value = RelationState.Init
                     when (exception) {
                         is ServerException -> {
                             _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
