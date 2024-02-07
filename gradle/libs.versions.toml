@@ -38,6 +38,7 @@ kotlinx-serialization = "1.6.1"
 coil-compose = "2.4.0"
 lottie = "5.2.0"
 holix-bottomsheet-compose = "1.3.1"
+chargemap-picker-compose = "1.0.3"
 # Logging
 timber = "5.0.1"
 sentry = "7.1.0"
@@ -90,6 +91,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose
 ted-permission = { module = "io.github.ParkSangGwon:tedpermission-coroutine", version.ref = "ted-permission" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 holix-bottomsheet-compose = { module = "com.holix.android:bottomsheetdialog-compose", version.ref = "holix-bottomsheet-compose" }
+chargemap-picker-compose = { module = "com.chargemap.compose:numberpicker", version.ref = "chargemap-picker-compose" }
 # Logging
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 sentry = { module = "io.sentry:sentry-android", version.ref = "sentry" }
