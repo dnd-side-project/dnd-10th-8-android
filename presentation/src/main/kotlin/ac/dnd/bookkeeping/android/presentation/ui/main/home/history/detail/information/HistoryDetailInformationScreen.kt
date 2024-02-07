@@ -1,5 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.information
 
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
@@ -64,15 +66,16 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 @Composable
 fun HistoryDetailInformationScreen(
     appState: ApplicationState,
+    relationDetail: RelationDetailWithUserInfo,
     onDismissRequest: () -> Unit,
     onResult: () -> Unit,
     viewModel: HistoryDetailInformationViewModel = hiltViewModel()
 ) {
     val model: HistoryDetailInformationModel = Unit.let {
         val state by viewModel.state.collectAsStateWithLifecycle()
-
         HistoryDetailInformationModel(
-            state = state
+            state = state,
+            relationDetail = relationDetail
         )
     }
     ErrorObserver(viewModel)
@@ -133,7 +136,6 @@ private fun HistoryDetailInformationScreen(
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            // TODO image input
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -141,16 +143,15 @@ private fun HistoryDetailInformationScreen(
                     .background(color = Gray200)
             ){
                 AsyncImage(
-                    model = null,
+                    model = model.relationDetail.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
             }
             Spacer(modifier = Modifier.height(7.dp))
             Row(verticalAlignment = Alignment.CenterVertically){
-                // TODO name input
                 Text(
-                    text = "이름",
+                    text = model.relationDetail.name,
                     style = Headline3.merge(
                         color = Gray700,
                         fontWeight = FontWeight.SemiBold
@@ -165,9 +166,8 @@ private fun HistoryDetailInformationScreen(
                     )
                 )
                 Spacer(modifier = Modifier.width(3.dp))
-                // TODO relation input
                 Text(
-                    text = "관계",
+                    text = model.relationDetail.group.name,
                     style = Headline3.merge(
                         color = Gray700,
                         fontWeight = FontWeight.SemiBold
@@ -214,13 +214,12 @@ private fun HistoryDetailInformationScreen(
                         shape = Shapes.large
                     )
             ){
-                // TODO memo input
                 Text(
                     modifier = Modifier
                         .padding(20.dp)
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    text = "memo text ",
+                    text = model.relationDetail.memo,
                     minLines = 3,
                     style =Body1.merge(
                         color = Gray800,
@@ -244,7 +243,21 @@ private fun HistoryDetailInformationScreen(
 private fun HistoryDetailInformationScreenPreview() {
     HistoryDetailInformationScreen(
         appState = rememberApplicationState(),
-        model = HistoryDetailInformationModel(state = HistoryDetailInformationState.Init),
+        model = HistoryDetailInformationModel(
+            state = HistoryDetailInformationState.Init,
+            relationDetail = RelationDetailWithUserInfo(
+                id = 0L,
+                name = "김진우",
+                imageUrl = "",
+                memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
+                group = RelationDetailGroup(
+                    id = 0,
+                    name = "친척"
+                ),
+                giveMoney = 1000L,
+                takeMoney = 1000L
+            )
+        ),
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },
