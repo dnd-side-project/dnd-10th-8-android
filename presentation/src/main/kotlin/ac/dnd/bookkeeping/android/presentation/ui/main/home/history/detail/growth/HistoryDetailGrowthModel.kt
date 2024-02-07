@@ -4,5 +4,5 @@ import ac.dnd.bookkeeping.android.presentation.model.history.HistoryDetailGrowth
 
 data class HistoryDetailGrowthModel(
     val state: HistoryDetailGrowthState,
-    val currentType : HistoryDetailGrowthType
+    val currentType: HistoryDetailGrowthType
 )

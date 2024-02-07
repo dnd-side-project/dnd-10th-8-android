@@ -1,8 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.model.history
 
 import ac.dnd.bookkeeping.android.presentation.R
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 
 enum class HistoryDetailGrowthType(
     val typeName: String,
@@ -25,7 +23,7 @@ enum class HistoryDetailGrowthType(
     LEVEL_THREE(
         typeName = "꽤 가까운 사이",
         price = 60_000,
-        imageResource =R.drawable.ic_circle_plus,
+        imageResource = R.drawable.ic_circle_plus,
         level = 3
     ),
     LEVEL_FOUR(

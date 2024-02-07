@@ -44,7 +44,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -70,7 +69,7 @@ fun HistoryDetailGrowthScreen(
                 .fillMaxWidth()
                 .height(56.dp)
                 .padding(vertical = 16.dp)
-        ){
+        ) {
             Image(
                 painter = painterResource(R.drawable.ic_chevron_left),
                 contentDescription = null,
@@ -101,12 +100,12 @@ fun HistoryDetailGrowthScreen(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            items(HistoryDetailGrowthType.entries){ type ->
+            items(HistoryDetailGrowthType.entries) { type ->
                 Box(
                     modifier = Modifier
                         .background(Color.Transparent)
                         .height(102.dp)
-                ){
+                ) {
                     Row(
                         modifier = Modifier
                             .padding(vertical = 7.dp)
@@ -119,14 +118,14 @@ fun HistoryDetailGrowthScreen(
                             .wrapContentHeight()
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         Box(
                             modifier = Modifier
                                 .background(
                                     color = Gray150,
                                     shape = RoundedCornerShape(6.dp)
                                 )
-                        ){
+                        ) {
                             Image(
                                 painter = painterResource(type.imageResource),
                                 contentDescription = null,
@@ -153,7 +152,7 @@ fun HistoryDetailGrowthScreen(
                         }
                         Box(
                             modifier = Modifier.fillMaxSize()
-                        ){
+                        ) {
                             Text(
                                 text = "Lv.${type.level}",
                                 modifier = Modifier.align(Alignment.BottomEnd),

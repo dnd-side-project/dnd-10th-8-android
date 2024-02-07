@@ -23,8 +23,9 @@ fun NavGraphBuilder.historyDetailGrowthDestination(
         )
     ) { entry ->
 
-        val totalMoney = entry.arguments?.getLong(HistoryDetailGrowthConstant.ROUTE_ARGUMENT_TOTAL_MONEY) ?: -1L
-        if (totalMoney < 0){
+        val totalMoney =
+            entry.arguments?.getLong(HistoryDetailGrowthConstant.ROUTE_ARGUMENT_TOTAL_MONEY) ?: -1L
+        if (totalMoney < 0) {
             appState.navController.popBackStack()
         }
 
