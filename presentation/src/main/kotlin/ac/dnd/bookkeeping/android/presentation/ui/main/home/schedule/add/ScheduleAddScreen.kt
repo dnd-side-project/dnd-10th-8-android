@@ -539,24 +539,24 @@ fun ScheduleAddScreen(
                 },
                 hintText = "경사 관련 메모를 입력해주세요"
             )
-            Spacer(modifier = Modifier.height(46.dp))
-            ConfirmButton(
-                properties = ConfirmButtonProperties(
-                    size = ConfirmButtonSize.Large,
-                    type = ConfirmButtonType.Primary
-                ),
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
-                    .weight(1f),
-                onClick = {
-                    intent(ScheduleAddIntent.OnConfirm)
-                }
-            ) { style ->
-                Text(
-                    text = "저장하기",
-                    style = style
-                )
+        }
+        Spacer(modifier = Modifier.height(46.dp))
+        ConfirmButton(
+            properties = ConfirmButtonProperties(
+                size = ConfirmButtonSize.Large,
+                type = ConfirmButtonType.Primary
+            ),
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .fillMaxWidth(),
+            onClick = {
+                intent(ScheduleAddIntent.OnConfirm)
             }
+        ) { style ->
+            Text(
+                text = "저장하기",
+                style = style
+            )
         }
     }
 
