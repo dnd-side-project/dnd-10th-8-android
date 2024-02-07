@@ -12,7 +12,6 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
@@ -23,17 +22,12 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
-import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
-import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
-import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
-import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -141,7 +135,7 @@ private fun HistoryDetailInformationScreen(
                     .clip(CircleShape)
                     .size(80.dp)
                     .background(color = Gray200)
-            ){
+            ) {
                 AsyncImage(
                     model = model.relationDetail.imageUrl,
                     contentDescription = null,
@@ -149,7 +143,7 @@ private fun HistoryDetailInformationScreen(
                 )
             }
             Spacer(modifier = Modifier.height(7.dp))
-            Row(verticalAlignment = Alignment.CenterVertically){
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = model.relationDetail.name,
                     style = Headline3.merge(
@@ -190,14 +184,14 @@ private fun HistoryDetailInformationScreen(
                         horizontal = 8.dp,
                         vertical = 5.dp
                     )
-            ){
+            ) {
                 Image(
                     painter = painterResource(R.drawable.ic_edit),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text ="편집",
+                    text = "편집",
                     style = Caption2.merge(
                         color = Gray500,
                         fontWeight = FontWeight.Medium
@@ -213,7 +207,7 @@ private fun HistoryDetailInformationScreen(
                         color = Gray150,
                         shape = Shapes.large
                     )
-            ){
+            ) {
                 Text(
                     modifier = Modifier
                         .padding(20.dp)
@@ -221,7 +215,7 @@ private fun HistoryDetailInformationScreen(
                         .wrapContentHeight(),
                     text = model.relationDetail.memo,
                     minLines = 3,
-                    style =Body1.merge(
+                    style = Body1.merge(
                         color = Gray800,
                         fontWeight = FontWeight.Normal
                     )
