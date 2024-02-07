@@ -59,6 +59,7 @@ fun TypingTextField(
     hintText: String = "",
     isError: Boolean = false,
     isEnabled: Boolean = true,
+    isSingleLine: Boolean = true,
     maxTextLength: Int = 100,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -71,15 +72,10 @@ fun TypingTextField(
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
-    textFieldFocus : () -> Unit = {}
+    onTextFieldFocusChange : (Boolean) -> Unit = {}
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
-
-    val isSingleLine = when (textType) {
-        TypingTextFieldType.Basic -> true
-        TypingTextFieldType.LongSentence -> false
-    }
 
     val currentColor =
         if (isError) Negative else if (isTextFieldFocused) Primary3 else basicBorderColor
@@ -103,6 +99,7 @@ fun TypingTextField(
                 .wrapContentHeight()
                 .onFocusChanged {
                     isTextFieldFocused = it.isFocused
+                    onTextFieldFocusChange(it.isFocused)
                 }
         ) {
             BasicTextField(
@@ -110,7 +107,6 @@ fun TypingTextField(
                 onValueChange = {
                     if (maxTextLength >= it.length) {
                         onValueChange(it)
-                        textFieldFocus()
                     }
                 },
                 enabled = isEnabled,
@@ -118,12 +114,9 @@ fun TypingTextField(
                 textStyle = Body1.merge(
                     color = Gray800
                 ),
-                singleLine = isSingleLine,
+                singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
                 minLines = if (isSingleLine) 1 else 3,
                 keyboardOptions = keyboardOptions,
-                keyboardActions = KeyboardActions(
-
-                ),
                 cursorBrush = SolidColor(value = currentColorState.value),
                 interactionSource = interactionSource,
             ) { textField ->
@@ -131,7 +124,7 @@ fun TypingTextField(
                     value = text,
                     innerTextField = textField,
                     enabled = isEnabled,
-                    singleLine = isSingleLine,
+                    singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
                     visualTransformation = visualTransformation,
                     interactionSource = interactionSource,
                     placeholder = {
