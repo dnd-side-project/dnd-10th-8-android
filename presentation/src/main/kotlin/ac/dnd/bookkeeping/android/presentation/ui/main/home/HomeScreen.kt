@@ -68,12 +68,12 @@ fun HomeScreen(
             icon = R.drawable.ic_launcher
         ),
         MainBottomBarItem(
-            route = ScheduleConstant.ROUTE,
+            route = StatisticsConstant.ROUTE,
             name = "통계",
             icon = R.drawable.ic_launcher
         ),
         MainBottomBarItem(
-            route = StatisticsConstant.ROUTE,
+            route = ScheduleConstant.ROUTE,
             name = "일정",
             icon = R.drawable.ic_launcher
         ),
@@ -123,11 +123,13 @@ fun HomeScreen(
                         appState = appState
                     )
                 }
+
                 ScheduleConstant.ROUTE -> {
                     ScheduleScreen(
                         appState = appState
                     )
                 }
+
                 StatisticsConstant.ROUTE -> {
                     StatisticsScreen(
                         appState = appState
