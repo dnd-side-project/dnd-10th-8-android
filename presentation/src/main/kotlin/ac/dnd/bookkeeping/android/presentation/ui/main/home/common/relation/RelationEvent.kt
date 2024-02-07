@@ -12,4 +12,11 @@ sealed interface RelationEvent {
     sealed interface DeleteRelation : RelationEvent {
         data object Success : DeleteRelation
     }
+
+    sealed interface LoadKakaoFriend : RelationEvent {
+        data class Success(
+            val name: String,
+            val imageUrl: String
+        ) : LoadKakaoFriend
+    }
 }

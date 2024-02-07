@@ -6,6 +6,7 @@ import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListUseCa
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.AddRelationUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.DeleteRelationUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.EditRelationUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.GetKakaoFriendInfoUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class RelationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getGroupListUseCase: GetGroupListUseCase,
+    private val getKakaoFriendInfoUseCase: GetKakaoFriendInfoUseCase,
     private val addRelationUseCase: AddRelationUseCase,
     private val editRelationUseCase: EditRelationUseCase,
     private val deleteRelationUseCase: DeleteRelationUseCase
@@ -78,6 +80,8 @@ class RelationViewModel @Inject constructor(
             is RelationIntent.OnClickDelete -> deleteRelation(
                 intent.id
             )
+
+            is RelationIntent.OnClickLoadFriend -> loadKakaoFriend()
         }
     }
 
@@ -171,6 +175,34 @@ class RelationViewModel @Inject constructor(
                         }
                     }
 
+                }
+        }
+    }
+
+    private fun loadKakaoFriend() {
+        launch {
+            _state.value = RelationState.Loading
+            getKakaoFriendInfoUseCase()
+                .onSuccess {
+                    _state.value = RelationState.Init
+                    _event.emit(
+                        RelationEvent.LoadKakaoFriend.Success(
+                            name = it.name,
+                            imageUrl = it.profileImageUrl
+                        )
+                    )
+                }
+                .onFailure { exception ->
+                    _state.value = RelationState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
                 }
         }
     }

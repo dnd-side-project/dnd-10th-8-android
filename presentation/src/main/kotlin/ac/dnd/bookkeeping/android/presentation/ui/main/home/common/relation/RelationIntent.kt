@@ -20,4 +20,5 @@ sealed interface RelationIntent {
         val id: Long
     ) : RelationIntent
 
+    data object OnClickLoadFriend : RelationIntent
 }
