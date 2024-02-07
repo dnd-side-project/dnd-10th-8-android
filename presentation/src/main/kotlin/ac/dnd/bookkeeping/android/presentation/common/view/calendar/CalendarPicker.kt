@@ -1,12 +1,13 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.calendar
 
-import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
+import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,8 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,13 +39,18 @@ import java.util.Calendar
 fun CalendarPicker(
     localDate: LocalDate,
     isDaySelectable: Boolean = true,
-    dividersColor: Color = Primary4,
-    dateTextStyle: TextStyle = Headline3,
-    labelTextStyle: TextStyle = Body1,
     properties: BottomSheetDialogProperties = BottomSheetDialogProperties(),
     onDismissRequest: () -> Unit,
     onConfirm: (LocalDate) -> Unit
 ) {
+    val dateTextStyle = Headline3.merge(
+        color = Gray700,
+        fontWeight = FontWeight.SemiBold
+    )
+    val labelTextStyle = Body0.merge(
+        color = Gray700,
+        fontWeight = FontWeight.Normal
+    )
 
     fun setDayValue(
         year: Int,
@@ -82,13 +86,15 @@ fun CalendarPicker(
                     .background(Gray200)
                     .fillMaxWidth()
                     .padding(
-                        horizontal = Space20,
-                        vertical = Space12
+                        start = 22.dp,
+                        end = 21.dp,
+                        top = 16.dp,
+                        bottom = 13.dp
                     )
             ) {
                 Text(
                     text = "날짜 선택",
-                    style = Headline3.merge(
+                    style = Headline2.merge(
                         color = Gray800,
                         fontWeight = FontWeight.SemiBold
                     ),
@@ -98,7 +104,7 @@ fun CalendarPicker(
                     text = "완료",
                     style = Headline3.merge(
                         color = Primary4,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.SemiBold
                     ),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
@@ -120,7 +126,7 @@ fun CalendarPicker(
                 NumberPicker(
                     value = yearValue,
                     range = localDate.year - 50..localDate.year + 50,
-                    dividersColor = dividersColor,
+                    dividersColor = Primary3,
                     textStyle = dateTextStyle,
                     onValueChange = {
                         yearValue = it
@@ -136,7 +142,7 @@ fun CalendarPicker(
                 NumberPicker(
                     value = monthValue,
                     range = 1..12,
-                    dividersColor = dividersColor,
+                    dividersColor = Primary3,
                     textStyle = dateTextStyle,
                     onValueChange = {
                         monthValue = it
@@ -153,7 +159,7 @@ fun CalendarPicker(
                     NumberPicker(
                         value = dayValue,
                         range = 1..dayMaxValue,
-                        dividersColor = dividersColor,
+                        dividersColor = Primary3,
                         textStyle = dateTextStyle,
                         onValueChange = {
                             dayValue = it
@@ -170,17 +176,31 @@ fun CalendarPicker(
     }
 }
 
-@Preview(
-    backgroundColor = 0xFFFFFFFF,
-    showBackground = true,
-    apiLevel = 33
-)
+@Preview(apiLevel = 33)
 @Composable
-private fun PickerPreview() {
+private fun Picker1Preview() {
     CalendarPicker(
         localDate = LocalDate(
             2024, 2, 7
         ),
+        isDaySelectable = true,
+        onDismissRequest = {
+
+        },
+        onConfirm = {
+
+        }
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun Picker2Preview() {
+    CalendarPicker(
+        localDate = LocalDate(
+            2024, 2, 7
+        ),
+        isDaySelectable = false,
         onDismissRequest = {
 
         },
