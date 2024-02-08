@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.holix.bottomsheet.compose)
     implementation(libs.chargemap.picker.compose)
+    implementation(libs.constraintlayout.compose)
     implementation(libs.google.system.contoller)
     implementation(libs.ted.permission)
 
