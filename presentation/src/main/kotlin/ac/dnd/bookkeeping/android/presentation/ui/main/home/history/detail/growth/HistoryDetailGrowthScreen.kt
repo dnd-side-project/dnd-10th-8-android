@@ -127,7 +127,7 @@ fun HistoryDetailGrowthScreen(
                                 )
                         ) {
                             Image(
-                                painter = painterResource(type.imageResource),
+                                painter = painterResource(type.iconImageResource),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop
                             )
