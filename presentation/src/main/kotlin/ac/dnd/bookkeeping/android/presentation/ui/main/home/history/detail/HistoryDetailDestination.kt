@@ -38,9 +38,11 @@ fun NavGraphBuilder.historyDetailDestination(
         val model: HistoryDetailModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
             val relationDetail by viewModel.relationDetail.collectAsStateWithLifecycle()
+            val heartList by viewModel.hearts.collectAsStateWithLifecycle()
             HistoryDetailModel(
                 state = state,
-                relationDetail = relationDetail
+                relationDetail = relationDetail,
+                hearts = heartList
             )
         }
 
