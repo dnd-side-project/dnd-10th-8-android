@@ -28,7 +28,8 @@ class GetRelationViewModel @Inject constructor(
     private val _event: MutableEventFlow<GetRelationEvent> = MutableEventFlow()
     val event: EventFlow<GetRelationEvent> = _event.asEventFlow()
 
-    private val _groups: MutableStateFlow<List<GroupWithRelationSimple>> = MutableStateFlow(emptyList())
+    private val _groups: MutableStateFlow<List<GroupWithRelationSimple>> =
+        MutableStateFlow(emptyList())
     val groups: StateFlow<List<GroupWithRelationSimple>> = _groups.asStateFlow()
 
     init {
