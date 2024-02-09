@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 interface MutableEventFlow<T> : EventFlow<T>, FlowCollector<T>
 
 @Suppress("FunctionName")
-fun <T : Any> MutableEventFlow(
+fun <T> MutableEventFlow(
     replay: Int = EVENT_FLOW_REPLAY_COUNT
 ): MutableEventFlow<T> = EventFlowImpl(replay)
 
