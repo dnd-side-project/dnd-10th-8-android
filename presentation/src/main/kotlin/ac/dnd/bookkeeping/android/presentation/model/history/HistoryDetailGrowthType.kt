@@ -5,43 +5,50 @@ import ac.dnd.bookkeeping.android.presentation.R
 enum class HistoryDetailGrowthType(
     val typeName: String,
     val price: Long,
-    val imageResource: Int,
+    val iconImageResource: Int,
+    val backgroundImageResource: Int,
     val level: Int
 ) {
     LEVEL_ONE(
         typeName = "어색한 사이",
         price = 0,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_1,
         level = 1
     ),
     LEVEL_TWO(
         typeName = "알아가는 사이",
         price = 30_000,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_2,
         level = 2
     ),
     LEVEL_THREE(
         typeName = "꽤 가까운 사이",
         price = 60_000,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_3,
         level = 3
     ),
     LEVEL_FOUR(
         typeName = "친한 사이",
         price = 100_000,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_4,
         level = 4
     ),
     LEVEL_FIVE(
         typeName = "믿음직한 사이",
         price = 500_000,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_5,
         level = 5
     ),
     LEVEL_SIX(
         typeName = "평생을 함께 할 사이",
         price = 1_000_000,
-        imageResource = R.drawable.ic_circle_plus,
+        iconImageResource = R.drawable.ic_circle_plus,
+        backgroundImageResource = R.drawable.bc_history_lv_6,
         level = 6
     );
 
