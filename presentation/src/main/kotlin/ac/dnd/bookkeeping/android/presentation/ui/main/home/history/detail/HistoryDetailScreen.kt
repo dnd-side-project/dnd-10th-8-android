@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
 
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.presentation.R
@@ -16,6 +17,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryDetailGrowthType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewSwipingType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
@@ -73,6 +75,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 @OptIn(
     ExperimentalFoundationApi::class,
@@ -262,7 +265,7 @@ fun HistoryDetailScreen(
                             )
                             Spacer(modifier = Modifier.width(14.dp))
                             Text(
-                                text = "${model.relationDetail.giveMoney}원",
+                                text = "-${model.relationDetail.giveMoney}원",
                                 style = Headline3.merge(
                                     color = Gray000,
                                     fontWeight = FontWeight.SemiBold
@@ -312,7 +315,7 @@ fun HistoryDetailScreen(
                         .height(contentHeight)
                 )
 
-                Box(
+                Column(
                     modifier = Modifier
                         .layoutId("body")
                         .fillMaxWidth()
@@ -423,8 +426,55 @@ fun HistoryDetailScreenPreview() {
                     id = 0,
                     name = "친척"
                 ),
-                giveMoney = 1000L,
-                takeMoney = 1000L
+                giveMoney = 100000L,
+                takeMoney = 100000L
+            ),
+            hearts = listOf(
+                RelatedHeart(
+                    id = 0,
+                    give = true,
+                    money = 10000,
+                    day = LocalDate(2024, 1, 23),
+                    event = "생일",
+                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+                    tags = listOf()
+                ),
+                RelatedHeart(
+                    id = 0,
+                    give = true,
+                    money = 10000,
+                    day = LocalDate(2024, 1, 24),
+                    event = "생일",
+                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+                    tags = HistoryTagType.entries.map { it.tagName }
+                ),
+                RelatedHeart(
+                    id = 0,
+                    give = false,
+                    money = 500000,
+                    day = LocalDate(2024, 1, 25),
+                    event = "생일",
+                    memo = "메모 내용 한 줄 넘어가면 숨김 처리 메모 내용 한 줄 넘어가면 숨김 처리 ",
+                    tags = listOf("참석", "현금")
+                ),
+                RelatedHeart(
+                    id = 0,
+                    give = false,
+                    money = 10000,
+                    day = LocalDate(2024, 1, 26),
+                    event = "생일",
+                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+                    tags = listOf()
+                ),
+                RelatedHeart(
+                    id = 0,
+                    give = true,
+                    money = 10000,
+                    day = LocalDate(2024, 1, 27),
+                    event = "생일",
+                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+                    tags = listOf()
+                ),
             )
         ),
         event = MutableEventFlow(),

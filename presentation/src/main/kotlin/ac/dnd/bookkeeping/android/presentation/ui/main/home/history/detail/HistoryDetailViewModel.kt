@@ -1,15 +1,17 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
+import ac.dnd.bookkeeping.android.domain.usecase.feature.heart.GetRelatedHeartListUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.GetRelationUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
+import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.zip
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getRelationUseCase: GetRelationUseCase
+    private val getRelationUseCase: GetRelationUseCase,
+    private val getRelatedHeartListUseCase: GetRelatedHeartListUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HistoryDetailState> =
@@ -30,9 +33,9 @@ class HistoryDetailViewModel @Inject constructor(
     private val _event: MutableEventFlow<HistoryDetailEvent> = MutableEventFlow()
     val event: EventFlow<HistoryDetailEvent> = _event.asEventFlow()
 
-    private val _historyType: MutableStateFlow<HistoryViewType> =
-        MutableStateFlow(HistoryViewType.TOTAL)
-    val historyType: StateFlow<HistoryViewType> = _historyType.asStateFlow()
+    private val _hearts: MutableStateFlow<List<RelatedHeart>> =
+        MutableStateFlow(emptyList())
+    val hearts: StateFlow<List<RelatedHeart>> = _hearts.asStateFlow()
 
     private val _relationDetail: MutableStateFlow<RelationDetailWithUserInfo> =
         MutableStateFlow(
@@ -54,12 +57,17 @@ class HistoryDetailViewModel @Inject constructor(
     fun loadRelationDetail(id: Long) {
         launch {
             _state.value = HistoryDetailState.Loading
-            getRelationUseCase(id)
-                .onSuccess {
+            zip(
+                { getRelationUseCase(id) },
+                { getRelatedHeartListUseCase(id, "recent") }
+            )
+                .onSuccess { (detail, hearts) ->
                     _state.value = HistoryDetailState.Init
-                    _relationDetail.value = it
-                }.onFailure { exception ->
-                    _state.value = HistoryDetailState.Loading
+                    _relationDetail.value = detail
+                    _hearts.value = hearts
+                }
+                .onFailure { exception ->
+                    _state.value = HistoryDetailState.Init
                     when (exception) {
                         is ServerException -> {
                             _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
@@ -74,10 +82,6 @@ class HistoryDetailViewModel @Inject constructor(
     }
 
     fun onIntent(intent: HistoryDetailIntent) {
-        when (intent) {
-            is HistoryDetailIntent.ClickTab -> {
-                _historyType.value = intent.type
-            }
-        }
+
     }
 }
