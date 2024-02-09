@@ -58,7 +58,7 @@ fun HistoryUnrecordedPageScreen(
     unrecordedSchedule: UnrecordedSchedule,
     intent: (HistoryUnrecordedIntent) -> Unit
 ) {
-    var moneyText by remember { mutableStateOf("") }록
+    var moneyText by remember { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
 
     Box(modifier = Modifier.fillMaxSize()) {
