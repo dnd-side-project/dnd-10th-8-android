@@ -6,49 +6,49 @@ enum class HistoryDetailGrowthType(
     val typeName: String,
     val price: Long,
     val iconImageResource: Int,
-    val backgroundImageResource: Int,
+    val backgroundColor: Long,
     val level: Int
 ) {
     LEVEL_ONE(
         typeName = "어색한 사이",
         price = 0,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_1,
+        iconImageResource = R.drawable.ic_property_lv_1,
+        backgroundColor = 0xFFA5A5A5,
         level = 1
     ),
     LEVEL_TWO(
         typeName = "알아가는 사이",
         price = 30_000,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_2,
+        iconImageResource = R.drawable.ic_property_lv_2,
+        backgroundColor = 0xFF67A3FC,
         level = 2
     ),
     LEVEL_THREE(
         typeName = "꽤 가까운 사이",
         price = 60_000,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_3,
+        iconImageResource = R.drawable.ic_property_lv_3,
+        backgroundColor = 0xFFE690E7,
         level = 3
     ),
     LEVEL_FOUR(
         typeName = "친한 사이",
         price = 100_000,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_4,
+        iconImageResource = R.drawable.ic_property_lv_4,
+        backgroundColor = 0xFF8B89FF,
         level = 4
     ),
     LEVEL_FIVE(
         typeName = "믿음직한 사이",
         price = 500_000,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_5,
+        iconImageResource = R.drawable.ic_property_lv_5,
+        backgroundColor = 0xFF594ED0,
         level = 5
     ),
     LEVEL_SIX(
         typeName = "평생을 함께 할 사이",
         price = 1_000_000,
-        iconImageResource = R.drawable.ic_circle_plus,
-        backgroundImageResource = R.drawable.bc_history_lv_6,
+        iconImageResource = R.drawable.ic_property_lv_6,
+        backgroundColor = 0xFFE788FF,
         level = 6
     );
 
