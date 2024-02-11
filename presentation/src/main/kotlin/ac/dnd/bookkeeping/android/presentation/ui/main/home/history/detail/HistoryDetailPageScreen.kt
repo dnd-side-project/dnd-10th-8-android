@@ -1,6 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
 
-import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
@@ -40,9 +39,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,29 +63,22 @@ fun HistoryDetailPageScreen(
     handler: CoroutineExceptionHandler,
     viewType: HistoryViewType
 ) {
-    val hearts = model.hearts.filter { heart ->
-        return@filter when (viewType) {
-            HistoryViewType.TOTAL -> true
-            HistoryViewType.GIVE -> heart.give
-            HistoryViewType.TAKE -> !heart.give
-        }
-    }
-
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
     var viewSortType by remember { mutableStateOf(HistoryDetailSortedType.LATEST) }
-    val heartList = remember { mutableStateListOf<RelatedHeart>() }
-    LaunchedEffect(viewSortType) {
-        heartList.clear()
-        when (viewSortType) {
-            HistoryDetailSortedType.LATEST -> {
-                heartList.addAll(hearts.sortedByDescending { it.day })
-            }
-
-            HistoryDetailSortedType.OLDEST -> {
-                heartList.addAll(hearts.sortedBy { it.day })
+    val hearts = model.hearts
+        .filter { heart ->
+            return@filter when (viewType) {
+                HistoryViewType.TOTAL -> true
+                HistoryViewType.GIVE -> heart.give
+                HistoryViewType.TAKE -> !heart.give
             }
         }
-    }
+        .sortedByDescending {
+            if (viewSortType == HistoryDetailSortedType.LATEST) it.day else null
+        }
+        .sortedBy {
+            if (viewSortType == HistoryDetailSortedType.OLDEST) it.day else null
+        }
 
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
@@ -201,11 +191,11 @@ fun HistoryDetailPageScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(heartList) { heart ->
+                items(hearts) { heart ->
                     HistoryDetailItem(
                         relatedHeart = heart,
                         onClick = { heartId ->
-                            //TODO go detail
+                            //TODO navi to get relation
                         }
                     )
                 }
