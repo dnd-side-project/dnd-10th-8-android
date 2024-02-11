@@ -116,6 +116,7 @@ fun CalendarPicker(
                                     dayOfMonth = dayValue
                                 )
                             )
+                            onDismissRequest()
                         }
                 )
             }
