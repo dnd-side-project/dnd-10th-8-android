@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.historyDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.scheduleDestination
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,5 +37,6 @@ fun NavGraphBuilder.homeDestination(
         )
     }
 
+    historyDestination(appState)
     scheduleDestination(appState)
 }

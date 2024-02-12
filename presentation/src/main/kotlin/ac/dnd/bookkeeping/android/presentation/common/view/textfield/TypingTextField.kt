@@ -7,7 +7,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
-import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
+import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
@@ -43,10 +43,12 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -61,11 +63,14 @@ fun TypingTextField(
     isEnabled: Boolean = true,
     isSingleLine: Boolean = true,
     maxTextLength: Int = 100,
+    fieldHeight: Dp = 48.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     backgroundColor: Color = Color.White,
     basicBorderColor: Color = Gray400,
+    cursorColor: Color? = null,
+    hintTextColor: Color = Gray600,
     contentPadding: PaddingValues = PaddingValues(
         vertical = 13.5.dp,
         horizontal = 16.dp
@@ -73,13 +78,13 @@ fun TypingTextField(
     leadingIconContent: (@Composable () -> Unit)? = null,
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
-    onTextFieldFocusChange : (Boolean) -> Unit = {}
+    onTextFieldFocusChange: (Boolean) -> Unit = {}
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
 
     val currentColor =
-        if (isError) Negative else if (isTextFieldFocused) Primary3 else basicBorderColor
+        if (isError) Negative else if (isTextFieldFocused) Primary4 else basicBorderColor
     val currentColorState = animateColorAsState(
         targetValue = currentColor,
         label = "color state"
@@ -111,7 +116,9 @@ fun TypingTextField(
                     }
                 },
                 enabled = isEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(fieldHeight),
                 textStyle = Body1.merge(
                     color = Gray800
                 ),
@@ -119,7 +126,7 @@ fun TypingTextField(
                 minLines = if (isSingleLine) 1 else 3,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
-                cursorBrush = SolidColor(value = currentColorState.value),
+                cursorBrush = SolidColor(value = cursorColor ?: currentColorState.value),
                 interactionSource = interactionSource,
             ) { textField ->
                 TextFieldDefaults.TextFieldDecorationBox(
@@ -132,7 +139,10 @@ fun TypingTextField(
                     placeholder = {
                         Text(
                             text = hintText,
-                            style = Body1.merge(color = Gray600)
+                            style = Body1.merge(
+                                color = hintTextColor,
+                                fontWeight = FontWeight.Normal
+                            )
                         )
                     },
                     leadingIcon = leadingIconContent,

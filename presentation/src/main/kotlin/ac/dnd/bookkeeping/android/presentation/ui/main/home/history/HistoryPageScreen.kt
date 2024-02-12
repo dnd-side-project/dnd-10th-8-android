@@ -3,28 +3,21 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDetail
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray100
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
-import ac.dnd.bookkeeping.android.presentation.common.view.chip.GroupChipListComponent
-import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
-import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistorySortedType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
@@ -39,16 +32,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -61,14 +57,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 
@@ -80,8 +74,12 @@ fun HistoryPageScreen(
     event: EventFlow<HistoryEvent>,
     intent: (HistoryIntent) -> Unit,
     handler: CoroutineExceptionHandler,
-    viewType: HistoryViewType
+    viewType: HistoryViewType,
+    searchText: String
 ) {
+    var selectedGroupId by remember { mutableLongStateOf(-1) }
+    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+    var viewSortType by remember { mutableStateOf(HistorySortedType.LATEST) }
     val groups = model.groups.map { group ->
         GroupWithRelationDetail(
             id = group.id,
@@ -92,186 +90,92 @@ fun HistoryPageScreen(
                     HistoryViewType.GIVE -> relation.giveMoney > 0
                     HistoryViewType.TAKE -> relation.takeMoney > 0
                 }
-                true
             }
         )
     }.filter { group ->
         group.relationList.isNotEmpty()
     }
-
-    var searchText by remember { mutableStateOf("") }
-    var selectedGroupId by remember {
-        mutableLongStateOf(
-            groups.firstOrNull()?.id ?: 0
-        )
-    }
-    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-    var viewSortType by remember { mutableStateOf(HistorySortedType.LATEST) }
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = Gray000,
-                    shape = RoundedCornerShape(
-                        bottomStart = Space12,
-                        bottomEnd = Space12
-                    )
-                )
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 28.dp,
-                    bottom = 18.dp
-                )
-        ) {
-            Text(
-                text = buildAnnotatedString {
-                    append("총 ")
-                    withStyle(
-                        SpanStyle(color = Primary4)
-                    ) {
-                        append("${model.info.totalHeartCount}번")
+    val relations = groups.find { it.id == selectedGroupId }
+        ?.relationList
+        ?: groups.flatMap { it.relationList }
+            .sortedByDescending {
+                if (viewSortType == HistorySortedType.LATEST) it.id else null
+            }
+            .sortedBy {
+                if (viewSortType == HistorySortedType.INTIMACY) {
+                    when (viewType) {
+                        HistoryViewType.TOTAL -> it.giveMoney + it.takeMoney
+                        HistoryViewType.GIVE -> it.giveMoney
+                        HistoryViewType.TAKE -> it.takeMoney
                     }
-                    append("의 마음을\n주고 받았어요 ")
-                },
-                style = Headline2.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            TypingTextField(
-                textType = TypingTextFieldType.Basic,
-                text = searchText,
-                onValueChange = {
-                    searchText = it
-                },
-                modifier = Modifier.height(39.dp),
-                contentPadding = PaddingValues(
-                    start = if (searchText.isEmpty()) 0.dp else 12.dp,
-                    end = 20.dp,
-                ),
-                basicBorderColor = Gray100,
-                backgroundColor = Gray100,
-                hintText = "이름을 입력하세요.",
-                leadingIconContent = if (searchText.isEmpty()) {
-                    {
-                        Image(
-                            painter = painterResource(R.drawable.ic_search),
-                            contentDescription = null,
-                            modifier = Modifier.size(Space16)
-                        )
-                    }
-                } else null,
-                trailingIconContent = if (searchText.isNotEmpty()) {
-                    {
-                        Image(
-                            painter = painterResource(R.drawable.ic_close_circle),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(Space20)
-                                .clickable {
-                                    searchText = ""
-                                }
-                        )
-                    }
-                } else null
-            )
-            if (model.info.unWrittenCount > 0) {
-                Box(
-                    modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            color = Gray300,
-                            shape = Shapes.medium,
-                        )
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = Space20,
-                            vertical = Space16
-                        )
-
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_close_circle),
-                        contentDescription = null,
-                        modifier = Modifier.align(Alignment.TopEnd)
-                    )
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        //TODO into icon
-                        Box(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .background(color = Gray200)
-                                .size(40.dp)
-                        )
-                        Spacer(modifier = Modifier.width(Space8))
-                        Column {
-                            Text(
-                                text = buildAnnotatedString {
-                                    append("지난 일정 ")
-                                    withStyle(
-                                        SpanStyle(color = Gray800)
-                                    ) {
-                                        append("${model.info.unWrittenCount}개")
-                                    }
-                                },
-                                style = Body1.merge(
-                                    color = Gray700,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "한번에 기록하기",
-                                    style = Body2.merge(
-                                        color = Gray600,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                )
-                                Image(
-                                    painter = painterResource(R.drawable.ic_chevron_right),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .width(16.dp)
-                                        .height(18.dp)
-                                )
-                            }
-                        }
-                    }
+                } else {
+                    null
                 }
             }
-        }
-        Spacer(modifier = Modifier.height(2.dp))
+            .filter {
+                if (searchText.isNotEmpty()) {
+                    it.name.contains(searchText)
+                } else {
+                    true
+                }
+            }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Gray150)
+    ) {
+        Spacer(modifier = Modifier.height(6.dp))
         Box(
-            modifier = Modifier.padding(
-                vertical = 16.dp,
-                horizontal = 20.dp
-            )
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(
+                    bottom = 2.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                ),
+            contentAlignment = Alignment.CenterStart
         ) {
             GroupChipListComponent(
                 chipType = ChipType.MAIN,
                 currentSelectedId = selectedGroupId,
                 groups = groups,
-                onSelectChip = { group ->
-                    selectedGroupId = group.id
+                onSelectChip = { groupId ->
+                    selectedGroupId = groupId
                 }
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .width(56.dp)
+                    .fillMaxHeight()
+                    .background(
+                        Brush.horizontalGradient(
+                            listOf(
+                                Color(0x00F6F6F7),
+                                Color(0xFFF6F6F7),
+                            )
+                        )
+                    )
             )
         }
         Box(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd
+                .fillMaxWidth()
         ) {
+            Text(
+                text = "내역 ${relations.size}",
+                style = Body1.merge(
+                    color = Gray600,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                modifier = Modifier.align(Alignment.CenterStart)
+            )
             Row(
                 modifier = Modifier
-                    .padding(
-                        horizontal = 6.dp,
-                        vertical = 3.5.dp
-                    )
+                    .align(Alignment.CenterEnd)
                     .clickable {
                         isDropDownMenuExpanded = true
                     },
@@ -281,7 +185,7 @@ fun HistoryPageScreen(
                     text = viewSortType.typeName,
                     style = Body1.merge(
                         color = Gray700,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Medium
                     )
                 )
                 Spacer(modifier = Modifier.width(2.dp))
@@ -357,42 +261,121 @@ fun HistoryPageScreen(
             }
         }
 
-        groups.find { it.id == selectedGroupId }?.let {
+        if (relations.isEmpty()) {
+            EmptyRelationView()
+        } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(Space16),
                 verticalArrangement = Arrangement.spacedBy(Space16),
                 contentPadding = PaddingValues(
                     horizontal = 20.dp,
-                    vertical = 16.dp
+                    vertical = 12.dp
                 )
             ) {
-                items(it.relationList.size) { index ->
+                items(relations) { relation ->
                     HistoryRelationItem(
-                        it.relationList[index],
+                        viewType = viewType,
+                        relation = relation,
                         onSelectCard = {
-
-                        }
+                            //TODO go detail history
+                        },
                     )
                 }
             }
-        } ?: EmptyRelationView()
+        }
+    }
+}
+
+@Composable
+private fun GroupChipListComponent(
+    chipType: ChipType = ChipType.LESS_BORDER,
+    currentSelectedId: Long,
+    onSelectChip: (Long) -> Unit,
+    groups: List<GroupWithRelationDetail>
+) {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        item(1) {
+            ChipItem(
+                chipType = chipType,
+                currentSelectedId = setOf(currentSelectedId),
+                chipId = -1,
+                chipText = "전체",
+                chipCount = groups.size,
+                onSelectChip = {
+                    onSelectChip(-1)
+                }
+            )
+        }
+        items(groups) { group ->
+            ChipItem(
+                chipType = chipType,
+                currentSelectedId = setOf(currentSelectedId),
+                chipId = group.id,
+                chipText = group.name,
+                chipCount = group.relationList.size,
+                onSelectChip = {
+                    onSelectChip(group.id)
+                }
+            )
+        }
     }
 }
 
 @Composable
 private fun EmptyRelationView() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.weight(107.66f))
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Spacer(modifier = Modifier.weight(60f))
         Text(
-            text = "아직 경조사비 내역이 입력되지 않았어요.",
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
+            text = "아직 주고 받은 내역이 없어요.",
             style = Body1.merge(
                 color = Gray600,
                 fontWeight = FontWeight.SemiBold
             )
         )
-        Spacer(modifier = Modifier.weight(188.34f))
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = "관계를 등록하고 마음을 기록해 보세요",
+            style = Body1.merge(
+                color = Gray500,
+                fontWeight = FontWeight.Medium
+            )
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Box(
+            modifier = Modifier
+                .clip(Shapes.medium)
+                .background(color = Gray000)
+                .border(
+                    width = 1.dp,
+                    color = Gray400,
+                    shape = Shapes.medium
+                )
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 6.5.dp
+                )
+        ) {
+            Text(
+                text = "관계 등록하기",
+                style = Body1.merge(
+                    color = Gray500,
+                    fontWeight = FontWeight.SemiBold
+                )
+            )
+        }
+        Spacer(modifier = Modifier.weight(32f))
+    }
+}
+
+@Composable
+@Preview
+private fun EmptyRelationViewPreview() {
+    Box(modifier = Modifier.height(198.dp)) {
+        EmptyRelationView()
     }
 }

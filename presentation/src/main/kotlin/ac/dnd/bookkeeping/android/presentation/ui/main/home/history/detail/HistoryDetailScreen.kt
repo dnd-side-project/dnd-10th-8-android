@@ -3,14 +3,10 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail
 import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
-import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -21,23 +17,17 @@ import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewSwipingType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.common.HistoryBackgroundComponent
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,18 +43,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Velocity
@@ -92,9 +78,8 @@ fun HistoryDetailScreen(
 ) {
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
-    val currentScreenHeightRatio = LocalConfiguration.current.screenHeightDp.dp / 730.dp
-    val contentHeight = 430.dp * currentScreenHeightRatio
-    val backgroundHeight = 504.dp * currentScreenHeightRatio
+    val backgroundHeight = 430.dp
+    val contentHeight = 480.dp
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -165,114 +150,18 @@ fun HistoryDetailScreen(
                 )
                 .nestedScroll(nestedScrollConnection)
         ) {
-            HistoryBackgroundComponent(
+            HistoryDetailBackgroundComponent(
                 currentGrowthType = currentGrowthType,
-                currentScreenHeightRatio = currentScreenHeightRatio,
-                backgroundHeight = backgroundHeight,
-                isInformationShowing = true,
-                onClickInformation = {
-                    // TODO navi to growth
+                model = model,
+                contentHeight = contentHeight,
+                onClickRelationInfo = {
+                    //TODO open bottom history information
                 },
-                innerContent = {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(
-                                horizontal = 20.dp,
-                                vertical = 16.dp
-                            )
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_chevron_left),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(Gray000),
-                            modifier = Modifier.clickable {
-                                // TODO navi to back
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0x33FFFFFF),
-                                    shape = RoundedCornerShape(100.dp)
-                                )
-                                .padding(
-                                    horizontal = 10.dp,
-                                    vertical = 4.dp
-                                )
-                        ) {
-                            Text(
-                                text = "LV${currentGrowthType.level}. ${currentGrowthType.typeName}",
-                                style = Body2.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = model.relationDetail.name,
-                                style = Headline0.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(3.dp))
-                            Text(
-                                text = "・",
-                                style = Headline0.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(3.dp))
-                            Text(
-                                text = model.relationDetail.group.name,
-                                style = Headline0.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(18.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "받은 마음",
-                                style = Body1.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(14.dp))
-                            Text(
-                                text = "${model.relationDetail.takeMoney}원",
-                                style = Headline3.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "보낸 마음",
-                                style = Body1.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(14.dp))
-                            Text(
-                                text = "-${model.relationDetail.giveMoney}원",
-                                style = Headline3.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                        }
-                    }
+                onClickGrowthInfo = {
+                    //TODO navi to growth info
+                },
+                onClickBack = {
+                    //TODO navi to back
                 }
             )
             MotionLayout(
@@ -282,7 +171,7 @@ fun HistoryDetailScreen(
                     val body = createRefFor("body")
                     constrain(header) {
                         this.width = Dimension.matchParent
-                        this.height = Dimension.value(contentHeight)
+                        this.height = Dimension.value(backgroundHeight)
                     }
                     constrain(body) {
                         this.width = Dimension.matchParent
@@ -312,7 +201,7 @@ fun HistoryDetailScreen(
                         .background(Color.Transparent)
                         .layoutId("header")
                         .fillMaxWidth()
-                        .height(contentHeight)
+                        .height(backgroundHeight)
                 )
 
                 Column(
