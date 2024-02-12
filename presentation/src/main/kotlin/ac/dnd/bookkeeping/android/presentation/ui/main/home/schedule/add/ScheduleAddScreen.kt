@@ -2,6 +2,9 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -22,6 +25,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Mutab
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarPicker
+import ac.dnd.bookkeeping.android.presentation.common.view.calendar.TimePicker
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSelectComponent
@@ -121,10 +125,16 @@ fun ScheduleAddScreen(
     var isRepeatPickerShowing: Boolean by remember { mutableStateOf(false) }
     var isRepeatFinishDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isSuccessShowing: Boolean by remember { mutableStateOf(false) }
+    var isAddSuccessShowing: Boolean by remember { mutableStateOf(false) }
+    var isEditSuccessShowing: Boolean by remember { mutableStateOf(false) }
+    var isRemoveSuccessShowing: Boolean by remember { mutableStateOf(false) }
 
     val isConfirmEnabled: Boolean =
         relation != null && eventName.isNotBlank() && model.state != ScheduleAddState.Loading
+
+    fun onRemove() {
+        intent(ScheduleAddIntent.OnRemove)
+    }
 
     fun onConfirm() {
         if (!isConfirmEnabled) return
@@ -199,10 +209,16 @@ fun ScheduleAddScreen(
     }
 
     if (isTimePickerShowing) {
-        // TODO
+        TimePicker(
+            localTime = time ?: LocalTime(0, 0),
+            onDismissRequest = { isTimePickerShowing = false },
+            onConfirm = {
+                time = it
+            }
+        )
     }
 
-    if (isSuccessShowing) {
+    if (isAddSuccessShowing) {
         DialogScreen(
             title = "일정 추가하기",
             message = "일정을 추가하였습니다.",
@@ -211,7 +227,35 @@ fun ScheduleAddScreen(
                 appState.navController.navigateUp()
             },
             onDismissRequest = {
-                isSuccessShowing = false
+                isAddSuccessShowing = false
+            }
+        )
+    }
+
+    if (isEditSuccessShowing) {
+        DialogScreen(
+            title = "일정 수정하기",
+            message = "일정을 수정하였습니다.",
+            isCancelable = false,
+            onConfirm = {
+                appState.navController.navigateUp()
+            },
+            onDismissRequest = {
+                isEditSuccessShowing = false
+            }
+        )
+    }
+
+    if (isRemoveSuccessShowing) {
+        DialogScreen(
+            title = "일정 수정하기",
+            message = "일정을 제거하였습니다.",
+            isCancelable = false,
+            onConfirm = {
+                appState.navController.navigateUp()
+            },
+            onDismissRequest = {
+                isRemoveSuccessShowing = false
             }
         )
     }
@@ -292,7 +336,7 @@ fun ScheduleAddScreen(
                 )
             }
             Text(
-                text = "일정 추가하기",
+                text = if (model.schedule == null) "일정 추가하기" else "일정 수정하기",
                 style = Headline1
             )
         }
@@ -671,30 +715,68 @@ fun ScheduleAddScreen(
             )
         }
         Spacer(modifier = Modifier.height(46.dp))
-        ConfirmButton(
-            properties = ConfirmButtonProperties(
-                size = ConfirmButtonSize.Large,
-                type = ConfirmButtonType.Primary
-            ),
-            isEnabled = isConfirmEnabled,
+        Row(
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 12.dp)
-                .fillMaxWidth(),
-            onClick = {
-                onConfirm()
+                .fillMaxWidth()
+        ) {
+            if (model.schedule != null) {
+                ConfirmButton(
+                    properties = ConfirmButtonProperties(
+                        size = ConfirmButtonSize.Large,
+                        type = ConfirmButtonType.Secondary
+                    ),
+                    isEnabled = isConfirmEnabled,
+                    onClick = {
+                        onRemove()
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(Icon24),
+                        painter = painterResource(id = R.drawable.ic_trash),
+                        contentDescription = null
+                    )
+                }
             }
-        ) { style ->
-            Text(
-                text = "저장하기",
-                style = style
-            )
+            ConfirmButton(
+                properties = ConfirmButtonProperties(
+                    size = ConfirmButtonSize.Large,
+                    type = ConfirmButtonType.Primary
+                ),
+                modifier = Modifier.weight(1f),
+                isEnabled = isConfirmEnabled,
+                onClick = {
+                    onConfirm()
+                }
+            ) { style ->
+                Text(
+                    text = "저장하기",
+                    style = style
+                )
+            }
         }
     }
 
     fun addSchedule(event: ScheduleAddEvent.AddSchedule) {
         when (event) {
-            is ScheduleAddEvent.AddSchedule.Success -> {
-                isSuccessShowing = true
+            ScheduleAddEvent.AddSchedule.Success -> {
+                isAddSuccessShowing = true
+            }
+        }
+    }
+
+    fun editSchedule(event: ScheduleAddEvent.EditSchedule) {
+        when (event) {
+            ScheduleAddEvent.EditSchedule.Success -> {
+                isEditSuccessShowing = true
+            }
+        }
+    }
+
+    fun removeSchedule(event: ScheduleAddEvent.RemoveSchedule) {
+        when (event) {
+            ScheduleAddEvent.RemoveSchedule.Success -> {
+                isRemoveSuccessShowing = true
             }
         }
     }
@@ -705,6 +787,14 @@ fun ScheduleAddScreen(
                 is ScheduleAddEvent.AddSchedule -> {
                     addSchedule(event)
                 }
+
+                is ScheduleAddEvent.EditSchedule -> {
+                    editSchedule(event)
+                }
+
+                is ScheduleAddEvent.RemoveSchedule -> {
+                    removeSchedule(event)
+                }
             }
         }
     }
@@ -712,11 +802,42 @@ fun ScheduleAddScreen(
 
 @Preview
 @Composable
-fun ScheduleAddScreenPreview() {
+private fun ScheduleAddScreenPreview1() {
     ScheduleAddScreen(
         appState = rememberApplicationState(),
         model = ScheduleAddModel(
-            state = ScheduleAddState.Init
+            state = ScheduleAddState.Init,
+            schedule = null
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
+}
+
+@Preview
+@Composable
+private fun ScheduleAddScreenPreview2() {
+    ScheduleAddScreen(
+        appState = rememberApplicationState(),
+        model = ScheduleAddModel(
+            state = ScheduleAddState.Init,
+            schedule = Schedule(
+                id = 9278,
+                relation = ScheduleRelation(
+                    id = 8408,
+                    name = "장성혁",
+                    group = ScheduleRelationGroup(
+                        id = 7385,
+                        name = "친구"
+                    )
+                ),
+                day = LocalDate(2024, 2, 25),
+                event = "생일",
+                time = LocalTime(9, 0),
+                link = "https://www.google.com/",
+                location = "서울특별시 강남구 역삼동",
+            )
         ),
         event = MutableEventFlow(),
         intent = {},

@@ -19,6 +19,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarPicker
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
@@ -130,8 +131,11 @@ private fun ScheduleScreen(
     }
 
     fun navigateToScheduleEdit(id: Long) {
-        // TODO : schedule edit argument
-        appState.navController.navigate(ScheduleAddConstant.ROUTE)
+        val route = makeRoute(
+            ScheduleAddConstant.ROUTE,
+            listOf(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID to id)
+        )
+        appState.navController.navigate(route)
     }
 
 
