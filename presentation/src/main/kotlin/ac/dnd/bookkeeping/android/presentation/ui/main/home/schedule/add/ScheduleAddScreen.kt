@@ -126,6 +126,7 @@ fun ScheduleAddScreen(
     var isRepeatFinishDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAddSuccessShowing: Boolean by remember { mutableStateOf(false) }
+    var isEditSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isRemoveSuccessShowing: Boolean by remember { mutableStateOf(false) }
 
     val isConfirmEnabled: Boolean =
@@ -227,6 +228,20 @@ fun ScheduleAddScreen(
             },
             onDismissRequest = {
                 isAddSuccessShowing = false
+            }
+        )
+    }
+
+    if (isEditSuccessShowing) {
+        DialogScreen(
+            title = "일정 수정하기",
+            message = "일정을 수정하였습니다.",
+            isCancelable = false,
+            onConfirm = {
+                appState.navController.navigateUp()
+            },
+            onDismissRequest = {
+                isEditSuccessShowing = false
             }
         )
     }
@@ -744,15 +759,23 @@ fun ScheduleAddScreen(
 
     fun addSchedule(event: ScheduleAddEvent.AddSchedule) {
         when (event) {
-            is ScheduleAddEvent.AddSchedule.Success -> {
+            ScheduleAddEvent.AddSchedule.Success -> {
                 isAddSuccessShowing = true
+            }
+        }
+    }
+
+    fun editSchedule(event: ScheduleAddEvent.EditSchedule) {
+        when (event) {
+            ScheduleAddEvent.EditSchedule.Success -> {
+                isEditSuccessShowing = true
             }
         }
     }
 
     fun removeSchedule(event: ScheduleAddEvent.RemoveSchedule) {
         when (event) {
-            is ScheduleAddEvent.RemoveSchedule.Success -> {
+            ScheduleAddEvent.RemoveSchedule.Success -> {
                 isRemoveSuccessShowing = true
             }
         }
@@ -763,6 +786,10 @@ fun ScheduleAddScreen(
             when (event) {
                 is ScheduleAddEvent.AddSchedule -> {
                     addSchedule(event)
+                }
+
+                is ScheduleAddEvent.EditSchedule -> {
+                    editSchedule(event)
                 }
 
                 is ScheduleAddEvent.RemoveSchedule -> {

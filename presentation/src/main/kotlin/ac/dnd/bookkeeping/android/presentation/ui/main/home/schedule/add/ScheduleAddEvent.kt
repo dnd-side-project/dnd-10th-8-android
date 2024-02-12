@@ -5,6 +5,10 @@ sealed interface ScheduleAddEvent {
         data object Success : AddSchedule
     }
 
+    sealed interface EditSchedule : ScheduleAddEvent {
+        data object Success : EditSchedule
+    }
+
     sealed interface RemoveSchedule : ScheduleAddEvent {
         data object Success : RemoveSchedule
     }

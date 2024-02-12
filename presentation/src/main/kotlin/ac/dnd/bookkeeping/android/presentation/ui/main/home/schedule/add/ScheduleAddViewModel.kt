@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.AddScheduleUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.DeleteScheduleUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.EditScheduleUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class ScheduleAddViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val addScheduleUseCase: AddScheduleUseCase,
+    private val editScheduleUseCase: EditScheduleUseCase,
 //    private val getScheduleUseCase: GetScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase
 ) : BaseViewModel() {
@@ -125,29 +127,60 @@ class ScheduleAddViewModel @Inject constructor(
                     LocalTime(9, 0)
                 )
             }
-            addScheduleUseCase(
-                relationId = relationId,
-                day = day,
-                event = event,
-                repeatType = repeatType,
-                repeatFinish = repeatFinish,
-                alarm = alarmDateTime,
-                time = time,
-                link = link,
-                location = location,
-                memo = memo
-            ).onSuccess {
-                _state.value = ScheduleAddState.Init
-                _event.emit(ScheduleAddEvent.AddSchedule.Success)
-            }.onFailure { exception ->
-                _state.value = ScheduleAddState.Init
-                when (exception) {
-                    is ServerException -> {
-                        _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
-                    }
 
-                    else -> {
-                        _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+            if (scheduleId == -1L) {
+                editScheduleUseCase(
+                    id = scheduleId,
+                    relationId = relationId,
+                    day = day,
+                    event = event,
+                    repeatType = repeatType,
+                    repeatFinish = repeatFinish,
+                    alarm = alarmDateTime,
+                    time = time,
+                    link = link,
+                    location = location,
+                    memo = memo
+                ).onSuccess {
+                    _state.value = ScheduleAddState.Init
+                    _event.emit(ScheduleAddEvent.EditSchedule.Success)
+                }.onFailure { exception ->
+                    _state.value = ScheduleAddState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
+            } else {
+                addScheduleUseCase(
+                    relationId = relationId,
+                    day = day,
+                    event = event,
+                    repeatType = repeatType,
+                    repeatFinish = repeatFinish,
+                    alarm = alarmDateTime,
+                    time = time,
+                    link = link,
+                    location = location,
+                    memo = memo
+                ).onSuccess {
+                    _state.value = ScheduleAddState.Init
+                    _event.emit(ScheduleAddEvent.AddSchedule.Success)
+                }.onFailure { exception ->
+                    _state.value = ScheduleAddState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
                     }
                 }
             }
