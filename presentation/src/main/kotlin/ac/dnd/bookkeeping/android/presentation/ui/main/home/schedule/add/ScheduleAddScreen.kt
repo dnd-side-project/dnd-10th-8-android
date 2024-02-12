@@ -236,9 +236,9 @@ fun ScheduleAddScreen(
     val formattedTime = Unit.let {
         time?.let {
             val fixedHour = if (it.hour == 0) 24 else it.hour
-            val timeHour = (fixedHour + 1) % 12 - 1
+            val timeHour = (fixedHour - 1) % 12 + 1
             val timeMinute = it.minute
-            val timeAmPm = if (fixedHour < 13) "오전" else "오후"
+            val timeAmPm = if (fixedHour < 12) "오전" else "오후"
             "$timeAmPm $timeHour:$timeMinute"
         } ?: "시간 없음"
     }
@@ -281,7 +281,7 @@ fun ScheduleAddScreen(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
                     onClick = {
-
+                        appState.navController.navigateUp()
                     }
                 )
             ) {
