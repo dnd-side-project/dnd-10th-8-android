@@ -9,6 +9,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
+import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space12
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
@@ -32,12 +33,12 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingPriceField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
-import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryRegistrationType
+import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
+import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -72,7 +73,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -80,6 +80,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -93,6 +94,7 @@ fun HistoryRegistrationScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+    var isContinuousState by remember { mutableStateOf(false) }
     var historyTypeState by remember { mutableStateOf(HistoryRegistrationType.TAKE) }
     var priceText by remember { mutableStateOf("") }
     var userNameText by remember { mutableStateOf("이름 선택") }
@@ -107,9 +109,19 @@ fun HistoryRegistrationScreen(
 
     var isCalendarShowingState by remember { mutableStateOf(false) }
     var isAddNameShowingState by remember { mutableStateOf(false) }
+    val isRegistrable = checkRegistrable(
+        relationId = relationId,
+        money = priceText.toLongOrNull() ?: 0L,
+        day = listOf(
+            selectedYear,
+            selectedMonth,
+            selectedDay
+        ),
+        event = eventTypeText
+    ) && model.state == HistoryRegistrationState.Init
     val typePositionState = animateDpAsState(
         targetValue = if (historyTypeState == HistoryRegistrationType.TAKE) 0.dp else 106.dp,
-        label = "type background color "
+        label = "type background position "
     )
 
     @Composable
@@ -118,13 +130,49 @@ fun HistoryRegistrationScreen(
         label = "type text color"
     )
 
-    fun navigateToHistory() {
+    fun navigateToStep() {
+        if (isContinuousState) {
+            focusManager.clearFocus()
+            historyTypeState = HistoryRegistrationType.TAKE
+            priceText = ""
+            userNameText = "이름 선택"
+            relationId = -1
+            selectedYear = calendarConfig.getCalendarYear()
+            selectedMonth = calendarConfig.getCalendarMonth()
+            selectedDay = calendarConfig.getCalendarDay()
+            eventTypeText = ""
+            selectedEventId = -1
+            memoText = ""
+            tagIdList.clear()
+        } else {
+            appState.navController.popBackStack()
+        }
+    }
 
+    fun register(continuousState: Boolean) {
+        isContinuousState = continuousState
+        intent(
+            HistoryRegistrationIntent.OnClickSubmit(
+                relationId = relationId,
+                money = priceText.toLongOrNull() ?: 0L,
+                give = HistoryRegistrationType.getHistoryRegistration(
+                    historyTypeState
+                ),
+                day = LocalDate(
+                    selectedYear,
+                    selectedMonth,
+                    selectedDay
+                ),
+                event = eventTypeText,
+                memo = memoText,
+                tags = HistoryTagType.getTagNameList(tagIdList)
+            )
+        )
     }
 
     fun submit(event: HistoryRegistrationEvent.Submit) {
         when (event) {
-            is HistoryRegistrationEvent.Submit.Success -> navigateToHistory()
+            is HistoryRegistrationEvent.Submit.Success -> navigateToStep()
         }
     }
 
@@ -147,7 +195,10 @@ fun HistoryRegistrationScreen(
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_chevron_left),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    appState.navController.popBackStack()
+                }
             )
             Spacer(modifier = Modifier.width(Space4))
             Text(
@@ -227,10 +278,7 @@ fun HistoryRegistrationScreen(
                     onValueChange = {
                         priceText = it
                     },
-                    hintText = when (historyTypeState) {
-                        HistoryRegistrationType.GIVE -> "지출하신 금액을 입력해주세요"
-                        HistoryRegistrationType.TAKE -> "받은 금액을 입력해주세요"
-                    }
+                    hintText = "금액을 입력해주세요"
                 )
                 Spacer(modifier = Modifier.height(Space24))
 
@@ -257,6 +305,7 @@ fun HistoryRegistrationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 FieldSubject("경사 종류")
+                Spacer(modifier = Modifier.height(6.dp))
                 TypingTextField(
                     textType = TypingTextFieldType.Basic,
                     text = eventTypeText,
@@ -267,7 +316,7 @@ fun HistoryRegistrationScreen(
                     modifier = Modifier.fillMaxWidth(),
                     hintText = "직접 입력",
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 HistoryEventType.entries.chunked(5).forEach { registrationEventTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationEventTypes.forEach { type ->
@@ -293,9 +342,7 @@ fun HistoryRegistrationScreen(
                     subject = "메모",
                     isViewIcon = false
                 )
-                Box(modifier = Modifier.clickable {
-                    focusManager.moveFocus(FocusDirection.Down)
-                })
+                Spacer(modifier = Modifier.height(6.dp))
                 TypingTextField(
                     textType = TypingTextFieldType.LongSentence,
                     text = memoText,
@@ -308,6 +355,7 @@ fun HistoryRegistrationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 FieldSubject("태그")
+                Spacer(modifier = Modifier.height(6.dp))
                 HistoryTagType.entries.chunked(5).forEach { registrationTagTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationTagTypes.forEach { type ->
@@ -328,7 +376,7 @@ fun HistoryRegistrationScreen(
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                 }
-                Spacer(modifier = Modifier.height(104.dp))
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
         Row(
@@ -347,6 +395,10 @@ fun HistoryRegistrationScreen(
                     size = ConfirmButtonSize.Xlarge,
                     type = ConfirmButtonType.Secondary
                 ),
+                isEnabled = isRegistrable,
+                onClick = {
+                    register(continuousState = true)
+                },
                 content = {
                     Text(
                         text = "연속저장",
@@ -363,39 +415,10 @@ fun HistoryRegistrationScreen(
                     size = ConfirmButtonSize.Xlarge,
                     type = ConfirmButtonType.Primary
                 ),
+                isEnabled = isRegistrable,
+                enableBackgroundColor = Primary4,
                 onClick = {
-                    if (
-                        checkRegistrable(
-                            relationId = relationId,
-                            money = priceText.toLongOrNull() ?: 0L,
-                            day = listOf(
-                                selectedYear,
-                                selectedMonth,
-                                selectedDay
-                            ).joinToString("-"),
-                            event = eventTypeText
-                        )
-                    ) {
-                        intent(
-                            HistoryRegistrationIntent.OnClickSubmit(
-                                relationId = relationId,
-                                money = priceText.toLongOrNull() ?: 0L,
-                                give = HistoryRegistrationType.getHistoryRegistration(
-                                    historyTypeState
-                                ),
-                                day = listOf(
-                                    selectedYear,
-                                    selectedMonth,
-                                    selectedDay
-                                ).joinToString("-"),
-                                event = eventTypeText,
-                                memo = if (memoText.isEmpty()) null else memoText,
-                                tags = if (tagIdList.isEmpty()) null else HistoryTagType.getTagNameList(
-                                    tagIdList
-                                )
-                            )
-                        )
-                    }
+                    register(continuousState = false)
                 },
                 content = {
                     Text(
@@ -454,10 +477,10 @@ fun HistoryRegistrationScreen(
 private fun checkRegistrable(
     relationId: Long,
     money: Long,
-    day: String,
+    day: List<Int>,
     event: String
 ): Boolean {
-    return relationId != -1L && money != 0L && day.isNotEmpty() && event.isNotEmpty()
+    return relationId != -1L && money != 0L && event.isNotEmpty() && day.all { it > 0 }
 }
 
 @Preview(
