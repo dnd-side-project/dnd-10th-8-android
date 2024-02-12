@@ -263,8 +263,8 @@ private fun ScheduleScreen(
         }
         FloatingActionButton(
             modifier = Modifier
-                .size(52.dp)
                 .padding(bottom = 24.dp, end = 20.dp)
+                .size(52.dp)
                 .align(Alignment.BottomEnd),
             backgroundColor = Gray800,
             onClick = {
