@@ -4,23 +4,27 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
-data class UnrecordedSchedule(
+data class Alarm(
     val id: Long,
-    val relation: UnrecordedScheduleRelation,
+    val relation: AlarmRelation,
     val day: LocalDate,
     val event: String,
+    val repeatType: AlarmRepeatType?,
+    val repeatFinish: LocalDate?,
+    val alarm: LocalDateTime,
     val time: LocalTime?,
     val link: String,
-    val location: String
+    val location: String,
+    val memo: String
 )
 
-data class UnrecordedScheduleRelation(
+data class AlarmRelation(
     val id: Long,
     val name: String,
-    val group: UnrecordedScheduleRelationGroup
+    val group: AlarmRelationGroup
 )
 
-data class UnrecordedScheduleRelationGroup(
+data class AlarmRelationGroup(
     val id: Long,
     val name: String
 )

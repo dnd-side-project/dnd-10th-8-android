@@ -4,9 +4,9 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
-data class UnrecordedSchedule(
+data class Schedule(
     val id: Long,
-    val relation: UnrecordedScheduleRelation,
+    val relation: ScheduleRelation,
     val day: LocalDate,
     val event: String,
     val time: LocalTime?,
@@ -14,13 +14,13 @@ data class UnrecordedSchedule(
     val location: String
 )
 
-data class UnrecordedScheduleRelation(
+data class ScheduleRelation(
     val id: Long,
     val name: String,
-    val group: UnrecordedScheduleRelationGroup
+    val group: ScheduleRelationGroup
 )
 
-data class UnrecordedScheduleRelationGroup(
+data class ScheduleRelationGroup(
     val id: Long,
     val name: String
 )

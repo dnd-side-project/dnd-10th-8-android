@@ -1,8 +1,15 @@
 package ac.dnd.bookkeeping.android.data.repository.feature.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Alarm
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRelationGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
@@ -62,14 +69,72 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                     id = 2655,
                     relation = UnrecordedScheduleRelation(
                         id = 9178,
-                        name = "Alphonse Berg"
+                        name = "Alphonse Berg",
+                        group = UnrecordedScheduleRelationGroup(
+                            id = 1,
+                            name = "Dolores"
+                        )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "velit",
-                    alarm = LocalDateTime(2024, 2, 25, 8, 0),
                     time = LocalTime(8, 0),
                     link = "maximus",
                     location = "noster"
+                )
+            )
+        )
+    }
+
+    override suspend fun getScheduleList(
+        year: Int,
+        month: Int
+    ): Result<List<Schedule>> {
+        randomShortDelay()
+        return Result.success(
+            listOf(
+                Schedule(
+                    id = 2378,
+                    relation = ScheduleRelation(
+                        id = 4601,
+                        name = "Sheryl Barrett",
+                        group = ScheduleRelationGroup(
+                            id = 5690,
+                            name = "Leslie Petty"
+                        )
+                    ),
+                    day = LocalDate(2024, 2, 25),
+                    event = "praesent",
+                    time = null,
+                    link = "blandit",
+                    location = "ei"
+                )
+            )
+        )
+    }
+
+    override suspend fun getAlarmList(): Result<List<Alarm>> {
+        randomShortDelay()
+        return Result.success(
+            listOf(
+                Alarm(
+                    id = 9839,
+                    relation = AlarmRelation(
+                        id = 8121,
+                        name = "Seth Sears",
+                        group = AlarmRelationGroup(
+                            id = 9854,
+                            name = "Pete Lambert"
+                        )
+                    ),
+                    day = LocalDate(2024, 2, 25),
+                    event = "doctus",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 9, 0),
+                    time = null,
+                    link = "urna",
+                    location = "quas",
+                    memo = "error"
                 )
             )
         )

@@ -3,10 +3,10 @@ package ac.dnd.bookkeeping.android.data.repository.feature.schedule
 import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.data.remote.network.api.ScheduleApi
 import ac.dnd.bookkeeping.android.data.remote.network.util.toDomain
-import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Alarm
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
-import ac.dnd.bookkeeping.android.domain.repository.GroupRepository
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -85,5 +85,19 @@ class RealScheduleRepository @Inject constructor(
         return scheduleApi.getUnrecordedScheduleList(
             name = name
         ).toDomain()
+    }
+
+    override suspend fun getScheduleList(
+        year: Int,
+        month: Int
+    ): Result<List<Schedule>> {
+        return scheduleApi.getScheduleList(
+            year = year,
+            month = month
+        ).toDomain()
+    }
+
+    override suspend fun getAlarmList(): Result<List<Alarm>> {
+        return scheduleApi.getAlarmList().toDomain()
     }
 }

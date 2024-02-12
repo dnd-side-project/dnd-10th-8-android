@@ -1,6 +1,8 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Alarm
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -42,4 +44,11 @@ interface ScheduleRepository {
     suspend fun getUnrecordedScheduleList(
         name: String
     ): Result<List<UnrecordedSchedule>>
+
+    suspend fun getScheduleList(
+        year: Int,
+        month: Int
+    ): Result<List<Schedule>>
+
+    suspend fun getAlarmList(): Result<List<Alarm>>
 }
