@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history
 
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
@@ -315,14 +316,14 @@ private fun HistoryBackgroundComponent2Preview() {
                     0,
                     UnrecordedScheduleRelation(
                         0,
-                        "친구",
+                        "김진우",
+                        UnrecordedScheduleRelationGroup(
+                            0,
+                            "친척"
+                        )
                     ),
                     day = LocalDate(2024, 1, 1),
                     event = "결혼",
-                    alarm = LocalDateTime(
-                        LocalDate(2024, 2, 2),
-                        LocalTime(12, 12)
-                    ),
                     time = LocalTime(12, 12),
                     link = "",
                     location = ""
@@ -331,14 +332,14 @@ private fun HistoryBackgroundComponent2Preview() {
                     1,
                     UnrecordedScheduleRelation(
                         0,
-                        "가족",
+                        "김진우",
+                        UnrecordedScheduleRelationGroup(
+                            0,
+                            "가족"
+                        )
                     ),
                     day = LocalDate(2024, 2, 2),
                     event = "돌잔치",
-                    alarm = LocalDateTime(
-                        LocalDate(2024, 2, 2),
-                        LocalTime(12, 12)
-                    ),
                     time = LocalTime(12, 12),
                     link = "",
                     location = ""

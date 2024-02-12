@@ -5,6 +5,7 @@ import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
@@ -539,14 +540,14 @@ private fun HistoryScreenPreview() {
                     1,
                     UnrecordedScheduleRelation(
                         0,
-                        "가족",
+                        "김진우",
+                        UnrecordedScheduleRelationGroup(
+                            0,
+                            "가족"
+                        )
                     ),
                     day = LocalDate(2024, 2, 2),
                     event = "돌잔치",
-                    alarm = LocalDateTime(
-                        LocalDate(2024, 2, 2),
-                        LocalTime(12, 12)
-                    ),
                     time = LocalTime(12, 12),
                     link = "",
                     location = ""
