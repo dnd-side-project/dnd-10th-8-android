@@ -18,4 +18,6 @@ sealed interface ScheduleAddIntent {
         val location: String,
         val memo: String
     ) : ScheduleAddIntent
+
+    data object OnRemove : ScheduleAddIntent
 }
