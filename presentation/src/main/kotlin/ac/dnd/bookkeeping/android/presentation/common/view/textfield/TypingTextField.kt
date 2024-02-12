@@ -62,6 +62,7 @@ fun TypingTextField(
     isSingleLine: Boolean = true,
     maxTextLength: Int = 100,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     backgroundColor: Color = Color.White,
     basicBorderColor: Color = Gray400,
@@ -117,6 +118,7 @@ fun TypingTextField(
                 singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
                 minLines = if (isSingleLine) 1 else 3,
                 keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
                 cursorBrush = SolidColor(value = currentColorState.value),
                 interactionSource = interactionSource,
             ) { textField ->

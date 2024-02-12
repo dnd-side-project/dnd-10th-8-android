@@ -17,11 +17,11 @@ data class AddScheduleReq(
     @SerialName("repeatType")
     val repeatType: String,
     @SerialName("repeatFinish")
-    val repeatFinish: LocalDate,
+    val repeatFinish: LocalDate?,
     @SerialName("alarm")
-    val alarm: LocalDateTime,
+    val alarm: LocalDateTime?,
     @SerialName("time")
-    val time: LocalTime,
+    val time: LocalTime?,
     @SerialName("link")
     val link: String,
     @SerialName("location")

@@ -1,6 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
-import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
@@ -8,6 +8,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Icon24
@@ -19,6 +20,8 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarPicker
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSelectComponent
@@ -29,8 +32,11 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
+import ac.dnd.bookkeeping.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification.NotificationConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.repeat.ScheduleAddRepeatScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -49,6 +55,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -65,17 +73,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
 
@@ -88,14 +97,16 @@ fun ScheduleAddScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+
     val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
     val eventTypeList: List<HistoryEventType> = HistoryEventType.entries
 
     // TODO : rememberSaveable 을 위한 Parcelable Presentation Model
-    var relation: RelationDetail? by remember { mutableStateOf(null) }
+    var relation: RelationSimple? by remember { mutableStateOf(null) }
     var date: LocalDate by remember { mutableStateOf(now) }
     var eventName: String by remember { mutableStateOf("") }
-    var alarm: LocalDateTime? by remember { mutableStateOf(null) }
+    var alarm: ScheduleAlarmType by remember { mutableStateOf(ScheduleAlarmType.None) }
     var repeatType: AlarmRepeatType? by remember { mutableStateOf(null) }
     var isRepeatFinish: Boolean by remember { mutableStateOf(false) }
     var repeatFinish: LocalDate? by remember { mutableStateOf(null) }
@@ -107,9 +118,103 @@ fun ScheduleAddScreen(
     var isGetRelationShowing: Boolean by remember { mutableStateOf(false) }
     var isDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAlarmDatePickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isAlarmRepeatPickerShowing: Boolean by remember { mutableStateOf(false) }
+    var isRepeatPickerShowing: Boolean by remember { mutableStateOf(false) }
     var isRepeatFinishDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
+    var isSuccessShowing: Boolean by remember { mutableStateOf(false) }
+
+    val isConfirmEnabled: Boolean =
+        relation != null && eventName.isNotBlank() && model.state != ScheduleAddState.Loading
+
+    fun onConfirm() {
+        if (!isConfirmEnabled) return
+        intent(
+            ScheduleAddIntent.OnConfirm(
+                relationId = relation?.id ?: -1,
+                day = date,
+                event = eventName,
+                repeatType = repeatType,
+                repeatFinish = repeatFinish,
+                alarm = alarm,
+                time = time,
+                link = link,
+                location = location,
+                memo = memo
+            )
+        )
+    }
+
+    if (isGetRelationShowing) {
+        SearchRelationScreen(
+            onDismissRequest = { isGetRelationShowing = false },
+            appState = appState,
+            onResult = {
+                relation = it
+            }
+        )
+    }
+
+    if (isDatePickerShowing) {
+        CalendarPicker(
+            localDate = now,
+            isDaySelectable = true,
+            onDismissRequest = { isDatePickerShowing = false },
+            onConfirm = {
+                date = it
+            }
+        )
+    }
+
+    if (isAlarmDatePickerShowing) {
+        ScheduleAddNotificationScreen(
+            appState = appState,
+            onDismissRequest = { isAlarmDatePickerShowing = false },
+            initialAlarmType = alarm,
+            onResult = {
+                alarm = it
+            }
+        )
+    }
+
+    if (isRepeatPickerShowing) {
+        ScheduleAddRepeatScreen(
+            appState = appState,
+            initialSelectedType = repeatType,
+            onDismissRequest = { isRepeatPickerShowing = false },
+            onResult = {
+                repeatType = it
+            }
+        )
+    }
+
+    if (isRepeatFinishDatePickerShowing) {
+        CalendarPicker(
+            localDate = now,
+            isDaySelectable = true,
+            onDismissRequest = { isRepeatFinishDatePickerShowing = false },
+            onConfirm = {
+                repeatFinish = it
+            }
+        )
+    }
+
+    if (isTimePickerShowing) {
+        // TODO
+    }
+
+    if (isSuccessShowing) {
+        DialogScreen(
+            title = "일정 추가하기",
+            message = "일정을 추가하였습니다.",
+            isCancelable = false,
+            onConfirm = {
+                appState.navController.navigateUp()
+            },
+            onDismissRequest = {
+                isSuccessShowing = false
+            }
+        )
+    }
 
     val formattedDate = Unit.let {
         val format = "%04d / %02d / %02d"
@@ -127,22 +232,7 @@ fun ScheduleAddScreen(
     val currentEvent: HistoryEventType? = eventTypeList.find {
         it.eventName == eventName
     }
-    val formattedAlarm = Unit.let {
-        alarm?.let {
-            val alarmDay = when (
-                val difference = (it.date - now).days
-            ) {
-                0 -> "당일"
-                in 1..6 -> "${difference}일 전"
-                else -> "${difference / 7}주 전"
-            }
-            val fixedHour = if (it.time.hour == 0) 24 else it.time.hour
-            val alarmHour = (fixedHour + 1) % 12 - 1
-            val alarmMinute = it.time.minute
-            val alarmAmPm = if (fixedHour < 13) "AM" else "PM"
-            "$alarmDay $alarmHour:$alarmMinute $alarmAmPm"
-        } ?: "알림 없음"
-    }
+    val formattedAlarm = alarm.text
     val formattedTime = Unit.let {
         time?.let {
             val fixedHour = if (it.hour == 0) 24 else it.hour
@@ -153,9 +243,24 @@ fun ScheduleAddScreen(
         } ?: "시간 없음"
     }
     val formattedRepeatType = when (repeatType) {
-        AlarmRepeatType.Month -> "매달"
+        AlarmRepeatType.Month -> "매월"
         AlarmRepeatType.Year -> "매년"
         null -> "반복 없음"
+    }
+    val formattedRepeatFinish = Unit.let {
+        repeatFinish?.let {
+            val format = "%04d.%02d.%02d"
+            val year = it.year
+            val month = it.month.number
+            val day = it.dayOfMonth
+            runCatching {
+                String.format(format, year, month, day)
+            }.onFailure { exception ->
+                scope.launch(handler) {
+                    throw exception
+                }
+            }.getOrDefault("????.??.??")
+        } ?: "설정하기"
     }
 
     Column(
@@ -235,15 +340,15 @@ fun ScheduleAddScreen(
                     ) {
                         Text(
                             text = relation?.name.orEmpty(),
-                            style = Headline3
+                            style = Headline3.merge(Gray800)
                         )
                         Text(
                             text = "・",
-                            style = Headline3
+                            style = Headline3.merge(Gray800)
                         )
                         Text(
                             text = relation?.group?.name.orEmpty(),
-                            style = Body0
+                            style = Body0.merge(Gray800)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Icon(
@@ -298,6 +403,13 @@ fun ScheduleAddScreen(
                 onValueChange = { text ->
                     eventName = text
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { isAlarmDatePickerShowing = true }
+                ),
                 hintText = "직접 입력"
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -369,24 +481,22 @@ fun ScheduleAddScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
             FieldSelectComponent(
-                isSelected = isAlarmRepeatPickerShowing,
+                isSelected = isRepeatPickerShowing,
                 text = formattedRepeatType,
                 onClick = {
-                    isAlarmRepeatPickerShowing = true
+                    isRepeatPickerShowing = true
                 }
             )
             if (repeatType != null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(43.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     backgroundColor = Gray200,
-                    shape = Shapes.medium
+                    shape = Shapes.medium,
+                    elevation = 0.dp
                 ) {
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
@@ -395,12 +505,15 @@ fun ScheduleAddScreen(
                             modifier = Modifier.weight(1f),
                             style = Body1
                         )
-                        Switch(
-                            checked = isRepeatFinish,
-                            onCheckedChange = { isChecked ->
-                                isRepeatFinish = isChecked
-                            }
-                        )
+                        Column {
+                            Switch(
+                                checked = isRepeatFinish,
+                                modifier = Modifier.weight(1f),
+                                onCheckedChange = { isChecked ->
+                                    isRepeatFinish = isChecked
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -409,16 +522,15 @@ fun ScheduleAddScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(43.dp)
                         .clickable {
                             isRepeatFinishDatePickerShowing = true
                         },
                     backgroundColor = Gray200,
-                    shape = Shapes.medium
+                    shape = Shapes.medium,
+                    elevation = 0.dp
                 ) {
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
@@ -428,7 +540,7 @@ fun ScheduleAddScreen(
                             style = Body1
                         )
                         Text(
-                            text = "설정하기",
+                            text = formattedRepeatFinish,
                             style = Body1.merge(Gray700)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
@@ -487,6 +599,10 @@ fun ScheduleAddScreen(
                 onValueChange = { text ->
                     location = text
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
                 hintText = "위치를 입력해주세요"
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -512,6 +628,10 @@ fun ScheduleAddScreen(
                 onValueChange = { text ->
                     link = text
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
                 hintText = "모바일 초대장 링크를 입력해주세요"
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -537,6 +657,16 @@ fun ScheduleAddScreen(
                 onValueChange = { text ->
                     memo = text
                 },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onConfirm()
+                        focusManager.clearFocus()
+                    }
+                ),
                 hintText = "경사 관련 메모를 입력해주세요"
             )
         }
@@ -546,11 +676,12 @@ fun ScheduleAddScreen(
                 size = ConfirmButtonSize.Large,
                 type = ConfirmButtonType.Primary
             ),
+            isEnabled = isConfirmEnabled,
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 12.dp)
                 .fillMaxWidth(),
             onClick = {
-                intent(ScheduleAddIntent.OnConfirm)
+                onConfirm()
             }
         ) { style ->
             Text(
@@ -560,17 +691,21 @@ fun ScheduleAddScreen(
         }
     }
 
-    fun navigateToAddSchedule() {
-        appState.navController.navigate(ScheduleAddConstant.ROUTE)
-    }
-
-    fun navigateToNotification() {
-        appState.navController.navigate(NotificationConstant.ROUTE)
+    fun addSchedule(event: ScheduleAddEvent.AddSchedule) {
+        when (event) {
+            is ScheduleAddEvent.AddSchedule.Success -> {
+                isSuccessShowing = true
+            }
+        }
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-
+            when (event) {
+                is ScheduleAddEvent.AddSchedule -> {
+                    addSchedule(event)
+                }
+            }
         }
     }
 }
