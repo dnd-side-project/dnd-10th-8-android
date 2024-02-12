@@ -18,6 +18,7 @@ fun NavGraphBuilder.scheduleAddDestination(
         arguments = listOf(
             navArgument(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID) {
                 type = NavType.LongType
+                defaultValue = -1L
             }
         )
     ) {
