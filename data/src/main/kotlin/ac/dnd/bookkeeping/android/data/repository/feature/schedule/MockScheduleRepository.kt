@@ -96,17 +96,33 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                     id = 2378,
                     relation = ScheduleRelation(
                         id = 4601,
-                        name = "Sheryl Barrett",
+                        name = "이다빈",
                         group = ScheduleRelationGroup(
                             id = 5690,
-                            name = "Leslie Petty"
+                            name = "친구"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
-                    event = "praesent",
+                    event = "결혼",
+                    time = LocalTime(12, 0),
+                    link = "https://www.google.com/",
+                    location = "롯데월드 호텔"
+                ),
+                Schedule(
+                    id = 23278,
+                    relation = ScheduleRelation(
+                        id = 46201,
+                        name = "김진우",
+                        group = ScheduleRelationGroup(
+                            id = 56290,
+                            name = "가족"
+                        )
+                    ),
+                    day = LocalDate(2024, 2, 25),
+                    event = "생일",
                     time = null,
-                    link = "blandit",
-                    location = "ei"
+                    link = "",
+                    location = ""
                 )
             )
         )
