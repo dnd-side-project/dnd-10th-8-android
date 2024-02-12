@@ -1,30 +1,31 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.schedule
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
+import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetUnrecordedScheduleListRes(
+data class GetScheduleListRes(
     @SerialName("result")
-    val result: List<GetUnrecordedScheduleItemRes>
-) : DataMapper<List<UnrecordedSchedule>> {
-    override fun toDomain(): List<UnrecordedSchedule> {
+    val result: List<GetScheduleItemRes>
+) : DataMapper<List<Schedule>> {
+    override fun toDomain(): List<Schedule> {
         return result.map { it.toDomain() }
     }
 }
 
 @Serializable
-data class GetUnrecordedScheduleItemRes(
+data class GetScheduleItemRes(
     @SerialName("id")
     val id: Long,
     @SerialName("relation")
-    val relation: GetUnrecordedScheduleItemRelationRes,
+    val relation: GetScheduleItemRelationRes,
     @SerialName("day")
     val day: LocalDate,
     @SerialName("event")
@@ -35,9 +36,9 @@ data class GetUnrecordedScheduleItemRes(
     val link: String = "",
     @SerialName("location")
     val location: String = ""
-) : DataMapper<UnrecordedSchedule> {
-    override fun toDomain(): UnrecordedSchedule {
-        return UnrecordedSchedule(
+) : DataMapper<Schedule> {
+    override fun toDomain(): Schedule {
+        return Schedule(
             id = id,
             relation = relation.toDomain(),
             day = day,
@@ -50,16 +51,16 @@ data class GetUnrecordedScheduleItemRes(
 }
 
 @Serializable
-data class GetUnrecordedScheduleItemRelationRes(
+data class GetScheduleItemRelationRes(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
     val name: String,
     @SerialName("group")
-    val group: GetUnrecordedScheduleItemRelationGroupRes
-) : DataMapper<UnrecordedScheduleRelation> {
-    override fun toDomain(): UnrecordedScheduleRelation {
-        return UnrecordedScheduleRelation(
+    val group: GetScheduleItemRelationGroupRes
+) : DataMapper<ScheduleRelation> {
+    override fun toDomain(): ScheduleRelation {
+        return ScheduleRelation(
             id = id,
             name = name,
             group = group.toDomain()
@@ -68,14 +69,14 @@ data class GetUnrecordedScheduleItemRelationRes(
 }
 
 @Serializable
-data class GetUnrecordedScheduleItemRelationGroupRes(
+data class GetScheduleItemRelationGroupRes(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
     val name: String
-) : DataMapper<UnrecordedScheduleRelationGroup> {
-    override fun toDomain(): UnrecordedScheduleRelationGroup {
-        return UnrecordedScheduleRelationGroup(
+) : DataMapper<ScheduleRelationGroup> {
+    override fun toDomain(): ScheduleRelationGroup {
+        return ScheduleRelationGroup(
             id = id,
             name = name
         )
