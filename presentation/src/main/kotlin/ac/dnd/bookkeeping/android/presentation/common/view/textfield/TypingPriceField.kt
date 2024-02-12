@@ -132,7 +132,7 @@ fun TypingPriceField(
                 contentPadding = innerPadding
             )
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(11.dp))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()

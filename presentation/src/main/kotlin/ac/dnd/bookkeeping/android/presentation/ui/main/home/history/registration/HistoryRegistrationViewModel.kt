@@ -1,6 +1,9 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration
 
+import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+import ac.dnd.bookkeeping.android.domain.usecase.feature.heart.AddHeartUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
+import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.asEventFlow
@@ -9,11 +12,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.datetime.LocalDate
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryRegistrationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    private val addHeartUseCase: AddHeartUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HistoryRegistrationState> =
@@ -43,10 +49,41 @@ class HistoryRegistrationViewModel @Inject constructor(
         relationId: Long,
         give: Boolean,
         money: Long,
-        day: String,
+        day: LocalDate,
         event: String,
-        memo: String?,
-        tags: List<String>?
+        memo: String,
+        tags: List<String>
     ) {
+        Timber.d(relationId.toString())
+        launch {
+            _state.value = HistoryRegistrationState.Loading
+            addHeartUseCase(
+                relationId = relationId,
+                give = give,
+                money = money,
+                day = day,
+                event = event,
+                memo = memo,
+                tags = tags
+            )
+                .onSuccess {
+                    Timber.d(it.toString())
+                    _state.value = HistoryRegistrationState.Init
+                    _event.emit(HistoryRegistrationEvent.Submit.Success)
+                }
+                .onFailure { exception ->
+                    Timber.d(exception.message.toString())
+                    _state.value = HistoryRegistrationState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
+        }
     }
 }

@@ -13,6 +13,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarComponent
 import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarConfig
+import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarPicker
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
@@ -35,6 +36,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,10 +46,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun HistoryCalendarScreen(
@@ -61,7 +65,7 @@ fun HistoryCalendarScreen(
     var currentSelectYear by remember { mutableIntStateOf(selectedYear) }
     var currentSelectMonth by remember { mutableIntStateOf(selectedMonth) }
     var currentSelectDay by remember { mutableIntStateOf(selectedDay) }
-
+    var isPickerShowing by remember { mutableStateOf(false) }
     BottomSheetScreen(
         onDismissRequest = onClose,
         properties = BottomSheetDialogProperties(
@@ -78,38 +82,34 @@ fun HistoryCalendarScreen(
                 .padding(horizontal = Space20),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(123.dp)
-                    .padding(vertical = Space20)
+                    .padding(Space8)
             ) {
-                Box(
+                Image(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
                     modifier = Modifier
-                        .padding(Space8)
-                        .align(Alignment.TopEnd)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_close),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clickable {
-                                onClose()
-                            }
-                    )
-                }
-                Text(
-                    text = "활동 날짜 선택",
-                    style = Headline2.merge(
-                        color = Gray800,
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(vertical = Space8)
+                        .clickable {
+                            onClose()
+                        }
+                        .align(Alignment.CenterEnd)
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "활동 날짜 선택",
+                style = Headline2.merge(
+                    color = Gray800,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                modifier = Modifier
+                    .padding(vertical = Space8)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Left
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,6 +133,9 @@ fun HistoryCalendarScreen(
                 Row(
                     modifier = Modifier
                         .wrapContentWidth()
+                        .clickable {
+                            isPickerShowing = true
+                        }
                         .align(Alignment.Center),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -212,6 +215,25 @@ fun HistoryCalendarScreen(
                     )
                 }
             }
+        }
+
+        if (isPickerShowing) {
+            CalendarPicker(
+                localDate = LocalDate(
+                    year = currentSelectYear,
+                    monthNumber = currentSelectMonth,
+                    dayOfMonth = 1
+                ),
+                isDaySelectable = false,
+                onDismissRequest = {
+                    isPickerShowing = false
+                },
+                onConfirm = {
+                    isPickerShowing = false
+                    currentSelectYear = it.year
+                    currentSelectMonth = it.monthNumber
+                }
+            )
         }
     }
 }
