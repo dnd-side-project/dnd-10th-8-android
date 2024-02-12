@@ -54,8 +54,7 @@ class ScheduleAddViewModel @Inject constructor(
 
     private fun loadSchedule() {
         launch {
-            _state.value = ScheduleAddState.Loading
-
+//            _state.value = ScheduleAddState.Loading
 //            getScheduleUseCase(
 //                scheduleId = scheduleId
 //            ).onSuccess { schedule ->
@@ -90,6 +89,7 @@ class ScheduleAddViewModel @Inject constructor(
                 location = intent.location,
                 memo = intent.memo
             )
+
             ScheduleAddIntent.OnRemove -> onRemove()
         }
     }
