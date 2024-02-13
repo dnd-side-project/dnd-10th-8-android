@@ -85,7 +85,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
 @Composable
@@ -320,23 +319,24 @@ private fun HistoryScreen(
                                 },
                                 fieldHeight = 45.dp,
                                 contentPadding = PaddingValues(
-                                    start = if (!isTextFieldFocused && searchText.isEmpty()) 0.dp else 16.dp,
-                                    end = 12.dp,
+                                    start = if (!isTextFieldFocused && searchText.isEmpty()) 6.dp else 16.dp,
                                 ),
                                 cursorColor = Primary4,
                                 basicBorderColor = Color.Transparent,
                                 hintText = "이름을 입력하세요.",
                                 hintTextColor = Gray500,
-                                leadingIconContent = if (!isTextFieldFocused && searchText.isEmpty()) {
-                                    {
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_search),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(16.dp),
-                                            colorFilter = ColorFilter.tint(Gray500)
-                                        )
+                                leadingIconContent = {
+                                    if (!isTextFieldFocused && searchText.isEmpty()) {
+                                        Box(modifier = Modifier.padding(start = 16.dp)) {
+                                            Image(
+                                                painter = painterResource(R.drawable.ic_search),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp),
+                                                colorFilter = ColorFilter.tint(Gray500)
+                                            )
+                                        }
                                     }
-                                } else null,
+                                },
                                 trailingIconContent = if (searchText.isNotEmpty()) {
                                     {
                                         Image(
