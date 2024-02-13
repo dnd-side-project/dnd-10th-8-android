@@ -276,7 +276,6 @@ fun TypingTextField4Preview() {
         TypingTextFieldType.LongSentence,
         text = "무릇은 경조사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
         hintText = "",
-        onValueChange = {},
-        fieldHeight = 63.dp
+        onValueChange = {}
     )
 }
