@@ -27,7 +27,7 @@ class RealStatisticsRepository @Inject constructor(
     override suspend fun getGroupStatistics(
         gender: String,
         range: Int
-    ): Result<GroupStatistics> {
+    ): Result<List<GroupStatistics>> {
         return statisticsApi.getGroupStatistics(
             gender = gender,
             range = range

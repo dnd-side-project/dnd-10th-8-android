@@ -7,6 +7,7 @@ import ac.dnd.bookkeeping.android.domain.repository.StatisticsRepository
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
 import javax.inject.Inject
+import kotlin.random.Random
 
 class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
 
@@ -22,7 +23,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "결혼",
                         relationName = "친구",
                         groupName = "veri",
-                        money = 4162,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -30,7 +31,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "생일",
                         relationName = "가족",
                         groupName = "antica",
-                        money = 9402,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -38,7 +39,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "그외",
                         relationName = "가족",
                         groupName = "anticas",
-                        money = 14022,
+                        money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -48,7 +49,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "결혼",
                         relationName = "친구",
                         groupName = "veri",
-                        money = 4162,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -56,7 +57,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "생일",
                         relationName = "가족",
                         groupName = "antica",
-                        money = 9402,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -64,7 +65,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         event = "그외",
                         relationName = "가족",
                         groupName = "anticas",
-                        money = 14022,
+                        money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -76,16 +77,38 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
     override suspend fun getGroupStatistics(
         gender: String,
         range: Int
-    ): Result<GroupStatistics> {
+    ): Result<List<GroupStatistics>> {
         randomShortDelay()
         return Result.success(
-            GroupStatistics(
-                marriage = 3123,
-                birth = 7383,
-                baby = 9370,
-                babyBirth = 4026,
-                bizopen = 3068,
-                etc = 3819
+            listOf(
+                GroupStatistics(
+                    event = "결혼",
+                    amount = Random.nextLong(50_000, 200_000)
+                ),
+                GroupStatistics(
+                    event = "생일",
+                    amount = Random.nextLong(50_000, 400_000)
+                ),
+                GroupStatistics(
+                    event = "돌잔치",
+                    amount = Random.nextLong(0, 50_000)
+                ),
+                GroupStatistics(
+                    event = "출산",
+                    amount = Random.nextLong(0, 50_000)
+                ),
+                GroupStatistics(
+                    event = "개업",
+                    amount = Random.nextLong(40_000, 300_000)
+                ),
+                GroupStatistics(
+                    event = "랜덤이벤트1",
+                    amount = Random.nextLong(0, 500_000)
+                ),
+                GroupStatistics(
+                    event = "랜덤이벤트2",
+                    amount = Random.nextLong(50_000, 100_000)
+                ),
             )
         )
     }

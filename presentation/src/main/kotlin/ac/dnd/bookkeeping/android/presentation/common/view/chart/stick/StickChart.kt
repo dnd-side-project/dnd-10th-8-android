@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.chart.stick
 
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption4
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.measureTextHeight
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.measureTextWidth
 import androidx.annotation.FloatRange
@@ -67,7 +68,7 @@ fun StickChart(
                     x = centerX - textWidth.toPx() / 2,
                     y = size.height - height - textHeight.toPx() - 6.dp.toPx()
                 ),
-                style = Caption4
+                style = Caption4.merge(Gray700)
             )
         }
     }
