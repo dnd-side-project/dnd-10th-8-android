@@ -82,6 +82,16 @@ class HistoryDetailViewModel @Inject constructor(
     }
 
     fun onIntent(intent: HistoryDetailIntent) {
+        when (intent) {
+            is HistoryDetailIntent.OnEdit -> {
+                _hearts.value = _hearts.value.map {
+                    if (it.id == intent.editHeart.id) intent.editHeart else it
+                }
+            }
 
+            is HistoryDetailIntent.OnDelete -> {
+                _hearts.value = _hearts.value.filter { it.id != intent.deleteId }
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -72,7 +74,8 @@ fun FieldSelectComponent(
         Image(
             painter = painterResource(R.drawable.ic_chevron_right),
             contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterEnd)
+            modifier = Modifier.align(Alignment.CenterEnd),
+            colorFilter = ColorFilter.tint(Gray500)
         )
     }
 }
