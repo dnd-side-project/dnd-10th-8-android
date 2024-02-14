@@ -1,7 +1,13 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type
 
-enum class UserGender {
-    NORMAL,
-    MALE,
-    FEMALE
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed interface UserGender : Parcelable {
+    @Parcelize
+    data object Male : UserGender
+
+    @Parcelize
+    data object Female : UserGender
 }

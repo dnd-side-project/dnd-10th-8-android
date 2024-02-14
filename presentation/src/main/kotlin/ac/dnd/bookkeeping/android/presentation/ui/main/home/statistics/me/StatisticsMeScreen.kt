@@ -1,6 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.me
 
-import ac.dnd.bookkeeping.android.common.ifZero
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsItem
 import ac.dnd.bookkeeping.android.presentation.R
@@ -80,6 +79,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
+import kotlin.random.Random
 
 @Composable
 fun StatisticsMeScreen(
@@ -178,7 +178,7 @@ private fun StatisticsMeScreen(
         MyStatisticsChipType.Take -> model.myStatistics.take
         MyStatisticsChipType.Give -> model.myStatistics.give
     }.sortedBy {
-        HistoryEventType.getEventId(it.event).ifZero { Long.MAX_VALUE }
+        HistoryEventType.getEventId(it.event).takeIf { it != -1L } ?: Long.MAX_VALUE
     }.groupBy { item ->
         HistoryEventType.getEventId(item.event)
     }
@@ -222,6 +222,7 @@ private fun StatisticsMeScreen(
             },
             onConfirm = {
                 date = it
+                onClickDateChange()
             }
         )
     }
@@ -512,7 +513,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "결혼",
                         relationName = "친구",
                         groupName = "veri",
-                        money = 4162,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -520,7 +521,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "생일",
                         relationName = "가족",
                         groupName = "antica",
-                        money = 9402,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -528,7 +529,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "그외",
                         relationName = "가족",
                         groupName = "anticas",
-                        money = 14022,
+                        money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -538,7 +539,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "결혼",
                         relationName = "친구",
                         groupName = "veri",
-                        money = 4162,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -546,7 +547,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "생일",
                         relationName = "가족",
                         groupName = "antica",
-                        money = 9402,
+                        money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -554,7 +555,7 @@ private fun StatisticsMeScreenPreview() {
                         event = "그외",
                         relationName = "가족",
                         groupName = "anticas",
-                        money = 14022,
+                        money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),

@@ -10,7 +10,7 @@ class GetGroupStatisticsUseCase @Inject constructor(
     suspend operator fun invoke(
         gender: String,
         range: Int
-    ): Result<GroupStatistics> {
+    ): Result<List<GroupStatistics>> {
         return statisticsRepository.getGroupStatistics(
             gender = gender,
             range = range

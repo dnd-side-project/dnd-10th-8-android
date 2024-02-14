@@ -47,7 +47,14 @@ class StatisticsMeViewModel @Inject constructor(
     }
 
     fun onIntent(intent: StatisticsMeIntent) {
-
+        when (intent) {
+            is StatisticsMeIntent.OnClickDateChange -> {
+                refresh(
+                    year = intent.year,
+                    month = intent.month
+                )
+            }
+        }
     }
 
     private fun refresh(

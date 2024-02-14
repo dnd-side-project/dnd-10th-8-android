@@ -13,5 +13,5 @@ interface StatisticsRepository {
     suspend fun getGroupStatistics(
         gender: String,
         range: Int
-    ): Result<GroupStatistics>
+    ): Result<List<GroupStatistics>>
 }

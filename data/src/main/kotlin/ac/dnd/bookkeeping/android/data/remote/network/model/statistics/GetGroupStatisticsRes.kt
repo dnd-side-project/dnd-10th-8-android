@@ -7,27 +7,25 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetGroupStatisticsRes(
-    @SerialName("marriage")
-    val marriage: Long,
-    @SerialName("birth")
-    val birth: Long,
-    @SerialName("baby")
-    val baby: Long,
-    @SerialName("babyBirth")
-    val babyBirth: Long,
-    @SerialName("bizopen")
-    val bizopen: Long,
-    @SerialName("etc")
-    val etc: Long,
+    @SerialName("result")
+    val result: List<GetGroupStatisticsItemRes>
+) : DataMapper<List<GroupStatistics>> {
+    override fun toDomain(): List<GroupStatistics> {
+        return result.map { it.toDomain() }
+    }
+}
+
+@Serializable
+data class GetGroupStatisticsItemRes(
+    @SerialName("event")
+    val event: String,
+    @SerialName("amount")
+    val amount: Long
 ) : DataMapper<GroupStatistics> {
     override fun toDomain(): GroupStatistics {
         return GroupStatistics(
-            marriage = marriage,
-            birth = birth,
-            baby = baby,
-            babyBirth = babyBirth,
-            bizopen = bizopen,
-            etc = etc
+            event = event,
+            amount = amount
         )
     }
 }
