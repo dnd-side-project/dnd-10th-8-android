@@ -208,7 +208,10 @@ private fun StatisticsMeScreen(
     ) {
         val route = makeRoute(
             StatisticsMeEventConstant.ROUTE,
-            listOf(StatisticsMeEventConstant.ROUTE_ARGUMENT_EVENT_ID to id)
+            listOf(
+                StatisticsMeEventConstant.ROUTE_ARGUMENT_EVENT_ID to id,
+                StatisticsMeEventConstant.ROUTE_ARGUMENT_IS_GIVE to (selectedChipType == MyStatisticsChipType.Give)
+            )
         )
         appState.navController.navigate(route)
     }
@@ -420,12 +423,13 @@ private fun StatisticsMeScreen(
                 MyStatisticsChipType.Give -> model.myStatistics.give.sumOf { it.money }
             }
             StatisticsMeScreenItem(
+                eventId = key,
                 color = color,
                 title = title,
                 percent = percent,
                 money = money,
                 onClick = {
-                    // TODO
+                    navigateToStatisticsMeEvent(it)
                 }
             )
         }
@@ -440,11 +444,12 @@ private fun StatisticsMeScreen(
 
 @Composable
 private fun StatisticsMeScreenItem(
+    eventId: Long,
     color: Color,
     title: String,
     @FloatRange(from = 0.0, to = 1.0) percent: Float,
     money: Long,
-    onClick: () -> Unit
+    onClick: (eventId: Long) -> Unit
 ) {
     val formattedPercent = "${(percent * 100).toInt()}%"
     val formattedMoney = Unit.let {
@@ -465,7 +470,7 @@ private fun StatisticsMeScreenItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onClick()
+                    onClick(eventId)
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -502,7 +507,7 @@ private fun StatisticsMeScreenItem(
 
 @Preview
 @Composable
-private fun StatisticsMeScreenPreview() {
+private fun StatisticsMeScreenPreview1() {
     StatisticsMeScreen(
         appState = rememberApplicationState(),
         model = StatisticsMeModel(
@@ -561,6 +566,21 @@ private fun StatisticsMeScreenPreview() {
                     ),
                 )
             )
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
+}
+
+@Preview
+@Composable
+private fun StatisticsMeScreenPreview() {
+    StatisticsMeScreen(
+        appState = rememberApplicationState(),
+        model = StatisticsMeModel(
+            state = StatisticsMeState.Init,
+            myStatistics = MyStatistics.empty
         ),
         event = MutableEventFlow(),
         intent = {},
