@@ -15,7 +15,7 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
         year: Int,
         month: Int?
     ): Result<MyStatistics> {
-        randomLongDelay()
+        randomShortDelay()
         return Result.success(
             MyStatistics(
                 give = listOf(

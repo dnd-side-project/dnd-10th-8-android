@@ -34,42 +34,44 @@ fun StickChart(
     Canvas(
         modifier = modifier
     ) {
-        val fixedThickness = size.width / dataList.size * thickness
-        val sum: Int = dataList.sumOf { it.money }
-        val max: Int = dataList.maxOf { it.money }
+        if (dataList.isNotEmpty()) {
+            val fixedThickness = size.width / dataList.size * thickness
+            val sum: Int = dataList.sumOf { it.money }
+            val max: Int = dataList.maxOf { it.money }
 
-        dataList.forEachIndexed { index, data ->
-            val height = (size.height - textHeight.toPx() - 6.dp.toPx()) * data.money / max
-            val centerX = size.width / dataList.size * (index + 0.5f)
-            val formattedMoney = data.money.toString().let {
-                if (it.length > 4) {
-                    "${it.substring(0, it.length - 4)}만원"
-                } else {
-                    "${it}원"
+            dataList.forEachIndexed { index, data ->
+                val height = (size.height - textHeight.toPx() - 6.dp.toPx()) * data.money / max
+                val centerX = size.width / dataList.size * (index + 0.5f)
+                val formattedMoney = data.money.toString().let {
+                    if (it.length > 4) {
+                        "${it.substring(0, it.length - 4)}만원"
+                    } else {
+                        "${it}원"
+                    }
                 }
-            }
 
-            drawRoundRect(
-                brush = SolidColor(data.color),
-                topLeft = Offset(
-                    x = centerX - fixedThickness / 2,
-                    y = size.height - height
-                ),
-                size = Size(
-                    width = fixedThickness,
-                    height = height + 16.dp.toPx()
-                ),
-                cornerRadius = CornerRadius(8.dp.toPx())
-            )
-            drawText(
-                textMeasurer = textMeasurer,
-                text = formattedMoney,
-                topLeft = Offset(
-                    x = centerX - textWidth.toPx() / 2,
-                    y = size.height - height - textHeight.toPx() - 6.dp.toPx()
-                ),
-                style = Caption4.merge(Gray700)
-            )
+                drawRoundRect(
+                    brush = SolidColor(data.color),
+                    topLeft = Offset(
+                        x = centerX - fixedThickness / 2,
+                        y = size.height - height
+                    ),
+                    size = Size(
+                        width = fixedThickness,
+                        height = height
+                    ),
+                    cornerRadius = CornerRadius(8.dp.toPx())
+                )
+                drawText(
+                    textMeasurer = textMeasurer,
+                    text = formattedMoney,
+                    topLeft = Offset(
+                        x = centerX - textWidth.toPx() / 2,
+                        y = size.height - height - textHeight.toPx() - 6.dp.toPx()
+                    ),
+                    style = Caption4.merge(Gray700)
+                )
+            }
         }
     }
 }

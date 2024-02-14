@@ -33,6 +33,13 @@ class StatisticsUserViewModel @Inject constructor(
         MutableStateFlow(emptyList())
     val groupStatistics: StateFlow<List<GroupStatistics>> = _groupStatistics.asStateFlow()
 
+    init {
+        refresh(
+            age = 20,
+            gender = UserGender.Female
+        )
+    }
+
     fun onIntent(intent: StatisticsUserIntent) {
         when (intent) {
             is StatisticsUserIntent.OnChangeGroup -> {
@@ -44,7 +51,7 @@ class StatisticsUserViewModel @Inject constructor(
         }
     }
 
-    fun refresh(
+    private fun refresh(
         age: Int,
         gender: UserGender
     ) {
@@ -57,7 +64,8 @@ class StatisticsUserViewModel @Inject constructor(
                     UserGender.Male -> "male"
                 }
             ).onSuccess {
-
+                _state.value = StatisticsUserState.Init
+                _groupStatistics.value = it
             }.onFailure { exception ->
                 _state.value = StatisticsUserState.Init
                 when (exception) {

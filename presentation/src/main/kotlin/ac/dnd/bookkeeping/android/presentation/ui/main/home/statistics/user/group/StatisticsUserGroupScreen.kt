@@ -219,6 +219,7 @@ private fun StatisticsUserGroupScreen(
                 ),
                 onClick = {
                     onResult(age, gender)
+                    onDismissRequest()
                 }
             ) { style ->
                 Text(

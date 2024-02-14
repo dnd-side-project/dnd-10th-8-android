@@ -23,6 +23,7 @@ import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.user.grou
 import ac.dnd.bookkeeping.android.presentation.ui.main.registration.main.type.UserGender
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -183,13 +184,35 @@ private fun StatisticsUserScreen(
             style = Body1.merge(Gray700)
         )
         Spacer(modifier = Modifier.height(80.dp))
-        StickChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f),
-            dataList = chartData,
-            thickness = 0.5f
-        )
+        if (chartData.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    modifier = Modifier.size(60.dp),
+                    painter = painterResource(R.drawable.ic_add_chart),
+                    contentDescription = null,
+                    tint = Color(0xFFDDDEE1)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = "데이터 수집 중이에요",
+                    style = Body1.merge(Gray700)
+                )
+            }
+        } else {
+            StickChart(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                dataList = chartData,
+                thickness = 0.5f
+            )
+        }
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
@@ -201,7 +224,7 @@ private fun StatisticsUserScreen(
 
 @Preview
 @Composable
-private fun StatisticsUserScreenPreview() {
+private fun StatisticsUserScreenPreview1() {
     StatisticsUserScreen(
         appState = rememberApplicationState(),
         model = StatisticsUserModel(
@@ -236,6 +259,21 @@ private fun StatisticsUserScreenPreview() {
                     amount = Random.nextLong(50_000, 100_000)
                 ),
             )
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
+}
+
+@Preview
+@Composable
+private fun StatisticsUserScreenPreview2() {
+    StatisticsUserScreen(
+        appState = rememberApplicationState(),
+        model = StatisticsUserModel(
+            state = StatisticsUserState.Init,
+            groupStatistics = emptyList()
         ),
         event = MutableEventFlow(),
         intent = {},
