@@ -458,15 +458,14 @@ private fun StatisticsMeScreenItem(
         }
         "${formatted}원"
     }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onClick()
-            }
-    ) {
+    Column {
         Spacer(modifier = Modifier.height(10.dp))
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onClick()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
