@@ -9,15 +9,16 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Negative
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space8
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,12 +38,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -71,11 +74,15 @@ fun TypingTextField(
     basicBorderColor: Color = Gray400,
     cursorColor: Color? = null,
     hintTextColor: Color = Gray600,
-    contentPadding: PaddingValues = PaddingValues(
-        vertical = 13.5.dp,
-        horizontal = 16.dp
+    textStyle: TextStyle = Body1.merge(
+        color = Gray800,
+        fontWeight = FontWeight.Normal
     ),
-    leadingIconContent: (@Composable () -> Unit)? = null,
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = 16.dp,
+        vertical = 13.5.dp
+    ),
+    leadingIconContent: (@Composable () -> Unit) = {},
     trailingIconContent: (@Composable () -> Unit)? = null,
     errorMessageContent: (@Composable () -> Unit) = { },
     onTextFieldFocusChange: (Boolean) -> Unit = {}
@@ -108,51 +115,58 @@ fun TypingTextField(
                     onTextFieldFocusChange(it.isFocused)
                 }
         ) {
-            BasicTextField(
-                value = text,
-                onValueChange = {
-                    if (maxTextLength >= it.length) {
-                        onValueChange(it)
-                    }
-                },
-                enabled = isEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(fieldHeight),
-                textStyle = Body1.merge(
-                    color = Gray800
-                ),
-                singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
-                minLines = if (isSingleLine) 1 else 3,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                cursorBrush = SolidColor(value = cursorColor ?: currentColorState.value),
-                interactionSource = interactionSource,
-            ) { textField ->
-                TextFieldDefaults.TextFieldDecorationBox(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                leadingIconContent()
+                BasicTextField(
                     value = text,
-                    innerTextField = textField,
-                    enabled = isEnabled,
-                    singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
-                    visualTransformation = visualTransformation,
-                    interactionSource = interactionSource,
-                    placeholder = {
-                        Text(
-                            text = hintText,
-                            style = Body1.merge(
-                                color = hintTextColor,
-                                fontWeight = FontWeight.Normal
-                            )
-                        )
+                    onValueChange = {
+                        if (maxTextLength >= it.length) {
+                            onValueChange(it)
+                        }
                     },
-                    leadingIcon = leadingIconContent,
-                    trailingIcon = trailingIconContent,
-                    contentPadding = contentPadding
-                )
+                    enabled = isEnabled,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(
+                            when (textType) {
+                                TypingTextFieldType.Basic -> fieldHeight
+                                TypingTextFieldType.LongSentence -> 96.5.dp
+                            }
+                        ),
+                    textStyle = textStyle,
+                    singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
+                    minLines = if (isSingleLine) 1 else 3,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    cursorBrush = SolidColor(value = cursorColor ?: currentColorState.value),
+                    interactionSource = interactionSource,
+                ) { textField ->
+                    TextFieldDefaults.TextFieldDecorationBox(
+                        value = text,
+                        innerTextField = textField,
+                        enabled = isEnabled,
+                        singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
+                        visualTransformation = visualTransformation,
+                        interactionSource = interactionSource,
+                        placeholder = {
+                            Text(
+                                text = hintText,
+                                style = Body1.merge(
+                                    color = hintTextColor,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            )
+                        },
+                        contentPadding = contentPadding,
+                        trailingIcon = trailingIconContent
+                    )
+                }
             }
 
             if (textType == TypingTextFieldType.LongSentence) {
-                Spacer(Modifier.height(Space20))
                 Text(
                     text = "${text.length}/$maxTextLength",
                     modifier = Modifier
@@ -237,6 +251,21 @@ fun TypingTextField3Preview() {
                 )
             }
         },
+        contentPadding = PaddingValues(
+            vertical = 6.dp,
+            horizontal = 10.dp
+        ),
+        leadingIconContent = {
+            Box(
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = "bottom icon",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
     )
 }
 
@@ -247,7 +276,6 @@ fun TypingTextField4Preview() {
         TypingTextFieldType.LongSentence,
         text = "무릇은 경조사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
         hintText = "",
-        onValueChange = {},
-
-        )
+        onValueChange = {}
+    )
 }
