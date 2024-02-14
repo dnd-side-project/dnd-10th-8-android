@@ -87,7 +87,7 @@ fun RegistrationNamingScreen(
     var userYearText by remember { mutableStateOf("") }
     var userMonthText by remember { mutableStateOf("") }
     var userDayText by remember { mutableStateOf("") }
-    var userGender by remember { mutableStateOf(UserGender.NORMAL) }
+    var userGender: UserGender? by remember { mutableStateOf(null) }
     var buttonClickState by remember { mutableStateOf(false) }
     var checkNonDuplicationState by remember { mutableStateOf(false) }
     val registrationButtonColorState = animateColorAsState(
@@ -295,20 +295,20 @@ fun RegistrationNamingScreen(
                         .height(48.dp),
                     shape = Shapes.large,
                     colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = if (userGender == UserGender.MALE) Primary1 else Gray000
+                        backgroundColor = if (userGender == UserGender.Male) Primary1 else Gray000
                     ),
                     border = BorderStroke(
-                        color = if (userGender == UserGender.MALE) Primary4 else Gray400,
+                        color = if (userGender == UserGender.Male) Primary4 else Gray400,
                         width = 1.dp,
                     ),
                     onClick = {
-                        userGender = UserGender.MALE
+                        userGender = UserGender.Male
                     },
                     elevation = null
                 ) {
                     Text(
                         text = "남자",
-                        style = Body1.merge(if (userGender == UserGender.MALE) Primary4 else Gray600)
+                        style = Body1.merge(if (userGender == UserGender.Male) Primary4 else Gray600)
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
@@ -318,20 +318,20 @@ fun RegistrationNamingScreen(
                         .height(48.dp),
                     shape = Shapes.large,
                     colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = if (userGender == UserGender.FEMALE) Primary1 else Gray000
+                        backgroundColor = if (userGender == UserGender.Female) Primary1 else Gray000
                     ),
                     border = BorderStroke(
-                        color = if (userGender == UserGender.FEMALE) Primary4 else Gray400,
+                        color = if (userGender == UserGender.Female) Primary4 else Gray400,
                         width = 1.dp,
                     ),
                     onClick = {
-                        userGender = UserGender.FEMALE
+                        userGender = UserGender.Female
                     },
                     elevation = null
                 ) {
                     Text(
                         text = "여자",
-                        style = Body1.merge(if (userGender == UserGender.FEMALE) Primary4 else Gray600)
+                        style = Body1.merge(if (userGender == UserGender.Female) Primary4 else Gray600)
                     )
                 }
             }
@@ -354,7 +354,7 @@ fun RegistrationNamingScreen(
                     backgroundColor = registrationButtonColorState.value
                 ),
                 border = BorderStroke(
-                    color = if (userGender == UserGender.MALE) Primary4 else Gray400,
+                    color = if (userGender == UserGender.Male) Primary4 else Gray400,
                     width = 1.dp,
                 ),
                 enabled = registrationButtonColorState.value == Primary4,
@@ -365,7 +365,7 @@ fun RegistrationNamingScreen(
                         intent(
                             RegistrationMainIntent.OnClickSubmit(
                                 nickName = userNameText,
-                                gender = if (userGender == UserGender.MALE) "male" else "female",
+                                gender = if (userGender == UserGender.Male) "male" else "female",
                                 birth = listOf(
                                     userYearText,
                                     userMonthText,
@@ -411,13 +411,13 @@ fun RegistrationNamingScreen(
 private fun checkColorState(
     buttonClickState: Boolean,
     nameValid: Boolean,
-    gender: UserGender,
+    gender: UserGender?,
     year: String,
     month: String,
     day: String
 ): Color =
     if (buttonClickState) Primary5
-    else if (nameValid && gender != UserGender.NORMAL && year.length == 4 && month.length == 2 && day.length == 2) Primary4
+    else if (nameValid && gender != null && year.length == 4 && month.length == 2 && day.length == 2) Primary4
     else Gray400
 
 @Preview
