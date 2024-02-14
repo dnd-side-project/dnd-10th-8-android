@@ -222,6 +222,7 @@ private fun StatisticsMeScreen(
             },
             onConfirm = {
                 date = it
+                onClickDateChange()
             }
         )
     }
