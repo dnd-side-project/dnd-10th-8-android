@@ -2,9 +2,7 @@ package ac.dnd.bookkeeping.android.data.repository.feature.statistics
 
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.GroupStatistics
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
-import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsEvent
-import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsGive
-import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsTake
+import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsItem
 import ac.dnd.bookkeeping.android.domain.repository.StatisticsRepository
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
@@ -19,37 +17,57 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
         randomLongDelay()
         return Result.success(
             MyStatistics(
-                give = MyStatisticsGive(
-                    event = listOf(
-                        MyStatisticsEvent(
-                            name = "Deirdre Guerra",
-                            group = "veri",
-                            money = 4162,
-                            day = LocalDate(2021, 10, 1)
-                        ),
-                        MyStatisticsEvent(
-                            name = "Merritt Mccarthy",
-                            group = "ex",
-                            money = 9402,
-                            day = LocalDate(2021, 10, 1)
-                        ),
-                    )
+                give = listOf(
+                    MyStatisticsItem(
+                        event = "결혼",
+                        relationName = "친구",
+                        groupName = "veri",
+                        money = 4162,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
+                        money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
                 ),
-                take = MyStatisticsTake(
-                    event = listOf(
-                        MyStatisticsEvent(
-                            name = "Calvin Romero",
-                            group = "ex",
-                            money = 9402,
-                            day = LocalDate(2021, 10, 1)
-                        ),
-                        MyStatisticsEvent(
-                            name = "Merritt Mccarthy",
-                            group = "ex",
-                            money = 9402,
-                            day = LocalDate(2021, 10, 1)
-                        ),
-                    )
+                take = listOf(
+                    MyStatisticsItem(
+                        event = "결혼",
+                        relationName = "친구",
+                        groupName = "veri",
+                        money = 4162,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
+                        money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
                 )
             )
         )

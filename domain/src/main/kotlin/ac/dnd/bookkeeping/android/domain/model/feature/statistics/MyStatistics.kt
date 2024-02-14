@@ -3,21 +3,22 @@ package ac.dnd.bookkeeping.android.domain.model.feature.statistics
 import kotlinx.datetime.LocalDate
 
 data class MyStatistics(
-    val give: MyStatisticsGive,
-    val take: MyStatisticsTake
-)
+    val give: List<MyStatisticsItem>,
+    val take: List<MyStatisticsItem>
+) {
+    companion object {
+        val empty: MyStatistics = MyStatistics(
+            give = listOf(),
+            take = listOf()
+        )
+    }
+}
 
-data class MyStatisticsGive(
-    val event: List<MyStatisticsEvent>
-)
-
-data class MyStatisticsTake(
-    val event: List<MyStatisticsEvent>
-)
-
-data class MyStatisticsEvent(
-    val name: String,
-    val group: String,
+data class MyStatisticsItem(
+    val event: String,
+    val relationName: String,
+    val groupName: String,
     val money: Long,
-    val day: LocalDate
+    val day: LocalDate,
+    val memo: String
 )
