@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.segment
 
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -102,7 +103,7 @@ private val TRACK_COLOR = Color.LightGray.copy(alpha = .5f)
 private val PRESSED_TRACK_PADDING = 1.dp
 
 /** Padding inside individual segments. */
-private val SEGMENT_PADDING = 5.dp
+private val SEGMENT_PADDING = 6.5.dp
 
 /** Alpha to use to indicate pressed state when unselected segments are pressed. */
 private const val PRESSED_UNSELECTED_ALPHA = .6f
@@ -179,7 +180,7 @@ fun <T> SegmentControl(
  */
 @Composable
 fun SegmentText(text: String) {
-    Text(text, maxLines = 1, overflow = Ellipsis)
+    Text(text, maxLines = 1, style = Body1)
 }
 
 /**

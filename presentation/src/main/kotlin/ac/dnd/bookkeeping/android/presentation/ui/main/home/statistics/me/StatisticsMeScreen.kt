@@ -1,12 +1,15 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.me
 
+import ac.dnd.bookkeeping.android.common.ifZero
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsItem
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Icon24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
@@ -41,7 +44,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -176,7 +178,7 @@ private fun StatisticsMeScreen(
         MyStatisticsChipType.Take -> model.myStatistics.take
         MyStatisticsChipType.Give -> model.myStatistics.give
     }.sortedBy {
-        HistoryEventType.getEventId(it.event)
+        HistoryEventType.getEventId(it.event).ifZero { Long.MAX_VALUE }
     }.groupBy { item ->
         HistoryEventType.getEventId(item.event)
     }
@@ -226,7 +228,7 @@ private fun StatisticsMeScreen(
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp)
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(14.dp))
         SegmentControl<MyStatisticsSegmentType>(
@@ -259,84 +261,90 @@ private fun StatisticsMeScreen(
             Row(
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 15.5.dp)
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row {
-                    Box(
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(bounded = false),
-                            onClick = {
-                                date = when (selectedSegmentType) {
-                                    MyStatisticsSegmentType.Monthly -> {
-                                        date.minus(1, DateTimeUnit.MONTH)
-                                    }
-
-                                    MyStatisticsSegmentType.Yearly -> {
-                                        date.minus(1, DateTimeUnit.YEAR)
-                                    }
+                Box(
+                    modifier = Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            date = when (selectedSegmentType) {
+                                MyStatisticsSegmentType.Monthly -> {
+                                    date.minus(1, DateTimeUnit.MONTH)
                                 }
-                                onClickDateChange()
-                            }
-                        )
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(Icon24),
-                            painter = painterResource(id = R.drawable.ic_drop_left),
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable {
-                                isDatePickerShowing = true
-                            }
-                    ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = formattedDate,
-                            style = Headline0
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Box(
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(bounded = false),
-                            onClick = {
-                                date = when (selectedSegmentType) {
-                                    MyStatisticsSegmentType.Monthly -> {
-                                        date.plus(1, DateTimeUnit.MONTH)
-                                    }
 
-                                    MyStatisticsSegmentType.Yearly -> {
-                                        date.plus(1, DateTimeUnit.YEAR)
-                                    }
+                                MyStatisticsSegmentType.Yearly -> {
+                                    date.minus(1, DateTimeUnit.YEAR)
                                 }
-                                onClickDateChange()
                             }
-                        )
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(Icon24),
-                            painter = painterResource(id = R.drawable.ic_drop_right),
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(9.dp))
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp),
-                        color = Primary2
+                            onClickDateChange()
+                        }
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(Icon24),
+                        painter = painterResource(id = R.drawable.ic_drop_left),
+                        contentDescription = null,
+                        tint = Gray000
                     )
                 }
+                Spacer(modifier = Modifier.width(8.dp))
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable {
+                            isDatePickerShowing = true
+                        }
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = formattedDate,
+                        style = when (selectedSegmentType) {
+                            MyStatisticsSegmentType.Monthly -> Headline0.merge(color = Gray000)
+                            MyStatisticsSegmentType.Yearly -> Headline1.merge(color = Gray000)
+                        }
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Box(
+                    modifier = Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            date = when (selectedSegmentType) {
+                                MyStatisticsSegmentType.Monthly -> {
+                                    date.plus(1, DateTimeUnit.MONTH)
+                                }
+
+                                MyStatisticsSegmentType.Yearly -> {
+                                    date.plus(1, DateTimeUnit.YEAR)
+                                }
+                            }
+                            onClickDateChange()
+                        }
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(Icon24),
+                        painter = painterResource(id = R.drawable.ic_drop_right),
+                        contentDescription = null,
+                        tint = Gray000
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(9.dp))
+                Divider(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(30.dp),
+                    color = Primary2
+                )
                 Spacer(modifier = Modifier.width(7.dp))
                 Column(
-                    modifier = Modifier.padding(horizontal = 9.dp)
+                    modifier = Modifier.padding(horizontal = 9.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -345,6 +353,7 @@ private fun StatisticsMeScreen(
                         Text(text = "받은 마음", style = Body1.merge(Primary1))
                         Text(text = formattedTakeSum, style = Body1.merge(Primary1))
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -352,7 +361,6 @@ private fun StatisticsMeScreen(
                         Text(text = "보낸 마음", style = Body1.merge(Primary1))
                         Text(text = formattedGiveSum, style = Body1.merge(Primary1))
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -458,7 +466,9 @@ private fun StatisticsMeScreenItem(
             }
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -508,10 +518,18 @@ private fun StatisticsMeScreenPreview() {
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
-                        event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
                         money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -526,10 +544,18 @@ private fun StatisticsMeScreenPreview() {
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
-                        event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
                         money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),

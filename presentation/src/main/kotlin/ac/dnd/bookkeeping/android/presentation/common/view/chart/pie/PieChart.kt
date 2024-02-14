@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -24,12 +25,14 @@ fun PieChart(
         modifier = modifier
     ) {
         Canvas(
-            modifier = modifier.aspectRatio(1f)
+            modifier = Modifier
+                .aspectRatio(1f)
+                .align(Alignment.Center)
         ) {
             val fixedThickness = size.width / 2 * thickness
             val sum: Int = dataList.sumOf { it.value }
             dataList.forEachIndexed { index, data ->
-                val startAngle = dataList.take(index).sumOf { it.value } * 360f / sum
+                val startAngle = -90f + dataList.take(index).sumOf { it.value } * 360f / sum
                 val angle = data.value * 360f / sum
                 drawArc(
                     color = data.color,

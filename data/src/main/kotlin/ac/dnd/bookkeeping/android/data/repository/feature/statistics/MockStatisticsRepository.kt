@@ -27,10 +27,18 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
-                        event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
                         money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
@@ -45,10 +53,18 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
-                        event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        event = "생일",
+                        relationName = "가족",
+                        groupName = "antica",
                         money = 9402,
+                        day = LocalDate(2021, 10, 1),
+                        memo = "asdf"
+                    ),
+                    MyStatisticsItem(
+                        event = "그외",
+                        relationName = "가족",
+                        groupName = "anticas",
+                        money = 14022,
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
