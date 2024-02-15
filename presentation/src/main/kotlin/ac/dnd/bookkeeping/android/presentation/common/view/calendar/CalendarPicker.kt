@@ -39,6 +39,7 @@ import java.util.Calendar
 fun CalendarPicker(
     localDate: LocalDate,
     isDaySelectable: Boolean = true,
+    isMonthSelectable: Boolean = true,
     properties: BottomSheetDialogProperties = BottomSheetDialogProperties(),
     onDismissRequest: () -> Unit,
     onConfirm: (LocalDate) -> Unit
@@ -140,20 +141,22 @@ fun CalendarPicker(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
 
-                NumberPicker(
-                    value = monthValue,
-                    range = 1..12,
-                    dividersColor = Primary3,
-                    textStyle = dateTextStyle,
-                    onValueChange = {
-                        monthValue = it
-                        dayMaxValue = setDayValue(yearValue, it)
-                    },
-                )
-                Text(
-                    text = "월",
-                    style = labelTextStyle
-                )
+                if (isMonthSelectable) {
+                    NumberPicker(
+                        value = monthValue,
+                        range = 1..12,
+                        dividersColor = Primary3,
+                        textStyle = dateTextStyle,
+                        onValueChange = {
+                            monthValue = it
+                            dayMaxValue = setDayValue(yearValue, it)
+                        },
+                    )
+                    Text(
+                        text = "월",
+                        style = labelTextStyle
+                    )
+                }
 
                 if (isDaySelectable) {
                     Spacer(modifier = Modifier.width(10.dp))
@@ -202,6 +205,24 @@ private fun Picker2Preview() {
             2024, 2, 7
         ),
         isDaySelectable = false,
+        onDismissRequest = {
+
+        },
+        onConfirm = {
+
+        }
+    )
+}
+
+@Preview(apiLevel = 33)
+@Composable
+private fun Picker3Preview() {
+    CalendarPicker(
+        localDate = LocalDate(
+            2024, 2, 7
+        ),
+        isDaySelectable = false,
+        isMonthSelectable = false,
         onDismissRequest = {
 
         },

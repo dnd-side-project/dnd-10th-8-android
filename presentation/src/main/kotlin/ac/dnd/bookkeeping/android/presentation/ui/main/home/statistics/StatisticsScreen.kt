@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -20,6 +20,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,8 +34,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -103,21 +106,25 @@ private fun StatisticsScreen(
         ) {
             Text(
                 text = "통계",
-                style = Headline0.merge(
-                    color = Gray700,
-                    fontWeight = FontWeight.SemiBold
-                ),
+                style = Headline1,
                 modifier = Modifier.align(Alignment.Center)
             )
-            Image(
-                painter = painterResource(R.drawable.ic_notification),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .clickable {
-                        navigateToNotification()
-                    }
-            )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            navigateToNotification()
+                        }
+                    )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_notification),
+                    contentDescription = null
+                )
+            }
         }
         Box(
             modifier = Modifier

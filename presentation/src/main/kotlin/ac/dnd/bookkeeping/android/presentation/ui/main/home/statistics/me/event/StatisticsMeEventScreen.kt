@@ -4,14 +4,17 @@ import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatistics
 import ac.dnd.bookkeeping.android.domain.model.feature.statistics.MyStatisticsItem
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Caption1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Icon24
+import ac.dnd.bookkeeping.android.presentation.common.theme.Primary5
 import ac.dnd.bookkeeping.android.presentation.common.theme.Secondary6
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -54,6 +57,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -132,25 +137,27 @@ fun StatisticsMeEventScreen(
                 style = Headline1
             )
         }
-        Spacer(modifier = Modifier.height(28.dp))
-        LazyRow(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            items(chipData.size) { index ->
-                val key = chipData.keys.elementAt(index)
-                val item = chipData.values.elementAt(index)
-                val title = HistoryEventType.getEventName(key).ifEmpty { "기타" }
-                ChipItem(
-                    chipType = ChipType.MAIN,
-                    currentSelectedId = setOf(selectedEventId),
-                    chipText = title,
-                    onSelectChip = {
-                        selectedEventId = it
-                    },
-                    chipId = key
-                )
+        if (chipData.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(28.dp))
+            LazyRow(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                items(chipData.size) { index ->
+                    val key = chipData.keys.elementAt(index)
+                    val item = chipData.values.elementAt(index)
+                    val title = HistoryEventType.getEventName(key).ifEmpty { "기타" }
+                    ChipItem(
+                        chipType = ChipType.MAIN,
+                        currentSelectedId = setOf(selectedEventId),
+                        chipText = title,
+                        onSelectChip = {
+                            selectedEventId = it
+                        },
+                        chipId = key
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(26.dp))
@@ -178,21 +185,38 @@ fun StatisticsMeEventScreen(
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
-        LazyVerticalGrid(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
-                .weight(1f),
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(listData.size) { index ->
-                val item = listData[index]
-                StatisticsMeEventItemScreen(
-                    item = item,
-                    isGive = model.isGive
+        if (listData.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = "아직 받은 내역이 없어요",
+                    style = Body1.merge(
+                        color = Gray700,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
+            }
+        } else {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth()
+                    .weight(1f),
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(listData.size) { index ->
+                    val item = listData[index]
+                    StatisticsMeEventItemScreen(
+                        item = item,
+                        isGive = model.isGive
+                    )
+                }
             }
         }
     }
@@ -231,7 +255,7 @@ private fun StatisticsMeEventItemScreen(
     Card(
         shape = Shapes.medium,
         backgroundColor = Gray000,
-        elevation = 0.dp
+        elevation = 1.dp
     ) {
         Column(
             modifier = Modifier
@@ -271,10 +295,29 @@ private fun StatisticsMeEventItemScreen(
                 )
                 Text(
                     text = formattedMoney,
-                    style = Body1.merge(Secondary6)
+                    style = Body1.merge(
+                        if (isGive) {
+                            Secondary6
+                        } else {
+                            Primary5
+                        }
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
+            if (item.memo.isNotEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        text = item.memo,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = Caption1.merge(Gray800)
+                    )
+                }
+            }
         }
     }
 }
@@ -310,7 +353,7 @@ private fun StatisticsMeEventScreenPreview1() {
                         groupName = "anticas",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
-                        memo = "asdf"
+                        memo = "가나다라마바사아자차카타파하"
                     ),
                 ),
                 take = listOf(
