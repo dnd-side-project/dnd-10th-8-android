@@ -3,8 +3,8 @@ package ac.dnd.bookkeeping.android.presentation.common.view.chip
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
 import androidx.compose.animation.animateColorAsState
@@ -38,15 +38,15 @@ fun ChipItem(
     val isSelected = chipId in currentSelectedId
     val backgroundColor = animateColorAsState(
         targetValue = when (chipType) {
-            ChipType.MAIN -> if (isSelected) Gray700 else Gray000
+            ChipType.MAIN -> if (isSelected) Gray800 else Gray000
             else -> if (isSelected) Primary1 else Gray000
         },
         label = "background"
     )
     val textColor = animateColorAsState(
         targetValue = when (chipType) {
-            ChipType.MAIN -> if (isSelected) Gray000 else Gray600
-            else -> if (isSelected) Primary4 else Gray600
+            ChipType.MAIN -> if (isSelected) Gray000 else Gray700
+            else -> if (isSelected) Primary4 else Gray700
         },
         label = "textColor"
     )
@@ -100,15 +100,15 @@ fun ChipItem(
 
 @Preview(backgroundColor = 0xFFF6F6F7, showBackground = true)
 @Composable
-fun ChipsType1Preview(){
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
+fun ChipsType1Preview() {
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         ChipItem(
             chipType = ChipType.LESS_BORDER,
-        currentSelectedId = setOf(0),
-        chipId = 0,
-        chipText = "가족",
-        chipCount = 5,
-        onSelectChip = {}
+            currentSelectedId = setOf(0),
+            chipId = 0,
+            chipText = "가족",
+            chipCount = 5,
+            onSelectChip = {}
         )
         ChipItem(
             chipType = ChipType.LESS_BORDER,
@@ -123,8 +123,8 @@ fun ChipsType1Preview(){
 
 @Preview(backgroundColor = 0xFFFFFFFF, showBackground = true)
 @Composable
-fun ChipsType2Preview(){
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
+fun ChipsType2Preview() {
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         ChipItem(
             chipType = ChipType.BORDER,
             currentSelectedId = setOf(0),
@@ -146,8 +146,8 @@ fun ChipsType2Preview(){
 
 @Preview(backgroundColor = 0xFFF6F6F7, showBackground = true)
 @Composable
-fun ChipsType3Preview(){
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)){
+fun ChipsType3Preview() {
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         ChipItem(
             chipType = ChipType.MAIN,
             currentSelectedId = setOf(0),

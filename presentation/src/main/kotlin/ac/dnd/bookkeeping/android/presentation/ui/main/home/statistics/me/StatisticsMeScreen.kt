@@ -234,12 +234,13 @@ private fun StatisticsMeScreen(
     }
     Column(
         modifier = Modifier
-            .padding(horizontal = 20.dp)
             .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(14.dp))
         SegmentControl<MyStatisticsSegmentType>(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth(),
             segments = segmentItemList,
             selectedSegment = selectedSegmentType,
             onSegmentSelected = { segment ->
@@ -263,7 +264,9 @@ private fun StatisticsMeScreen(
         }
         Spacer(modifier = Modifier.height(14.dp))
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth(),
             shape = Shapes.medium,
             backgroundColor = Primary4,
             elevation = 0.dp
@@ -397,9 +400,16 @@ private fun StatisticsMeScreen(
             }
         }
         Spacer(modifier = Modifier.height(34.dp))
-        Text(text = "경사 별 받은 통계", style = Headline2)
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 20.dp),
+            text = "경사 별 받은 통계",
+            style = Headline2
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Row {
+        Row(
+            modifier = Modifier.padding(horizontal = 20.dp)
+        ) {
             ChipItem(
                 chipType = ChipType.BORDER,
                 chipText = "받은 마음",
@@ -435,7 +445,7 @@ private fun StatisticsMeScreen(
         Spacer(modifier = Modifier.height(30.dp))
         PieChart(
             modifier = Modifier
-                .padding(horizontal = 75.dp, vertical = 15.dp)
+                .padding(horizontal = 95.dp, vertical = 15.dp)
                 .fillMaxWidth()
                 .aspectRatio(1f),
             dataList = chartData,
@@ -444,6 +454,7 @@ private fun StatisticsMeScreen(
         if (statisticsData.isEmpty()) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = "이번달은 받은 내역이 없어요",
                 style = Body1.merge(
                     color = Gray700,
@@ -503,16 +514,17 @@ private fun StatisticsMeScreenItem(
         }
         "${formatted}원"
     }
-    Column {
-        Spacer(modifier = Modifier.height(10.dp))
+    Column(
+        modifier = Modifier.clickable {
+            onClick(eventId)
+        }
+    ) {
+        Spacer(modifier = Modifier.height(5.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    onClick(eventId)
-                },
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.width(20.dp))
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -540,7 +552,9 @@ private fun StatisticsMeScreenItem(
                 contentDescription = null,
                 tint = Gray500
             )
+            Spacer(modifier = Modifier.width(20.dp))
         }
+        Spacer(modifier = Modifier.height(5.dp))
     }
 }
 
