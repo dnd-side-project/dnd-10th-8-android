@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 
@@ -14,8 +15,10 @@ fun registerAlarm(
     alarmList: List<Alarm>
 ) {
     val alarmManager = context.getSystemService(AlarmManager::class.java) ?: return
+    val now = Clock.System.now()
 
     alarmList.forEach { alarm ->
+        if (alarm.alarm.toInstant(TimeZone.currentSystemDefault()) < now) return@forEach
         val intent = alarm.toIntent(context)
 
         alarmManager.set(
