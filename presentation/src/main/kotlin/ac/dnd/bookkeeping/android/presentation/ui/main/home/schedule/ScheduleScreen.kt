@@ -26,6 +26,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.bookkeeping.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.ScheduleAddConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import android.content.Intent
@@ -121,8 +122,7 @@ private fun ScheduleScreen(
     }
 
     fun navigateToNotification() {
-        // TODO : navigate to notification
-//        appState.navController.navigate(NotificationConstant.ROUTE)
+        appState.navController.navigate(NotificationConstant.ROUTE)
     }
 
     fun navigateToInvitation(link: String) {
