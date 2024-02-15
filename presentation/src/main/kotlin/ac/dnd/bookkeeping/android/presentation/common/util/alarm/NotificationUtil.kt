@@ -1,4 +1,4 @@
-package ac.dnd.bookkeeping.android.presentation.common.util
+package ac.dnd.bookkeeping.android.presentation.common.util.alarm
 
 import ac.dnd.bookkeeping.android.presentation.R
 import android.Manifest

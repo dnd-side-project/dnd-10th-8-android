@@ -3,6 +3,8 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.splash
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.bookkeeping.android.presentation.common.util.alarm.registerAlarm
+import ac.dnd.bookkeeping.android.presentation.common.util.alarm.unregisterAlarm
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
@@ -17,8 +19,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +37,9 @@ fun SplashScreen(
     intent: (SplashIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     fun navigateToLogin() {
         appState.navController.navigate(LoginConstant.ROUTE) {
             popUpTo(SplashConstant.ROUTE) {
@@ -51,7 +58,9 @@ fun SplashScreen(
 
     fun login(event: SplashEvent.Login) {
         when (event) {
-            SplashEvent.Login.Success -> {
+            is SplashEvent.Login.Success -> {
+                unregisterAlarm(context, event.alarmList)
+                registerAlarm(context, event.alarmList)
                 navigateToHome()
             }
 
@@ -88,7 +97,7 @@ fun SplashScreen(
 
 @Preview
 @Composable
-fun SplashScreenPreview() {
+private fun SplashScreenPreview() {
     SplashScreen(
         appState = rememberApplicationState(),
         model = SplashModel(state = SplashState.Init),

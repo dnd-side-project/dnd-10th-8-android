@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.splash
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.usecase.authentication.UpdateJwtTokenUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.GetAlarmListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val updateJwtTokenUseCase: UpdateJwtTokenUseCase
+    private val updateJwtTokenUseCase: UpdateJwtTokenUseCase,
+    private val getAlarmListUseCase: GetAlarmListUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<SplashState> = MutableStateFlow(SplashState.Init)
@@ -41,8 +43,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private suspend fun checkJwtToken() {
-        updateJwtTokenUseCase().onSuccess {
-            _event.emit(SplashEvent.Login.Success)
+        updateJwtTokenUseCase().map {
+            getAlarmListUseCase().getOrThrow()
+        }.onSuccess { alarmList ->
+            _event.emit(SplashEvent.Login.Success(alarmList))
         }.onFailure { exception ->
             when (exception) {
                 is ServerException -> {
