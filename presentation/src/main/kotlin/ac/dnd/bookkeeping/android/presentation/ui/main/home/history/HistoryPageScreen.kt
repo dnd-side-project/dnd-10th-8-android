@@ -4,7 +4,6 @@ import ac.dnd.bookkeeping.android.domain.model.feature.group.GroupWithRelationDe
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
@@ -133,7 +132,7 @@ fun HistoryPageScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Gray150)
+            .background(Gray200)
     ) {
         Spacer(modifier = Modifier.height(6.dp))
         Box(

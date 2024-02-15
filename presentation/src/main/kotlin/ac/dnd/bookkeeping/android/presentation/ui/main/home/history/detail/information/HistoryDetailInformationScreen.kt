@@ -6,7 +6,6 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
@@ -204,7 +203,7 @@ private fun HistoryDetailInformationScreen(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .background(
-                        color = Gray150,
+                        color = Gray200,
                         shape = Shapes.large
                     )
             ) {

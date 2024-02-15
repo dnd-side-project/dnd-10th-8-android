@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.common.view.textfield
 
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 fun PriceChipComponent(
     scope: CoroutineScope,
     chipPressColor: Color = Gray300,
-    chipUnPressColor: Color = Gray150,
+    chipUnPressColor: Color = Gray200,
     chipContentColor: Color = Gray700,
     chipList: Map<String, Long> = mapOf(
         "1만" to 10_000,

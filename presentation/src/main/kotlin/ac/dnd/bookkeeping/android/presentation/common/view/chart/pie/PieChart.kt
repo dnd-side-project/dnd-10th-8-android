@@ -1,5 +1,10 @@
 package ac.dnd.bookkeeping.android.presentation.common.view.chart.pie
 
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -21,6 +26,10 @@ fun PieChart(
     dataList: List<PieChartData>,
     @FloatRange(from = 0.0, to = 1.0) thickness: Float
 ) {
+    val fixedDataList = dataList.ifEmpty {
+        emptyDataList
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -30,9 +39,9 @@ fun PieChart(
                 .align(Alignment.Center)
         ) {
             val fixedThickness = size.width / 2 * thickness
-            val sum: Int = dataList.sumOf { it.value }
-            dataList.forEachIndexed { index, data ->
-                val startAngle = -90f + dataList.take(index).sumOf { it.value } * 360f / sum
+            val sum: Int = fixedDataList.sumOf { it.value }
+            fixedDataList.forEachIndexed { index, data ->
+                val startAngle = -90f + fixedDataList.take(index).sumOf { it.value } * 360f / sum
                 val angle = data.value * 360f / sum
                 drawArc(
                     color = data.color,
@@ -56,9 +65,32 @@ fun PieChart(
     }
 }
 
+private val emptyDataList: List<PieChartData> = listOf(
+    PieChartData(
+        color = Gray700,
+        value = 7
+    ),
+    PieChartData(
+        color = Gray600,
+        value = 5
+    ),
+    PieChartData(
+        color = Gray500,
+        value = 2
+    ),
+    PieChartData(
+        color = Gray400,
+        value = 1
+    ),
+    PieChartData(
+        color = Gray300,
+        value = 2
+    ),
+)
+
 @Preview
 @Composable
-private fun PieChartPreview() {
+private fun PieChartPreview1() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,6 +109,23 @@ private fun PieChartPreview() {
                     value = 2
                 )
             ),
+            thickness = 0.5f
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PieChartPreview2() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        PieChart(
+            modifier = Modifier
+                .fillMaxSize(),
+            dataList = emptyList(),
             thickness = 0.5f
         )
     }

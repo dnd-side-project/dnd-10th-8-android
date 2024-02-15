@@ -7,6 +7,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
@@ -66,6 +67,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -252,7 +254,10 @@ private fun StatisticsMeScreen(
             }
             Text(
                 text = text,
-                style = Body1
+                style = Body1.merge(
+                    color = if (selectedSegmentType == segment) Color.Black else Gray700,
+                    fontWeight = FontWeight.SemiBold
+                ),
             )
         }
         Spacer(modifier = Modifier.height(14.dp))
@@ -354,8 +359,20 @@ private fun StatisticsMeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "받은 마음", style = Body1.merge(Primary1))
-                        Text(text = formattedTakeSum, style = Body1.merge(Primary1))
+                        Text(
+                            text = "받은 마음",
+                            style = Body1.merge(
+                                color = Primary1,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                        Text(
+                            text = formattedTakeSum,
+                            style = Body1.merge(
+                                color = Primary1,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(

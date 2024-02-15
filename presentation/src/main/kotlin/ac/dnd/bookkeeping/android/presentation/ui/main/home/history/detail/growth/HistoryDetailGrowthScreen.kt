@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
@@ -61,7 +61,7 @@ fun HistoryDetailGrowthScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Gray150)
+            .background(Gray200)
             .padding(horizontal = 20.dp)
     ) {
         Box(
@@ -122,7 +122,7 @@ fun HistoryDetailGrowthScreen(
                         Box(
                             modifier = Modifier
                                 .background(
-                                    color = Gray150,
+                                    color = Gray200,
                                     shape = RoundedCornerShape(6.dp)
                                 )
                         ) {

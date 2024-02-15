@@ -1,7 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.unrecorded
 
 import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -68,7 +68,7 @@ fun HistoryUnrecordedScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Gray150)
+            .background(Gray200)
             .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(16.dp))

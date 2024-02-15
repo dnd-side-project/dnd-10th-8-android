@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
 import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Caption4
 import ac.dnd.bookkeeping.android.presentation.common.theme.Icon24
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -33,7 +32,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,27 +63,32 @@ fun HomeScreen(
         MainBottomBarItem(
             route = HistoryConstant.ROUTE,
             name = "내역",
-            icon = R.drawable.ic_launcher
+            iconSelectedRes = R.drawable.ic_history_selected,
+            iconUnselectedRes = R.drawable.ic_history_unselected
         ),
         MainBottomBarItem(
             route = StatisticsConstant.ROUTE,
             name = "통계",
-            icon = R.drawable.ic_launcher
+            iconSelectedRes = R.drawable.ic_statistics_selected,
+            iconUnselectedRes = R.drawable.ic_statistics_unselected
         ),
         MainBottomBarItem(
             route = ScheduleConstant.ROUTE,
             name = "일정",
-            icon = R.drawable.ic_launcher
+            iconSelectedRes = R.drawable.ic_schedule_selected,
+            iconUnselectedRes = R.drawable.ic_schedule_unselected
         ),
         MainBottomBarItem(
             route = MyPageConstant.ROUTE,
             name = "마이페이지",
-            icon = R.drawable.ic_launcher
+            iconSelectedRes = R.drawable.ic_mypage_selected,
+            iconUnselectedRes = R.drawable.ic_mypage_unselected
         ),
         MainBottomBarItem(
             route = TestConstant.ROUTE,
             name = "Test Page",
-            icon = R.drawable.ic_warning
+            iconSelectedRes = R.drawable.ic_warning,
+            iconUnselectedRes = R.drawable.ic_warning
         )
     )
     val scaffoldState = rememberScaffoldState()
@@ -179,26 +182,20 @@ private fun HomeBottomBarScreen(
         backgroundColor = Color.LightGray,
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp)
+            .height(54.dp)
     ) {
         itemList.forEachIndexed { index, item ->
             BottomNavigationItem(
                 selected = index == selectedItem,
                 icon = {
+                    val icon =
+                        if (index == selectedItem) item.iconSelectedRes else item.iconUnselectedRes
                     Icon(
                         modifier = Modifier.size(Icon24),
-                        painter = painterResource(id = item.icon),
+                        painter = painterResource(id = icon),
                         contentDescription = "bottom icon"
                     )
                 },
-                label = {
-                    Text(
-                        text = item.name,
-                        style = Caption4
-                    )
-                },
-                selectedContentColor = Color.Black,
-                unselectedContentColor = Color.Gray,
                 onClick = {
                     onClick(index)
                 }

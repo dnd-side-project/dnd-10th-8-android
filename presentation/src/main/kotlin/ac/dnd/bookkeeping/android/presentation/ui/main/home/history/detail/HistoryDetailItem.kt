@@ -6,7 +6,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
@@ -130,7 +130,7 @@ fun HistoryDetailItem(
                             Box(
                                 modifier = Modifier
                                     .background(
-                                        color = Gray150,
+                                        color = Gray200,
                                         shape = Shapes.small
                                     )
                                     .padding(horizontal = 8.5.dp)
