@@ -12,6 +12,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.me.StatisticsMeScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.user.StatisticsUserScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
@@ -85,8 +86,7 @@ private fun StatisticsScreen(
     )
 
     fun navigateToNotification() {
-        // TODO : navigate to notification
-//        appState.navController.navigate(NotificationConstant.ROUTE)
+        appState.navController.navigate(NotificationConstant.ROUTE)
     }
 
     Column(

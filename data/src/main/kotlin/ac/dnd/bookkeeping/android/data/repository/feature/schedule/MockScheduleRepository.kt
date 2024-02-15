@@ -12,9 +12,15 @@ import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedu
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.bookkeeping.android.domain.repository.ScheduleRepository
 import kotlinx.coroutines.delay
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import kotlinx.datetime.todayIn
 import javax.inject.Inject
 
 class MockScheduleRepository @Inject constructor() : ScheduleRepository {
@@ -130,6 +136,9 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
 
     override suspend fun getAlarmList(): Result<List<Alarm>> {
         randomShortDelay()
+        val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
+        val date1 = now.minus(1, DateTimeUnit.DAY)
+        val date2 = now.minus(10, DateTimeUnit.DAY)
         return Result.success(
             listOf(
                 Alarm(
@@ -142,15 +151,55 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                             name = "Pete Lambert"
                         )
                     ),
-                    day = LocalDate(2024, 2, 25),
+                    day = date1,
                     event = "doctus",
                     repeatType = null,
                     repeatFinish = null,
-                    alarm = LocalDateTime(2024, 2, 25, 9, 0),
+                    alarm = LocalDateTime(date1.year, date1.month.number, date1.dayOfMonth, 9, 0),
                     time = null,
                     link = "urna",
                     location = "quas",
                     memo = "error"
+                ),
+                Alarm(
+                    id = 98319,
+                    relation = AlarmRelation(
+                        id = 81211,
+                        name = "Seth Sears2",
+                        group = AlarmRelationGroup(
+                            id = 98154,
+                            name = "Pete Lambert2"
+                        )
+                    ),
+                    day = date2,
+                    event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(date2.year, date2.month.number, date2.dayOfMonth, 12, 0),
+                    time = LocalTime(14, 0),
+                    link = "",
+                    location = "",
+                    memo = ""
+                ),
+                Alarm(
+                    id = 983129,
+                    relation = AlarmRelation(
+                        id = 812211,
+                        name = "Seth Sears3",
+                        group = AlarmRelationGroup(
+                            id = 981254,
+                            name = "Pete Lambert3"
+                        )
+                    ),
+                    day = LocalDate(2024, 2, 25),
+                    event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
+                    time = LocalTime(14, 0),
+                    link = "",
+                    location = "",
+                    memo = ""
                 )
             )
         )

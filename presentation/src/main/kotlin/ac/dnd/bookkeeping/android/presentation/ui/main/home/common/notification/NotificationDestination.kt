@@ -3,7 +3,6 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -19,9 +18,11 @@ fun NavGraphBuilder.notificationDestination(
 
         val model: NotificationModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val alarmList by viewModel.alarmList.collectAsStateWithLifecycle()
 
             NotificationModel(
-                state = state
+                state = state,
+                alarmList = alarmList
             )
         }
 

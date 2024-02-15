@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.notification.notificationDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.historyDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.scheduleDestination
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.statistics.statisticsDestination
@@ -41,4 +42,6 @@ fun NavGraphBuilder.homeDestination(
     historyDestination(appState)
     scheduleDestination(appState)
     statisticsDestination(appState)
+
+    notificationDestination(appState)
 }
