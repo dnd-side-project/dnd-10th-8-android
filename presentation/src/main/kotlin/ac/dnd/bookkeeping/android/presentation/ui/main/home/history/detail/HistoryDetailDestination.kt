@@ -19,11 +19,12 @@ fun NavGraphBuilder.historyDetailDestination(
         arguments = listOf(
             navArgument(HistoryDetailConstant.ROUTE_ARGUMENT_ID) {
                 type = NavType.LongType
+                defaultValue = -1L
             }
         )
     ) { entry ->
 
-        val id = entry.arguments?.getLong(HistoryDetailConstant.ROUTE_ARGUMENT_ID) ?: -1
+        val id = entry.arguments?.getLong(HistoryDetailConstant.ROUTE_ARGUMENT_ID) ?: -1L
 
         val viewModel: HistoryDetailViewModel = hiltViewModel()
 

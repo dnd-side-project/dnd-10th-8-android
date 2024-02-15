@@ -16,11 +16,13 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistorySortedType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.HistoryDetailConstant
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -119,6 +121,14 @@ fun HistoryPageScreen(
                     true
                 }
             }
+
+    fun navigateToHistoryDetail(id: Long) {
+        val route = makeRoute(
+            HistoryDetailConstant.ROUTE,
+            listOf(HistoryDetailConstant.ROUTE_ARGUMENT_ID to id)
+        )
+        appState.navController.navigate(route)
+    }
 
     Column(
         modifier = Modifier
@@ -278,7 +288,7 @@ fun HistoryPageScreen(
                         viewType = viewType,
                         relation = relation,
                         onSelectCard = {
-                            //TODO go detail history
+                            navigateToHistoryDetail(it.id)
                         },
                     )
                 }

@@ -2,8 +2,11 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.edit
 
 import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
@@ -19,7 +22,8 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Mutab
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
-import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarConfig
+import ac.dnd.bookkeeping.android.presentation.common.view.SnackBarScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.calendar.CalendarPicker
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSelectComponent
@@ -33,8 +37,9 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
-import ac.dnd.bookkeeping.android.presentation.ui.main.common.calendar.EventTypeScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.event.EventTypeScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,6 +47,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,8 +56,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,17 +74,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import java.text.DecimalFormat
 
 @Composable
 fun HistoryDetailEditScreen(
@@ -109,6 +122,7 @@ fun HistoryDetailEditScreen(
     )
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 private fun HistoryDetailEditScreen(
     appState: ApplicationState,
@@ -119,34 +133,31 @@ private fun HistoryDetailEditScreen(
     onDismissRequest: () -> Unit,
     onDelete: (Long) -> Unit,
     onEdit: (RelatedHeart) -> Unit,
-    calendarConfig: CalendarConfig = CalendarConfig()
 ) {
     val scope = rememberCoroutineScope()
-    var scrollState = rememberScrollState()
-    var moneyText by remember {
-        mutableStateOf("${DecimalFormat("#,###").format(model.relatedHeart.money)}원")
-    }
+    val focusManager = LocalFocusManager.current
+    val scrollState = rememberScrollState()
+    var moneyText by remember { mutableStateOf(model.relatedHeart.money.toString()) }
     var selectedYear by remember { mutableIntStateOf(model.relatedHeart.day.year) }
     var selectedMonth by remember { mutableIntStateOf(model.relatedHeart.day.monthNumber) }
     var selectedDay by remember { mutableIntStateOf(model.relatedHeart.day.dayOfMonth) }
     var eventText by remember { mutableStateOf(model.relatedHeart.event) }
     var memoText by remember { mutableStateOf(model.relatedHeart.memo) }
-    val tagIdList = remember {
-        HistoryTagType.getTagIdList(model.relatedHeart.tags).toMutableStateList()
-    }
+    val tagIdList =
+        remember { HistoryTagType.getTagIdList(model.relatedHeart.tags).toMutableStateList() }
 
     var isEventSelected by remember { mutableStateOf(false) }
+    var isEventFocused by remember { mutableStateOf(false) }
+    var isEventTyping by remember { mutableStateOf(false) }
     var isMemoSelected by remember { mutableStateOf(false) }
     var isCalendarSelected by remember { mutableStateOf(false) }
     var isShowingOutPageDialog by remember { mutableStateOf(false) }
     var isShowingDeleteDialog by remember { mutableStateOf(false) }
-    var isShowingSuccessDeleteDialog by remember { mutableStateOf(false) }
-    var isShowingSuccessEditDialog by remember { mutableStateOf(false) }
+    var isShowingSuccessEditSnackBar by remember { mutableStateOf(false) }
 
     fun delete(event: HistoryDetailEditEvent.DeleteRelatedHeart) {
         when (event) {
             is HistoryDetailEditEvent.DeleteRelatedHeart.Success -> {
-                isShowingSuccessDeleteDialog = true
                 onDelete(model.relatedHeart.id)
             }
         }
@@ -155,20 +166,27 @@ private fun HistoryDetailEditScreen(
     fun edit(event: HistoryDetailEditEvent.EditRelatedHeart) {
         when (event) {
             is HistoryDetailEditEvent.EditRelatedHeart.Success -> {
-                isShowingSuccessEditDialog = true
                 onEdit(event.relatedHeart)
+                scope.launch {
+                    isShowingSuccessEditSnackBar = true
+                    delay(500L)
+                    isShowingSuccessEditSnackBar = false
+                }
             }
         }
     }
 
     BottomSheetScreen(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            isShowingOutPageDialog = true
+        },
         properties = BottomSheetDialogProperties(
             dismissOnBackPress = false,
             dismissOnClickOutside = false,
             behaviorProperties = BottomSheetBehaviorProperties(
                 state = BottomSheetBehaviorProperties.State.Expanded,
-                skipCollapsed = true
+                skipCollapsed = true,
+                isDraggable = false
             )
         )
     ) {
@@ -176,10 +194,11 @@ private fun HistoryDetailEditScreen(
             modifier = Modifier
                 .wrapContentHeight()
                 .background(Gray000)
-                .padding(horizontal = Space20)
         ) {
             Column(
-                modifier = Modifier.verticalScroll(state = scrollState)
+                modifier = Modifier
+                    .verticalScroll(state = scrollState)
+                    .padding(horizontal = Space20)
             ) {
                 Spacer(modifier = Modifier.height(Space20))
                 Box(
@@ -193,12 +212,12 @@ private fun HistoryDetailEditScreen(
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
                             .clickable {
-                                onDismissRequest()
+                                isShowingOutPageDialog = true
                             }
                     )
                 }
                 Text(
-                    text = "받은 마음 내역",
+                    text = "${if (model.relatedHeart.give) "보낸" else "받은"} 마음 내역",
                     style = Headline2.merge(
                         color = Gray800,
                         fontWeight = FontWeight.SemiBold
@@ -222,45 +241,99 @@ private fun HistoryDetailEditScreen(
                     text = listOf(selectedYear, selectedMonth, selectedDay).joinToString(" / "),
                     onClick = {
                         isCalendarSelected = true
-                        // TODO picker
                     }
                 )
                 Spacer(modifier = Modifier.height(Space24))
 
                 FieldSubject(subject = "경사 종류")
                 Spacer(modifier = Modifier.height(6.dp))
-                FieldSelectComponent(
-                    isSelected = isEventSelected,
+                TypingTextField(
                     text = eventText,
-                    onClick = {
-                        isEventSelected = true
-                    }
+                    onValueChange = {
+                        eventText = it
+                    },
+                    textType = TypingTextFieldType.Basic,
+                    onTextFieldFocusChange = {
+                        if (it) {
+                            isEventSelected = true
+                        } else {
+                            isEventTyping = false
+                        }
+                        isEventFocused = it
+                    },
+                    trailingIconContent = {
+                        if (isEventTyping) {
+                            if (eventText.isNotEmpty()) {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_close_circle),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clickable {
+                                            eventText = ""
+                                        }
+                                )
+                            }
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_chevron_right),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(Gray500)
+                            )
+                        }
+                    },
+                    isSingleLine = true
                 )
                 Spacer(modifier = Modifier.height(Space24))
 
-                FieldSubject(subject = "메모")
+                FieldSubject(
+                    subject = "메모",
+                    isViewIcon = false
+                )
                 Spacer(modifier = Modifier.height(6.dp))
-                if (!isMemoSelected) {
-                    FieldSelectComponent(
-                        isSelected = isMemoSelected,
-                        text = memoText,
-                        onClick = {
-                            isMemoSelected = true
+                TypingTextField(
+                    text = memoText,
+                    onValueChange = {
+                        memoText = it
+                    },
+                    contentPadding = PaddingValues(
+                        vertical = 15.dp,
+                        horizontal = 16.dp
+                    ),
+                    fieldHeight = 97.dp,
+                    onTextFieldFocusChange = {
+                        isMemoSelected = it
+                    },
+                    textType = TypingTextFieldType.Basic,
+                    trailingIconContent = {
+                        if (isMemoSelected) {
+                            if (memoText.isNotEmpty()) {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_close_circle),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clickable {
+                                            memoText = ""
+                                        }
+                                )
+                            }
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_chevron_right),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(Gray500)
+                            )
                         }
-                    )
-                } else {
-                    // TODO memo focus out -> isMemoSelected = false
-                    TypingTextField(
-                        textType = TypingTextFieldType.LongSentence,
-                        text = memoText,
-                        onValueChange = {
-                            memoText = it
-                        }
-                    )
-                }
+                    },
+                    isSingleLine = false
+                )
                 Spacer(modifier = Modifier.height(Space24))
 
-                FieldSubject("태그")
+                FieldSubject(
+                    subject = "태그",
+                    isViewIcon = false
+                )
                 Spacer(modifier = Modifier.height(6.dp))
                 HistoryTagType.entries.chunked(5).forEach { registrationTagTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -290,7 +363,10 @@ private fun HistoryDetailEditScreen(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .background(Gray000)
-                    .padding(vertical = Space12),
+                    .padding(
+                        vertical = Space12,
+                        horizontal = Space20
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -358,6 +434,15 @@ private fun HistoryDetailEditScreen(
                     )
                 }
             }
+            if (isShowingSuccessEditSnackBar) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 61.dp)
+                ) {
+                    SnackBarScreen("수정이 완료되었습니다.")
+                }
+            }
         }
     }
 
@@ -369,32 +454,121 @@ private fun HistoryDetailEditScreen(
             onConfirm = {
                 isEventSelected = false
                 eventText = it
+            },
+            onTypingMode = {
+                isEventSelected = false
+                isEventTyping = true
+            }
+        )
+    }
+
+    if (isCalendarSelected) {
+        CalendarPicker(
+            localDate = LocalDate(
+                year = selectedYear,
+                monthNumber = selectedMonth,
+                dayOfMonth = selectedDay
+            ),
+            isDaySelectable = true,
+            onDismissRequest = {
+                isCalendarSelected = false
+            },
+            onConfirm = {
+                selectedYear = it.year
+                selectedMonth = it.monthNumber
+                selectedDay = it.dayOfMonth
             }
         )
     }
 
     if (isShowingOutPageDialog) {
-        DialogScreen(
-            isCancelable = true,
-            title = "페이지를 나가면 수정중인 내용이 삭제돼요.",
-            confirmMessage = "나가기",
-            cancelMessage = "계속 수정",
-            onCancel = {
-                onDismissRequest()
-            },
-            onConfirm = {
-                isShowingOutPageDialog = false
-            },
+        Dialog(
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            ),
             onDismissRequest = {
                 isShowingOutPageDialog = false
             }
-        )
+        ) {
+            Card(
+                backgroundColor = Color.White,
+                shape = Shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Image(
+                        painter = painterResource(R.drawable.ic_alert_triangle_gray),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "페이지를 나가면\n수정중인 내용이 삭제돼요.",
+                        style = Body1.merge(
+                            color = Gray800,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Row(modifier = Modifier.wrapContentSize()) {
+                        ConfirmButton(
+                            properties = ConfirmButtonProperties(
+                                size = ConfirmButtonSize.Large,
+                                type = ConfirmButtonType.Secondary
+                            ),
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                onDismissRequest()
+                                isShowingOutPageDialog = false
+                            }
+                        ) {
+                            Text(
+                                text = "나가기",
+                                style = Headline3.merge(
+                                    color = Gray700,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        ConfirmButton(
+                            properties = ConfirmButtonProperties(
+                                size = ConfirmButtonSize.Large,
+                                type = ConfirmButtonType.Primary
+                            ),
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                isShowingOutPageDialog = false
+                            }
+                        ) {
+                            Text(
+                                text = "계속 수정",
+                                style = Headline3.merge(
+                                    color = Gray000,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
+        }
     }
 
     if (isShowingDeleteDialog) {
         DialogScreen(
             isCancelable = true,
-            title = "${if (model.relatedHeart.give) "보낸" else "받은"} 마음 내역을 삭제하시겠어요?",
+            message = "${if (model.relatedHeart.give) "보낸" else "받은"} 마음 내역을 삭제하시겠어요?",
             confirmMessage = "삭제",
             cancelMessage = "취소",
             onCancel = {
@@ -406,32 +580,6 @@ private fun HistoryDetailEditScreen(
             },
             onDismissRequest = {
                 isShowingDeleteDialog = false
-            }
-        )
-    }
-    if (isShowingSuccessDeleteDialog) {
-        DialogScreen(
-            isCancelable = false,
-            title = "삭제가 완료되었습니다.",
-            confirmMessage = "확인",
-            onConfirm = {
-                isShowingSuccessDeleteDialog = false
-            },
-            onDismissRequest = {
-                isShowingSuccessDeleteDialog = false
-            }
-        )
-    }
-    if (isShowingSuccessEditDialog) {
-        DialogScreen(
-            isCancelable = false,
-            title = "수정이 완료되었습니다.",
-            confirmMessage = "확인",
-            onConfirm = {
-                isShowingSuccessEditDialog = false
-            },
-            onDismissRequest = {
-                isShowingSuccessEditDialog = false
             }
         )
     }
@@ -466,7 +614,7 @@ private fun HistoryDetailEditScreenPreview() {
                 money = 500_000L,
                 day = LocalDate(2023, 1, 1),
                 event = "참석",
-                memo = "답례품으로 와인을 받았다",
+                memo = "답례품으로 와인을 받았다답례품으로 와인을 받았다답례품으로 와인을 받았다",
                 tags = listOf(
                     HistoryTagType.ATTEND.tagName
                 )

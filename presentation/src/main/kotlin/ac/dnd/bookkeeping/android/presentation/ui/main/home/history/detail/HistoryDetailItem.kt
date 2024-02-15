@@ -46,7 +46,7 @@ import java.text.DecimalFormat
 @Composable
 fun HistoryDetailItem(
     relatedHeart: RelatedHeart,
-    onClick: (id: Long) -> Unit
+    onClick: (RelatedHeart) -> Unit
 ) {
     val currentViewWidth = LocalConfiguration.current.screenWidthDp.dp
 
@@ -54,7 +54,7 @@ fun HistoryDetailItem(
         shape = Shapes.medium,
         backgroundColor = Gray000,
         modifier = Modifier.clickable {
-            onClick(relatedHeart.id)
+            onClick(relatedHeart)
         }
     ) {
         Box(

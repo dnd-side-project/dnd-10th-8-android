@@ -13,10 +13,12 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space24
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space4
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.bookkeeping.android.presentation.common.view.SnackBarScreen
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryDetailSortedType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistorySortedType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.edit.HistoryDetailEditScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +29,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,14 +37,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +57,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HistoryDetailPageScreen(
@@ -63,8 +69,11 @@ fun HistoryDetailPageScreen(
     handler: CoroutineExceptionHandler,
     viewType: HistoryViewType
 ) {
+    val scope = rememberCoroutineScope()
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
     var viewSortType by remember { mutableStateOf(HistoryDetailSortedType.LATEST) }
+    var isShowingSuccessDeleteSnackBar by remember { mutableStateOf(false) }
+    var currentSelectedHeartIndex by remember { mutableIntStateOf(-1) }
     val hearts = model.hearts
         .filter { heart ->
             return@filter when (viewType) {
@@ -80,128 +89,159 @@ fun HistoryDetailPageScreen(
             if (viewSortType == HistoryDetailSortedType.OLDEST) it.day else null
         }
 
-    Column(
-        modifier = Modifier.padding(horizontal = 20.dp)
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Box(
-            modifier = Modifier
-                .padding(start = 2.dp)
-                .fillMaxWidth()
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp)
         ) {
-            Text(
-                text = "내역 ${hearts.size}",
-                style = Body1.merge(
-                    color = Gray600,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.align(Alignment.CenterStart)
-            )
-            Row(
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .clickable {
-                        isDropDownMenuExpanded = true
-                    },
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(start = 2.dp)
+                    .fillMaxWidth()
             ) {
                 Text(
-                    text = viewSortType.typeName,
+                    text = "내역 ${hearts.size}",
                     style = Body1.merge(
-                        color = Gray700,
-                        fontWeight = FontWeight.Medium
-                    )
+                        color = Gray600,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.align(Alignment.CenterStart)
                 )
-                Spacer(modifier = Modifier.width(2.dp))
-                Image(
-                    painter = painterResource(R.drawable.ic_chevron_down),
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                DropdownMenu(
+                Row(
                     modifier = Modifier
-                        .wrapContentHeight()
-                        .background(
-                            color = Gray000,
-                            shape = Shapes.medium
-                        ),
-                    expanded = isDropDownMenuExpanded,
-                    onDismissRequest = { isDropDownMenuExpanded = false }
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            isDropDownMenuExpanded = true
+                        },
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(verticalArrangement = Arrangement.Center) {
-                        HistoryDetailSortedType.entries.forEachIndexed { index, type ->
-                            DropdownMenuItem(
-                                onClick = {},
-                                contentPadding = PaddingValues(0.dp),
-                                modifier = Modifier
-                                    .width(116.dp)
-                                    .height(40.dp)
-                            ) {
-                                Row(
+                    Text(
+                        text = viewSortType.typeName,
+                        style = Body1.merge(
+                            color = Gray700,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Image(
+                        painter = painterResource(R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    DropdownMenu(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .background(
+                                color = Gray000,
+                                shape = Shapes.medium
+                            ),
+                        expanded = isDropDownMenuExpanded,
+                        onDismissRequest = { isDropDownMenuExpanded = false }
+                    ) {
+                        Column(verticalArrangement = Arrangement.Center) {
+                            HistoryDetailSortedType.entries.forEachIndexed { index, type ->
+                                DropdownMenuItem(
+                                    onClick = {},
+                                    contentPadding = PaddingValues(0.dp),
                                     modifier = Modifier
-                                        .clickable {
-                                            viewSortType = type
-                                            isDropDownMenuExpanded = false
-                                        }
-                                        .padding(horizontal = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                        .width(116.dp)
+                                        .height(40.dp)
                                 ) {
-                                    if (viewSortType == type) {
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_check_line),
-                                            contentDescription = null,
-                                            colorFilter = ColorFilter.tint(Primary4),
-                                            modifier = Modifier.size(Space24)
-                                        )
-                                    } else {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(Space24)
-                                                .background(Color.White)
+                                    Row(
+                                        modifier = Modifier
+                                            .clickable {
+                                                viewSortType = type
+                                                isDropDownMenuExpanded = false
+                                            }
+                                            .padding(horizontal = 8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        if (viewSortType == type) {
+                                            Image(
+                                                painter = painterResource(R.drawable.ic_check_line),
+                                                contentDescription = null,
+                                                colorFilter = ColorFilter.tint(Primary4),
+                                                modifier = Modifier.size(Space24)
+                                            )
+                                        } else {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(Space24)
+                                                    .background(Color.White)
+                                            )
+                                        }
+                                        Spacer(Modifier.width(Space4))
+                                        Text(
+                                            text = type.typeName,
+                                            style = Body1.merge(
+                                                color = Gray700,
+                                                fontWeight = FontWeight.Normal
+                                            )
                                         )
                                     }
-                                    Spacer(Modifier.width(Space4))
-                                    Text(
-                                        text = type.typeName,
-                                        style = Body1.merge(
-                                            color = Gray700,
-                                            fontWeight = FontWeight.Normal
-                                        )
+                                }
+                                if (index != HistorySortedType.entries.lastIndex) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .padding(top = 0.5.dp)
+                                            .background(color = Gray200)
                                     )
                                 }
-                            }
-                            if (index != HistorySortedType.entries.lastIndex) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1.dp)
-                                        .padding(top = 0.5.dp)
-                                        .background(color = Gray200)
-                                )
                             }
                         }
                     }
                 }
             }
-        }
-        if (hearts.isEmpty()) {
-            EmptyHeartView()
-        } else {
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(hearts) { heart ->
-                    HistoryDetailItem(
-                        relatedHeart = heart,
-                        onClick = { heartId ->
-                            //TODO navi to get relation
-                        }
-                    )
+            if (hearts.isEmpty()) {
+                EmptyHeartView()
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(hearts.size) { index ->
+                        HistoryDetailItem(
+                            relatedHeart = hearts[index],
+                            onClick = {
+                                currentSelectedHeartIndex = index
+                            }
+                        )
+                    }
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        if (currentSelectedHeartIndex != -1) {
+            HistoryDetailEditScreen(
+                relatedHeart = hearts[currentSelectedHeartIndex],
+                appState = appState,
+                onDismissRequest = {
+                    currentSelectedHeartIndex = -1
+                },
+                onDelete = { id ->
+                    currentSelectedHeartIndex = -1
+                    intent(HistoryDetailIntent.OnDelete(id))
+                    scope.launch {
+                        isShowingSuccessDeleteSnackBar = true
+                        delay(200L)
+                        isShowingSuccessDeleteSnackBar = false
+                    }
+                },
+                onEdit = { heart ->
+                    intent(HistoryDetailIntent.OnEdit(heart))
+                }
+            )
+        }
+
+        if (isShowingSuccessDeleteSnackBar) {
+            Box(modifier = Modifier.align(Alignment.TopCenter)) {
+                SnackBarScreen("삭제가 완료되었습니다.")
+            }
+        }
     }
 }
 

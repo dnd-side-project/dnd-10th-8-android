@@ -161,7 +161,7 @@ fun HistoryDetailScreen(
                     //TODO navi to growth info
                 },
                 onClickBack = {
-                    //TODO navi to back
+                    appState.navController.popBackStack()
                 }
             )
             MotionLayout(
