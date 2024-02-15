@@ -236,7 +236,7 @@ private fun NotificationScreenItem(
         item.alarm.date.year == now.year -> {
             val format = "%02d월 %02d일"
             runCatching {
-                String.format(format, item.alarm.date.year, item.alarm.date.month.number)
+                String.format(format, item.alarm.date.month.number, item.alarm.date.dayOfMonth)
             }.onFailure { exception ->
                 scope.launch(handler) {
                     throw exception
