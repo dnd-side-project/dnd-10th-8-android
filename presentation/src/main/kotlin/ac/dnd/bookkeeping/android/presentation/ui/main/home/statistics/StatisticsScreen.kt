@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -103,10 +103,7 @@ private fun StatisticsScreen(
         ) {
             Text(
                 text = "통계",
-                style = Headline0.merge(
-                    color = Gray700,
-                    fontWeight = FontWeight.SemiBold
-                ),
+                style = Headline1,
                 modifier = Modifier.align(Alignment.Center)
             )
             Image(

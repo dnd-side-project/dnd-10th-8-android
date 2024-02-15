@@ -222,6 +222,7 @@ private fun StatisticsMeScreen(
         CalendarPicker(
             localDate = date,
             isDaySelectable = false,
+            isMonthSelectable = (selectedSegmentType == MyStatisticsSegmentType.Monthly),
             onDismissRequest = {
                 isDatePickerShowing = false
             },
@@ -379,8 +380,18 @@ private fun StatisticsMeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "보낸 마음", style = Body1.merge(Primary1))
-                        Text(text = formattedGiveSum, style = Body1.merge(Primary1))
+                        Text(
+                            text = "보낸 마음", style = Body1.merge(
+                                color = Primary1,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                        Text(
+                            text = formattedGiveSum, style = Body1.merge(
+                                color = Primary1,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
                     }
                 }
             }
@@ -430,25 +441,36 @@ private fun StatisticsMeScreen(
             dataList = chartData,
             thickness = 0.5f
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        statisticsData.forEach { (key, item) ->
-            val color = Color(HistoryEventType.getEventTypeColor(item.first().event))
-            val title = HistoryEventType.getEventName(key).ifEmpty { "기타" }
-            val money = item.sumOf { it.money }
-            val percent = money.toFloat() / when (selectedChipType) {
-                MyStatisticsChipType.Take -> model.myStatistics.take.sumOf { it.money }
-                MyStatisticsChipType.Give -> model.myStatistics.give.sumOf { it.money }
-            }
-            StatisticsMeScreenItem(
-                eventId = key,
-                color = color,
-                title = title,
-                percent = percent,
-                money = money,
-                onClick = {
-                    navigateToStatisticsMeEvent(it)
-                }
+        if (statisticsData.isEmpty()) {
+            Spacer(modifier = Modifier.height(30.dp))
+            Text(
+                text = "이번달은 받은 내역이 없어요",
+                style = Body1.merge(
+                    color = Gray700,
+                    fontWeight = FontWeight.SemiBold
+                )
             )
+        } else {
+            Spacer(modifier = Modifier.height(6.dp))
+            statisticsData.forEach { (key, item) ->
+                val color = Color(HistoryEventType.getEventTypeColor(item.first().event))
+                val title = HistoryEventType.getEventName(key).ifEmpty { "기타" }
+                val money = item.sumOf { it.money }
+                val percent = money.toFloat() / when (selectedChipType) {
+                    MyStatisticsChipType.Take -> model.myStatistics.take.sumOf { it.money }
+                    MyStatisticsChipType.Give -> model.myStatistics.give.sumOf { it.money }
+                }
+                StatisticsMeScreenItem(
+                    eventId = key,
+                    color = color,
+                    title = title,
+                    percent = percent,
+                    money = money,
+                    onClick = {
+                        navigateToStatisticsMeEvent(it)
+                    }
+                )
+            }
         }
     }
 
