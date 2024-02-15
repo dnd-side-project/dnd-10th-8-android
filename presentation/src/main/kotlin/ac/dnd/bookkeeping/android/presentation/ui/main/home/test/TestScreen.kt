@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.test
 
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.CHANNEL_1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -20,6 +21,7 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.GetGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
@@ -94,6 +96,7 @@ private fun TestScreen(
     var isBottomSheetShowing by remember { mutableStateOf(false) }
     var isSearchRelationShowing by remember { mutableStateOf(false) }
     var isAddGroupShowing by remember { mutableStateOf(false) }
+    var isGetGroupShowing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     var isErrorText by remember { mutableStateOf(false) }
 
@@ -185,6 +188,16 @@ private fun TestScreen(
                 }
         )
         Text(
+            text = "GetGroup",
+            fontSize = 20.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .clickable {
+                    isGetGroupShowing = true
+                }
+        )
+        Text(
             text = "Notification",
             fontSize = 20.sp,
             color = Color.Black,
@@ -218,6 +231,23 @@ private fun TestScreen(
             onDismissRequest = { isAddGroupShowing = false },
             onResult = {
                 Timber.d("onResult")
+            }
+        )
+    }
+    if (isGetGroupShowing){
+        GetGroupScreen(
+            appState = appState,
+            onDismissRequest = {
+                isGetGroupShowing = false
+            },
+            groups = listOf(
+                Group(0,"sample")
+            ),
+            onResult = {
+                Timber.d("onResult")
+            },
+            onGroupChange = {
+
             }
         )
     }

@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.DeleteGroupUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
@@ -26,22 +27,24 @@ class GetGroupViewModel @Inject constructor(
     private val _event: MutableEventFlow<GetGroupEvent> = MutableEventFlow()
     val event: EventFlow<GetGroupEvent> = _event.asEventFlow()
 
+    private val _groups: MutableStateFlow<List<Group>> = MutableStateFlow(emptyList())
+    val group: StateFlow<List<Group>> = _groups.asStateFlow()
+
     fun onIntent(intent: GetGroupIntent) {
         when (intent) {
             is GetGroupIntent.OnDelete -> deleteGroup(intent.id)
+            is GetGroupIntent.OnAdd -> addGroup(intent.group)
+            is GetGroupIntent.OnEdit -> editGroup(intent.group)
         }
     }
 
-    private fun deleteGroup(
-        id: Long
-    ) {
+    private fun deleteGroup(id: Long) {
         launch {
             _state.value = GetGroupState.Loading
-            deleteGroupUseCase(
-                id = id
-            )
+            deleteGroupUseCase(id = id)
                 .onSuccess {
                     _state.value = GetGroupState.Init
+                    _groups.value = _groups.value.filter { it.id != id }
                     _event.emit(GetGroupEvent.DeleteGroup.Success)
                 }
                 .onFailure { exception ->
@@ -56,6 +59,20 @@ class GetGroupViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    private fun addGroup(group: Group) {
+        _groups.value = _groups.value.toMutableList().also {
+            it.add(group)
+        }
+    }
+
+    private fun editGroup(newGroup: Group) {
+        _groups.value = _groups.value.toMutableList().also {
+            it.replaceAll { group ->
+                if (group.id == newGroup.id) newGroup else group
+            }
         }
     }
 }

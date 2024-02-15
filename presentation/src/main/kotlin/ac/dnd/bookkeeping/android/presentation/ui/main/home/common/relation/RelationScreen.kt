@@ -42,6 +42,7 @@ import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailGrou
 import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailWithUserInfoModel
 import ac.dnd.bookkeeping.android.presentation.model.relation.RelationType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.GetGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -108,7 +109,7 @@ fun RelationScreen(
     var memoText by remember { mutableStateOf(model.relationDetail.memo) }
     var isShowingDeleteDialog by remember { mutableStateOf(false) }
     var isCancelEditState by remember { mutableStateOf(false) }
-
+    var isShowingGetGroup by remember { mutableStateOf(false) }
     BackHandler(
         enabled = true,
         onBack = {
@@ -426,7 +427,7 @@ fun RelationScreen(
                     .clip(Shapes.medium)
                     .background(color = Gray200)
                     .clickable {
-                        // TODO open -> GetGroupScreen
+                        isShowingGetGroup = true
                     }
                     .padding(
                         horizontal = Space8,
@@ -629,6 +630,22 @@ fun RelationScreen(
             }
         }
 
+    }
+
+    if (isShowingGetGroup) {
+        GetGroupScreen(
+            appState = appState,
+            groups = model.groups,
+            onDismissRequest = {
+                isShowingGetGroup = false
+            },
+            onResult = {
+                currentGroupId = it.id
+            },
+            onGroupChange = {
+                intent(RelationIntent.OnGroupChange(it))
+            }
+        )
     }
 
     if (isShowingKakaoPicker) {

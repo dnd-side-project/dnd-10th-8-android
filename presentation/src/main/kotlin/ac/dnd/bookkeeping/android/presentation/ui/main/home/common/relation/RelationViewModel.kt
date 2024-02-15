@@ -82,6 +82,8 @@ class RelationViewModel @Inject constructor(
             )
 
             is RelationIntent.OnClickLoadFriend -> loadKakaoFriend()
+
+            is RelationIntent.OnGroupChange -> resetGroup(intent.groups)
         }
     }
 
@@ -205,5 +207,9 @@ class RelationViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun resetGroup(newGroups: List<Group>) {
+        _groups.value = newGroups
     }
 }

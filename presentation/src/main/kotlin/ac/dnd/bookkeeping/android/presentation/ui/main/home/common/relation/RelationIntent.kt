@@ -1,5 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation
 
+import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
+
 sealed interface RelationIntent {
     data class OnClickAdd(
         val groupId: Long,
@@ -21,4 +23,8 @@ sealed interface RelationIntent {
     ) : RelationIntent
 
     data object OnClickLoadFriend : RelationIntent
+
+    data class OnGroupChange(
+        val groups: List<Group>
+    ) : RelationIntent
 }
