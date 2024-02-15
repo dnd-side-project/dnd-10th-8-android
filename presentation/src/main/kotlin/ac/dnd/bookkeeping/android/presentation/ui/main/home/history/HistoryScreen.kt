@@ -8,7 +8,7 @@ import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedu
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
@@ -313,7 +313,7 @@ private fun HistoryScreen(
                             TypingTextField(
                                 textType = TypingTextFieldType.Basic,
                                 text = searchText,
-                                backgroundColor = Gray150,
+                                backgroundColor = Gray200,
                                 onValueChange = {
                                     searchText = it
                                 },

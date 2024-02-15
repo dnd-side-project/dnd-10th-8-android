@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
@@ -209,7 +209,7 @@ fun HistoryDetailScreen(
                         .layoutId("body")
                         .fillMaxWidth()
                         .background(
-                            color = Gray150,
+                            color = Gray200,
                             shape = when (swipeState.progress.to) {
                                 HistoryViewSwipingType.COLLAPSED -> RoundedCornerShape(
                                     topStart = 16.dp,

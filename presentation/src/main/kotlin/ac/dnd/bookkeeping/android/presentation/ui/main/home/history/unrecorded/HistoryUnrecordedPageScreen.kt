@@ -5,7 +5,7 @@ import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
@@ -65,7 +65,7 @@ fun HistoryUnrecordedPageScreen(
         Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .background(color = Gray150)
+                .background(color = Gray200)
         ) {
             Box(
                 modifier = Modifier

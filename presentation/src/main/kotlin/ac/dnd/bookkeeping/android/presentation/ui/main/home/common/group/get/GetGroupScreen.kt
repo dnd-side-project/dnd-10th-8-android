@@ -4,7 +4,7 @@ import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
@@ -70,8 +70,8 @@ fun GetGroupScreen(
     onDismissRequest: () -> Unit,
     onResult: (Group) -> Unit,
     viewModel: GetGroupViewModel = hiltViewModel()
-){
-    val model : GetGroupModel = Unit.let {
+) {
+    val model: GetGroupModel = Unit.let {
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         GetGroupModel(
@@ -88,7 +88,7 @@ fun GetGroupScreen(
         model = model,
         intent = viewModel::onIntent,
         event = viewModel.event,
-        handler =  viewModel.handler,
+        handler = viewModel.handler,
     )
 }
 
@@ -115,7 +115,7 @@ private fun GetGroupScreen(
         Column(
             modifier = Modifier
                 .wrapContentHeight()
-                .background(Gray150)
+                .background(Gray200)
                 .padding(horizontal = Space20)
         ) {
             Spacer(modifier = Modifier.height(Space20))

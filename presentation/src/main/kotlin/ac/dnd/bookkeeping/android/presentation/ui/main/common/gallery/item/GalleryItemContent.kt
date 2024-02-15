@@ -2,7 +2,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.item
 
 import ac.dnd.bookkeeping.android.domain.model.gallery.GalleryImage
 import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -41,7 +41,7 @@ fun GalleryItemContent(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Gray150),
+                        .background(Gray200),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(

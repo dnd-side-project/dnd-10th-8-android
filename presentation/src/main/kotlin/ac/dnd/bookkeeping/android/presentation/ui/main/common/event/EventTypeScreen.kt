@@ -1,15 +1,12 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.common.event
 
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray150
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space16
-import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryEventType
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,7 +24,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -40,8 +35,6 @@ import androidx.compose.ui.unit.dp
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialog
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun EventTypeScreen(
@@ -118,10 +111,8 @@ fun EventTypeScreen(
             }
             LazyColumn {
                 items(HistoryEventType.entries) { type ->
-                    var clickState by remember { mutableStateOf(false) }
                     val backgroundColor = animateColorAsState(
-                        targetValue =
-                        if (clickState) Gray150 else if (selectedEventId == type.id) Primary1 else Gray000,
+                        targetValue = if (selectedEventId == type.id) Primary1 else Gray000,
                         label = ""
                     )
                     Box(
@@ -130,14 +121,7 @@ fun EventTypeScreen(
                             .fillMaxWidth()
                             .height(56.dp)
                             .clickable {
-                                selectedEventId =
-                                    if (selectedEventId == type.id) -1 else type.id
-                                scope.launch {
-                                    clickState = true
-                                    delay(100L)
-                                    clickState = false
-                                }
-
+                                selectedEventId = if (selectedEventId == type.id) -1 else type.id
                             }
                     ) {
                         Text(
@@ -162,10 +146,8 @@ fun EventTypeScreen(
                 }
 
                 item(1) {
-                    var clickState by remember { mutableStateOf(false) }
                     val backgroundColor = animateColorAsState(
-                        targetValue =
-                        if (clickState) Gray150 else if (selectedEventId == -2L) Primary1 else Gray000,
+                        targetValue = if (selectedEventId == -2L) Primary1 else Gray000,
                         label = ""
                     )
                     Box(
@@ -175,12 +157,6 @@ fun EventTypeScreen(
                             .height(56.dp)
                             .clickable {
                                 selectedEventId = -2L
-                                scope.launch {
-                                    clickState = true
-                                    delay(100L)
-                                    clickState = false
-                                }
-
                             }
                     ) {
                         Text(
