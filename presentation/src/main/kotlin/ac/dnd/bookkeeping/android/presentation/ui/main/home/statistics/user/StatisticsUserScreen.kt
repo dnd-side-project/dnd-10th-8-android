@@ -194,7 +194,7 @@ private fun StatisticsUserScreen(
             ) {
                 Icon(
                     modifier = Modifier.size(60.dp),
-                    painter = painterResource(R.drawable.ic_warning),
+                    painter = painterResource(R.drawable.ic_add_chart),
                     contentDescription = null,
                     tint = Color(0xFFDDDEE1)
                 )

@@ -19,6 +19,10 @@ fun NavGraphBuilder.statisticsMeEventDestination(
             navArgument(StatisticsMeEventConstant.ROUTE_ARGUMENT_EVENT_ID) {
                 type = NavType.LongType
                 defaultValue = -1L
+            },
+            navArgument(StatisticsMeEventConstant.ROUTE_ARGUMENT_IS_GIVE) {
+                type = NavType.BoolType
+                defaultValue = true
             }
         )
     ) {
@@ -26,9 +30,15 @@ fun NavGraphBuilder.statisticsMeEventDestination(
 
         val model: StatisticsMeEventModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val myStatistics by viewModel.myStatistics.collectAsStateWithLifecycle()
+            val initialEventId = viewModel.eventId
+            val isGive = viewModel.isGive
 
             StatisticsMeEventModel(
-                state = state
+                state = state,
+                myStatistics = myStatistics,
+                initialEventId = initialEventId,
+                isGive = isGive
             )
         }
 

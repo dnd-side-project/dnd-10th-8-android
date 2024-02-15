@@ -6,5 +6,7 @@ object StatisticsMeEventConstant {
     const val ROUTE: String = "${StatisticsMeConstant.ROUTE}/event"
 
     const val ROUTE_ARGUMENT_EVENT_ID = "id"
-    const val ROUTE_STRUCTURE = "$ROUTE?$ROUTE_ARGUMENT_EVENT_ID={$ROUTE_ARGUMENT_EVENT_ID}"
+    const val ROUTE_ARGUMENT_IS_GIVE = "isGive"
+    const val ROUTE_STRUCTURE =
+        "$ROUTE?$ROUTE_ARGUMENT_EVENT_ID={$ROUTE_ARGUMENT_EVENT_ID}&$ROUTE_ARGUMENT_IS_GIVE={$ROUTE_ARGUMENT_IS_GIVE}"
 }
