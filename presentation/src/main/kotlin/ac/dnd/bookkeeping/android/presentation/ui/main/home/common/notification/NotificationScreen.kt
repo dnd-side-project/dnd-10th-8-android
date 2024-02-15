@@ -123,7 +123,7 @@ fun NotificationScreen(
             ) {
                 Icon(
                     modifier = Modifier.size(60.dp),
-                    painter = painterResource(R.drawable.ic_add_chart),
+                    painter = painterResource(R.drawable.ic_alarm),
                     contentDescription = null,
                     tint = Color(0xFFDDDEE1)
                 )
