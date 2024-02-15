@@ -115,7 +115,8 @@ private fun StatisticsUserScreen(
     val chartData: List<StickChartData> = statisticsData.map { (key, item) ->
         StickChartData(
             color = Color(HistoryEventType.getEventTypeColor(item.first().event)),
-            money = item.sumOf { it.amount }.toInt()
+            money = item.sumOf { it.amount }.toInt(),
+            text = HistoryEventType.getEventName(key).ifEmpty { "기타" }
         )
     }
 
