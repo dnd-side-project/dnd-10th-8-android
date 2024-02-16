@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.RelationDestination(
+fun NavGraphBuilder.relationDestination(
     appState: ApplicationState
 ) {
     val defaultModel = RelationDetailWithUserInfoModel(

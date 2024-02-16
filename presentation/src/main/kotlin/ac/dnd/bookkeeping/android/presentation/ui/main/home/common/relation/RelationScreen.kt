@@ -62,7 +62,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -93,6 +95,7 @@ fun RelationScreen(
     intent: (RelationIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+    val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var isRecordState by remember { mutableStateOf(false) }
     var isNameTypeTyping by remember { mutableStateOf(true) }
@@ -112,7 +115,10 @@ fun RelationScreen(
     BackHandler(
         enabled = true,
         onBack = {
-            isCancelEditState = true
+            when (relationType) {
+                RelationType.EDIT -> isCancelEditState = true
+                RelationType.ADD -> appState.navController.popBackStack()
+            }
         }
     )
 
@@ -169,45 +175,15 @@ fun RelationScreen(
             .background(Gray000)
             .addFocusCleaner(focusManager)
     ) {
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .height(Space56)
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 20.dp,
-                    vertical = 13.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(R.drawable.ic_chevron_left),
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    isCancelEditState = true
-                }
-            )
-            Spacer(modifier = Modifier.width(Space4))
-            Text(
-                text = when (relationType) {
-                    RelationType.EDIT -> "관계 수정하기"
-                    RelationType.ADD -> "관계 등록하기"
-                },
-                style = Headline1.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-        }
-
         Column(
             modifier = Modifier
+                .verticalScroll(state = scrollState)
                 .fillMaxSize()
                 .padding(horizontal = Space20)
                 .padding(
                     top = when (relationType) {
-                        RelationType.ADD -> 120.dp
-                        RelationType.EDIT -> 96.dp
+                        RelationType.ADD -> 96.dp
+                        RelationType.EDIT -> 72.2.dp
                     }
                 )
         ) {
@@ -500,6 +476,42 @@ fun RelationScreen(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(104.dp))
+
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .height(Space56)
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 13.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_chevron_left),
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    when (relationType) {
+                        RelationType.EDIT -> isCancelEditState = true
+                        RelationType.ADD -> appState.navController.popBackStack()
+                    }
+                }
+            )
+            Spacer(modifier = Modifier.width(Space4))
+            Text(
+                text = when (relationType) {
+                    RelationType.EDIT -> "관계 수정하기"
+                    RelationType.ADD -> "관계 등록하기"
+                },
+                style = Headline1.merge(
+                    color = Gray800,
+                    fontWeight = FontWeight.SemiBold
+                )
+            )
         }
 
         Row(
