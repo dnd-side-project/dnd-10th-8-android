@@ -22,7 +22,10 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.view.BottomSheetScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.add.AddGroupScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.edit.EditGroupScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
@@ -41,17 +44,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -68,6 +72,7 @@ fun GetGroupScreen(
     appState: ApplicationState,
     groups: List<Group>,
     onDismissRequest: () -> Unit,
+    onGroupChange: (List<Group>) -> Unit,
     onResult: (Group) -> Unit,
     viewModel: GetGroupViewModel = hiltViewModel()
 ) {
@@ -85,6 +90,7 @@ fun GetGroupScreen(
         appState = appState,
         onDismissRequest = onDismissRequest,
         onResult = onResult,
+        onGroupChange = onGroupChange,
         model = model,
         intent = viewModel::onIntent,
         event = viewModel.event,
@@ -97,11 +103,15 @@ private fun GetGroupScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
     onResult: (Group) -> Unit,
+    onGroupChange: (List<Group>) -> Unit,
     model: GetGroupModel,
     intent: (GetGroupIntent) -> Unit,
     event: EventFlow<GetGroupEvent>,
     handler: CoroutineExceptionHandler
 ) {
+    var currentDeleteGroupIndex by remember { mutableIntStateOf(-1) }
+    var currentEditGroupIndex by remember { mutableIntStateOf(-1) }
+    var isShowingAddGroupSheet by remember { mutableStateOf(false) }
 
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
@@ -127,7 +137,11 @@ private fun GetGroupScreen(
                 Image(
                     painter = painterResource(R.drawable.ic_close),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            onDismissRequest()
+                        }
                 )
             }
             Text(
@@ -140,13 +154,16 @@ private fun GetGroupScreen(
             )
             Spacer(modifier = Modifier.height(Space20))
             LazyColumn(verticalArrangement = Arrangement.spacedBy(Space12)) {
-                items(model.groups) { group ->
+                items(model.groups.size) { index ->
+                    val group = model.groups[index]
                     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
                     Box(
-                        contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clip(Shapes.large)
+                            .background(color = Gray000)
                             .clickable {
+                                onDismissRequest()
                                 onResult(group)
                             }
                             .padding(
@@ -164,6 +181,7 @@ private fun GetGroupScreen(
                             ),
                             modifier = Modifier.align(Alignment.CenterStart)
                         )
+
                         if (DefaultGroupType.checkEditable(group.name)) {
                             Image(
                                 painter = painterResource(R.drawable.ic_more_vertical),
@@ -175,81 +193,83 @@ private fun GetGroupScreen(
                                         isDropDownMenuExpanded = true
                                     }
                             )
-                            DropdownMenu(
-                                modifier = Modifier
-                                    .wrapContentSize()
-                                    .background(
-                                        color = Gray000,
-                                        shape = Shapes.medium
-                                    ),
-                                expanded = isDropDownMenuExpanded,
-                                onDismissRequest = { isDropDownMenuExpanded = false }
-                            ) {
-                                Column(verticalArrangement = Arrangement.Center) {
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            // TODO 수정
-                                            isDropDownMenuExpanded = false
-                                        },
-                                        contentPadding = PaddingValues(0.dp),
+                        }
+                        DropdownMenu(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .align(Alignment.CenterEnd)
+                                .background(
+                                    color = Gray000,
+                                    shape = Shapes.medium
+                                ),
+                            expanded = isDropDownMenuExpanded,
+                            onDismissRequest = { isDropDownMenuExpanded = false }
+                        ) {
+                            Column(verticalArrangement = Arrangement.Center) {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        isDropDownMenuExpanded = false
+                                        currentEditGroupIndex = index
+                                    },
+                                    contentPadding = PaddingValues(0.dp),
+                                    modifier = Modifier
+                                        .width(100.dp)
+                                        .height(40.dp)
+                                ) {
+                                    Box(
                                         modifier = Modifier
-                                            .width(100.dp)
-                                            .height(40.dp)
+                                            .padding(
+                                                vertical = Space8,
+                                                horizontal = Space12
+                                            )
+                                            .fillMaxWidth()
                                     ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .padding(
-                                                    vertical = Space8,
-                                                    horizontal = Space12
-                                                )
-                                                .fillMaxWidth()
-                                        ) {
-                                            Text(
-                                                text = "수정",
-                                                style = Body0.merge(
-                                                    color = Gray700,
-                                                    fontWeight = FontWeight.Normal
-                                                ),
-                                                modifier = Modifier.align(Alignment.CenterStart)
-                                            )
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_edit),
-                                                contentDescription = null,
-                                                modifier = Modifier.align(Alignment.CenterStart)
-                                            )
-                                        }
+                                        Text(
+                                            text = "수정",
+                                            style = Body0.merge(
+                                                color = Gray700,
+                                                fontWeight = FontWeight.Normal
+                                            ),
+                                            modifier = Modifier.align(Alignment.CenterStart)
+                                        )
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_edit),
+                                            contentDescription = null,
+                                            modifier = Modifier.align(Alignment.CenterEnd)
+                                        )
                                     }
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            // TODO 삭제
-                                            isDropDownMenuExpanded = false
-                                        },
-                                        contentPadding = PaddingValues(0.dp),
+                                }
+                                DropdownMenuItem(
+                                    onClick = {
+                                        isDropDownMenuExpanded = false
+                                        currentDeleteGroupIndex = index
+                                    },
+                                    contentPadding = PaddingValues(0.dp),
+                                    modifier = Modifier
+                                        .width(100.dp)
+                                        .height(40.dp)
+                                ) {
+                                    Box(
                                         modifier = Modifier
-                                            .width(100.dp)
-                                            .height(40.dp)
+                                            .padding(
+                                                vertical = Space8,
+                                                horizontal = Space12
+                                            )
+                                            .fillMaxWidth()
                                     ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .padding(
-                                                    vertical = Space8,
-                                                    horizontal = Space12
-                                                )
-                                        ) {
-                                            Text(
-                                                text = "삭제",
-                                                style = Body0.merge(
-                                                    color = Gray700,
-                                                    fontWeight = FontWeight.Normal
-                                                ),
-                                                modifier = Modifier.align(Alignment.CenterStart)
-                                            )
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_trash),
-                                                contentDescription = null,
-                                                modifier = Modifier.align(Alignment.CenterStart)
-                                            )
-                                        }
+                                        Text(
+                                            text = "삭제",
+                                            style = Body0.merge(
+                                                color = Gray700,
+                                                fontWeight = FontWeight.Normal
+                                            ),
+                                            modifier = Modifier.align(Alignment.CenterStart)
+                                        )
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_trash),
+                                            contentDescription = null,
+                                            modifier = Modifier.align(Alignment.CenterEnd)
+                                        )
                                     }
                                 }
                             }
@@ -261,7 +281,7 @@ private fun GetGroupScreen(
             Row(
                 modifier = Modifier
                     .clickable {
-                        // TODO open add group
+                        isShowingAddGroupSheet = true
                     }
                     .padding(
                         vertical = Space16,
@@ -286,6 +306,55 @@ private fun GetGroupScreen(
         }
     }
 
+    if (currentDeleteGroupIndex != -1) {
+        DialogScreen(
+            isCancelable = true,
+            message = "그룹을 삭제하시겠어요?",
+            cancelMessage = "취소",
+            confirmMessage = "삭제",
+            onCancel = {
+                currentDeleteGroupIndex = -1
+            },
+            onConfirm = {
+                currentDeleteGroupIndex = -1
+                intent(GetGroupIntent.OnDelete(model.groups[currentDeleteGroupIndex].id))
+                onGroupChange(model.groups)
+            },
+            onDismissRequest = {
+                currentDeleteGroupIndex = -1
+            }
+        )
+    }
+
+    if (currentEditGroupIndex != -1) {
+        EditGroupScreen(
+            appState = appState,
+            onDismissRequest = {
+                currentEditGroupIndex = -1
+            },
+            prevGroup = model.groups[currentEditGroupIndex],
+            onResult = {
+                currentEditGroupIndex = -1
+                intent(GetGroupIntent.OnEdit(it))
+                onGroupChange(model.groups)
+            }
+        )
+    }
+
+    if (isShowingAddGroupSheet) {
+        AddGroupScreen(
+            appState = appState,
+            onDismissRequest = {
+                isShowingAddGroupSheet = false
+            },
+            onResult = {
+                isShowingAddGroupSheet = false
+                intent(GetGroupIntent.OnAdd(it))
+                onGroupChange(model.groups)
+            }
+        )
+    }
+
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
@@ -307,9 +376,8 @@ private fun GetGroupScreenPreivew() {
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },
-        onResult = {
-
-        },
+        onResult = {},
+        onGroupChange = {},
         model = GetGroupModel(
             state = GetGroupState.Init,
             groups = listOf(
