@@ -8,6 +8,7 @@ import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.AddSchedule
 import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.EditScheduleReq
 import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.GetAlarmListRes
 import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.GetScheduleListRes
+import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.GetScheduleRes
 import ac.dnd.bookkeeping.android.data.remote.network.model.schedule.GetUnrecordedScheduleListRes
 import ac.dnd.bookkeeping.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
@@ -62,7 +63,6 @@ class ScheduleApi @Inject constructor(
 
     suspend fun editSchedule(
         id: Long,
-        relationId: Long,
         day: LocalDate,
         event: String,
         repeatType: String,
@@ -76,7 +76,6 @@ class ScheduleApi @Inject constructor(
         return client.patch("$baseUrl/api/v1/schedules/$id") {
             setBody(
                 EditScheduleReq(
-                    relationId = relationId,
                     day = day,
                     event = event,
                     repeatType = repeatType,
@@ -104,6 +103,13 @@ class ScheduleApi @Inject constructor(
         return client.get("$baseUrl/api/v1/schedules/unrecorded") {
             parameter("name", name)
         }.convert(errorMessageMapper::map)
+    }
+
+    suspend fun getSchedule(
+        id: Long
+    ): Result<GetScheduleRes> {
+        return client.get("$baseUrl/api/v1/schedules/me/$id")
+            .convert(errorMessageMapper::map)
     }
 
     suspend fun getScheduleList(

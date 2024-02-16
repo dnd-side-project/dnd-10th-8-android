@@ -12,7 +12,6 @@ class EditScheduleUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         id: Long,
-        relationId: Long,
         day: LocalDate,
         event: String,
         repeatType: AlarmRepeatType?,
@@ -25,7 +24,6 @@ class EditScheduleUseCase @Inject constructor(
     ): Result<Unit> {
         return scheduleRepository.editSchedule(
             id = id,
-            relationId = relationId,
             day = day,
             event = event,
             repeatType = repeatType,

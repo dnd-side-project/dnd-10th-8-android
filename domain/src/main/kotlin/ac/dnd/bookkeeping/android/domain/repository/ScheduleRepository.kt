@@ -25,7 +25,6 @@ interface ScheduleRepository {
 
     suspend fun editSchedule(
         id: Long,
-        relationId: Long,
         day: LocalDate,
         event: String,
         repeatType: AlarmRepeatType?,
@@ -44,6 +43,10 @@ interface ScheduleRepository {
     suspend fun getUnrecordedScheduleList(
         name: String
     ): Result<List<UnrecordedSchedule>>
+
+    suspend fun getSchedule(
+        id: Long
+    ): Result<Schedule>
 
     suspend fun getScheduleList(
         year: Int,

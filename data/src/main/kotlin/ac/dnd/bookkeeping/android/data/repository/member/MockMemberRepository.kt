@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.data.repository.member
 
+import ac.dnd.bookkeeping.android.domain.model.member.Profile
 import ac.dnd.bookkeeping.android.domain.repository.MemberRepository
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
@@ -21,6 +22,18 @@ class MockMemberRepository @Inject constructor() : MemberRepository {
     ): Result<Unit> {
         randomShortDelay()
         return Result.success(Unit)
+    }
+
+    override suspend fun getProfile(): Result<Profile> {
+        randomShortDelay()
+        return Result.success(
+            Profile(
+                name = "김진우",
+                nickname = "진우에몽",
+                gender = "male",
+                birth = LocalDate(2000, 1, 1)
+            )
+        )
     }
 
     private suspend fun randomShortDelay() {

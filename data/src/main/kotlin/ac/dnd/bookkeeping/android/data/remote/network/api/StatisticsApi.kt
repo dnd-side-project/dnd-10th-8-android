@@ -33,7 +33,7 @@ class StatisticsApi @Inject constructor(
         gender: String,
         range: Int
     ): Result<GetGroupStatisticsRes> {
-        return client.get("$baseUrl/api/v1/statistics") {
+        return client.get("$baseUrl/api/v1/statistics/users") {
             parameter("gender", gender) // male, female
             parameter("range", range) // 20, 30, 40, 50
         }.convert(errorMessageMapper::map)

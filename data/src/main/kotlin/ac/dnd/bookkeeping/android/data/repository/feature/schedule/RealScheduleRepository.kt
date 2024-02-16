@@ -45,7 +45,6 @@ class RealScheduleRepository @Inject constructor(
 
     override suspend fun editSchedule(
         id: Long,
-        relationId: Long,
         day: LocalDate,
         event: String,
         repeatType: AlarmRepeatType?,
@@ -58,7 +57,6 @@ class RealScheduleRepository @Inject constructor(
     ): Result<Unit> {
         return scheduleApi.editSchedule(
             id = id,
-            relationId = relationId,
             day = day,
             event = event,
             repeatType = repeatType?.value.orEmpty(),
@@ -84,6 +82,14 @@ class RealScheduleRepository @Inject constructor(
     ): Result<List<UnrecordedSchedule>> {
         return scheduleApi.getUnrecordedScheduleList(
             name = name
+        ).toDomain()
+    }
+
+    override suspend fun getSchedule(
+        id: Long
+    ): Result<Schedule> {
+        return scheduleApi.getSchedule(
+            id = id
         ).toDomain()
     }
 

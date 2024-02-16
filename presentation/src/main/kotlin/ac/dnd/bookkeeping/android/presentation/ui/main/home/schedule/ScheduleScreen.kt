@@ -313,7 +313,8 @@ private fun ScheduleScreenPreview() {
                     event = "결혼",
                     time = null,
                     link = "graeco",
-                    location = "aliquet"
+                    location = "aliquet",
+                    memo = "엄청 긴 메모입니다. 엄청 긴 메모입니다. 엄청 긴 메모입니다. 엄청 긴 메모입니다."
                 ),
                 Schedule(
                     id = 4830,
@@ -329,7 +330,8 @@ private fun ScheduleScreenPreview() {
                     event = "아무거나",
                     time = null,
                     link = "graeco",
-                    location = "aliquet"
+                    location = "aliquet",
+                    memo = "메모입니다."
                 ),
                 Schedule(
                     id = 4830,
@@ -345,7 +347,8 @@ private fun ScheduleScreenPreview() {
                     event = "생일",
                     time = null,
                     link = "graeco",
-                    location = "aliquet"
+                    location = "aliquet",
+                    memo = ""
                 ),
                 Schedule(
                     id = 4830,
@@ -361,7 +364,8 @@ private fun ScheduleScreenPreview() {
                     event = "돌잔치",
                     time = null,
                     link = "graeco",
-                    location = "aliquet"
+                    location = "aliquet",
+                    memo = ""
                 )
             )
         ),
