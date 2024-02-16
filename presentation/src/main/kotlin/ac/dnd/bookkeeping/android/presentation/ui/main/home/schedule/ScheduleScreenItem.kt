@@ -251,7 +251,8 @@ private fun ScheduleScreenItemPreview() {
             event = "돌잔치",
             time = null,
             link = "graeco",
-            location = "aliquet"
+            location = "aliquet",
+            memo = "메모입니다."
         ),
         onClickSchedule = {},
         onClickInvitation = {}

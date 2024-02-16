@@ -1,5 +1,6 @@
 package ac.dnd.bookkeeping.android.domain.repository
 
+import ac.dnd.bookkeeping.android.domain.model.member.Profile
 import kotlinx.datetime.LocalDate
 
 interface MemberRepository {
@@ -13,4 +14,6 @@ interface MemberRepository {
         gender: String,
         birth: LocalDate
     ): Result<Unit>
+
+    suspend fun getProfile(): Result<Profile>
 }

@@ -43,7 +43,6 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
 
     override suspend fun editSchedule(
         id: Long,
-        relationId: Long,
         day: LocalDate,
         event: String,
         repeatType: AlarmRepeatType?,
@@ -91,6 +90,31 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
         )
     }
 
+    override suspend fun getSchedule(
+        id: Long
+    ): Result<Schedule> {
+        randomShortDelay()
+        return Result.success(
+            Schedule(
+                id = 2378,
+                relation = ScheduleRelation(
+                    id = 4601,
+                    name = "이다빈",
+                    group = ScheduleRelationGroup(
+                        id = 5690,
+                        name = "친구"
+                    )
+                ),
+                day = LocalDate(2024, 2, 25),
+                event = "결혼",
+                time = LocalTime(12, 0),
+                link = "https://www.google.com/",
+                location = "롯데월드 호텔",
+                memo = "메모입니다."
+            )
+        )
+    }
+
     override suspend fun getScheduleList(
         year: Int,
         month: Int
@@ -112,7 +136,8 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                     event = "결혼",
                     time = LocalTime(12, 0),
                     link = "https://www.google.com/",
-                    location = "롯데월드 호텔"
+                    location = "롯데월드 호텔",
+                    memo = "메모입니다."
                 ),
                 Schedule(
                     id = 23278,
@@ -128,7 +153,8 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                     event = "생일",
                     time = null,
                     link = "",
-                    location = ""
+                    location = "",
+                    memo = ""
                 )
             )
         )

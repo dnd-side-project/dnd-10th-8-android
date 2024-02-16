@@ -837,6 +837,7 @@ private fun ScheduleAddScreenPreview2() {
                 time = LocalTime(9, 0),
                 link = "https://www.google.com/",
                 location = "서울특별시 강남구 역삼동",
+                memo = "메모입니다."
             )
         ),
         event = MutableEventFlow(),

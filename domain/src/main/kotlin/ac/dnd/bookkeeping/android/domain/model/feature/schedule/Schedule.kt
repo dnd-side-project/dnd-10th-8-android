@@ -11,7 +11,8 @@ data class Schedule(
     val event: String,
     val time: LocalTime?,
     val link: String,
-    val location: String
+    val location: String,
+    val memo: String
 )
 
 data class ScheduleRelation(

@@ -8,8 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditScheduleReq(
-    @SerialName("relationId")
-    val relationId: Long,
     @SerialName("day")
     val day: LocalDate,
     @SerialName("event")

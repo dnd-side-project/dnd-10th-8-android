@@ -131,7 +131,6 @@ class ScheduleAddViewModel @Inject constructor(
             if (scheduleId == -1L) {
                 editScheduleUseCase(
                     id = scheduleId,
-                    relationId = relationId,
                     day = day,
                     event = event,
                     repeatType = repeatType,

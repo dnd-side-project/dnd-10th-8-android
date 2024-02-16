@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginRes(
+    // TODO : isNew: Boolean -> id: Long 으로 변경되었음.
     @SerialName("isNew")
     val isNew: Boolean,
     @SerialName("accessToken")

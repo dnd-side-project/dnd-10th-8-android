@@ -10,21 +10,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetScheduleListRes(
-    @SerialName("result")
-    val result: List<GetScheduleItemRes>
-) : DataMapper<List<Schedule>> {
-    override fun toDomain(): List<Schedule> {
-        return result.map { it.toDomain() }
-    }
-}
-
-@Serializable
-data class GetScheduleItemRes(
+data class GetScheduleRes(
     @SerialName("id")
     val id: Long,
     @SerialName("relation")
-    val relation: GetScheduleItemRelationRes,
+    val relation: GetScheduleRelationRes,
     @SerialName("day")
     val day: LocalDate,
     @SerialName("event")
@@ -53,13 +43,13 @@ data class GetScheduleItemRes(
 }
 
 @Serializable
-data class GetScheduleItemRelationRes(
+data class GetScheduleRelationRes(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
     val name: String,
     @SerialName("group")
-    val group: GetScheduleItemRelationGroupRes
+    val group: GetScheduleRelationGroupRes
 ) : DataMapper<ScheduleRelation> {
     override fun toDomain(): ScheduleRelation {
         return ScheduleRelation(
@@ -71,7 +61,7 @@ data class GetScheduleItemRelationRes(
 }
 
 @Serializable
-data class GetScheduleItemRelationGroupRes(
+data class GetScheduleRelationGroupRes(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
