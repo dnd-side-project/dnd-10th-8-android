@@ -1,9 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -82,9 +79,12 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
 
@@ -102,7 +102,6 @@ fun ScheduleAddScreen(
     val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
     val eventTypeList: List<HistoryEventType> = HistoryEventType.entries
 
-    // TODO : rememberSaveable 을 위한 Parcelable Presentation Model
     var relation: RelationSimple? by remember { mutableStateOf(null) }
     var date: LocalDate by remember { mutableStateOf(now) }
     var eventName: String by remember { mutableStateOf("") }
@@ -244,15 +243,20 @@ fun ScheduleAddScreen(
         it.eventName == eventName
     }
     val formattedAlarm = alarm.text
-    val formattedTime = Unit.let {
-        time?.let {
-            val fixedHour = if (it.hour == 0) 24 else it.hour
-            val timeHour = (fixedHour - 1) % 12 + 1
-            val timeMinute = it.minute
-            val timeAmPm = if (fixedHour < 12) "오전" else "오후"
-            "$timeAmPm $timeHour:$timeMinute"
-        } ?: "시간 없음"
-    }
+    val formattedTime = time?.let {
+        val format = "%s %02d:%02d"
+        val fixedHour = if (it.hour == 0) 24 else it.hour
+        val timeHour = (fixedHour - 1) % 12 + 1
+        val timeMinute = it.minute
+        val timeAmPm = if (fixedHour < 12) "오전" else "오후"
+        runCatching {
+            String.format(format, timeAmPm, timeHour, timeMinute)
+        }.onFailure { exception ->
+            scope.launch(handler) {
+                throw exception
+            }
+        }.getOrDefault("?? ??:??")
+    } ?: "시간 없음"
 
     Column(
         modifier = Modifier
@@ -283,7 +287,7 @@ fun ScheduleAddScreen(
                 )
             }
             Text(
-                text = if (model.schedule == null) "일정 추가하기" else "일정 수정하기",
+                text = if (model.isEdit) "일정 수정하기" else "일정 추가하기",
                 style = Headline1
             )
         }
@@ -317,7 +321,7 @@ fun ScheduleAddScreen(
                         .fillMaxWidth()
                         .height(48.dp)
                         .clickable {
-                            if (model.schedule == null) {
+                            if (!model.isEdit) {
                                 isGetRelationShowing = true
                             }
                         },
@@ -579,7 +583,7 @@ fun ScheduleAddScreen(
                 .padding(horizontal = 20.dp, vertical = 12.dp)
                 .fillMaxWidth()
         ) {
-            if (model.schedule != null) {
+            if (model.isEdit) {
                 ConfirmButton(
                     properties = ConfirmButtonProperties(
                         size = ConfirmButtonSize.Large,
@@ -596,6 +600,7 @@ fun ScheduleAddScreen(
                         contentDescription = null
                     )
                 }
+                Spacer(modifier = Modifier.width(12.dp))
             }
             ConfirmButton(
                 properties = ConfirmButtonProperties(
@@ -612,6 +617,47 @@ fun ScheduleAddScreen(
                     text = "저장하기",
                     style = style
                 )
+            }
+        }
+    }
+
+    fun loadSchedule(event: ScheduleAddEvent.LoadSchedule) {
+        when (event) {
+            is ScheduleAddEvent.LoadSchedule.Success -> {
+                val schedule = event.schedule
+                val fixedAlarmType: ScheduleAlarmType? = when (schedule.alarm) {
+                    LocalDateTime(schedule.day, LocalTime(9, 0)) -> ScheduleAlarmType.TodayNine
+
+                    LocalDateTime(
+                        schedule.day,
+                        LocalTime(12, 0)
+                    ) -> ScheduleAlarmType.TodayTwelve
+
+                    LocalDateTime(
+                        schedule.day.minus(1, DateTimeUnit.DAY),
+                        LocalTime(9, 0)
+                    ) -> ScheduleAlarmType.YesterdayNine
+
+                    LocalDateTime(
+                        schedule.day.minus(2, DateTimeUnit.DAY),
+                        LocalTime(9, 0)
+                    ) -> ScheduleAlarmType.TwoDaysAgoNine
+
+                    LocalDateTime(
+                        schedule.day.minus(1, DateTimeUnit.WEEK),
+                        LocalTime(9, 0)
+                    ) -> ScheduleAlarmType.OneWeekAgoNine
+
+                    else -> null
+                }
+                relation = event.schedule.relation
+                date = event.schedule.day
+                eventName = event.schedule.event
+                alarm = fixedAlarmType ?: ScheduleAlarmType.None
+                time = event.schedule.time
+                location = event.schedule.location
+                link = event.schedule.link
+                memo = event.schedule.memo
             }
         }
     }
@@ -643,6 +689,10 @@ fun ScheduleAddScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
+                is ScheduleAddEvent.LoadSchedule -> {
+                    loadSchedule(event)
+                }
+
                 is ScheduleAddEvent.AddSchedule -> {
                     addSchedule(event)
                 }
@@ -666,7 +716,7 @@ private fun ScheduleAddScreenPreview1() {
         appState = rememberApplicationState(),
         model = ScheduleAddModel(
             state = ScheduleAddState.Init,
-            schedule = null
+            isEdit = false
         ),
         event = MutableEventFlow(),
         intent = {},
@@ -681,23 +731,7 @@ private fun ScheduleAddScreenPreview2() {
         appState = rememberApplicationState(),
         model = ScheduleAddModel(
             state = ScheduleAddState.Init,
-            schedule = Schedule(
-                id = 9278,
-                relation = ScheduleRelation(
-                    id = 8408,
-                    name = "장성혁",
-                    group = ScheduleRelationGroup(
-                        id = 7385,
-                        name = "친구"
-                    )
-                ),
-                day = LocalDate(2024, 2, 25),
-                event = "생일",
-                time = LocalTime(9, 0),
-                link = "https://www.google.com/",
-                location = "서울특별시 강남구 역삼동",
-                memo = "메모입니다."
-            )
+            isEdit = true
         ),
         event = MutableEventFlow(),
         intent = {},

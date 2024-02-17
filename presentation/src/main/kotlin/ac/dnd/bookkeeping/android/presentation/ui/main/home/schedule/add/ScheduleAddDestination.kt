@@ -26,11 +26,11 @@ fun NavGraphBuilder.scheduleAddDestination(
 
         val model: ScheduleAddModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val schedule by viewModel.schedule.collectAsStateWithLifecycle()
+            val isEdit = viewModel.isEdit
 
             ScheduleAddModel(
                 state = state,
-                schedule = schedule
+                isEdit = isEdit
             )
         }
 

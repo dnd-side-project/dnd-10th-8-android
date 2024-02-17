@@ -1,12 +1,12 @@
 package ac.dnd.bookkeeping.android.data.repository.feature.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Alarm
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRelation
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRelationGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelation
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
@@ -97,16 +97,19 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
         return Result.success(
             Schedule(
                 id = 2378,
-                relation = ScheduleRelation(
+                relation = RelationSimple(
                     id = 4601,
                     name = "이다빈",
-                    group = ScheduleRelationGroup(
+                    group = RelationSimpleGroup(
                         id = 5690,
                         name = "친구"
                     )
                 ),
                 day = LocalDate(2024, 2, 25),
                 event = "결혼",
+                repeatType = null,
+                repeatFinish = null,
+                alarm = LocalDateTime(2024, 2, 25, 12, 0),
                 time = LocalTime(12, 0),
                 link = "https://www.google.com/",
                 location = "롯데월드 호텔",
@@ -124,16 +127,19 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
             listOf(
                 Schedule(
                     id = 2378,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 4601,
                         name = "이다빈",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 5690,
                             name = "친구"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = LocalTime(12, 0),
                     link = "https://www.google.com/",
                     location = "롯데월드 호텔",
@@ -141,16 +147,19 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
                 ),
                 Schedule(
                     id = 23278,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 46201,
                         name = "김진우",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 56290,
                             name = "가족"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "생일",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "",
                     location = "",

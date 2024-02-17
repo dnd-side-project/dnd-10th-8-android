@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.AddScheduleUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.DeleteScheduleUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.EditScheduleUseCase
@@ -39,11 +38,12 @@ class ScheduleAddViewModel @Inject constructor(
     private val _event: MutableEventFlow<ScheduleAddEvent> = MutableEventFlow()
     val event: EventFlow<ScheduleAddEvent> = _event.asEventFlow()
 
-    private val _schedule: MutableStateFlow<Schedule?> = MutableStateFlow(null)
-    val schedule: StateFlow<Schedule?> = _schedule.asStateFlow()
-
     val scheduleId: Long by lazy {
         savedStateHandle.get<Long>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID) ?: -1L
+    }
+
+    val isEdit: Boolean by lazy {
+        scheduleId != -1L
     }
 
     init {
@@ -59,7 +59,7 @@ class ScheduleAddViewModel @Inject constructor(
                 id = scheduleId
             ).onSuccess { schedule ->
                 _state.value = ScheduleAddState.Init
-                _schedule.value = schedule
+                _event.emit(ScheduleAddEvent.LoadSchedule.Success(schedule))
             }.onFailure { exception ->
                 _state.value = ScheduleAddState.Init
                 when (exception) {
