@@ -9,10 +9,15 @@ import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedu
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray300
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
+import ac.dnd.bookkeeping.android.presentation.common.theme.Secondary5
+import ac.dnd.bookkeeping.android.presentation.common.theme.Secondary6
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -24,6 +29,8 @@ import ac.dnd.bookkeeping.android.presentation.common.view.textfield.TypingTextF
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewSwipingType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.RelationConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -31,22 +38,32 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FractionalThreshold
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -74,6 +91,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
@@ -420,6 +438,144 @@ private fun HistoryScreen(
                     }
                 }
             }
+
+            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(bottom = 24.dp, end = 20.dp)
+                    .size(52.dp)
+                    .align(Alignment.BottomEnd),
+                backgroundColor = if (isDropDownMenuExpanded) Gray000 else Gray800,
+                onClick = {
+                    isDropDownMenuExpanded = true
+                }
+            ) {
+                if (isDropDownMenuExpanded) {
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        painter = painterResource(id = R.drawable.ic_close),
+                        contentDescription = null,
+                        tint = Gray800
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        painter = painterResource(id = R.drawable.ic_plus),
+                        contentDescription = null,
+                        tint = Gray000
+                    )
+                }
+
+                val isNotEmptyRelation = model.groups.isNotEmpty()
+
+                MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(100.dp))) {
+                    DropdownMenu(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                shape = RoundedCornerShape(100.dp),
+                                color = if (isNotEmptyRelation) Gray300 else Gray500
+                            )
+                            .background(
+                                color = if (isNotEmptyRelation) Gray000 else Gray500,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .width(120.dp)
+                            .height(48.dp),
+                        onDismissRequest = {
+                            isDropDownMenuExpanded = false
+                        },
+                        offset = DpOffset(y = 76.dp, x = 0.dp),
+                        expanded = isDropDownMenuExpanded
+                    ) {
+                        DropdownMenuItem(
+                            contentPadding = PaddingValues(bottom = 12.dp),
+                            onClick = {
+                                if (isNotEmptyRelation) {
+                                    isDropDownMenuExpanded = false
+                                    appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
+                                }
+                            },
+                            modifier = Modifier.height(48.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                            ) {
+                                val iconResource =
+                                    if (isNotEmptyRelation) R.drawable.ic_gift_activate else R.drawable.ic_gift_disabled
+                                Image(
+                                    painter = painterResource(iconResource),
+                                    contentDescription = null,
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "마음 등록",
+                                    style = Headline3.merge(
+                                        color = if (isNotEmptyRelation) Primary3 else Gray600,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+
+                MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(100.dp))) {
+                    DropdownMenu(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                shape = RoundedCornerShape(100.dp),
+                                color = if (isNotEmptyRelation) Gray300 else Gray500
+                            )
+                            .background(
+                                color = if (isNotEmptyRelation) Gray000 else Gray500,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .width(120.dp)
+                            .height(48.dp),
+                        onDismissRequest = {
+                            isDropDownMenuExpanded = false
+                        },
+                        offset = DpOffset(y = 16.dp, x = 0.dp),
+                        expanded = isDropDownMenuExpanded
+                    ) {
+                        DropdownMenuItem(
+                            contentPadding = PaddingValues(bottom = 12.dp),
+                            onClick = {
+                                if (isNotEmptyRelation) {
+                                    isDropDownMenuExpanded = false
+                                    appState.navController.navigate(RelationConstant.ROUTE)
+                                }
+                            },
+                            modifier = Modifier.height(48.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_person),
+                                    colorFilter = ColorFilter.tint(Secondary5),
+                                    modifier = Modifier.size(24.dp),
+                                    contentDescription = null,
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "관계 등록",
+                                    style = Headline3.merge(
+                                        color = Secondary6,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -431,7 +587,7 @@ private fun HistoryScreen(
 }
 
 @Composable
-@Preview
+@Preview(apiLevel = 33)
 private fun HistoryScreenPreview() {
     HistoryScreen(
         appState = rememberApplicationState(),

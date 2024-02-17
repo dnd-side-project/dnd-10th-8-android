@@ -4,8 +4,10 @@ import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.domain.usecase.feature.group.GetGroupListUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.AddRelationUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.AddRelationWithUploadUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.DeleteRelationUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.EditRelationUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.EditRelationWithUploadUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.relation.GetKakaoFriendInfoUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
@@ -25,7 +27,9 @@ class RelationViewModel @Inject constructor(
     private val getGroupListUseCase: GetGroupListUseCase,
     private val getKakaoFriendInfoUseCase: GetKakaoFriendInfoUseCase,
     private val addRelationUseCase: AddRelationUseCase,
+    private val addRelationWithUploadUseCase: AddRelationWithUploadUseCase,
     private val editRelationUseCase: EditRelationUseCase,
+    private val editRelationWithUploadUseCase: EditRelationWithUploadUseCase,
     private val deleteRelationUseCase: DeleteRelationUseCase
 ) : BaseViewModel() {
 
@@ -69,11 +73,28 @@ class RelationViewModel @Inject constructor(
                 intent.memo
             )
 
+            is RelationIntent.OnClickAddWithUpload -> addWithUploadRelation(
+                intent.groupId,
+                intent.name,
+                intent.imageUrl,
+                intent.fileName,
+                intent.memo
+            )
+
             is RelationIntent.OnClickEdit -> editRelation(
                 intent.id,
                 intent.groupId,
                 intent.name,
                 intent.imageUrl,
+                intent.memo
+            )
+
+            is RelationIntent.OnClickEditWithUpload -> editWithUploadRelation(
+                intent.id,
+                intent.groupId,
+                intent.name,
+                intent.imageUrl,
+                intent.fileName,
                 intent.memo
             )
 
@@ -120,6 +141,41 @@ class RelationViewModel @Inject constructor(
         }
     }
 
+    private fun addWithUploadRelation(
+        groupId: Long,
+        name: String,
+        imageUrl: String,
+        fileName: String,
+        memo: String,
+    ) {
+        launch {
+            _state.value = RelationState.Loading
+            addRelationWithUploadUseCase(
+                groupId = groupId,
+                name = name,
+                imageUrl = imageUrl,
+                imageName = fileName,
+                memo = memo
+            )
+                .onSuccess {
+                    _state.value = RelationState.Init
+                    _event.emit(RelationEvent.AddRelation.Success)
+                }
+                .onFailure { exception ->
+                    _state.value = RelationState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
+        }
+    }
+
     private fun editRelation(
         id: Long,
         groupId: Long,
@@ -134,6 +190,43 @@ class RelationViewModel @Inject constructor(
                 groupId = groupId,
                 name = name,
                 imageUrl = imageUrl,
+                memo = memo
+            )
+                .onSuccess {
+                    _state.value = RelationState.Init
+                    _event.emit(RelationEvent.EditRelation.Success)
+                }
+                .onFailure { exception ->
+                    _state.value = RelationState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun editWithUploadRelation(
+        id: Long,
+        groupId: Long,
+        name: String,
+        imageUrl: String,
+        fileName: String,
+        memo: String
+    ) {
+        launch {
+            _state.value = RelationState.Loading
+            editRelationWithUploadUseCase(
+                id = id,
+                groupId = groupId,
+                name = name,
+                imageUrl = imageUrl,
+                imageName = fileName,
                 memo = memo
             )
                 .onSuccess {
@@ -194,17 +287,8 @@ class RelationViewModel @Inject constructor(
                         )
                     )
                 }
-                .onFailure { exception ->
+                .onFailure {
                     _state.value = RelationState.Init
-                    when (exception) {
-                        is ServerException -> {
-                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
-                        }
-
-                        else -> {
-                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
-                        }
-                    }
                 }
         }
     }

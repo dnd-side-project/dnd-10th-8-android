@@ -223,8 +223,8 @@ fun HistoryDetailPageScreen(
                     currentSelectedHeartIndex = -1
                 },
                 onDelete = { id ->
-                    currentSelectedHeartIndex = -1
                     intent(HistoryDetailIntent.OnDelete(id))
+                    currentSelectedHeartIndex = -1
                     scope.launch {
                         isShowingSuccessDeleteSnackBar = true
                         delay(200L)

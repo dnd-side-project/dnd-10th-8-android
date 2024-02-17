@@ -12,11 +12,17 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryDetailGrowthType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryTagType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewSwipingType
 import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
+import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailWithUserInfoModel
+import ac.dnd.bookkeeping.android.presentation.model.relation.toUiModel
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.RelationConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.growth.HistoryDetailGrowthConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.detail.information.HistoryDetailInformationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -41,8 +47,10 @@ import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -59,6 +67,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -127,6 +136,16 @@ fun HistoryDetailScreen(
     val pagerState = rememberPagerState(
         pageCount = { 3 }
     )
+    var isShowingRelationInfo by remember { mutableStateOf(false) }
+
+    fun navigateToGrowth(money: Long) {
+        val route = makeRoute(
+            HistoryDetailGrowthConstant.ROUTE,
+            listOf(HistoryDetailGrowthConstant.ROUTE_ARGUMENT_TOTAL_MONEY to money)
+        )
+        appState.navController.navigate(route)
+    }
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -155,10 +174,10 @@ fun HistoryDetailScreen(
                 model = model,
                 contentHeight = contentHeight,
                 onClickRelationInfo = {
-                    //TODO open bottom history information
+                    isShowingRelationInfo = true
                 },
                 onClickGrowthInfo = {
-                    //TODO navi to growth info
+                    navigateToGrowth(model.relationDetail.giveMoney + model.relationDetail.takeMoney)
                 },
                 onClickBack = {
                     appState.navController.popBackStack()
@@ -287,9 +306,20 @@ fun HistoryDetailScreen(
                 }
             }
         }
-
     }
 
+    if (isShowingRelationInfo) {
+        HistoryDetailInformationScreen(
+            appState = appState,
+            relationDetail = model.relationDetail,
+            onDismissRequest = {
+                isShowingRelationInfo = false
+            },
+            onResult = {
+                appState.navController.navigateToRelation(model.relationDetail.toUiModel())
+            }
+        )
+    }
 
 
     LaunchedEffectWithLifecycle(event, handler) {
@@ -297,6 +327,18 @@ fun HistoryDetailScreen(
 
         }
     }
+}
+
+private fun NavHostController.navigateToRelation(
+    relationDetailWithUserInfoModel: RelationDetailWithUserInfoModel
+) {
+    currentBackStackEntry?.savedStateHandle?.apply {
+        set(
+            key = RelationConstant.ROUTE_ARGUMENT_MODEL,
+            value = relationDetailWithUserInfoModel
+        )
+    }
+    navigate(RelationConstant.CONTAIN_RELATION)
 }
 
 @Preview

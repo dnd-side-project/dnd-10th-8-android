@@ -1,6 +1,5 @@
 package ac.dnd.bookkeeping.android.data.repository.feature.relation
 
-import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.KakaoFriendInfo
 import ac.dnd.bookkeeping.android.domain.repository.KakaoFriendRepository
 import android.content.Context
@@ -25,8 +24,13 @@ class KakaoFriendRepositoryImpl @Inject constructor(
             .onSuccess {
                 Result.success(it)
             }
-            .onFailure { error ->
-                throw ServerException("Error", error.message.toString())
+            .onFailure {
+                Result.success(
+                    KakaoFriendInfo(
+                        name = "",
+                        profileImageUrl = ""
+                    )
+                )
             }
     }
 

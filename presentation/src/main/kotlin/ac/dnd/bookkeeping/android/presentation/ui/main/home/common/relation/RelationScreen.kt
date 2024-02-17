@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation
 import ac.dnd.bookkeeping.android.domain.model.feature.group.Group
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Caption2
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
@@ -28,6 +29,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Mutab
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
+import ac.dnd.bookkeeping.android.presentation.common.view.SnackBarScreen
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipItem
 import ac.dnd.bookkeeping.android.presentation.common.view.chip.ChipType
 import ac.dnd.bookkeeping.android.presentation.common.view.component.FieldSelectComponent
@@ -42,7 +44,9 @@ import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailGrou
 import ac.dnd.bookkeeping.android.presentation.model.relation.RelationDetailWithUserInfoModel
 import ac.dnd.bookkeeping.android.presentation.model.relation.RelationType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.common.gallery.GalleryScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.group.get.GetGroupScreen
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -52,40 +56,55 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun RelationScreen(
@@ -96,38 +115,49 @@ fun RelationScreen(
     intent: (RelationIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+    val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var isRecordState by remember { mutableStateOf(false) }
     var isNameTypeTyping by remember { mutableStateOf(true) }
     var currentImageUrl by remember { mutableStateOf(model.relationDetail.imageUrl) }
+    var currentImageName by remember { mutableStateOf("") }
     var isUserNameInValid by remember { mutableStateOf(false) }
     var currentNameText by remember { mutableStateOf(model.relationDetail.name) }
     var isKakaoNameInValid by remember { mutableStateOf(false) }
     var kakaoNameTextFocus by remember { mutableStateOf(false) }
     var kakaoNameText by remember { mutableStateOf("카카오에서 친구 선택") }
-    var isShowingKakaoPicker by remember { mutableStateOf(false) }
     var currentGroupId by remember { mutableLongStateOf(model.relationDetail.group.id) }
     var isMemoTextFocus by remember { mutableStateOf(false) }
     var memoText by remember { mutableStateOf(model.relationDetail.memo) }
+    var isShowingTooltip by remember { mutableStateOf(true) }
     var isShowingDeleteDialog by remember { mutableStateOf(false) }
-    var isCancelEditState by remember { mutableStateOf(false) }
+    var isCancelWriteState by remember { mutableStateOf(false) }
     var isShowingGetGroup by remember { mutableStateOf(false) }
+    var isShowingGalleryView by remember { mutableStateOf(false) }
+    var isShowingNonGroupSnackBar by remember { mutableStateOf(false) }
+    var isShowingNonNameSnackBar by remember { mutableStateOf(false) }
+
     BackHandler(
         enabled = true,
         onBack = {
-            when (relationType) {
-                RelationType.EDIT -> isCancelEditState = true
-                RelationType.ADD -> appState.navController.popBackStack()
-            }
+            isCancelWriteState = true
         }
     )
+
+    LaunchedEffect(Unit) {
+        scope.launch {
+            delay(40000L)
+            isShowingTooltip = false
+        }
+    }
 
     fun applyKakaoFriend(event: RelationEvent.LoadKakaoFriend) {
         when (event) {
             is RelationEvent.LoadKakaoFriend.Success -> {
                 currentImageUrl = event.imageUrl
                 kakaoNameText = event.name
+                currentImageName = ""
             }
         }
     }
@@ -136,9 +166,9 @@ fun RelationScreen(
         when (event) {
             is RelationEvent.AddRelation.Success -> {
                 if (isRecordState) {
-                    //TODO go heart record this relation
+                    appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
                 } else {
-                    //TODO go main
+                    appState.navController.popBackStack()
                 }
             }
         }
@@ -147,7 +177,7 @@ fun RelationScreen(
     fun deleteRelation(event: RelationEvent.DeleteRelation) {
         when (event) {
             is RelationEvent.DeleteRelation.Success -> {
-                //TODO go main
+                appState.navController.popBackStack()
             }
         }
     }
@@ -155,18 +185,28 @@ fun RelationScreen(
     fun editRelation(event: RelationEvent.EditRelation) {
         when (event) {
             is RelationEvent.EditRelation.Success -> {
-                //TODO go main
+                appState.navController.popBackStack()
             }
         }
     }
 
     fun checkSubmitState(): Boolean {
         return if (currentGroupId < 0) {
-            // TODO 그룹이 선택되지 않았습니다. 스낵바
+            scope.launch {
+                isShowingNonGroupSnackBar = true
+                delay(1000L)
+                isShowingNonGroupSnackBar = false
+            }
+            false
+        } else if (isNameTypeTyping && currentNameText.isEmpty() || !isNameTypeTyping && kakaoNameText.isEmpty()) {
+            scope.launch {
+                isShowingNonNameSnackBar = true
+                delay(1000L)
+                isShowingNonNameSnackBar = false
+            }
             false
         } else {
-            // TODO 이름이 입력되지 않았습니다. 스낵바
-            !(isNameTypeTyping && currentNameText.isEmpty() || !isNameTypeTyping && kakaoNameText.isEmpty())
+            true
         }
     }
 
@@ -196,7 +236,7 @@ fun RelationScreen(
             ) {
                 Box(
                     modifier = Modifier.clickable {
-                        // TODO to gallery
+                        isShowingGalleryView = true
                     }
                 ) {
                     Box(
@@ -205,11 +245,19 @@ fun RelationScreen(
                             .clip(CircleShape)
                             .background(Gray400)
                     ) {
-                        AsyncImage(
-                            model = currentImageUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop
-                        )
+                        if (currentImageUrl.isEmpty()) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_default_user_image),
+                                contentDescription = null
+                            )
+                        } else {
+                            AsyncImage(
+                                model = currentImageUrl,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     }
                     Image(
                         painter = painterResource(R.drawable.ic_camera),
@@ -221,13 +269,65 @@ fun RelationScreen(
             Spacer(
                 modifier = Modifier.height(
                     when (relationType) {
-                        RelationType.ADD -> 60.dp
+                        RelationType.ADD -> 43.2.dp
                         RelationType.EDIT -> 40.dp
                     }
                 )
             )
-            FieldSubject(subject = "이름")
-            Spacer(modifier = Modifier.height(Space12))
+
+            if (relationType == RelationType.ADD) {
+                Box(
+                    modifier = Modifier.height(38.dp),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    if (isShowingTooltip) {
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Transparent)
+                                .fillMaxHeight()
+                                .wrapContentWidth()
+                                .padding(start = 39.5.dp)
+                        ) {
+                            Card(
+                                backgroundColor = Gray000,
+                                shape = RoundedCornerShape(100.dp),
+                                elevation = 10.dp,
+                                contentColor = Color.Transparent,
+                                modifier = Modifier
+                                    .height(34.dp)
+                                    .align(Alignment.TopCenter)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .height(34.dp)
+                                        .padding(horizontal = 18.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "카카오톡에서 자동으로 친구 정보를 가져와요.",
+                                        style = Body2.merge(
+                                            color = Gray700,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    )
+                                }
+                            }
+                            Image(
+                                painter = painterResource(R.drawable.ic_polygon),
+                                modifier = Modifier
+                                    .offset(y = (-1).dp)
+                                    .align(Alignment.BottomCenter),
+                                colorFilter = ColorFilter.tint(Gray000),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                    FieldSubject(subject = "이름")
+                }
+            } else {
+                FieldSubject(subject = "이름")
+            }
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -241,13 +341,15 @@ fun RelationScreen(
                         isNameTypeTyping = true
                     }
                 )
-                // TODO 툴팁 필요  -> 라이브러리 or 커스텀
                 ChipItem(
                     chipType = if (isNameTypeTyping) ChipType.BORDER else ChipType.MAIN,
                     chipText = "카카오톡으로 등록",
                     chipId = 1,
                     currentSelectedId = setOf(if (isNameTypeTyping) 0 else 1),
                     onSelectChip = {
+                        if (isNameTypeTyping) {
+                            intent(RelationIntent.OnClickLoadFriend)
+                        }
                         isNameTypeTyping = false
                     }
                 )
@@ -293,63 +395,66 @@ fun RelationScreen(
             } else {
                 if (kakaoNameText == "카카오톡에서 친구 선택") {
                     FieldSelectComponent(
-                        isSelected = isShowingKakaoPicker,
+                        isSelected = kakaoNameTextFocus,
                         text = kakaoNameText,
-                        onClick = {
-                            isShowingKakaoPicker = true
-                        },
+                        onClick = {},
                     )
                 } else {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        TypingTextField(
-                            textType = TypingTextFieldType.Basic,
-                            text = kakaoNameText,
-                            onValueChange = {
-                                currentNameText = it
-                                isKakaoNameInValid = it.length > 5
-                            },
-                            isError = isKakaoNameInValid,
-                            isSingleLine = true,
-                            onTextFieldFocusChange = {
-                                kakaoNameTextFocus = it
-                            },
-                            trailingIconContent = {
-                                if (kakaoNameTextFocus) {
-                                    if (kakaoNameText.isNotEmpty()) {
-                                        if (isKakaoNameInValid) {
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_warning),
-                                                contentDescription = null,
-                                                modifier = Modifier.size(Space20)
-                                            )
-                                        } else {
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_close_circle),
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .size(20.dp)
-                                                    .clickable {
-                                                        kakaoNameText = ""
-                                                        isKakaoNameInValid = false
-                                                    }
-                                            )
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            TypingTextField(
+                                textType = TypingTextFieldType.Basic,
+                                text = kakaoNameText,
+                                onValueChange = {
+                                    currentNameText = it
+                                    isKakaoNameInValid = it.length > 5
+                                },
+                                isError = isKakaoNameInValid,
+                                isSingleLine = true,
+                                onTextFieldFocusChange = {
+                                    kakaoNameTextFocus = it
+                                },
+                                trailingIconContent = {
+                                    if (kakaoNameTextFocus) {
+                                        if (kakaoNameText.isNotEmpty()) {
+                                            if (isKakaoNameInValid) {
+                                                Image(
+                                                    painter = painterResource(R.drawable.ic_warning),
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(Space20)
+                                                )
+                                            } else {
+                                                Image(
+                                                    painter = painterResource(R.drawable.ic_close_circle),
+                                                    contentDescription = null,
+                                                    modifier = Modifier
+                                                        .size(20.dp)
+                                                        .clickable {
+                                                            kakaoNameText = ""
+                                                            isKakaoNameInValid = false
+                                                        }
+                                                )
+                                            }
                                         }
+                                    } else {
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_edit),
+                                            contentDescription = null
+                                        )
                                     }
-                                } else {
-                                    Image(
-                                        painter = painterResource(R.drawable.ic_edit),
-                                        contentDescription = null
-                                    )
+                                },
+                                errorMessageContent = {
+                                    if (isKakaoNameInValid) {
+                                        errorMessage()
+                                    }
                                 }
-                            },
-                            errorMessageContent = {
-                                if (isKakaoNameInValid) {
-                                    errorMessage()
-                                }
-                            }
-                        )
+                            )
+                        }
                         Spacer(modifier = Modifier.width(12.dp))
                         Box(
                             modifier = Modifier
@@ -358,7 +463,7 @@ fun RelationScreen(
                                     shape = Shapes.medium
                                 )
                                 .clickable {
-                                    isShowingKakaoPicker = true
+                                    intent(RelationIntent.OnClickLoadFriend)
                                 }
                                 .padding(
                                     vertical = 13.5.dp,
@@ -377,26 +482,49 @@ fun RelationScreen(
                 }
             }
             Spacer(modifier = Modifier.height(Space24))
+
             FieldSubject(subject = "그룹")
             Spacer(modifier = Modifier.height(6.dp))
-            LazyRow(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
             ) {
-
-                items(model.groups) { group ->
-                    ChipItem(
-                        chipType = ChipType.BORDER,
-                        currentSelectedId = setOf(currentGroupId),
-                        chipText = group.name,
-                        onSelectChip = {
-                            currentGroupId = it
-                        },
-                        chipId = group.id
-                    )
+                LazyRow(
+                    modifier = Modifier.padding(
+                        top = 6.dp,
+                        bottom = 12.dp
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    items(model.groups) { group ->
+                        ChipItem(
+                            chipType = ChipType.BORDER,
+                            currentSelectedId = setOf(currentGroupId),
+                            chipText = group.name,
+                            onSelectChip = {
+                                currentGroupId = it
+                            },
+                            chipId = group.id
+                        )
+                    }
                 }
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .width(56.dp)
+                        .fillMaxHeight()
+                        .background(
+                            Brush.horizontalGradient(
+                                listOf(
+                                    Color(0x00FFFFFF),
+                                    Color(0xFFFFFFFF),
+                                )
+                            )
+                        )
+                )
             }
-            Spacer(modifier = Modifier.height(Space12))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -423,14 +551,13 @@ fun RelationScreen(
                     )
                 )
             }
+
             Spacer(modifier = Modifier.height(Space24))
             FieldSubject(
                 subject = "메모",
                 isViewIcon = false
             )
-            Spacer(
-                modifier = Modifier.height(6.dp)
-            )
+            Spacer(modifier = Modifier.height(6.dp))
             when (relationType) {
                 RelationType.EDIT -> {
                     TypingTextField(
@@ -438,6 +565,11 @@ fun RelationScreen(
                         onValueChange = {
                             memoText = it
                         },
+                        contentPadding = PaddingValues(
+                            vertical = 15.dp,
+                            horizontal = 16.dp
+                        ),
+                        fieldHeight = 97.dp,
                         onTextFieldFocusChange = {
                             isMemoTextFocus = it
                         },
@@ -496,10 +628,7 @@ fun RelationScreen(
                 painter = painterResource(R.drawable.ic_chevron_left),
                 contentDescription = null,
                 modifier = Modifier.clickable {
-                    when (relationType) {
-                        RelationType.EDIT -> isCancelEditState = true
-                        RelationType.ADD -> appState.navController.popBackStack()
-                    }
+                    isCancelWriteState = true
                 }
             )
             Spacer(modifier = Modifier.width(Space4))
@@ -559,13 +688,24 @@ fun RelationScreen(
                         onClick = {
                             if (checkSubmitState()) {
                                 intent(
-                                    RelationIntent.OnClickEdit(
-                                        id = model.relationDetail.id,
-                                        groupId = currentGroupId,
-                                        name = if (isNameTypeTyping) currentNameText else kakaoNameText,
-                                        imageUrl = currentImageUrl,
-                                        memo = memoText
-                                    )
+                                    if (currentImageName.isEmpty()) {
+                                        RelationIntent.OnClickEdit(
+                                            id = model.relationDetail.id,
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            memo = memoText
+                                        )
+                                    } else {
+                                        RelationIntent.OnClickEditWithUpload(
+                                            id = model.relationDetail.id,
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            fileName = currentImageName,
+                                            memo = memoText
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -600,12 +740,22 @@ fun RelationScreen(
                             if (checkSubmitState()) {
                                 isRecordState = true
                                 intent(
-                                    RelationIntent.OnClickAdd(
-                                        groupId = currentGroupId,
-                                        name = if (isNameTypeTyping) currentNameText else kakaoNameText,
-                                        imageUrl = currentImageUrl,
-                                        memo = memoText
-                                    )
+                                    if (currentImageName.isEmpty()) {
+                                        RelationIntent.OnClickAdd(
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            memo = memoText
+                                        )
+                                    } else {
+                                        RelationIntent.OnClickAddWithUpload(
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            fileName = currentImageName,
+                                            memo = memoText
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -628,12 +778,22 @@ fun RelationScreen(
                         onClick = {
                             if (checkSubmitState()) {
                                 intent(
-                                    RelationIntent.OnClickAdd(
-                                        groupId = currentGroupId,
-                                        name = if (isNameTypeTyping) currentNameText else kakaoNameText,
-                                        imageUrl = currentImageUrl,
-                                        memo = memoText
-                                    )
+                                    if (currentImageName.isEmpty()) {
+                                        RelationIntent.OnClickAdd(
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            memo = memoText
+                                        )
+                                    } else {
+                                        RelationIntent.OnClickAddWithUpload(
+                                            groupId = currentGroupId,
+                                            name = if (isNameTypeTyping) currentNameText else kakaoNameText,
+                                            imageUrl = currentImageUrl,
+                                            fileName = currentImageName,
+                                            memo = memoText
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -642,6 +802,113 @@ fun RelationScreen(
             }
         }
 
+        if (isShowingNonGroupSnackBar) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 65.dp)
+            ) {
+                SnackBarScreen("그룹이 선택되지 않았습니다.")
+            }
+        }
+
+        if (isShowingNonNameSnackBar) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 65.dp)
+            ) {
+                SnackBarScreen("이름이 선택되지 않았습니다.")
+            }
+        }
+    }
+
+    if (isCancelWriteState) {
+        val currentText = when (relationType) {
+            RelationType.EDIT -> "수정"
+            RelationType.ADD -> "작성"
+        }
+        Dialog(
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            ),
+            onDismissRequest = {
+                isCancelWriteState = false
+            }
+        ) {
+            Card(
+                backgroundColor = Color.White,
+                shape = Shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Image(
+                        painter = painterResource(R.drawable.ic_alert_triangle_gray),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "페이지를 나가면\n${currentText}중인 내용이 삭제돼요.",
+                        style = Body1.merge(
+                            color = Gray800,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Row(modifier = Modifier.wrapContentSize()) {
+                        ConfirmButton(
+                            properties = ConfirmButtonProperties(
+                                size = ConfirmButtonSize.Large,
+                                type = ConfirmButtonType.Secondary
+                            ),
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                isCancelWriteState = false
+                                appState.navController.popBackStack()
+                            }
+                        ) {
+                            Text(
+                                text = "나가기",
+                                style = Headline3.merge(
+                                    color = Gray700,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        ConfirmButton(
+                            properties = ConfirmButtonProperties(
+                                size = ConfirmButtonSize.Large,
+                                type = ConfirmButtonType.Primary
+                            ),
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                isCancelWriteState = false
+                            }
+                        ) {
+                            Text(
+                                text = "계속 ${currentText}",
+                                style = Headline3.merge(
+                                    color = Gray000,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
+        }
     }
 
     if (isShowingGetGroup) {
@@ -660,9 +927,21 @@ fun RelationScreen(
         )
     }
 
-    if (isShowingKakaoPicker) {
+    if (isShowingGalleryView) {
+        GalleryScreen(
+            appState = appState,
+            onDismissRequest = {
+                isShowingGalleryView = false
+            },
+            onResult = { galleryImage ->
+                currentImageUrl = galleryImage.filePath
+                currentImageName = galleryImage.name
+            }
+        )
+    }
+
+    if (!isNameTypeTyping && kakaoNameText.isEmpty()) {
         intent(RelationIntent.OnClickLoadFriend)
-        kakaoNameTextFocus = false
     }
 
     if (isShowingDeleteDialog) {
