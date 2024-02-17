@@ -1,9 +1,9 @@
 package ac.dnd.bookkeeping.android.data.remote.network.model.schedule
 
 import ac.dnd.bookkeeping.android.data.remote.mapper.DataMapper
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.SerialName
@@ -44,6 +44,9 @@ data class GetScheduleItemRes(
             relation = relation.toDomain(),
             day = day,
             event = event,
+            repeatType = null,
+            repeatFinish = null,
+            alarm = null,
             time = time,
             link = link,
             location = location,
@@ -60,9 +63,9 @@ data class GetScheduleItemRelationRes(
     val name: String,
     @SerialName("group")
     val group: GetScheduleItemRelationGroupRes
-) : DataMapper<ScheduleRelation> {
-    override fun toDomain(): ScheduleRelation {
-        return ScheduleRelation(
+) : DataMapper<RelationSimple> {
+    override fun toDomain(): RelationSimple {
+        return RelationSimple(
             id = id,
             name = name,
             group = group.toDomain()
@@ -76,9 +79,9 @@ data class GetScheduleItemRelationGroupRes(
     val id: Long,
     @SerialName("name")
     val name: String
-) : DataMapper<ScheduleRelationGroup> {
-    override fun toDomain(): ScheduleRelationGroup {
-        return ScheduleRelationGroup(
+) : DataMapper<RelationSimpleGroup> {
+    override fun toDomain(): RelationSimpleGroup {
+        return RelationSimpleGroup(
             id = id,
             name = name
         )

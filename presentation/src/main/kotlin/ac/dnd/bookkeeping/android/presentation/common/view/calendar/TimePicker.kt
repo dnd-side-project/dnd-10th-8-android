@@ -35,6 +35,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.datetime.LocalTime
 
+// TODO : 0:00, 12:00 ~ 24:00 정상동작 안함.
 @Composable
 fun TimePicker(
     localTime: LocalTime = LocalTime(0, 0),
@@ -141,6 +142,7 @@ fun TimePicker(
 @Composable
 fun TimePickerPreview() {
     TimePicker(
+        localTime = LocalTime(11, 0),
         onDismissRequest = {},
         onConfirm = {}
     )

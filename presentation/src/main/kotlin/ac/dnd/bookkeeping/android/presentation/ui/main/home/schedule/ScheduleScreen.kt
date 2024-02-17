@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
@@ -11,7 +11,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline0
+import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Space20
 import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
@@ -34,6 +34,7 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +60,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
@@ -67,6 +68,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
@@ -166,22 +168,26 @@ private fun ScheduleScreen(
                     .padding(horizontal = 20.dp)
             ) {
                 Text(
-                    text = "MUR",
-                    style = Headline0.merge(
-                        color = Gray700,
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    text = "통계",
+                    style = Headline1,
+                    modifier = Modifier.align(Alignment.Center)
                 )
-                Image(
-                    painter = painterResource(R.drawable.ic_notification),
-                    contentDescription = null,
+                Box(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .clickable {
-                            navigateToNotification()
-                        }
-                )
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(bounded = false),
+                            onClick = {
+                                navigateToNotification()
+                            }
+                        )
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_notification),
+                        contentDescription = null
+                    )
+                }
             }
             ScheduleScreenHeader(
                 appState = appState,
@@ -293,7 +299,7 @@ private fun ScheduleScreen(
 
 @Preview
 @Composable
-private fun ScheduleScreenPreview() {
+private fun ScheduleScreenPreview1() {
     ScheduleScreen(
         appState = rememberApplicationState(),
         model = ScheduleModel(
@@ -301,16 +307,19 @@ private fun ScheduleScreenPreview() {
             scheduleList = listOf(
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -318,16 +327,19 @@ private fun ScheduleScreenPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "아무거나",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -335,16 +347,19 @@ private fun ScheduleScreenPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "생일",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -352,16 +367,116 @@ private fun ScheduleScreenPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "돌잔치",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
+                    time = null,
+                    link = "graeco",
+                    location = "aliquet",
+                    memo = ""
+                )
+            )
+        ),
+        event = MutableEventFlow(),
+        intent = {},
+        handler = CoroutineExceptionHandler { _, _ -> }
+    )
+}
+
+@Preview
+@Composable
+private fun ScheduleScreenPreview2() {
+    val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
+    ScheduleScreen(
+        appState = rememberApplicationState(),
+        model = ScheduleModel(
+            state = ScheduleState.Init,
+            scheduleList = listOf(
+                Schedule(
+                    id = 4830,
+                    relation = RelationSimple(
+                        id = 7220,
+                        name = "Marietta Justice",
+                        group = RelationSimpleGroup(
+                            id = 2824,
+                            name = "Allen O'Neil"
+                        )
+                    ),
+                    day = now,
+                    event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
+                    time = null,
+                    link = "graeco",
+                    location = "aliquet",
+                    memo = "엄청 긴 메모입니다. 엄청 긴 메모입니다. 엄청 긴 메모입니다. 엄청 긴 메모입니다."
+                ),
+                Schedule(
+                    id = 4830,
+                    relation = RelationSimple(
+                        id = 7220,
+                        name = "Marietta Justice",
+                        group = RelationSimpleGroup(
+                            id = 2824,
+                            name = "Allen O'Neil"
+                        )
+                    ),
+                    day = now,
+                    event = "아무거나",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
+                    time = null,
+                    link = "graeco",
+                    location = "aliquet",
+                    memo = "메모입니다."
+                ),
+                Schedule(
+                    id = 4830,
+                    relation = RelationSimple(
+                        id = 7220,
+                        name = "Marietta Justice",
+                        group = RelationSimpleGroup(
+                            id = 2824,
+                            name = "Allen O'Neil"
+                        )
+                    ),
+                    day = now,
+                    event = "생일",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
+                    time = null,
+                    link = "graeco",
+                    location = "aliquet",
+                    memo = ""
+                ),
+                Schedule(
+                    id = 4830,
+                    relation = RelationSimple(
+                        id = 7220,
+                        name = "Marietta Justice",
+                        group = RelationSimpleGroup(
+                            id = 2824,
+                            name = "Allen O'Neil"
+                        )
+                    ),
+                    day = now,
+                    event = "돌잔치",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",

@@ -1,11 +1,10 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.AddScheduleUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.DeleteScheduleUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.EditScheduleUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.GetScheduleUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -29,7 +28,7 @@ class ScheduleAddViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val addScheduleUseCase: AddScheduleUseCase,
     private val editScheduleUseCase: EditScheduleUseCase,
-//    private val getScheduleUseCase: GetScheduleUseCase,
+    private val getScheduleUseCase: GetScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase
 ) : BaseViewModel() {
 
@@ -39,11 +38,12 @@ class ScheduleAddViewModel @Inject constructor(
     private val _event: MutableEventFlow<ScheduleAddEvent> = MutableEventFlow()
     val event: EventFlow<ScheduleAddEvent> = _event.asEventFlow()
 
-    private val _schedule: MutableStateFlow<Schedule?> = MutableStateFlow(null)
-    val schedule: StateFlow<Schedule?> = _schedule.asStateFlow()
-
     val scheduleId: Long by lazy {
         savedStateHandle.get<Long>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID) ?: -1L
+    }
+
+    val isEdit: Boolean by lazy {
+        scheduleId != -1L
     }
 
     init {
@@ -54,24 +54,24 @@ class ScheduleAddViewModel @Inject constructor(
 
     private fun loadSchedule() {
         launch {
-//            _state.value = ScheduleAddState.Loading
-//            getScheduleUseCase(
-//                scheduleId = scheduleId
-//            ).onSuccess { schedule ->
-//                _state.value = ScheduleAddState.Init
-//                _schedule.value = schedule
-//            }.onFailure { exception ->
-//                _state.value = ScheduleAddState.Init
-//                when (exception) {
-//                    is ServerException -> {
-//                        _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
-//                    }
-//
-//                    else -> {
-//                        _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
-//                    }
-//                }
-//            }
+            _state.value = ScheduleAddState.Loading
+            getScheduleUseCase(
+                id = scheduleId
+            ).onSuccess { schedule ->
+                _state.value = ScheduleAddState.Init
+                _event.emit(ScheduleAddEvent.LoadSchedule.Success(schedule))
+            }.onFailure { exception ->
+                _state.value = ScheduleAddState.Init
+                when (exception) {
+                    is ServerException -> {
+                        _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                    }
+
+                    else -> {
+                        _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                    }
+                }
+            }
         }
     }
 
@@ -81,8 +81,6 @@ class ScheduleAddViewModel @Inject constructor(
                 relationId = intent.relationId,
                 day = intent.day,
                 event = intent.event,
-                repeatType = intent.repeatType,
-                repeatFinish = intent.repeatFinish,
                 alarm = intent.alarm,
                 time = intent.time,
                 link = intent.link,
@@ -98,8 +96,6 @@ class ScheduleAddViewModel @Inject constructor(
         relationId: Long,
         day: LocalDate,
         event: String,
-        repeatType: AlarmRepeatType?,
-        repeatFinish: LocalDate?,
         alarm: ScheduleAlarmType,
         time: LocalTime?,
         link: String,
@@ -133,8 +129,8 @@ class ScheduleAddViewModel @Inject constructor(
                     id = scheduleId,
                     day = day,
                     event = event,
-                    repeatType = repeatType,
-                    repeatFinish = repeatFinish,
+                    repeatType = null,
+                    repeatFinish = null,
                     alarm = alarmDateTime,
                     time = time,
                     link = link,
@@ -160,8 +156,8 @@ class ScheduleAddViewModel @Inject constructor(
                     relationId = relationId,
                     day = day,
                     event = event,
-                    repeatType = repeatType,
-                    repeatFinish = repeatFinish,
+                    repeatType = null,
+                    repeatFinish = null,
                     alarm = alarmDateTime,
                     time = time,
                     link = link,

@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
@@ -91,7 +92,8 @@ fun ScheduleScreenHeader(
                 modifier = Modifier.clickable {
                     onClickDate()
                 },
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = formattedDate,
@@ -329,16 +331,19 @@ private fun ScheduleScreenHeaderPreview() {
             scheduleList = listOf(
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "결혼",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -346,16 +351,19 @@ private fun ScheduleScreenHeaderPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "아무거나",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -363,16 +371,19 @@ private fun ScheduleScreenHeaderPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "생일",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",
@@ -380,16 +391,19 @@ private fun ScheduleScreenHeaderPreview() {
                 ),
                 Schedule(
                     id = 4830,
-                    relation = ScheduleRelation(
+                    relation = RelationSimple(
                         id = 7220,
                         name = "Marietta Justice",
-                        group = ScheduleRelationGroup(
+                        group = RelationSimpleGroup(
                             id = 2824,
                             name = "Allen O'Neil"
                         )
                     ),
                     day = LocalDate(2024, 2, 25),
                     event = "돌잔치",
+                    repeatType = null,
+                    repeatFinish = null,
+                    alarm = LocalDateTime(2024, 2, 25, 12, 0),
                     time = null,
                     link = "graeco",
                     location = "aliquet",

@@ -1,8 +1,8 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule
 
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
+import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
 import ac.dnd.bookkeeping.android.presentation.R
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
@@ -42,10 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
@@ -173,7 +175,13 @@ fun ScheduleScreenItem(
                         text = schedule.location
                     )
                 }
-                // TODO : memo
+                if (schedule.memo.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    ScheduleScreenItemDescription(
+                        iconRes = R.drawable.ic_memo,
+                        text = schedule.memo
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 if (schedule.link.isNotEmpty()) {
                     ConfirmButton(
@@ -228,6 +236,8 @@ fun ScheduleScreenItemDescription(
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = text,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             style = Body1.merge(color = Gray700)
         )
     }
@@ -239,16 +249,19 @@ private fun ScheduleScreenItemPreview() {
     ScheduleScreenItem(
         schedule = Schedule(
             id = 4830,
-            relation = ScheduleRelation(
+            relation = RelationSimple(
                 id = 7220,
                 name = "Marietta Justice",
-                group = ScheduleRelationGroup(
+                group = RelationSimpleGroup(
                     id = 2824,
                     name = "Allen O'Neil"
                 )
             ),
             day = LocalDate(2024, 2, 25),
             event = "돌잔치",
+            repeatType = null,
+            repeatFinish = null,
+            alarm = LocalDateTime(2024, 2, 25, 12, 0),
             time = null,
             link = "graeco",
             location = "aliquet",
