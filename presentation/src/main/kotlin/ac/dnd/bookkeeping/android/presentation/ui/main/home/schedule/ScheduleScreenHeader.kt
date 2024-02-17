@@ -91,7 +91,8 @@ fun ScheduleScreenHeader(
                 modifier = Modifier.clickable {
                     onClickDate()
                 },
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = formattedDate,

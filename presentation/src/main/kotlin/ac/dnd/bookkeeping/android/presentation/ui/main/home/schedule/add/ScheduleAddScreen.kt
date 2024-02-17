@@ -1,7 +1,6 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
 import ac.dnd.bookkeeping.android.domain.model.feature.relation.RelationSimple
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.Schedule
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelation
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.ScheduleRelationGroup
@@ -10,7 +9,6 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Body0
 import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
-import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
@@ -40,7 +38,6 @@ import ac.dnd.bookkeeping.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
-import ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add.repeat.ScheduleAddRepeatScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -65,7 +62,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -111,9 +107,6 @@ fun ScheduleAddScreen(
     var date: LocalDate by remember { mutableStateOf(now) }
     var eventName: String by remember { mutableStateOf("") }
     var alarm: ScheduleAlarmType by remember { mutableStateOf(ScheduleAlarmType.None) }
-    var repeatType: AlarmRepeatType? by remember { mutableStateOf(null) }
-    var isRepeatFinish: Boolean by remember { mutableStateOf(false) }
-    var repeatFinish: LocalDate? by remember { mutableStateOf(null) }
     var time: LocalTime? by remember { mutableStateOf(null) }
     var location: String by remember { mutableStateOf("") }
     var link: String by remember { mutableStateOf("") }
@@ -122,8 +115,6 @@ fun ScheduleAddScreen(
     var isGetRelationShowing: Boolean by remember { mutableStateOf(false) }
     var isDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAlarmDatePickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isRepeatPickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isRepeatFinishDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAddSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isEditSuccessShowing: Boolean by remember { mutableStateOf(false) }
@@ -143,8 +134,6 @@ fun ScheduleAddScreen(
                 relationId = relation?.id ?: -1,
                 day = date,
                 event = eventName,
-                repeatType = repeatType,
-                repeatFinish = repeatFinish,
                 alarm = alarm,
                 time = time,
                 link = link,
@@ -182,28 +171,6 @@ fun ScheduleAddScreen(
             initialAlarmType = alarm,
             onResult = {
                 alarm = it
-            }
-        )
-    }
-
-    if (isRepeatPickerShowing) {
-        ScheduleAddRepeatScreen(
-            appState = appState,
-            initialSelectedType = repeatType,
-            onDismissRequest = { isRepeatPickerShowing = false },
-            onResult = {
-                repeatType = it
-            }
-        )
-    }
-
-    if (isRepeatFinishDatePickerShowing) {
-        CalendarPicker(
-            localDate = now,
-            isDaySelectable = true,
-            onDismissRequest = { isRepeatFinishDatePickerShowing = false },
-            onConfirm = {
-                repeatFinish = it
             }
         )
     }
@@ -286,26 +253,6 @@ fun ScheduleAddScreen(
             "$timeAmPm $timeHour:$timeMinute"
         } ?: "시간 없음"
     }
-    val formattedRepeatType = when (repeatType) {
-        AlarmRepeatType.Month -> "매월"
-        AlarmRepeatType.Year -> "매년"
-        null -> "반복 없음"
-    }
-    val formattedRepeatFinish = Unit.let {
-        repeatFinish?.let {
-            val format = "%04d.%02d.%02d"
-            val year = it.year
-            val month = it.month.number
-            val day = it.dayOfMonth
-            runCatching {
-                String.format(format, year, month, day)
-            }.onFailure { exception ->
-                scope.launch(handler) {
-                    throw exception
-                }
-            }.getOrDefault("????.??.??")
-        } ?: "설정하기"
-    }
 
     Column(
         modifier = Modifier
@@ -370,7 +317,9 @@ fun ScheduleAddScreen(
                         .fillMaxWidth()
                         .height(48.dp)
                         .clickable {
-                            isGetRelationShowing = true
+                            if (model.schedule == null) {
+                                isGetRelationShowing = true
+                            }
                         },
                     backgroundColor = Primary1,
                     shape = Shapes.medium,
@@ -507,96 +456,6 @@ fun ScheduleAddScreen(
                     isAlarmDatePickerShowing = true
                 }
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier.size(16.dp),
-                    painter = painterResource(id = R.drawable.ic_repeat),
-                    contentDescription = null,
-                    tint = Gray600
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "반복",
-                    style = Body1
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            FieldSelectComponent(
-                isSelected = isRepeatPickerShowing,
-                text = formattedRepeatType,
-                onClick = {
-                    isRepeatPickerShowing = true
-                }
-            )
-            if (repeatType != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = Gray200,
-                    shape = Shapes.medium,
-                    elevation = 0.dp
-                ) {
-                    Row(
-                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "반복 종료",
-                            modifier = Modifier.weight(1f),
-                            style = Body1
-                        )
-                        Column {
-                            Switch(
-                                checked = isRepeatFinish,
-                                modifier = Modifier.weight(1f),
-                                onCheckedChange = { isChecked ->
-                                    isRepeatFinish = isChecked
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            if (isRepeatFinish) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            isRepeatFinishDatePickerShowing = true
-                        },
-                    backgroundColor = Gray200,
-                    shape = Shapes.medium,
-                    elevation = 0.dp
-                ) {
-                    Row(
-                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "종료일",
-                            modifier = Modifier.weight(1f),
-                            style = Body1
-                        )
-                        Text(
-                            text = formattedRepeatFinish,
-                            style = Body1.merge(Gray700)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            modifier = Modifier.size(Icon24),
-                            painter = painterResource(id = R.drawable.ic_chevron_right),
-                            contentDescription = null,
-                            tint = Gray600
-                        )
-                    }
-                }
-            }
             Spacer(modifier = Modifier.height(24.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically

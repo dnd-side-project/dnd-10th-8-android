@@ -1,6 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home.schedule.add
 
-import ac.dnd.bookkeeping.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.bookkeeping.android.presentation.model.schedule.ScheduleAlarmType
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -10,8 +9,6 @@ sealed interface ScheduleAddIntent {
         val relationId: Long,
         val day: LocalDate,
         val event: String,
-        val repeatType: AlarmRepeatType?,
-        val repeatFinish: LocalDate?,
         val alarm: ScheduleAlarmType,
         val time: LocalTime?,
         val link: String,

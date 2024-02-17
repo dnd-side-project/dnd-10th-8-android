@@ -1,6 +1,7 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.home
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
 import ac.dnd.bookkeeping.android.presentation.common.theme.Icon24
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -179,7 +180,7 @@ private fun HomeBottomBarScreen(
 ) {
     BottomNavigation(
         elevation = 0.dp,
-        backgroundColor = Color.LightGray,
+        backgroundColor = Gray000,
         modifier = Modifier
             .fillMaxWidth()
             .height(54.dp)

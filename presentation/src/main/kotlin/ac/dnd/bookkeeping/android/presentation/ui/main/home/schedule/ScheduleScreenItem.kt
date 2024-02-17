@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
@@ -173,7 +174,13 @@ fun ScheduleScreenItem(
                         text = schedule.location
                     )
                 }
-                // TODO : memo
+                if (schedule.memo.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    ScheduleScreenItemDescription(
+                        iconRes = R.drawable.ic_memo,
+                        text = schedule.memo
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 if (schedule.link.isNotEmpty()) {
                     ConfirmButton(
@@ -228,6 +235,8 @@ fun ScheduleScreenItemDescription(
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = text,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             style = Body1.merge(color = Gray700)
         )
     }
