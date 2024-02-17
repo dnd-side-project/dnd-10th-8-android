@@ -6,7 +6,9 @@ import ac.dnd.bookkeeping.android.domain.usecase.gallery.GetFolderListUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.gallery.GetPhotoListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +55,7 @@ class GalleryViewModel @Inject constructor(
     private fun getGalleryPagingImages() {
         launch {
             getPhotoListUseCase(currentFolder.value)
+                .cachedIn(viewModelScope)
                 .collectLatest {
                     _galleryPhotoList.value = it
                 }

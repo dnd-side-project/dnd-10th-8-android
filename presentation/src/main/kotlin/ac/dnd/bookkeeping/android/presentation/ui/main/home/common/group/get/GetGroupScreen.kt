@@ -122,187 +122,199 @@ private fun GetGroupScreen(
             )
         )
     ) {
-        Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .background(Gray200)
-                .padding(horizontal = Space20)
-        ) {
-            Spacer(modifier = Modifier.height(Space20))
-            Box(
+        Box {
+            Column(
                 modifier = Modifier
-                    .padding(Space8)
-                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(Gray200)
+                    .padding(horizontal = Space20)
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = null,
+                Spacer(modifier = Modifier.height(Space20))
+                Box(
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .clickable {
-                            onDismissRequest()
-                        }
-                )
-            }
-            Text(
-                text = "전체 그룹 ${model.groups.size}",
-                style = Headline2.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.padding(vertical = Space8)
-            )
-            Spacer(modifier = Modifier.height(Space20))
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(Space12)) {
-                items(model.groups.size) { index ->
-                    val group = model.groups[index]
-                    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-                    Box(
+                        .padding(Space8)
+                        .fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = null,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(Shapes.large)
-                            .background(color = Gray000)
+                            .align(Alignment.CenterEnd)
                             .clickable {
                                 onDismissRequest()
-                                onResult(group)
                             }
-                            .padding(
-                                start = Space16,
-                                end = Space12,
-                                top = Space16,
-                                bottom = Space16
-                            )
-                    ) {
-                        Text(
-                            text = group.name,
-                            style = Headline3.merge(
-                                color = Gray700,
-                                fontWeight = FontWeight.SemiBold
-                            ),
-                            modifier = Modifier.align(Alignment.CenterStart)
-                        )
-
-                        if (DefaultGroupType.checkEditable(group.name)) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_more_vertical),
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(Gray500),
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .clickable {
-                                        isDropDownMenuExpanded = true
-                                    }
-                            )
-                        }
-                        DropdownMenu(
+                    )
+                }
+                Text(
+                    text = "전체 그룹 ${model.groups.size}",
+                    style = Headline2.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(vertical = Space8)
+                )
+                Spacer(modifier = Modifier.height(Space20))
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(Space12)) {
+                    items(model.groups.size) { index ->
+                        val group = model.groups[index]
+                        var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+                        Row(
                             modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterEnd)
-                                .background(
-                                    color = Gray000,
-                                    shape = Shapes.medium
-                                ),
-                            expanded = isDropDownMenuExpanded,
-                            onDismissRequest = { isDropDownMenuExpanded = false }
-                        ) {
-                            Column(verticalArrangement = Arrangement.Center) {
-                                DropdownMenuItem(
-                                    onClick = {
-                                        isDropDownMenuExpanded = false
-                                        currentEditGroupIndex = index
-                                    },
-                                    contentPadding = PaddingValues(0.dp),
-                                    modifier = Modifier
-                                        .width(100.dp)
-                                        .height(40.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .padding(
-                                                vertical = Space8,
-                                                horizontal = Space12
-                                            )
-                                            .fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = "수정",
-                                            style = Body0.merge(
-                                                color = Gray700,
-                                                fontWeight = FontWeight.Normal
-                                            ),
-                                            modifier = Modifier.align(Alignment.CenterStart)
-                                        )
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_edit),
-                                            contentDescription = null,
-                                            modifier = Modifier.align(Alignment.CenterEnd)
-                                        )
-                                    }
+                                .fillMaxWidth()
+                                .clip(Shapes.large)
+                                .background(color = Gray000)
+                                .clickable {
+                                    onDismissRequest()
+                                    onResult(group)
                                 }
-                                DropdownMenuItem(
-                                    onClick = {
-                                        isDropDownMenuExpanded = false
-                                        currentDeleteGroupIndex = index
-                                    },
-                                    contentPadding = PaddingValues(0.dp),
-                                    modifier = Modifier
-                                        .width(100.dp)
-                                        .height(40.dp)
-                                ) {
-                                    Box(
+                                .padding(
+                                    start = Space16,
+                                    end = Space12,
+                                    top = Space16,
+                                    bottom = Space16
+                                )
+                        ) {
+                            Text(
+                                text = group.name,
+                                style = Headline3.merge(
+                                    color = Gray700,
+                                    fontWeight = FontWeight.SemiBold
+                                ),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            if (DefaultGroupType.checkEditable(group.name)) {
+                                Box(modifier = Modifier.wrapContentSize()) {
+                                    Image(
+                                        painter = painterResource(R.drawable.ic_more_vertical),
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(Gray500),
                                         modifier = Modifier
-                                            .padding(
-                                                vertical = Space8,
-                                                horizontal = Space12
-                                            )
-                                            .fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = "삭제",
-                                            style = Body0.merge(
-                                                color = Gray700,
-                                                fontWeight = FontWeight.Normal
+                                            .clickable {
+                                                isDropDownMenuExpanded = true
+                                            }
+                                    )
+                                    DropdownMenu(
+                                        modifier = Modifier
+                                            .wrapContentSize()
+                                            .background(
+                                                color = Gray000,
+                                                shape = Shapes.medium
                                             ),
-                                            modifier = Modifier.align(Alignment.CenterStart)
-                                        )
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_trash),
-                                            contentDescription = null,
-                                            modifier = Modifier.align(Alignment.CenterEnd)
-                                        )
+                                        expanded = isDropDownMenuExpanded,
+                                        onDismissRequest = { isDropDownMenuExpanded = false }
+                                    ) {
+                                        Column(verticalArrangement = Arrangement.Center) {
+                                            DropdownMenuItem(
+                                                onClick = {
+                                                    isDropDownMenuExpanded = false
+                                                    currentEditGroupIndex = index
+                                                },
+                                                contentPadding = PaddingValues(0.dp),
+                                                modifier = Modifier
+                                                    .width(100.dp)
+                                                    .height(40.dp)
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            vertical = Space8,
+                                                            horizontal = Space12
+                                                        )
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    Text(
+                                                        text = "수정",
+                                                        style = Body0.merge(
+                                                            color = Gray700,
+                                                            fontWeight = FontWeight.Normal
+                                                        ),
+                                                        modifier = Modifier.align(Alignment.CenterStart)
+                                                    )
+                                                    Image(
+                                                        painter = painterResource(R.drawable.ic_edit),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.align(Alignment.CenterEnd)
+                                                    )
+                                                }
+                                            }
+                                            DropdownMenuItem(
+                                                onClick = {
+                                                    isDropDownMenuExpanded = false
+                                                    currentDeleteGroupIndex = index
+                                                },
+                                                contentPadding = PaddingValues(0.dp),
+                                                modifier = Modifier
+                                                    .width(100.dp)
+                                                    .height(40.dp)
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            vertical = Space8,
+                                                            horizontal = Space12
+                                                        )
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    Text(
+                                                        text = "삭제",
+                                                        style = Body0.merge(
+                                                            color = Gray700,
+                                                            fontWeight = FontWeight.Normal
+                                                        ),
+                                                        modifier = Modifier.align(Alignment.CenterStart)
+                                                    )
+                                                    Image(
+                                                        painter = painterResource(R.drawable.ic_trash),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.align(Alignment.CenterEnd)
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                Spacer(modifier = Modifier.padding(bottom = 84.dp))
             }
-            Spacer(modifier = Modifier.height(Space16))
-            Row(
+            Box(
                 modifier = Modifier
-                    .clickable {
-                        isShowingAddGroupSheet = true
-                    }
-                    .padding(
-                        vertical = Space16,
-                        horizontal = 2.dp
-                    ),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth()
+                    .background(color = Gray200)
+                    .height(56.dp)
+                    .padding(horizontal = 20.dp)
+                    .align(Alignment.BottomCenter),
+                contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_circle_plus),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = "그룹 등록하기",
-                    style = Headline3.merge(
-                        color = Gray600,
-                        fontWeight = FontWeight.SemiBold
+                Row(
+                    modifier = Modifier
+                        .clickable {
+                            isShowingAddGroupSheet = true
+                        }
+                        .padding(
+                            vertical = Space16,
+                            horizontal = 2.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_circle_plus),
+                        contentDescription = null
                     )
-                )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "그룹 등록하기",
+                        style = Headline3.merge(
+                            color = Gray600,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.height(Space12))
             }
-            Spacer(modifier = Modifier.height(Space12))
         }
     }
 
@@ -316,9 +328,9 @@ private fun GetGroupScreen(
                 currentDeleteGroupIndex = -1
             },
             onConfirm = {
-                currentDeleteGroupIndex = -1
                 intent(GetGroupIntent.OnDelete(model.groups[currentDeleteGroupIndex].id))
                 onGroupChange(model.groups)
+                currentDeleteGroupIndex = -1
             },
             onDismissRequest = {
                 currentDeleteGroupIndex = -1
@@ -334,9 +346,9 @@ private fun GetGroupScreen(
             },
             prevGroup = model.groups[currentEditGroupIndex],
             onResult = {
-                currentEditGroupIndex = -1
                 intent(GetGroupIntent.OnEdit(it))
                 onGroupChange(model.groups)
+                currentEditGroupIndex = -1
             }
         )
     }

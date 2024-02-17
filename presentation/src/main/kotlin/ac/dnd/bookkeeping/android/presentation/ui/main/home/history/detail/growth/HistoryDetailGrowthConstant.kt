@@ -6,5 +6,6 @@ object HistoryDetailGrowthConstant {
     const val ROUTE: String = "${HistoryDetailConstant.ROUTE}/growth"
 
     const val ROUTE_ARGUMENT_TOTAL_MONEY = "totalPrice"
-    const val CONTAIN_MONEY_MODEL = "${ROUTE}/${ROUTE_ARGUMENT_TOTAL_MONEY}"
+    const val CONTAIN_MONEY_MODEL =
+        "${ROUTE}?${ROUTE_ARGUMENT_TOTAL_MONEY}={${ROUTE_ARGUMENT_TOTAL_MONEY}}"
 }

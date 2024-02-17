@@ -10,11 +10,28 @@ sealed interface RelationIntent {
         val memo: String
     ) : RelationIntent
 
+    data class OnClickAddWithUpload(
+        val groupId: Long,
+        val name: String,
+        val imageUrl: String,
+        val fileName: String,
+        val memo: String
+    ) : RelationIntent
+
     data class OnClickEdit(
         val id: Long,
         val groupId: Long,
         val name: String,
         val imageUrl: String,
+        val memo: String
+    ) : RelationIntent
+
+    data class OnClickEditWithUpload(
+        val id: Long,
+        val groupId: Long,
+        val name: String,
+        val imageUrl: String,
+        val fileName: String,
         val memo: String
     ) : RelationIntent
 
