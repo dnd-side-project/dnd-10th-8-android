@@ -154,7 +154,7 @@ fun ScheduleAddScreen(
 
     if (isDatePickerShowing) {
         CalendarPicker(
-            localDate = now,
+            localDate = date,
             isDaySelectable = true,
             onDismissRequest = { isDatePickerShowing = false },
             onConfirm = {
