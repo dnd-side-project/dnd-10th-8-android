@@ -20,6 +20,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLif
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.bookkeeping.android.presentation.common.util.makeRoute
 import ac.dnd.bookkeeping.android.presentation.common.view.DialogScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.mypage.setting.withdraw.MyPageSettingWithdrawConstant
@@ -99,6 +100,7 @@ private fun MyPageScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     var isShowingLogoutDialog by remember { mutableStateOf(false) }
 
     fun navigateToLink() {
@@ -107,13 +109,21 @@ private fun MyPageScreen(
                 Intent.ACTION_VIEW,
                 Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSePnH7MAeuaPzsOp9WXIfgFmnxVelsHBixcc912bH5O7ze1MQ/viewform")
             )
-        ContextCompat.startActivity(LocalContext.current, browserIntent, null)
+        ContextCompat.startActivity(context, browserIntent, null)
     }
 
-    fun logout(event: MyPageEvent.Logout){
-        when(event){
+    fun navigateToWithdraw() {
+        val route = makeRoute(
+            MyPageSettingWithdrawConstant.ROUTE,
+            listOf(MyPageSettingWithdrawConstant.ROUTE_ARGUMENT_NAME to model.profile.nickname)
+        )
+        appState.navController.navigate(route)
+    }
+
+    fun logout(event: MyPageEvent.Logout) {
+        when (event) {
             is MyPageEvent.Logout.Success -> {
-                appState.navController.navigate(LoginMainConstant.ROUTE){
+                appState.navController.navigate(LoginMainConstant.ROUTE) {
                     popUpTo(MyPageConstant.ROUTE) {
                         inclusive = true
                     }
@@ -246,7 +256,7 @@ private fun MyPageScreen(
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
                 Text(
-                    text = if (model.profile.gender=="male") "남자" else "여자",
+                    text = if (model.profile.gender == "male") "남자" else "여자",
                     style = Body1.merge(
                         color = Gray700,
                         fontWeight = FontWeight.SemiBold
@@ -265,7 +275,7 @@ private fun MyPageScreen(
                 }
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = "1:1 문의하기",
                 style = Body0.merge(
@@ -291,7 +301,7 @@ private fun MyPageScreen(
                 .height(64.dp)
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = "버전",
                 style = Body0.merge(
@@ -324,7 +334,7 @@ private fun MyPageScreen(
                 }
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = "이용약관",
                 style = Body0.merge(
@@ -353,7 +363,7 @@ private fun MyPageScreen(
                 }
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = "로그아웃",
                 style = Body0.merge(
@@ -377,15 +387,15 @@ private fun MyPageScreen(
             ),
             textDecoration = TextDecoration.Underline,
             modifier = Modifier.clickable {
-
+                navigateToWithdraw()
             }
         )
     }
 
-    if(isShowingLogoutDialog){
+    if (isShowingLogoutDialog) {
         DialogScreen(
             isCancelable = true,
-            message ="로그아웃 하시겠어요?",
+            message = "로그아웃 하시겠어요?",
             confirmMessage = "확인",
             cancelMessage = "취소",
             onCancel = {
@@ -403,7 +413,7 @@ private fun MyPageScreen(
 
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
-            when(event){
+            when (event) {
                 is MyPageEvent.Logout -> logout(event)
             }
         }

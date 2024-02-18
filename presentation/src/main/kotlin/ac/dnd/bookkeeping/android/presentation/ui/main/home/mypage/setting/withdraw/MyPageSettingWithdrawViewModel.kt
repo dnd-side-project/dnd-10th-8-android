@@ -28,7 +28,7 @@ class MyPageSettingWithdrawViewModel @Inject constructor(
     val event: EventFlow<MyPageSettingWithdrawEvent> = _event.asEventFlow()
 
     fun onIntent(intent: MyPageSettingWithdrawIntent) {
-        when(intent){
+        when (intent) {
             is MyPageSettingWithdrawIntent.OnWithdraw -> withdraw()
         }
     }

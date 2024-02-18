@@ -19,6 +19,7 @@ import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.main.LoginMainConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,20 +72,21 @@ fun MyPageSettingWithdrawScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Gray000)
             .padding(horizontal = 20.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(
-                    horizontal = 20.dp
-                ),
+                .height(56.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_chevron_left),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    appState.navController.popBackStack()
+                }
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -116,7 +118,7 @@ fun MyPageSettingWithdrawScreen(
         Spacer(modifier = Modifier.height(25.dp))
         Row {
             Text(
-                text = "•",
+                text = "• ",
                 style = Body1.merge(
                     color = Gray800,
                     fontWeight = FontWeight.Normal
@@ -134,7 +136,7 @@ fun MyPageSettingWithdrawScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable {
-                isCheckAgree != isCheckAgree
+                isCheckAgree = !isCheckAgree
             }
         ) {
             val imageResource =
@@ -155,25 +157,23 @@ fun MyPageSettingWithdrawScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Box(
-            modifier = Modifier.padding(
-                horizontal = 20.dp,
-                vertical = 12.dp
-            )
+            modifier = Modifier.padding(vertical = 12.dp)
         ) {
             ConfirmButton(
+                modifier = Modifier.fillMaxWidth(),
                 properties = ConfirmButtonProperties(
                     size = ConfirmButtonSize.Xlarge,
-                    type = ConfirmButtonType.Secondary
+                    type = ConfirmButtonType.Primary
                 ),
                 isEnabled = isCheckAgree,
                 onClick = {
                     intent(MyPageSettingWithdrawIntent.OnWithdraw)
                 }
-            ){
+            ) {
                 Text(
-                   text = "탈퇴하기",
+                    text = "탈퇴하기",
                     style = Headline3.merge(
-                        color = if(isCheckAgree) Gray000 else Gray800,
+                        color = if (isCheckAgree) Gray000 else Gray800,
                         fontWeight = FontWeight.SemiBold
                     )
                 )

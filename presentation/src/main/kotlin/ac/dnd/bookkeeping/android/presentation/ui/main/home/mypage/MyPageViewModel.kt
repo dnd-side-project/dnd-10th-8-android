@@ -3,7 +3,6 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.mypage
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.member.Profile
 import ac.dnd.bookkeeping.android.domain.usecase.authentication.LogoutUseCase
-import ac.dnd.bookkeeping.android.domain.usecase.authentication.WithdrawUseCase
 import ac.dnd.bookkeeping.android.domain.usecase.member.GetProfileUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
@@ -36,7 +35,7 @@ class MyPageViewModel @Inject constructor(
             name = "",
             nickname = "",
             profileImageUrl = "",
-            gender =  "",
+            gender = "",
             birth = LocalDate(2000, 1, 1)
         )
     )
@@ -47,12 +46,12 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun onIntent(intent: MyPageIntent) {
-        when(intent){
+        when (intent) {
             MyPageIntent.OnLogout -> logout()
         }
     }
 
-    private fun getProfile(){
+    private fun getProfile() {
         launch {
             _state.value = MyPageState.Loading
             getProfileUseCase()
@@ -75,7 +74,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    private fun logout(){
+    private fun logout() {
         launch {
             _state.value = MyPageState.Loading
             logoutUseCase()
