@@ -1,6 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.main
 
-import ac.dnd.bookkeeping.android.presentation.common.util.ErrorObserver
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginViewModel
@@ -30,8 +29,6 @@ fun NavGraphBuilder.loginMainDestination(
                 state = state
             )
         }
-
-        ErrorObserver(viewModel)
 
         LoginMainScreen(
             appState = appState,

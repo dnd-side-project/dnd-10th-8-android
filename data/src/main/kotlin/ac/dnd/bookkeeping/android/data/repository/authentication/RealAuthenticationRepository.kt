@@ -48,7 +48,7 @@ class RealAuthenticationRepository @Inject constructor(
             this.refreshToken = token.refreshToken
             this.accessToken = token.accessToken
         }.map { login ->
-            Login(isNew = login.isNew)
+            Login(id = login.id)
         }
     }
 

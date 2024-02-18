@@ -5,8 +5,8 @@ import ac.dnd.bookkeeping.android.presentation.model.login.KakaoUserInformationM
 
 sealed interface LoginMainEvent {
     sealed interface Login : LoginMainEvent {
-        data class Success(
-            val isNew: Boolean,
+        data object Success : Login
+        data class RequireRegister(
             val kakaoUserModel: KakaoUserInformationModel
         ) : Login
 

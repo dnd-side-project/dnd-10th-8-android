@@ -1,7 +1,5 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.splash
 
-import ac.dnd.bookkeeping.android.presentation.R
-import ac.dnd.bookkeeping.android.presentation.common.theme.Headline1
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.alarm.registerAlarm
 import ac.dnd.bookkeeping.android.presentation.common.util.alarm.unregisterAlarm
@@ -12,21 +10,17 @@ import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.login.LoginConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
@@ -70,20 +64,20 @@ fun SplashScreen(
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color(0xFFE579FF),
+                        Color(0xFFDE56FF),
+                    )
+                )
+            ),
+        contentAlignment = Alignment.Center
     ) {
-        Image(
-            modifier = Modifier.size(100.dp),
-            painter = painterResource(id = R.drawable.ic_launcher),
-            contentDescription = ""
-        )
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = Headline1
-        )
+
     }
 
     LaunchedEffectWithLifecycle(event, handler) {

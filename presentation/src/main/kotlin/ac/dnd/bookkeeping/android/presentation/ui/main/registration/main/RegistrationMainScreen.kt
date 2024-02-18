@@ -7,6 +7,7 @@ import ac.dnd.bookkeeping.android.presentation.common.theme.Gray200
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray400
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray500
 import ac.dnd.bookkeeping.android.presentation.common.theme.Gray600
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
 import ac.dnd.bookkeeping.android.presentation.common.theme.Headline3
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary1
 import ac.dnd.bookkeeping.android.presentation.common.theme.Primary4
@@ -51,6 +52,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.IconButton
+import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,9 +64,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -90,6 +97,9 @@ fun RegistrationNamingScreen(
     var userGender: UserGender? by remember { mutableStateOf(null) }
     var buttonClickState by remember { mutableStateOf(false) }
     var checkNonDuplicationState by remember { mutableStateOf(false) }
+    var isSelectedFirstAgreeButton by remember { mutableStateOf(false) }
+    var isSelectedSecondAgreeButton by remember { mutableStateOf(false) }
+    var isSelectedThirdAgreeButton by remember { mutableStateOf(false) }
     val registrationButtonColorState = animateColorAsState(
         targetValue = checkColorState(
             buttonClickState = buttonClickState,
@@ -97,7 +107,8 @@ fun RegistrationNamingScreen(
             gender = userGender,
             year = userYearText,
             month = userMonthText,
-            day = userDayText
+            day = userDayText,
+            selectedAllAgree = isSelectedFirstAgreeButton && isSelectedSecondAgreeButton && isSelectedThirdAgreeButton
         ),
         label = "registration button state"
     )
@@ -169,11 +180,7 @@ fun RegistrationNamingScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
-                .padding(
-                    start = Space20,
-                    end = Space20,
-                    bottom = 220.dp
-                )
+                .padding(horizontal = 20.dp)
         ) {
             Text(
                 text = "닉네임",
@@ -335,6 +342,124 @@ fun RegistrationNamingScreen(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(40.dp))
+
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isSelectedFirstAgreeButton,
+                    onClick = {
+                        isSelectedFirstAgreeButton = !isSelectedFirstAgreeButton
+                    },
+                    modifier = Modifier.size(20.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary4,
+                        unselectedColor = Gray500
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(color = Primary4)
+                        ) {
+                            append("[필수]")
+                        }
+                        append(" 이용약관 동의")
+                    },
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    colorFilter = ColorFilter.tint(Gray600)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isSelectedSecondAgreeButton,
+                    onClick = {
+                        isSelectedSecondAgreeButton = !isSelectedSecondAgreeButton
+                    },
+                    modifier = Modifier.size(20.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary4,
+                        unselectedColor = Gray500
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = buildAnnotatedString {
+
+                        withStyle(
+                            SpanStyle(color = Primary4)
+                        ) {
+                            append("[필수]")
+                        }
+                        append(" 개인정보 수집 및 이용동의")
+                    },
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    colorFilter = ColorFilter.tint(Gray600)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isSelectedThirdAgreeButton,
+                    onClick = {
+                        isSelectedThirdAgreeButton = !isSelectedThirdAgreeButton
+                    },
+                    modifier = Modifier.size(20.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary4,
+                        unselectedColor = Gray500
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = buildAnnotatedString {
+
+                        withStyle(
+                            SpanStyle(color = Primary4)
+                        ) {
+                            append("[필수]")
+                        }
+                        append(" 만 14세 이상입니다.")
+                    },
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    colorFilter = ColorFilter.tint(Gray600)
+                )
+            }
         }
 
         Box(
@@ -352,10 +477,6 @@ fun RegistrationNamingScreen(
                 shape = Shapes.large,
                 colors = ButtonDefaults.textButtonColors(
                     backgroundColor = registrationButtonColorState.value
-                ),
-                border = BorderStroke(
-                    color = if (userGender == UserGender.Male) Primary4 else Gray400,
-                    width = 1.dp,
                 ),
                 enabled = registrationButtonColorState.value == Primary4,
                 onClick = {
@@ -414,10 +535,11 @@ private fun checkColorState(
     gender: UserGender?,
     year: String,
     month: String,
-    day: String
+    day: String,
+    selectedAllAgree: Boolean
 ): Color =
     if (buttonClickState) Primary5
-    else if (nameValid && gender != null && year.length == 4 && month.length == 2 && day.length == 2) Primary4
+    else if (nameValid && gender != null && year.length == 4 && month.length == 2 && day.length == 2 && selectedAllAgree) Primary4
     else Gray400
 
 @Preview
