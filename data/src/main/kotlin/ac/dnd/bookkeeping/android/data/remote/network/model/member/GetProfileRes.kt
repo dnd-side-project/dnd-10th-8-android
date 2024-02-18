@@ -8,6 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetProfileRes(
+    @SerialName("id")
+    val id: Long,
+    @SerialName("email")
+    val email: String,
+    @SerialName("profileImageUrl")
+    val profileImageUrl: String,
     @SerialName("name")
     val name: String,
     @SerialName("nickname")
@@ -19,6 +25,9 @@ data class GetProfileRes(
 ) : DataMapper<Profile> {
     override fun toDomain(): Profile {
         return Profile(
+            id = id,
+            email = email,
+            profileImageUrl = profileImageUrl,
             name = name,
             nickname = nickname,
             gender = gender,
