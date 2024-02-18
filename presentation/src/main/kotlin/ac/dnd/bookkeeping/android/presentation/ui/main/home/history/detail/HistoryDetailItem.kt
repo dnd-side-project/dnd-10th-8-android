@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -111,7 +112,7 @@ fun HistoryDetailItem(
                 if (measureTextWidth(relatedHeart.memo, memeStyle) <= currentViewWidth - 80.dp) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
-                            painter = painterResource(R.drawable.board),
+                            painter = painterResource(R.drawable.ic_board),
                             contentDescription = null
                         )
                         Spacer(modifier = Modifier.width(6.dp))

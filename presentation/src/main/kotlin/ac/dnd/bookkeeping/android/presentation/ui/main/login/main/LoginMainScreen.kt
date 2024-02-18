@@ -1,6 +1,13 @@
 package ac.dnd.bookkeeping.android.presentation.ui.main.login.main
 
 import ac.dnd.bookkeeping.android.presentation.R
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body1
+import ac.dnd.bookkeeping.android.presentation.common.theme.Body2
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray000
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray100
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray700
+import ac.dnd.bookkeeping.android.presentation.common.theme.Gray800
+import ac.dnd.bookkeeping.android.presentation.common.theme.Shapes
 import ac.dnd.bookkeeping.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -21,9 +28,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,15 +42,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineExceptionHandler
 
@@ -70,65 +78,119 @@ fun LoginMainScreen(
     fun login(event: LoginMainEvent.Login) {
         when (event) {
             is LoginMainEvent.Login.Success -> {
-                when (event.isNew) {
-                    true -> navigateToOnBoarding(event.kakaoUserModel)
-                    false -> navigateToHome()
-                }
+                navigateToHome()
+            }
+
+            is LoginMainEvent.Login.RequireRegister -> {
+                navigateToOnBoarding(event.kakaoUserModel)
             }
 
             is LoginMainEvent.Login.Error -> {
                 isDialogShowing = true
             }
 
-            is LoginMainEvent.Login.Failure -> {
-
-                isDialogShowing = true
-            }
+            is LoginMainEvent.Login.Failure -> {}
         }
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            .background(Gray100)
     ) {
-        Text(
-            text = "서비스 이름",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            color = Color(0xFF474747),
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 157.16.dp)
-        )
-
         Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 99.36.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "감사한 마음을 잊지 않도록",
+                style = Body1.merge(
+                    color = Gray800,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Spacer(modifier = Modifier.height(12.64.dp))
+            Image(
+                painter = painterResource(R.drawable.ic_login_logo),
+                contentDescription = null,
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 100.87.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .wrapContentSize()
+                    .height(39.dp)
+            ) {
+                Card(
+                    backgroundColor = Gray000,
+                    shape = RoundedCornerShape(100.dp),
+                    elevation = 0.dp,
+                    contentColor = Color.Transparent,
+                    modifier = Modifier
+                        .height(34.dp)
+                        .align(Alignment.TopCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .height(34.dp)
+                            .padding(horizontal = 18.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "3초만에 시작하기",
+                            style = Body2.merge(
+                                color = Gray700,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                }
+                Image(
+                    painter = painterResource(R.drawable.ic_polygon),
+                    modifier = Modifier
+                        .offset(y = (-1).dp)
+                        .align(Alignment.BottomCenter),
+                    colorFilter = ColorFilter.tint(Gray000),
+                    contentDescription = null,
+                )
+            }
+        }
+
+        Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(
-                    bottom = 77.dp,
-                    start = 18.dp,
-                    end = 18.dp
+                    bottom = 34.87.dp,
+                    start = 22.dp,
+                    end = 14.dp
                 )
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp)),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .clip(Shapes.medium)
         ) {
-            SampleComponent()
-            Spacer(Modifier.height(20.23.dp))
             Image(
                 painter = painterResource(R.drawable.ic_kakao_login_button),
                 contentDescription = null,
-                modifier = Modifier.clickable {
-                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
-                }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
+                    },
+                contentScale = ContentScale.Crop
             )
         }
     }
 
     if (isDialogShowing) {
         DialogScreen(
-            title = stringResource(R.string.login_main_dialog_message),
+            message = stringResource(R.string.login_main_dialog_message),
             onDismissRequest = {
                 isDialogShowing = false
             }
@@ -152,33 +214,6 @@ private fun NavHostController.sendKakaoUserModel(kakaoUserModel: KakaoUserInform
         )
     }
     navigate(LoginOnBoardingConstant.CONTAIN_USER_MODEL)
-}
-
-@Composable
-private fun SampleComponent() {
-    Box(
-        modifier = Modifier
-            .width(115.96.dp)
-            .height(32.47.dp)
-            .shadow(
-                elevation = 3.dp,
-                shape = RoundedCornerShape(16.23.dp)
-            )
-            .background(
-                shape = RoundedCornerShape(16.23.dp),
-                color = Color.White
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "3초만에 시작하기",
-            color = Color.Black,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 0.2.sp,
-            textAlign = TextAlign.Center
-        )
-    }
 }
 
 @Preview

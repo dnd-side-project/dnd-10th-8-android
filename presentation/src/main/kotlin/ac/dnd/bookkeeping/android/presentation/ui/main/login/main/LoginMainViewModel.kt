@@ -54,7 +54,16 @@ class LoginMainViewModel @Inject constructor(
                 getUserInfo()
             }
             .onFailure { error ->
-                submitError(error)
+                when (error) {
+                    is ServerException -> {
+                        _event.emit(LoginMainEvent.Login.Failure(error))
+                    }
+
+                    else -> {
+                        _event.emit(LoginMainEvent.Login.Error(error))
+                    }
+                }
+                _state.emit(LoginMainState.Init)
             }
     }
 
@@ -68,41 +77,45 @@ class LoginMainViewModel @Inject constructor(
                 )
             }
             .onFailure { error ->
-                submitError(error)
+                when (error) {
+                    is ServerException -> {
+                        _event.emit(LoginMainEvent.Login.Failure(error))
+                    }
+
+                    else -> {
+                        _event.emit(LoginMainEvent.Login.Error(error))
+                    }
+                }
+                _state.emit(LoginMainState.Init)
             }
     }
 
     private fun login(
         userSocialId: Long,
         userEmail: String,
-    ) = launch {
-        loginUseCase.invoke(
-            socialId = userSocialId,
-            email = userEmail
-        )
-            .onSuccess {
-                _event.emit(
-                    LoginMainEvent.Login.Success(
-                        isNew = it.isNew,
-                        kakaoUserModel = kakaoUserInfo.value
-                    )
-                )
-            }
-            .onFailure { error ->
-                submitError(error)
-            }
-    }
+    ) {
+        launch {
+            _state.value = LoginMainState.Loading
+            loginUseCase.invoke(
+                socialId = userSocialId,
+                email = userEmail
+            )
+                .onSuccess {
+                    _state.value = LoginMainState.Init
+                    _event.emit(LoginMainEvent.Login.Success)
+                }
+                .onFailure { error ->
+                    _state.value = LoginMainState.Init
+                    when (error) {
+                        is ServerException -> {
+                            _event.emit(LoginMainEvent.Login.RequireRegister(kakaoUserModel = kakaoUserInfo.value))
+                        }
 
-    private fun submitError(exception: Throwable) = launch {
-        when (exception) {
-            is ServerException -> {
-                _event.emit(LoginMainEvent.Login.Failure(exception))
-            }
-
-            else -> {
-                _event.emit(LoginMainEvent.Login.Error(exception))
-            }
+                        else -> {
+                            _event.emit(LoginMainEvent.Login.Error(error))
+                        }
+                    }
+                }
         }
-        _state.emit(LoginMainState.Init)
     }
 }

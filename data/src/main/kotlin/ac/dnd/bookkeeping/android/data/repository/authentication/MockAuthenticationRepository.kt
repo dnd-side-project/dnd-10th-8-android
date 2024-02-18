@@ -2,6 +2,7 @@ package ac.dnd.bookkeeping.android.data.repository.authentication
 
 import ac.dnd.bookkeeping.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.bookkeeping.android.domain.model.authentication.JwtToken
+import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.legacy.Login
 import ac.dnd.bookkeeping.android.domain.model.legacy.Register
 import ac.dnd.bookkeeping.android.domain.repository.AuthenticationRepository
@@ -37,9 +38,7 @@ class MockAuthenticationRepository @Inject constructor(
         email: String
     ): Result<Login> {
         randomShortDelay()
-        return Result.success(
-            Login(isNew = true)
-        )
+        return Result.failure(ServerException("MEMBER_001", "사용자 정보가 존재하지 않습니다."))
     }
 
     override suspend fun logout(): Result<Unit> {
