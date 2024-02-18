@@ -428,9 +428,11 @@ private fun MyPageScreenPreview() {
         model = MyPageModel(
             state = MyPageState.Init,
             profile = Profile(
+                id = 0,
+                email = "",
+                profileImageUrl = "",
                 name = "",
                 nickname = "dd",
-                profileImageUrl = "",
                 gender = "",
                 birth = LocalDate(2000, 1, 1)
             )
