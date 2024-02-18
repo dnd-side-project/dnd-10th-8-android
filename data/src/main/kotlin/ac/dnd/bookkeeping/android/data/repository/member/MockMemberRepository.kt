@@ -28,6 +28,9 @@ class MockMemberRepository @Inject constructor() : MemberRepository {
         randomShortDelay()
         return Result.success(
             Profile(
+                id = 0L,
+                email = "hello@gmail.com",
+                profileImageUrl = "https://avatars.githubusercontent.com/u/71167956",
                 name = "김진우",
                 nickname = "진우에몽",
                 gender = "male",
