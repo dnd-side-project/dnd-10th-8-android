@@ -41,6 +41,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -102,6 +104,7 @@ private fun MyPageScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var isShowingLogoutDialog by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
 
     fun navigateToLink() {
         val browserIntent =
@@ -136,6 +139,7 @@ private fun MyPageScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray000)
+            .verticalScroll(scrollState)
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -390,6 +394,7 @@ private fun MyPageScreen(
                 navigateToWithdraw()
             }
         )
+        Spacer(modifier = Modifier.height(60.dp))
     }
 
     if (isShowingLogoutDialog) {

@@ -3,6 +3,7 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.history.unrecorded
 import ac.dnd.bookkeeping.android.domain.model.error.ServerException
 import ac.dnd.bookkeeping.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.bookkeeping.android.domain.usecase.feature.heart.AddUnrecordedHeartUseCase
+import ac.dnd.bookkeeping.android.domain.usecase.feature.schedule.GetUnrecordedScheduleListUseCase
 import ac.dnd.bookkeeping.android.presentation.common.base.BaseViewModel
 import ac.dnd.bookkeeping.android.presentation.common.base.ErrorEvent
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.EventFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryUnrecordedViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val addUnrecordedHeartUseCase: AddUnrecordedHeartUseCase
+    private val addUnrecordedHeartUseCase: AddUnrecordedHeartUseCase,
+    private val getUnrecordedScheduleListUseCase: GetUnrecordedScheduleListUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HistoryUnrecordedState> =
@@ -32,8 +34,8 @@ class HistoryUnrecordedViewModel @Inject constructor(
         MutableStateFlow(emptyList())
     val unrecordedList: StateFlow<List<UnrecordedSchedule>> = _unrecordedList.asStateFlow()
 
-    fun initUnRecordedList(unRecordedScheduleList: List<UnrecordedSchedule>) {
-        _unrecordedList.value = unRecordedScheduleList
+    init {
+        loadUnrecordedHeartList()
     }
 
     fun onIntent(intent: HistoryUnrecordedIntent) {
@@ -47,6 +49,31 @@ class HistoryUnrecordedViewModel @Inject constructor(
             }
             //TODO -> skip api
             is HistoryUnrecordedIntent.OnSkip -> skipRecord(intent.scheduleId)
+        }
+    }
+
+    private fun loadUnrecordedHeartList(
+
+    ) {
+        launch {
+            _state.value = HistoryUnrecordedState.Loading
+            getUnrecordedScheduleListUseCase("")
+                .onSuccess {
+                    _state.value = HistoryUnrecordedState.Init
+                    _unrecordedList.value = it
+                }
+                .onFailure { exception ->
+                    _state.value = HistoryUnrecordedState.Init
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
         }
     }
 

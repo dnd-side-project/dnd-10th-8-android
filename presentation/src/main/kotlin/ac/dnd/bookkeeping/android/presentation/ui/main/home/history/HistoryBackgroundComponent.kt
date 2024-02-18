@@ -56,6 +56,7 @@ fun HistoryBackgroundComponent(
     model: HistoryModel,
     searchText: String,
     isTextFieldFocused: Boolean,
+    isViewUnrecordedState: Boolean,
     onFocusChange: (Boolean) -> Unit,
     alarmState: Boolean = true,
     onClickUnrecorded: () -> Unit,
@@ -168,7 +169,7 @@ fun HistoryBackgroundComponent(
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                if (model.unrecordedSchedule.isNotEmpty()) {
+                if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) {
                     Card(shape = RoundedCornerShape(16.dp)) {
                         Box(
                             modifier = Modifier
@@ -304,6 +305,7 @@ private fun HistoryBackgroundComponent1Preview() {
         onClickUnrecorded = {},
         onDeleteUnrecorded = {},
         isTextFieldFocused = true,
+        isViewUnrecordedState = true,
         onFocusChange = {},
     )
 }
@@ -356,6 +358,7 @@ private fun HistoryBackgroundComponent2Preview() {
         onClickUnrecorded = {},
         onDeleteUnrecorded = {},
         isTextFieldFocused = true,
+        isViewUnrecordedState = true,
         onFocusChange = {},
     )
 }

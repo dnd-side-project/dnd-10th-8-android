@@ -40,6 +40,7 @@ import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.common.event.EventTypeScreen
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -146,6 +147,7 @@ private fun HistoryDetailEditScreen(
     val tagIdList =
         remember { HistoryTagType.getTagIdList(model.relatedHeart.tags).toMutableStateList() }
 
+    var isEditMode by remember { mutableStateOf(false) }
     var isEventSelected by remember { mutableStateOf(false) }
     var isEventFocused by remember { mutableStateOf(false) }
     var isEventTyping by remember { mutableStateOf(false) }
@@ -154,6 +156,17 @@ private fun HistoryDetailEditScreen(
     var isShowingOutPageDialog by remember { mutableStateOf(false) }
     var isShowingDeleteDialog by remember { mutableStateOf(false) }
     var isShowingSuccessEditSnackBar by remember { mutableStateOf(false) }
+
+    BackHandler(
+        enabled = true,
+        onBack = {
+            if (isEditMode) {
+                isShowingOutPageDialog = true
+            } else {
+                onDismissRequest()
+            }
+        }
+    )
 
     fun delete(event: HistoryDetailEditEvent.DeleteRelatedHeart) {
         when (event) {
@@ -212,7 +225,11 @@ private fun HistoryDetailEditScreen(
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
                             .clickable {
-                                isShowingOutPageDialog = true
+                                if (isEditMode) {
+                                    isShowingOutPageDialog = true
+                                } else {
+                                    onDismissRequest()
+                                }
                             }
                     )
                 }
@@ -229,6 +246,7 @@ private fun HistoryDetailEditScreen(
                     textValue = moneyText,
                     onValueChange = {
                         moneyText = it
+                        isEditMode = true
                     },
                     isAddFiledEnabled = false,
                 )
@@ -241,6 +259,7 @@ private fun HistoryDetailEditScreen(
                     text = listOf(selectedYear, selectedMonth, selectedDay).joinToString(" / "),
                     onClick = {
                         isCalendarSelected = true
+                        isEditMode = true
                     }
                 )
                 Spacer(modifier = Modifier.height(Space24))
@@ -251,6 +270,7 @@ private fun HistoryDetailEditScreen(
                     text = eventText,
                     onValueChange = {
                         eventText = it
+                        isEditMode = true
                     },
                     textType = TypingTextFieldType.Basic,
                     onTextFieldFocusChange = {
@@ -295,6 +315,7 @@ private fun HistoryDetailEditScreen(
                     text = memoText,
                     onValueChange = {
                         memoText = it
+                        isEditMode = true
                     },
                     contentPadding = PaddingValues(
                         vertical = 15.dp,
@@ -344,6 +365,7 @@ private fun HistoryDetailEditScreen(
                                 currentSelectedId = tagIdList.toSet(),
                                 chipId = type.id,
                                 onSelectChip = { selectId ->
+                                    isEditMode = true
                                     if (tagIdList.contains(selectId)) {
                                         tagIdList.remove(selectId)
                                     } else {

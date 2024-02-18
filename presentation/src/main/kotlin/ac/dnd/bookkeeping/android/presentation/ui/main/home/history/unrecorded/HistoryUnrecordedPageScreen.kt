@@ -37,7 +37,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -60,7 +63,7 @@ fun HistoryUnrecordedPageScreen(
 ) {
     var moneyText by remember { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
-
+    val scrollState = rememberScrollState()
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -149,13 +152,13 @@ fun HistoryUnrecordedPageScreen(
                             fontWeight = FontWeight.Normal
                         )
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // TODO : name
                         Text(
-                            text = "이다빈",
+                            text = unrecordedSchedule.relation.name,
                             style = Headline2.merge(
                                 color = Gray800,
                                 fontWeight = FontWeight.SemiBold
@@ -166,7 +169,9 @@ fun HistoryUnrecordedPageScreen(
                             style = Body0.merge(
                                 color = Gray600,
                                 fontWeight = FontWeight.Normal
-                            )
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.width(16.dp)
                         )
                         Text(
                             text = unrecordedSchedule.relation.name,
@@ -206,6 +211,7 @@ fun HistoryUnrecordedPageScreen(
             Column(
                 modifier = Modifier
                     .background(Gray000)
+                    .verticalScroll(scrollState)
                     .fillMaxSize()
                     .padding(horizontal = 20.dp)
             ) {
@@ -244,6 +250,7 @@ fun HistoryUnrecordedPageScreen(
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                 }
+                Spacer(modifier = Modifier.height(150.dp))
             }
         }
         Column(
