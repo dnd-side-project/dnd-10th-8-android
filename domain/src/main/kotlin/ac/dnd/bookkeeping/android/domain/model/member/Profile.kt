@@ -8,6 +8,7 @@ data class Profile(
     val profileImageUrl: String,
     val name: String,
     val nickname: String,
+    val profileImageUrl: String,
     val gender: String,
     val birth: LocalDate
 )
