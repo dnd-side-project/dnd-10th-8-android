@@ -2,4 +2,5 @@ package ac.dnd.bookkeeping.android.presentation.ui.main.home.mypage.setting.with
 
 sealed interface MyPageSettingWithdrawState {
     data object Init : MyPageSettingWithdrawState
+    data object Loading : MyPageSettingWithdrawState
 }

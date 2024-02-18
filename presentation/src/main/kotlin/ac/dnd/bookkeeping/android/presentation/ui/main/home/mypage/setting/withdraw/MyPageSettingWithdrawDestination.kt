@@ -7,21 +7,32 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
 fun NavGraphBuilder.myPageSettingWithdrawDestination(
     appState: ApplicationState
 ) {
     composable(
-        route = MyPageSettingWithdrawConstant.ROUTE
-    ) {
+        route = MyPageSettingWithdrawConstant.CONTAIN_NAME_MODEL,
+        arguments = listOf(
+            navArgument(MyPageSettingWithdrawConstant.ROUTE_ARGUMENT_NAME){
+                type = NavType.StringType
+            }
+        )
+    ) { entry ->
+
+        val nickname =
+            entry.arguments?.getString(MyPageSettingWithdrawConstant.ROUTE_ARGUMENT_NAME) ?: ""
         val viewModel: MyPageSettingWithdrawViewModel = hiltViewModel()
 
         val model: MyPageSettingWithdrawModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             MyPageSettingWithdrawModel(
-                state = state
+                state = state,
+                nickname = nickname
             )
         }
 
