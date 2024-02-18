@@ -18,8 +18,6 @@ data class GetProfileRes(
     val name: String,
     @SerialName("nickname")
     val nickname: String,
-    @SerialName("profileImageUrl")
-    val profileImageUrl: String,
     @SerialName("gender")
     val gender: String,
     @SerialName("birth")
@@ -32,7 +30,6 @@ data class GetProfileRes(
             profileImageUrl = profileImageUrl,
             name = name,
             nickname = nickname,
-            profileImageUrl = profileImageUrl,
             gender = gender,
             birth = birth
         )

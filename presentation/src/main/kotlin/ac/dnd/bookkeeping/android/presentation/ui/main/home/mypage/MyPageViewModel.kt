@@ -32,9 +32,11 @@ class MyPageViewModel @Inject constructor(
 
     private val _profile: MutableStateFlow<Profile> = MutableStateFlow(
         Profile(
+            id = 0,
+            email = "",
+            profileImageUrl = "",
             name = "",
             nickname = "",
-            profileImageUrl = "",
             gender = "",
             birth = LocalDate(2000, 1, 1)
         )
