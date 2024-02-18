@@ -31,7 +31,8 @@ class MockMemberRepository @Inject constructor() : MemberRepository {
                 name = "김진우",
                 nickname = "진우에몽",
                 gender = "male",
-                birth = LocalDate(2000, 1, 1)
+                birth = LocalDate(2000, 1, 1),
+                profileImageUrl = ""
             )
         )
     }
