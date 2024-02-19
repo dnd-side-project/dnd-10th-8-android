@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "ac.dnd.bookkeeping.android.data"
+    namespace = "ac.dnd.mour.android.data"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
