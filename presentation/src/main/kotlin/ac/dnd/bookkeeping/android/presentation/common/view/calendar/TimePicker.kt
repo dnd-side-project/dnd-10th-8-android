@@ -35,7 +35,6 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.datetime.LocalTime
 
-// TODO : 0:00, 12:00 ~ 24:00 정상동작 안함.
 @Composable
 fun TimePicker(
     localTime: LocalTime = LocalTime(0, 0),
@@ -47,10 +46,17 @@ fun TimePicker(
         color = Gray700,
         fontWeight = FontWeight.SemiBold
     )
-
-    var hourValue by remember { mutableIntStateOf(localTime.hour) }
+    var timeType by remember {
+        mutableStateOf(if (localTime.hour >= 12) TimePickerType.PM else TimePickerType.AM)
+    }
+    var hourValue by remember {
+        mutableIntStateOf(
+            if (localTime.hour > 12) localTime.hour - 12
+            else if (localTime.hour == 0) 12
+            else localTime.hour
+        )
+    }
     var minuteValue by remember { mutableIntStateOf(localTime.minute) }
-    var timeType by remember { mutableStateOf(TimePickerType.AM) }
 
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
@@ -87,12 +93,13 @@ fun TimePicker(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable {
+                            val transHour = when (timeType) {
+                                TimePickerType.AM -> if (hourValue == 12) -12 else 0
+                                TimePickerType.PM -> if (hourValue == 12) 0 else 12
+                            }
                             onConfirm(
                                 LocalTime(
-                                    hour = hourValue + when (timeType) {
-                                        TimePickerType.AM -> 0
-                                        TimePickerType.PM -> 12
-                                    },
+                                    hour = hourValue + transHour,
                                     minute = minuteValue
                                 )
                             )
@@ -142,7 +149,7 @@ fun TimePicker(
 @Composable
 fun TimePickerPreview() {
     TimePicker(
-        localTime = LocalTime(11, 0),
+        localTime = LocalTime(0, 0),
         onDismissRequest = {},
         onConfirm = {}
     )

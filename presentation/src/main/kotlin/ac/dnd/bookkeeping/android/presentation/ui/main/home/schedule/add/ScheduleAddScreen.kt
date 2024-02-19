@@ -87,6 +87,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
+import timber.log.Timber
 
 @Composable
 fun ScheduleAddScreen(
@@ -248,7 +249,7 @@ fun ScheduleAddScreen(
         val fixedHour = if (it.hour == 0) 24 else it.hour
         val timeHour = (fixedHour - 1) % 12 + 1
         val timeMinute = it.minute
-        val timeAmPm = if (fixedHour < 12) "오전" else "오후"
+        val timeAmPm = if (fixedHour < 12 || fixedHour == 24) "오전" else "오후"
         runCatching {
             String.format(format, timeAmPm, timeHour, timeMinute)
         }.onFailure { exception ->

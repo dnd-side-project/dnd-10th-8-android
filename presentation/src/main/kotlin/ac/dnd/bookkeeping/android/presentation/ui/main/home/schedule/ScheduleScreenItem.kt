@@ -62,18 +62,16 @@ fun ScheduleScreenItem(
     val dDay = (schedule.day - now).days
     val color = Color(HistoryEventType.getEventTypeColor(schedule.event))
     val iconRes = HistoryEventType.getEventIconRes(schedule.relation.group.name)
-    val formattedTime = Unit.let {
-        schedule.time?.let {
-            val fixedHour = if (it.hour == 0) 24 else it.hour
-            val timeHour = (fixedHour - 1) % 12 + 1
-            val timeMinute = it.minute
-            val timeAmPm = if (fixedHour < 12) "오전" else "오후"
-            val format = "%s %02d:%02d"
-            runCatching {
-                String.format(format, timeAmPm, timeHour, timeMinute)
-            }.getOrDefault("시간 없음")
-        } ?: "시간 없음"
-    }
+    val formattedTime = schedule.time?.let {
+        val fixedHour = if (it.hour == 0) 24 else it.hour
+        val timeHour = (fixedHour - 1) % 12 + 1
+        val timeMinute = it.minute
+        val timeAmPm = if (fixedHour < 12 || fixedHour == 24) "오전" else "오후"
+        val format = "%s %02d:%02d"
+        runCatching {
+            String.format(format, timeAmPm, timeHour, timeMinute)
+        }.getOrDefault("시간 없음")
+    } ?: "시간 없음"
     Row {
         Column(
             verticalArrangement = Arrangement.Center,
