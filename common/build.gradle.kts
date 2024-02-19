@@ -24,5 +24,6 @@ android {
 dependencies {
     implementation(libs.bundles.kotlin)
 
+    implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.logging)
 }
