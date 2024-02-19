@@ -55,7 +55,7 @@ private fun Alarm.toIntent(context: Context): PendingIntent {
         val fixedHour = if (it.hour == 0) 24 else it.hour
         val timeHour = (fixedHour - 1) % 12 + 1
         val timeMinute = it.minute
-        val timeAmPm = if (fixedHour < 12) "오전" else "오후"
+        val timeAmPm = if (fixedHour < 12 || fixedHour == 24) "오전" else "오후"
         val format = "%s %02d:%02d"
         runCatching {
             String.format(format, timeAmPm, timeHour, timeMinute)

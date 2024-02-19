@@ -149,7 +149,7 @@ fun TimePicker(
 @Composable
 fun TimePickerPreview() {
     TimePicker(
-        localTime = LocalTime(11, 0),
+        localTime = LocalTime(0, 0),
         onDismissRequest = {},
         onConfirm = {}
     )
