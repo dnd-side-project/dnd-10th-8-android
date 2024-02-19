@@ -44,7 +44,7 @@ class HistoryViewModel @Inject constructor(
             _state.value = HistoryState.Loading
             zip(
                 { getGroupHeartHistoryUseCase() },
-                { getUnrecordedScheduleListUseCase("") } //TODO name param ?
+                { getUnrecordedScheduleListUseCase("") }
             ).onSuccess { (groups, unrecordedSchedule) ->
                 _state.value = HistoryState.Init
                 _groups.value = groups

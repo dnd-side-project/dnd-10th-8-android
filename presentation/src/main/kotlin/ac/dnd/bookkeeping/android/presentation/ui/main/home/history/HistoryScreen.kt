@@ -31,6 +31,7 @@ import ac.dnd.bookkeeping.android.presentation.model.history.HistoryViewType
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.common.relation.RelationConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.history.unrecorded.HistoryUnrecordedConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -94,6 +95,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
@@ -146,7 +148,9 @@ private fun HistoryScreen(
     handler: CoroutineExceptionHandler
 ) {
     val focusManager = LocalFocusManager.current
-    val contentHeight = (if (model.unrecordedSchedule.isEmpty()) 257.dp else 343.dp)
+    var isViewUnrecordedState by remember { mutableStateOf(true) }
+    val contentHeight =
+        (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -203,6 +207,19 @@ private fun HistoryScreen(
     var searchText by remember { mutableStateOf("") }
     var isTextFieldFocused by remember { mutableStateOf(false) }
 
+
+    fun navigateToUnrecorded() {
+        appState.navController.navigate(HistoryUnrecordedConstant.ROUTE)
+    }
+
+    fun navigateToAddRelation() {
+        appState.navController.navigate(RelationConstant.ROUTE)
+    }
+
+    fun navigateToAddHeart() {
+        appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
+    }
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -233,6 +250,7 @@ private fun HistoryScreen(
 
                 },
                 isTextFieldFocused = isTextFieldFocused,
+                isViewUnrecordedState = isViewUnrecordedState,
                 onFocusChange = {
                     isTextFieldFocused = it
                 },
@@ -241,10 +259,11 @@ private fun HistoryScreen(
                     searchText = it
                 },
                 onClickUnrecorded = {
-                    //TODO go Unrecorded
+                    navigateToUnrecorded()
                 },
                 onDeleteUnrecorded = {
-                    //TODO delete Unrecorded
+                    isViewUnrecordedState = false
+                    //TODO delete Unrecorded (api)
                 }
             )
             MotionLayout(
@@ -493,7 +512,7 @@ private fun HistoryScreen(
                             onClick = {
                                 if (isNotEmptyRelation) {
                                     isDropDownMenuExpanded = false
-                                    appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
+                                    navigateToAddHeart()
                                 }
                             },
                             modifier = Modifier.height(48.dp)
@@ -528,10 +547,10 @@ private fun HistoryScreen(
                             .border(
                                 width = 1.dp,
                                 shape = RoundedCornerShape(100.dp),
-                                color = if (isNotEmptyRelation) Gray300 else Gray500
+                                color = Gray300
                             )
                             .background(
-                                color = if (isNotEmptyRelation) Gray000 else Gray500,
+                                color = Gray000,
                                 shape = RoundedCornerShape(100.dp)
                             )
                             .width(120.dp)
@@ -539,16 +558,17 @@ private fun HistoryScreen(
                         onDismissRequest = {
                             isDropDownMenuExpanded = false
                         },
+                        properties = PopupProperties(
+                            dismissOnClickOutside = false
+                        ),
                         offset = DpOffset(y = 16.dp, x = 0.dp),
                         expanded = isDropDownMenuExpanded
                     ) {
                         DropdownMenuItem(
                             contentPadding = PaddingValues(bottom = 12.dp),
                             onClick = {
-                                if (isNotEmptyRelation) {
-                                    isDropDownMenuExpanded = false
-                                    appState.navController.navigate(RelationConstant.ROUTE)
-                                }
+                                isDropDownMenuExpanded = false
+                                navigateToAddRelation()
                             },
                             modifier = Modifier.height(48.dp)
                         ) {

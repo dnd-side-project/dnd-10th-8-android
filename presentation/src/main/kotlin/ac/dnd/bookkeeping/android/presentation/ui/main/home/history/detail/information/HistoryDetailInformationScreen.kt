@@ -135,11 +135,20 @@ private fun HistoryDetailInformationScreen(
                     .size(80.dp)
                     .background(color = Gray200)
             ) {
-                AsyncImage(
-                    model = model.relationDetail.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
+                if (model.relationDetail.imageUrl.isEmpty()) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_default_user_image),
+                        modifier = Modifier.size(80.dp),
+                        contentDescription = null
+                    )
+                } else {
+                    AsyncImage(
+                        model = model.relationDetail.imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(80.dp),
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(7.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {

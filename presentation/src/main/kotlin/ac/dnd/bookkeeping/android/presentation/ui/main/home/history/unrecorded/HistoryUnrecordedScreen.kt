@@ -7,6 +7,7 @@ import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.Event
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.bookkeeping.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.bookkeeping.android.presentation.ui.main.ApplicationState
+import ac.dnd.bookkeeping.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.bookkeeping.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -53,13 +54,21 @@ fun HistoryUnrecordedScreen(
         pagerState.animateScrollToPage(currentPage)
     }
 
+    fun navigateToHome() {
+        appState.navController.navigate(HomeConstant.ROUTE)
+    }
+
+    fun navigateToBack() {
+        appState.navController.popBackStack()
+    }
+
     fun resetData(event: HistoryUnrecordedEvent.ShowNextData) {
         when (event) {
             HistoryUnrecordedEvent.ShowNextData -> {
                 if (currentPage < pagerState.pageCount - 1) {
                     currentPage += 1
                 } else {
-                    // TODO go prev
+                    navigateToHome()
                 }
             }
         }
@@ -83,7 +92,7 @@ fun HistoryUnrecordedScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        // TODO go back
+                        navigateToBack()
                     }
             )
         }
