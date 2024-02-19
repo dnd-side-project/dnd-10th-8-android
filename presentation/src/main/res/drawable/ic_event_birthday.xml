@@ -3,28 +3,28 @@
     android:height="18dp"
     android:viewportWidth="20"
     android:viewportHeight="18">
-  <path
-      android:pathData="M18.223,6.167H11.968V18H18.223V6.167Z"
-      android:fillColor="#FFE2B7"/>
-  <path
-      android:pathData="M8.031,6.167H1.777V18H8.031V6.167Z"
-      android:fillColor="#FFE2B7"/>
-  <path
-      android:pathData="M8.031,3.22H0.225V6.167H8.031V3.22Z"
-      android:fillColor="#FFD597"/>
-  <path
-      android:pathData="M19.775,3.22H11.968V6.167H19.775V3.22Z"
-      android:fillColor="#FFD597"/>
-  <path
-      android:pathData="M11.968,6.167H8.031V18H11.968V6.167Z"
-      android:fillColor="#FF9461"/>
-  <path
-      android:pathData="M11.968,3.22H8.031V6.167H11.968V3.22Z"
-      android:fillColor="#FF9461"/>
-  <path
-      android:pathData="M10,3.219H3.611L4.634,0.373C4.634,0.081 4.972,-0.099 5.219,0.058L10,3.219Z"
-      android:fillColor="#FF9461"/>
-  <path
-      android:pathData="M16.389,3.219H10L14.781,0.058C15.028,-0.099 15.366,0.081 15.366,0.373L16.389,3.219Z"
-      android:fillColor="#FF9461"/>
+    <path
+        android:fillColor="#FFE2B7"
+        android:pathData="M18.223,6.167H11.968V18H18.223V6.167Z" />
+    <path
+        android:fillColor="#FFE2B7"
+        android:pathData="M8.031,6.167H1.777V18H8.031V6.167Z" />
+    <path
+        android:fillColor="#FFD597"
+        android:pathData="M8.031,3.22H0.225V6.167H8.031V3.22Z" />
+    <path
+        android:fillColor="#FFD597"
+        android:pathData="M19.775,3.22H11.968V6.167H19.775V3.22Z" />
+    <path
+        android:fillColor="#FF9461"
+        android:pathData="M11.968,6.167H8.031V18H11.968V6.167Z" />
+    <path
+        android:fillColor="#FF9461"
+        android:pathData="M11.968,3.22H8.031V6.167H11.968V3.22Z" />
+    <path
+        android:fillColor="#FF9461"
+        android:pathData="M10,3.219H3.611L4.634,0.373C4.634,0.081 4.972,-0.099 5.219,0.058L10,3.219Z" />
+    <path
+        android:fillColor="#FF9461"
+        android:pathData="M16.389,3.219H10L14.781,0.058C15.028,-0.099 15.366,0.081 15.366,0.373L16.389,3.219Z" />
 </vector>

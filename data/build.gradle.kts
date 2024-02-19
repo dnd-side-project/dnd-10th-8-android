@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "ac.dnd.bookkeeping.android.data"
+    namespace = "ac.dnd.mour.android.data"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
@@ -19,10 +19,16 @@ android {
 
     buildTypes {
         debug {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 

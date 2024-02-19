@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "ac.dnd.bookkeeping.android"
+    namespace = "ac.dnd.mour.android"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
-        applicationId = "ac.dnd.bookkeeping.android"
+        applicationId = "ac.dnd.mour.android"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
         versionCode = libs.versions.app.versioncode.get().toInt()

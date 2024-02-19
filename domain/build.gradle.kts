@@ -10,7 +10,7 @@ plugins {
 
 // TODO : Android 종속성 제거
 android {
-    namespace = "ac.dnd.bookkeeping.android.domain"
+    namespace = "ac.dnd.mour.android.domain"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
     defaultConfig {
@@ -19,10 +19,16 @@ android {
 
     buildTypes {
         debug {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
