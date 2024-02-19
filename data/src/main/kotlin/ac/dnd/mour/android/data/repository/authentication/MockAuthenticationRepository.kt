@@ -6,8 +6,8 @@ import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.model.legacy.Login
 import ac.dnd.mour.android.domain.model.legacy.Register
 import ac.dnd.mour.android.domain.repository.AuthenticationRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 class MockAuthenticationRepository @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager

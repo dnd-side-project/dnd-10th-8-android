@@ -253,7 +253,8 @@ private fun GalleryScreen(
                                 model.galleryImages.itemSnapshotList
                                     .find { image ->
                                         image?.id == currentSelectedId
-                                    }?.let { currentImage ->
+                                    }
+                                    ?.let { currentImage ->
                                         onDismissRequest()
                                         onResult(currentImage)
                                     }

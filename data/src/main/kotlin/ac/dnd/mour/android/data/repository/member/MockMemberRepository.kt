@@ -2,9 +2,9 @@ package ac.dnd.mour.android.data.repository.member
 
 import ac.dnd.mour.android.domain.model.member.Profile
 import ac.dnd.mour.android.domain.repository.MemberRepository
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
-import javax.inject.Inject
 
 class MockMemberRepository @Inject constructor() : MemberRepository {
     override suspend fun checkNickname(

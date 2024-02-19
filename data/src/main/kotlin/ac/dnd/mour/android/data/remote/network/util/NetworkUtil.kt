@@ -30,7 +30,8 @@ suspend inline fun <reified T : Any> HttpResponse.convert(
 ): Result<T> {
     return runCatching {
         if (isSuccessful) {
-            return@runCatching body<T?>() ?: throw InvalidStandardResponseException("Response Empty Body")
+            return@runCatching body<T?>()
+                ?: throw InvalidStandardResponseException("Response Empty Body")
         } else {
             throw this.toThrowable(errorMessageMapper)
         }

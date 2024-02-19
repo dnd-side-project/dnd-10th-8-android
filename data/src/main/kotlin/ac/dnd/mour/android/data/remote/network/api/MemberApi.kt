@@ -13,8 +13,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.setBody
-import kotlinx.datetime.LocalDate
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate
 
 class MemberApi @Inject constructor(
     @NoAuthHttpClient private val noAuthClient: HttpClient,

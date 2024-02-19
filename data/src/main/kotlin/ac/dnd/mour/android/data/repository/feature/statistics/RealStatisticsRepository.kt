@@ -3,10 +3,8 @@ package ac.dnd.mour.android.data.repository.feature.statistics
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.data.remote.network.api.StatisticsApi
 import ac.dnd.mour.android.data.remote.network.util.toDomain
-import ac.dnd.mour.android.domain.model.feature.group.Group
 import ac.dnd.mour.android.domain.model.feature.statistics.GroupStatistics
 import ac.dnd.mour.android.domain.model.feature.statistics.MyStatistics
-import ac.dnd.mour.android.domain.repository.GroupRepository
 import ac.dnd.mour.android.domain.repository.StatisticsRepository
 import javax.inject.Inject
 

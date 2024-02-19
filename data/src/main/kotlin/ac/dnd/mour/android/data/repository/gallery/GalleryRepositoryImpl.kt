@@ -8,8 +8,8 @@ import ac.dnd.mour.android.domain.repository.GalleryRepository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class GalleryRepositoryImpl @Inject constructor(
     private val galleryImageRepository: GalleryImageRepository

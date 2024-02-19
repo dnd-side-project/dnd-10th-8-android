@@ -3,11 +3,8 @@ package ac.dnd.mour.android.data.repository.feature.relation
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.data.remote.network.api.RelationApi
 import ac.dnd.mour.android.data.remote.network.util.toDomain
-import ac.dnd.mour.android.domain.model.feature.group.Group
-import ac.dnd.mour.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.mour.android.domain.model.feature.relation.RelationSimple
-import ac.dnd.mour.android.domain.repository.GroupRepository
 import ac.dnd.mour.android.domain.repository.RelationRepository
 import javax.inject.Inject
 

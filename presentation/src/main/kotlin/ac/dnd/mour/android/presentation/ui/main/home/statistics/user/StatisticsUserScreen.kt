@@ -53,8 +53,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlin.random.Random
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
 fun StatisticsUserScreen(

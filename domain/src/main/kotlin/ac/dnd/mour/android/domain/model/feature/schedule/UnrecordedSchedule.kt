@@ -1,7 +1,6 @@
 package ac.dnd.mour.android.domain.model.feature.schedule
 
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
 data class UnrecordedSchedule(

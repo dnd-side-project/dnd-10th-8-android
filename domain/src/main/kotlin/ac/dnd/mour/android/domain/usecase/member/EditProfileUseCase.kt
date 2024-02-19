@@ -1,8 +1,8 @@
 package ac.dnd.mour.android.domain.usecase.member
 
 import ac.dnd.mour.android.domain.repository.MemberRepository
-import kotlinx.datetime.LocalDate
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate
 
 class EditProfileUseCase @Inject constructor(
     private val memberRepository: MemberRepository

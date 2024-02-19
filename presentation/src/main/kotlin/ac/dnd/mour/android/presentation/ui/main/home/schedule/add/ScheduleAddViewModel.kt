@@ -13,6 +13,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +22,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.minus
-import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleAddViewModel @Inject constructor(

@@ -3,13 +3,11 @@ package ac.dnd.mour.android.data.repository.feature.heart
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.data.remote.network.api.HeartApi
 import ac.dnd.mour.android.data.remote.network.util.toDomain
-import ac.dnd.mour.android.domain.model.feature.group.Group
 import ac.dnd.mour.android.domain.model.feature.heart.Heart
 import ac.dnd.mour.android.domain.model.feature.heart.RelatedHeart
-import ac.dnd.mour.android.domain.repository.GroupRepository
 import ac.dnd.mour.android.domain.repository.HeartRepository
-import kotlinx.datetime.LocalDate
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate
 
 class RealHeartRepository @Inject constructor(
     private val heartApi: HeartApi,

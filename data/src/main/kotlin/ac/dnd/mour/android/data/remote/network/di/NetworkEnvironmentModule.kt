@@ -1,10 +1,9 @@
 package ac.dnd.mour.android.data.remote.network.di
 
-import android.content.Context
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.data.remote.network.environment.BaseUrlProvider
 import ac.dnd.mour.android.data.remote.network.environment.ErrorMessageMapper
-import ac.dnd.mour.android.domain.repository.AuthenticationRepository
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

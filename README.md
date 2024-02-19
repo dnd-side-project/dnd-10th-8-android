@@ -14,19 +14,19 @@
 ### Library
 
 - KotlinX
-  - Coroutines
-  - Serialization
-  - DateTime
+    - Coroutines
+    - Serialization
+    - DateTime
 - AndroidX
-  - Room
-  - Paging
-  - NavigationUI
+    - Room
+    - Paging
+    - NavigationUI
 - Dagger Hilt
 - Ktor
 - Glide
 - Lottie
 - Debug & Log
-  - OkHttp3 Logging Interceptor (App Inspection)
-  - Leak Canary 2
-  - Timber
-  - Sentry
+    - OkHttp3 Logging Interceptor (App Inspection)
+    - Leak Canary 2
+    - Timber
+    - Sentry

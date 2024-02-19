@@ -72,6 +72,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlin.random.Random
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -81,7 +82,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
-import kotlin.random.Random
 
 @Composable
 fun StatisticsMeScreen(

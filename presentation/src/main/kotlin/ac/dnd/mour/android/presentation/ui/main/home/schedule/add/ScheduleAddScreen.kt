@@ -87,7 +87,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
-import timber.log.Timber
 
 @Composable
 fun ScheduleAddScreen(

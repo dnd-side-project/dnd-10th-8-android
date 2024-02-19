@@ -5,9 +5,9 @@ import ac.dnd.mour.android.domain.model.feature.heart.HeartRelation
 import ac.dnd.mour.android.domain.model.feature.heart.HeartRelationGroup
 import ac.dnd.mour.android.domain.model.feature.heart.RelatedHeart
 import ac.dnd.mour.android.domain.repository.HeartRepository
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDate
-import javax.inject.Inject
 
 class MockHeartRepository @Inject constructor() : HeartRepository {
 

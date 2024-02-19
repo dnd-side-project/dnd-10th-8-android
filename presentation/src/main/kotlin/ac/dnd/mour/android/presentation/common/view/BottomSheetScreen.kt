@@ -6,7 +6,6 @@ import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -55,7 +54,7 @@ fun BottomSheetScreen(
                 .padding(top = 0.68.dp)
                 .padding(horizontal = 0.68.dp)
                 .customOuterShadow(
-                    color =  Color(0x4D888888),
+                    color = Color(0x4D888888),
                     offsetX = 0.68.dp,
                     offsetY = 0.68.dp,
                     blurRadius = 6.8f

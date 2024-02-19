@@ -9,12 +9,12 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.datetime.LocalDate
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class HistoryRegistrationViewModel @Inject constructor(

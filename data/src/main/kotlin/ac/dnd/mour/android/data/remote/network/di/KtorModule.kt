@@ -16,11 +16,11 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.resources.Resources
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import java.util.Optional
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 
 @Module
 @InstallIn(SingletonComponent::class)

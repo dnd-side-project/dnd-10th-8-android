@@ -5,8 +5,8 @@ import ac.dnd.mour.android.data.remote.network.api.MemberApi
 import ac.dnd.mour.android.data.remote.network.util.toDomain
 import ac.dnd.mour.android.domain.model.member.Profile
 import ac.dnd.mour.android.domain.repository.MemberRepository
-import kotlinx.datetime.LocalDate
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate
 
 class RealMemberRepository @Inject constructor(
     private val memberApi: MemberApi,

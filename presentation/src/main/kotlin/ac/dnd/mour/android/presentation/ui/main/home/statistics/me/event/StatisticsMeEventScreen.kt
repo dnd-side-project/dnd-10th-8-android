@@ -61,9 +61,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.LocalDate
-import kotlin.random.Random
 
 @Composable
 fun StatisticsMeEventScreen(

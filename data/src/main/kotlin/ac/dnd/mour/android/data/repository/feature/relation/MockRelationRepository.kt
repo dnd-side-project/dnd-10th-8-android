@@ -1,13 +1,12 @@
 package ac.dnd.mour.android.data.repository.feature.relation
 
-import ac.dnd.mour.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.mour.android.domain.model.feature.relation.RelationSimple
 import ac.dnd.mour.android.domain.model.feature.relation.RelationSimpleGroup
 import ac.dnd.mour.android.domain.repository.RelationRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 class MockRelationRepository @Inject constructor() : RelationRepository {
 

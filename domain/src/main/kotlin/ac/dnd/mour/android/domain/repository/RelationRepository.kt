@@ -1,6 +1,5 @@
 package ac.dnd.mour.android.domain.repository
 
-import ac.dnd.mour.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailWithUserInfo
 import ac.dnd.mour.android.domain.model.feature.relation.RelationSimple
 

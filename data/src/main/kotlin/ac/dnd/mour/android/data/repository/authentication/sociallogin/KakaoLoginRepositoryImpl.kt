@@ -1,7 +1,7 @@
 package ac.dnd.mour.android.data.repository.authentication.sociallogin
 
-import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.model.authentication.sociallogin.KakaoUserInformation
+import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.repository.KakaoLoginRepository
 import android.content.Context
 import com.kakao.sdk.common.model.ClientError
@@ -34,7 +34,7 @@ class KakaoLoginRepositoryImpl @Inject constructor(
         .onFailure { error ->
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
 
-                throw ServerException("Cancelled","User Skip Kakao Login")
+                throw ServerException("Cancelled", "User Skip Kakao Login")
             } else {
                 UserApiClient.loginWithKakaoAccount()
             }

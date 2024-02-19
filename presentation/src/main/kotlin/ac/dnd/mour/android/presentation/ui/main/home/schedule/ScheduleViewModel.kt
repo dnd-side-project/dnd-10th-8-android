@@ -11,6 +11,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
-import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(

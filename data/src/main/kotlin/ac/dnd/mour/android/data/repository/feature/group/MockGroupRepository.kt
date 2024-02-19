@@ -2,8 +2,8 @@ package ac.dnd.mour.android.data.repository.feature.group
 
 import ac.dnd.mour.android.domain.model.feature.group.Group
 import ac.dnd.mour.android.domain.repository.GroupRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 class MockGroupRepository @Inject constructor() : GroupRepository {
 

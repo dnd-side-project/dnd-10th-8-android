@@ -4,10 +4,10 @@ import ac.dnd.mour.android.domain.model.feature.statistics.GroupStatistics
 import ac.dnd.mour.android.domain.model.feature.statistics.MyStatistics
 import ac.dnd.mour.android.domain.model.feature.statistics.MyStatisticsItem
 import ac.dnd.mour.android.domain.repository.StatisticsRepository
-import kotlinx.coroutines.delay
-import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+import kotlinx.datetime.LocalDate
 
 class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
 

@@ -2,8 +2,8 @@ package ac.dnd.mour.android.data.repository.file
 
 import ac.dnd.mour.android.domain.model.file.PreSignedUrl
 import ac.dnd.mour.android.domain.repository.FileRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 class MockFileRepository @Inject constructor() : FileRepository {
     override suspend fun getPreSignedUrl(

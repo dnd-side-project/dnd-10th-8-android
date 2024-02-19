@@ -89,7 +89,7 @@ fun ConfirmButton(
         ),
         colors = ButtonDefaults
             .textButtonColors(
-                backgroundColor =  backgroundColor
+                backgroundColor = backgroundColor
             ),
         border = border,
         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp),

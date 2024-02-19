@@ -4,7 +4,6 @@ import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.usecase.authentication.RegistrationUseCase
 import ac.dnd.mour.android.domain.usecase.member.CheckNicknameUseCase
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
-import ac.dnd.mour.android.presentation.common.base.ErrorEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
@@ -12,10 +11,10 @@ import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.registration.main.type.RegistrationMainNamingErrorType
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationMainViewModel @Inject constructor(

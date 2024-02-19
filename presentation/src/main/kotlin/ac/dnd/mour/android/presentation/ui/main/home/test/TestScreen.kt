@@ -7,10 +7,10 @@ import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Negative
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
+import ac.dnd.mour.android.presentation.common.util.alarm.showNotification
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
-import ac.dnd.mour.android.presentation.common.util.alarm.showNotification
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
@@ -234,14 +234,14 @@ private fun TestScreen(
             }
         )
     }
-    if (isGetGroupShowing){
+    if (isGetGroupShowing) {
         GetGroupScreen(
             appState = appState,
             onDismissRequest = {
                 isGetGroupShowing = false
             },
             groups = listOf(
-                Group(0,"sample")
+                Group(0, "sample")
             ),
             onResult = {
                 Timber.d("onResult")
