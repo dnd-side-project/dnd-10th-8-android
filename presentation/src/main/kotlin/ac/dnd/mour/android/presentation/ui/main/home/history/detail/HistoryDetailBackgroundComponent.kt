@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.datetime.LocalDate
 
 @Composable
@@ -49,12 +54,57 @@ fun HistoryDetailBackgroundComponent(
     onClickGrowthInfo: () -> Unit,
     onClickBack: () -> Unit
 ) {
+
+    val animationBottomOffset = when(currentGrowthType){
+        HistoryDetailGrowthType.LEVEL_ONE -> (-42.73).dp
+        HistoryDetailGrowthType.LEVEL_TWO -> (-3.38).dp
+        HistoryDetailGrowthType.LEVEL_THREE -> 21.92.dp
+        HistoryDetailGrowthType.LEVEL_FOUR -> 18.18.dp
+        HistoryDetailGrowthType.LEVEL_FIVE -> 19.53.dp
+        HistoryDetailGrowthType.LEVEL_SIX -> 9.37.dp
+    }
+
+    val animationEndOffset = when(currentGrowthType){
+        HistoryDetailGrowthType.LEVEL_ONE -> (-44.24).dp
+        HistoryDetailGrowthType.LEVEL_TWO -> (-15.51).dp
+        HistoryDetailGrowthType.LEVEL_THREE -> (-13.78).dp
+        HistoryDetailGrowthType.LEVEL_FOUR -> (-12.74).dp
+        HistoryDetailGrowthType.LEVEL_FIVE -> 3.72.dp
+        HistoryDetailGrowthType.LEVEL_SIX -> 99.14.dp
+    }
+
+    val animationRaw = when(currentGrowthType){
+        HistoryDetailGrowthType.LEVEL_ONE -> R.raw.history_lv_1
+        HistoryDetailGrowthType.LEVEL_TWO -> R.raw.history_lv_2
+        HistoryDetailGrowthType.LEVEL_THREE -> R.raw.history_lv_3
+        HistoryDetailGrowthType.LEVEL_FOUR -> R.raw.history_lv_4
+        HistoryDetailGrowthType.LEVEL_FIVE -> R.raw.history_lv_5
+        HistoryDetailGrowthType.LEVEL_SIX -> R.raw.history_lv_6
+    }
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(resId = animationRaw)
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(contentHeight)
             .background(color = Color(currentGrowthType.backgroundColor))
     ) {
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .offset(
+                    y = animationBottomOffset,
+                    x = animationEndOffset
+                )
+        ){
+            LottieAnimation(
+                composition = composition,
+                iterations =  LottieConstants.IterateForever
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -108,11 +158,6 @@ fun HistoryDetailBackgroundComponent(
                 colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
             )
         }
-
-        //TODO Lottie
-        Box(
-            modifier = Modifier.align(Alignment.BottomEnd)
-        )
 
         Column(
             modifier = Modifier
@@ -226,73 +271,140 @@ fun HistoryDetailBackgroundComponent(
     }
 }
 
+private val sampleHistoryDetailModel = HistoryDetailModel(
+    state = HistoryDetailState.Init,
+    relationDetail = RelationDetailWithUserInfo(
+        id = 0L,
+        name = "김진우",
+        imageUrl = "",
+        memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
+        group = RelationDetailGroup(
+            id = 0,
+            name = "친척"
+        ),
+        giveMoney = 100000L,
+        takeMoney = 100000L
+    ),
+    hearts = listOf(
+        RelatedHeart(
+            id = 0,
+            give = true,
+            money = 10000,
+            day = LocalDate(2024, 1, 23),
+            event = "생일",
+            memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+            tags = listOf()
+        ),
+        RelatedHeart(
+            id = 0,
+            give = true,
+            money = 10000,
+            day = LocalDate(2024, 1, 24),
+            event = "생일",
+            memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+            tags = HistoryTagType.entries.map { it.tagName }
+        ),
+        RelatedHeart(
+            id = 0,
+            give = false,
+            money = 500000,
+            day = LocalDate(2024, 1, 25),
+            event = "생일",
+            memo = "메모 내용 한 줄 넘어가면 숨김 처리 메모 내용 한 줄 넘어가면 숨김 처리 ",
+            tags = listOf("참석", "현금")
+        ),
+        RelatedHeart(
+            id = 0,
+            give = false,
+            money = 10000,
+            day = LocalDate(2024, 1, 26),
+            event = "생일",
+            memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+            tags = listOf()
+        ),
+        RelatedHeart(
+            id = 0,
+            give = true,
+            money = 10000,
+            day = LocalDate(2024, 1, 27),
+            event = "생일",
+            memo = "메모 내용 한 줄 넘어가면 숨김 처리",
+            tags = listOf()
+        ),
+    )
+)
+
 @Preview
 @Composable
-fun HistoryDetailBackgroundComponentPreview() {
+fun HistoryDetailBackgroundComponent1Preview() {
     HistoryDetailBackgroundComponent(
         currentGrowthType = HistoryDetailGrowthType.LEVEL_SIX,
-        model = HistoryDetailModel(
-            state = HistoryDetailState.Init,
-            relationDetail = RelationDetailWithUserInfo(
-                id = 0L,
-                name = "김진우",
-                imageUrl = "",
-                memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
-                group = RelationDetailGroup(
-                    id = 0,
-                    name = "친척"
-                ),
-                giveMoney = 100000L,
-                takeMoney = 100000L
-            ),
-            hearts = listOf(
-                RelatedHeart(
-                    id = 0,
-                    give = true,
-                    money = 10000,
-                    day = LocalDate(2024, 1, 23),
-                    event = "생일",
-                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
-                    tags = listOf()
-                ),
-                RelatedHeart(
-                    id = 0,
-                    give = true,
-                    money = 10000,
-                    day = LocalDate(2024, 1, 24),
-                    event = "생일",
-                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
-                    tags = HistoryTagType.entries.map { it.tagName }
-                ),
-                RelatedHeart(
-                    id = 0,
-                    give = false,
-                    money = 500000,
-                    day = LocalDate(2024, 1, 25),
-                    event = "생일",
-                    memo = "메모 내용 한 줄 넘어가면 숨김 처리 메모 내용 한 줄 넘어가면 숨김 처리 ",
-                    tags = listOf("참석", "현금")
-                ),
-                RelatedHeart(
-                    id = 0,
-                    give = false,
-                    money = 10000,
-                    day = LocalDate(2024, 1, 26),
-                    event = "생일",
-                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
-                    tags = listOf()
-                ),
-                RelatedHeart(
-                    id = 0,
-                    give = true,
-                    money = 10000,
-                    day = LocalDate(2024, 1, 27),
-                    event = "생일",
-                    memo = "메모 내용 한 줄 넘어가면 숨김 처리",
-                    tags = listOf()
-                ),
-            )
-        ),
+        model = sampleHistoryDetailModel,
+        contentHeight = 480.dp,
+        onClickRelationInfo = {},
+        onClickGrowthInfo = {},
+        onClickBack = {}
+    )
+}
+
+@Preview
+@Composable
+fun HistoryDetailBackgroundComponent2Preview() {
+    HistoryDetailBackgroundComponent(
+        currentGrowthType = HistoryDetailGrowthType.LEVEL_ONE,
+        model = sampleHistoryDetailModel,
+        contentHeight = 480.dp,
+        onClickRelationInfo = {},
+        onClickGrowthInfo = {},
+        onClickBack = {}
+    )
+}
+
+@Preview
+@Composable
+fun HistoryDetailBackgroundComponent3Preview() {
+    HistoryDetailBackgroundComponent(
+        currentGrowthType = HistoryDetailGrowthType.LEVEL_TWO,
+        model = sampleHistoryDetailModel,
+        contentHeight = 480.dp,
+        onClickRelationInfo = {},
+        onClickGrowthInfo = {},
+        onClickBack = {}
+    )
+}
+
+@Preview
+@Composable
+fun HistoryDetailBackgroundComponent4Preview() {
+    HistoryDetailBackgroundComponent(
+        currentGrowthType = HistoryDetailGrowthType.LEVEL_THREE,
+        model = sampleHistoryDetailModel,
+        contentHeight = 480.dp,
+        onClickRelationInfo = {},
+        onClickGrowthInfo = {},
+        onClickBack = {}
+    )
+}
+
+@Preview
+@Composable
+fun HistoryDetailBackgroundComponent5Preview() {
+    HistoryDetailBackgroundComponent(
+        currentGrowthType = HistoryDetailGrowthType.LEVEL_FOUR,
+        model = sampleHistoryDetailModel,
+        contentHeight = 480.dp,
+        onClickRelationInfo = {},
+        onClickGrowthInfo = {},
+        onClickBack = {}
+    )
+}
+
+@Preview
+@Composable
+fun HistoryDetailBackgroundComponent6Preview() {
+    HistoryDetailBackgroundComponent(
+        currentGrowthType = HistoryDetailGrowthType.LEVEL_FIVE,
+        model = sampleHistoryDetailModel,
         contentHeight = 480.dp,
         onClickRelationInfo = {},
         onClickGrowthInfo = {},

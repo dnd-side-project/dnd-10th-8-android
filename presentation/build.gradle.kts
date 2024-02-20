@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.hilt.compose)
 
     implementation(libs.bundles.androidx.presentation)
-    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
     implementation(libs.coil.compose)
     implementation(libs.holix.bottomsheet.compose)
     implementation(libs.chargemap.picker.compose)

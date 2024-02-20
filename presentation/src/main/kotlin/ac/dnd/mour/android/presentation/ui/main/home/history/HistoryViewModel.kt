@@ -46,9 +46,9 @@ class HistoryViewModel @Inject constructor(
                 { getGroupHeartHistoryUseCase() },
                 { getUnrecordedScheduleListUseCase("") }
             ).onSuccess { (groups, unrecordedSchedule) ->
-                _state.value = HistoryState.Init
                 _groups.value = groups
                 _unrecordedSchedule.value = unrecordedSchedule
+                _state.value = HistoryState.Init
             }.onFailure { exception ->
                 _state.value = HistoryState.Init
                 when (exception) {
