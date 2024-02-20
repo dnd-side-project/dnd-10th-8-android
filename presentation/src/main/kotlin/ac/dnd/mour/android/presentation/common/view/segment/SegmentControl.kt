@@ -1,6 +1,7 @@
 package ac.dnd.mour.android.presentation.common.view.segment
 
 import ac.dnd.mour.android.presentation.common.theme.Body1
+import ac.dnd.mour.android.presentation.common.theme.Gray300
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -96,7 +97,7 @@ private const val NO_SEGMENT_INDEX = -1
 /** Padding inside the track. */
 private val TRACK_PADDING = 2.dp
 
-private val TRACK_COLOR = Color.LightGray.copy(alpha = .5f)
+private val TRACK_COLOR = Gray300
 
 /** Additional padding to inset segments and the thumb when pressed. */
 private val PRESSED_TRACK_PADDING = 1.dp

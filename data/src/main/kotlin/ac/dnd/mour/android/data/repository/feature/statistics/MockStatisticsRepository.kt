@@ -21,24 +21,24 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                 give = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "이다빈",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "서지원",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "김경민",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
@@ -47,24 +47,24 @@ class MockStatisticsRepository @Inject constructor() : StatisticsRepository {
                 take = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "박예리나",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "김진우",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "장성혁",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"

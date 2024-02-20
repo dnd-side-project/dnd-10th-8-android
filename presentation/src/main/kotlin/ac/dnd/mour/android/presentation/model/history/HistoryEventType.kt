@@ -25,7 +25,7 @@ enum class HistoryEventType(
         }
 
         fun getEventTypeColor(name: String): Long {
-            return entries.find { it.eventName == name }?.typeColor ?: 0xFFA4A6AA
+            return entries.find { it.eventName == name }?.typeColor ?: 0xFFE8E9EA
         }
 
         fun getEventIconRes(name: String): Int {

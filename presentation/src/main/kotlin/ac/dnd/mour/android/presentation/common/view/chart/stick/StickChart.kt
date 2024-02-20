@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
@@ -31,10 +32,23 @@ fun StickChart(
     dataList: List<StickChartData>,
     @FloatRange(from = 0.0, to = 1.0) thickness: Float
 ) {
-    val topTextWidth = measureTextWidth(text = "50만원", style = Caption4)
-    val topTextHeight = measureTextHeight(text = "50만원", style = Caption4)
-    val bottomTextWidth = measureTextWidth(text = "축의금", style = Body2)
-    val bottomTextHeight = measureTextHeight(text = "축의금", style = Body2)
+    val topMeasuredList: List<Pair<Dp, Dp>> = dataList.map { data ->
+        val formattedMoney = data.money.toString().let {
+            if (it.length > 4) {
+                "${it.substring(0, it.length - 4)}만원"
+            } else {
+                "${it}원"
+            }
+        }
+        val topTextWidth = measureTextWidth(text = formattedMoney, style = Caption4)
+        val topTextHeight = measureTextHeight(text = formattedMoney, style = Caption4)
+        Pair(topTextWidth, topTextHeight)
+    }
+    val bottomMeasuredList: List<Pair<Dp, Dp>> = dataList.map { data ->
+        val bottomTextWidth = measureTextWidth(text = data.text, style = Body2)
+        val bottomTextHeight = measureTextHeight(text = data.text, style = Body2)
+        Pair(bottomTextWidth, bottomTextHeight)
+    }
 
     val textMeasurer = rememberTextMeasurer()
 
@@ -46,8 +60,8 @@ fun StickChart(
             val sum: Int = dataList.sumOf { it.money }
             val max: Int = dataList.maxOf { it.money }
 
-            val topHeight = topTextHeight.toPx() + 6.dp.toPx()
-            val bottomHeight = bottomTextHeight.toPx() + 24.dp.toPx()
+            val topHeight = topMeasuredList.maxOf { it.second }.toPx() + 6.dp.toPx()
+            val bottomHeight = bottomMeasuredList.maxOf { it.second }.toPx() + 24.dp.toPx()
 
             dataList.forEachIndexed { index, data ->
                 val height = (size.height - topHeight - bottomHeight) * data.money / max
@@ -87,7 +101,7 @@ fun StickChart(
                     textMeasurer = textMeasurer,
                     text = formattedMoney,
                     topLeft = Offset(
-                        x = centerX - topTextWidth.toPx() / 2,
+                        x = centerX - topMeasuredList[index].first.toPx() / 2,
                         y = size.height - height - topHeight - bottomHeight
                     ),
                     style = Caption4.merge(Gray700)
@@ -96,8 +110,8 @@ fun StickChart(
                     textMeasurer = textMeasurer,
                     text = data.text,
                     topLeft = Offset(
-                        x = centerX - topTextWidth.toPx() / 2,
-                        y = size.height - 10.dp.toPx() - bottomTextHeight.toPx()
+                        x = centerX - topMeasuredList[index].first.toPx() / 2,
+                        y = size.height - 10.dp.toPx() - bottomMeasuredList[index].second.toPx()
                     ),
                     style = Body2.merge(Gray700)
                 )

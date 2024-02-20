@@ -232,6 +232,7 @@ private fun StatisticsMeScreen(
             }
         )
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -273,7 +274,7 @@ private fun StatisticsMeScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 15.5.dp)
+                    .padding(horizontal = 15.5.dp, vertical = 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -302,24 +303,28 @@ private fun StatisticsMeScreen(
                         tint = Gray000
                     )
                 }
-                Spacer(modifier = Modifier.width(8.dp))
                 Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable {
-                            isDatePickerShowing = true
-                        }
+                    modifier = Modifier.width(60.dp)
                 ) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = formattedDate,
-                        style = when (selectedSegmentType) {
-                            MyStatisticsSegmentType.Monthly -> Headline0.merge(color = Gray000)
-                            MyStatisticsSegmentType.Yearly -> Headline1.merge(color = Gray000)
-                        }
-                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                isDatePickerShowing = true
+                            }
+                            .align(Alignment.Center)
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = formattedDate,
+                            style = when (selectedSegmentType) {
+                                MyStatisticsSegmentType.Monthly -> Headline0.merge(color = Gray000)
+                                MyStatisticsSegmentType.Yearly -> Headline1.merge(color = Gray000)
+                            }
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
                 }
-                Spacer(modifier = Modifier.width(8.dp))
 
                 Box(
                     modifier = Modifier.clickable(
@@ -372,6 +377,7 @@ private fun StatisticsMeScreen(
                         )
                         Text(
                             text = formattedTakeSum,
+                            maxLines = 1,
                             style = Body1.merge(
                                 color = Primary1,
                                 fontWeight = FontWeight.SemiBold
@@ -384,13 +390,16 @@ private fun StatisticsMeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "보낸 마음", style = Body1.merge(
+                            text = "보낸 마음",
+                            style = Body1.merge(
                                 color = Primary1,
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
                         Text(
-                            text = formattedGiveSum, style = Body1.merge(
+                            text = formattedGiveSum,
+                            maxLines = 1,
+                            style = Body1.merge(
                                 color = Primary1,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -569,24 +578,24 @@ private fun StatisticsMeScreenPreview1() {
                 give = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "이다빈",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "서지원",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "김경민",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
@@ -595,24 +604,24 @@ private fun StatisticsMeScreenPreview1() {
                 take = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "박예리나",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "김진우",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "장성혁",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"

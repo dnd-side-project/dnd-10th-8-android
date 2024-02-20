@@ -1,7 +1,9 @@
 package ac.dnd.mour.android.presentation.ui.main.home.statistics.user.group
 
+import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -19,15 +21,21 @@ import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.registration.main.type.UserGender
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -37,6 +45,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -103,7 +112,24 @@ private fun StatisticsUserGroupScreen(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            onDismissRequest()
+                        }
+                    ).padding(8.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_close),
+                    contentDescription = "",
+                    tint = Gray900
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "그룹 선택",
                 style = Headline2
