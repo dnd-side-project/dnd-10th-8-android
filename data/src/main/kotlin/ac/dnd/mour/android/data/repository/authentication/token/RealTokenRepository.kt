@@ -44,6 +44,10 @@ class RealTokenRepository @Inject constructor(
         }
     }
 
+    override suspend fun resetRefreshTokenInvalidFlag() {
+        _isRefreshTokenInvalid.value = false
+    }
+
     companion object {
         private const val REFRESH_TOKEN = "refresh_token"
         private const val ACCESS_TOKEN = "access_token"
