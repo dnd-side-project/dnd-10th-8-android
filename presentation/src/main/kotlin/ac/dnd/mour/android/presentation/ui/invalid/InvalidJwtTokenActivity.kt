@@ -19,12 +19,12 @@ class InvalidJwtTokenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            InvalidJwtTokenScreen()
         }
     }
 
     @Composable
-    fun MainScreen(
+    fun InvalidJwtTokenScreen(
         viewModel: InvalidJwtTokenViewModel = hiltViewModel()
     ) {
         val context = LocalContext.current
