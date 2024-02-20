@@ -1,13 +1,16 @@
 package ac.dnd.mour.android.presentation.common.theme
 
+import ac.dnd.mour.android.presentation.R
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 private val EmptyTextStyle = TextStyle(
-    fontSize = 0.sp
+    fontSize = 0.sp,
+    fontFamily = FontFamily(Font(R.font.pretendard))
 )
 
 val Typography = Typography(
