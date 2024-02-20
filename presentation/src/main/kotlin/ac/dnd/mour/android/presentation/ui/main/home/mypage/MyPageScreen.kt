@@ -22,7 +22,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
+import ac.dnd.mour.android.presentation.model.mypage.ProfileModel
+import ac.dnd.mour.android.presentation.model.mypage.toUiModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.home.mypage.profile.MyPageProfileConstant
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.setting.withdraw.MyPageSettingWithdrawConstant
 import ac.dnd.mour.android.presentation.ui.main.login.main.LoginMainConstant
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
@@ -65,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.LocalDate
@@ -113,6 +117,10 @@ private fun MyPageScreen(
                 Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSePnH7MAeuaPzsOp9WXIfgFmnxVelsHBixcc912bH5O7ze1MQ/viewform")
             )
         ContextCompat.startActivity(context, browserIntent, null)
+    }
+
+    fun navigateToEditProfile() {
+        appState.navController.sendProfileModel(model.profile.toUiModel())
     }
 
     fun navigateToWithdraw() {
@@ -196,7 +204,7 @@ private fun MyPageScreen(
                     .clip(Shapes.medium)
                     .background(color = Primary1)
                     .clickable {
-
+                        navigateToEditProfile()
                     }
                     .width(79.dp)
                     .height(34.dp),
@@ -423,6 +431,16 @@ private fun MyPageScreen(
             }
         }
     }
+}
+
+private fun NavHostController.sendProfileModel(profileModel: ProfileModel) {
+    currentBackStackEntry?.savedStateHandle?.apply {
+        set(
+            key = MyPageProfileConstant.ROURE_ARGUMENT_USER_MODEL,
+            value = profileModel
+        )
+    }
+    navigate(MyPageProfileConstant.CONTAIN_USER_MODEL)
 }
 
 @Preview
