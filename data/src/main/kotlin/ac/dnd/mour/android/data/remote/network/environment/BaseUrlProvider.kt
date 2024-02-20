@@ -17,7 +17,7 @@ class BaseUrlProvider(
     }
 
     companion object {
-        private const val DEV_BASE_URL = "https://43.202.234.130/"
-        private const val RELEASE_BASE_URL = "https://43.202.234.130/"
+        private const val DEV_BASE_URL = "https://43.202.234.130"
+        private const val RELEASE_BASE_URL = "https://43.202.234.130"
     }
 }
