@@ -37,9 +37,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
@@ -48,11 +48,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 
 @Composable
 fun HistoryBackgroundComponent(
+    isPlayingLoading: Boolean,
     model: HistoryModel,
     searchText: String,
     isTextFieldFocused: Boolean,
@@ -64,6 +70,14 @@ fun HistoryBackgroundComponent(
     onClickAlarm: () -> Unit,
     onSearchValueChange: (String) -> Unit
 ) {
+    val compositionLoading by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(resId = R.raw.loading)
+    )
+
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(resId = R.raw.history_main_flower)
+    )
+
     val currentColorState = animateColorAsState(
         targetValue = if (isTextFieldFocused) Primary2 else Color.Transparent,
         label = "color state"
@@ -100,190 +114,203 @@ fun HistoryBackgroundComponent(
                     }
             )
         }
-        Box(
-            modifier = Modifier
-                .height(287.dp)
-                .fillMaxWidth()
-        ) {
+        if (isPlayingLoading) {
             Box(
                 modifier = Modifier
-                    .padding(
-                        top = 2.dp,
-                    )
-                    .offset(x = 16.dp)
-                    .align(Alignment.TopEnd)
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_star),
+                LottieAnimation(
+                    composition = compositionLoading,
+                    iterations = LottieConstants.IterateForever,
                     modifier = Modifier
-                        .size(83.dp),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
+                        .size(60.dp)
+                        .align(Alignment.Center)
                 )
             }
+        } else {
             Box(
                 modifier = Modifier
-                    .padding(top = 82.dp)
-                    .offset(x = (-34).dp)
-                    .align(Alignment.TopStart)
+                    .height(287.dp)
+                    .fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_star),
+                Box(
                     modifier = Modifier
-                        .size(72.dp),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(
-                        top = 8.dp,
-                        end = 24.62.dp
-                    )
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_history_flower),
-                    contentDescription = null,
-                    modifier = Modifier.rotate(-2.18f)
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = 40.dp,
-                        bottom = 24.dp,
-                        start = 20.dp,
-                        end = 20.dp
-                    )
-            ) {
-                Column(modifier = Modifier.height(60.dp)) {
-                    Text(
-                        text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
-                        style = Headline1.merge(
-                            color = Gray000,
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        lineHeight = 30.sp
-                    )
-                }
-                Spacer(modifier = Modifier.height(32.dp))
-                if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) {
-                    Card(shape = RoundedCornerShape(16.dp)) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onClickUnrecorded()
-                                }
-                                .padding(16.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_close_circle),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .clickable {
-                                        onDeleteUnrecorded()
-                                    }
-                            )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
-                                    modifier = Modifier
-                                        .background(
-                                            shape = CircleShape,
-                                            color = Color(0xFFDBF6FF)
-                                        )
-                                        .size(40.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Image(
-                                        painter = painterResource(R.drawable.ic_schedule),
-                                        contentDescription = null
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(Space8))
-                                Column {
-                                    Text(
-                                        text = "지난 일정 ${model.unrecordedSchedule.size}개",
-                                        style = Body1.merge(
-                                            color = Gray700,
-                                            fontWeight = FontWeight.SemiBold
-                                        )
-                                    )
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Text(
-                                            text = "한번에 기록하기",
-                                            style = Body1.merge(
-                                                color = Gray500,
-                                                fontWeight = FontWeight.Medium
-                                            )
-                                        )
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_chevron_right),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(16.dp)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-                Surface(
-                    shape = RoundedCornerShape(100.dp),
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = currentColorState.value
-                    ),
-                    modifier = Modifier.height(45.dp),
+                        .padding(
+                            top = 2.dp,
+                        )
+                        .offset(x = 16.dp)
+                        .align(Alignment.TopEnd)
                 ) {
-                    TypingTextField(
-                        textType = TypingTextFieldType.Basic,
-                        text = searchText,
-                        backgroundColor = Color(0xFFEEABFF),
-                        onValueChange = onSearchValueChange,
-                        fieldHeight = 45.dp,
-                        contentPadding = PaddingValues(
-                            start = if (!isTextFieldFocused && searchText.isEmpty()) 6.dp else 16.dp,
-                        ),
-                        cursorColor = Primary4,
-                        basicBorderColor = Color.Transparent,
-                        hintText = "이름을 입력하세요.",
-                        hintTextColor = Gray000,
-                        textStyle = Body1.merge(
-                            color = Gray000,
-                            fontWeight = FontWeight.Medium
-                        ),
-                        leadingIconContent = {
-                            if (!isTextFieldFocused && searchText.isEmpty()) {
-                                Box(modifier = Modifier.padding(start = 16.dp)) {
-                                    Image(
-                                        painter = painterResource(R.drawable.ic_search),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(16.dp),
-                                        colorFilter = ColorFilter.tint(Gray000)
-                                    )
-                                }
-                            }
-                        },
-                        trailingIconContent = if (searchText.isNotEmpty()) {
-                            {
+                    Image(
+                        painter = painterResource(R.drawable.ic_star),
+                        modifier = Modifier
+                            .size(83.dp),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(top = 82.dp)
+                        .offset(x = (-34).dp)
+                        .align(Alignment.TopStart)
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_star),
+                        modifier = Modifier
+                            .size(72.dp),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = 8.dp)
+                        .offset(x = 23.dp)
+                ) {
+                    LottieAnimation(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            top = 40.dp,
+                            bottom = 24.dp,
+                            start = 20.dp,
+                            end = 20.dp
+                        )
+                ) {
+                    Column(modifier = Modifier.height(60.dp)) {
+                        Text(
+                            text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
+                            style = Headline1.merge(
+                                color = Gray000,
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            lineHeight = 30.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(32.dp))
+                    if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) {
+                        Card(shape = RoundedCornerShape(16.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onClickUnrecorded()
+                                    }
+                                    .padding(16.dp)
+                            ) {
                                 Image(
                                     painter = painterResource(R.drawable.ic_close_circle),
                                     contentDescription = null,
                                     modifier = Modifier
-                                        .size(20.dp)
+                                        .align(Alignment.TopEnd)
                                         .clickable {
-                                            onSearchValueChange("")
+                                            onDeleteUnrecorded()
                                         }
                                 )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier
+                                            .background(
+                                                shape = CircleShape,
+                                                color = Color(0xFFDBF6FF)
+                                            )
+                                            .size(40.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_schedule),
+                                            contentDescription = null
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(Space8))
+                                    Column {
+                                        Text(
+                                            text = "지난 일정 ${model.unrecordedSchedule.size}개",
+                                            style = Body1.merge(
+                                                color = Gray700,
+                                                fontWeight = FontWeight.SemiBold
+                                            )
+                                        )
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(
+                                                text = "한번에 기록하기",
+                                                style = Body1.merge(
+                                                    color = Gray500,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            )
+                                            Image(
+                                                painter = painterResource(R.drawable.ic_chevron_right),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                        }
+                                    }
+                                }
                             }
-                        } else null,
-                        onTextFieldFocusChange = onFocusChange
-                    )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                    Surface(
+                        shape = RoundedCornerShape(100.dp),
+                        border = BorderStroke(
+                            width = 2.dp,
+                            color = currentColorState.value
+                        ),
+                        modifier = Modifier.height(45.dp),
+                    ) {
+                        TypingTextField(
+                            textType = TypingTextFieldType.Basic,
+                            text = searchText,
+                            backgroundColor = Color(0xFFEEABFF),
+                            onValueChange = onSearchValueChange,
+                            fieldHeight = 45.dp,
+                            contentPadding = PaddingValues(
+                                start = if (!isTextFieldFocused && searchText.isEmpty()) 6.dp else 16.dp,
+                            ),
+                            cursorColor = Primary4,
+                            basicBorderColor = Color.Transparent,
+                            hintText = "이름을 입력하세요.",
+                            hintTextColor = Gray000,
+                            textStyle = Body1.merge(
+                                color = Gray000,
+                                fontWeight = FontWeight.Medium
+                            ),
+                            leadingIconContent = {
+                                if (!isTextFieldFocused && searchText.isEmpty()) {
+                                    Box(modifier = Modifier.padding(start = 16.dp)) {
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_search),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            colorFilter = ColorFilter.tint(Gray000)
+                                        )
+                                    }
+                                }
+                            },
+                            trailingIconContent = if (searchText.isNotEmpty()) {
+                                {
+                                    Image(
+                                        painter = painterResource(R.drawable.ic_close_circle),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .clickable {
+                                                onSearchValueChange("")
+                                            }
+                                    )
+                                }
+                            } else null,
+                            onTextFieldFocusChange = onFocusChange
+                        )
+                    }
                 }
             }
         }
@@ -307,6 +334,7 @@ private fun HistoryBackgroundComponent1Preview() {
         isTextFieldFocused = true,
         isViewUnrecordedState = true,
         onFocusChange = {},
+        isPlayingLoading = true
     )
 }
 
@@ -360,5 +388,6 @@ private fun HistoryBackgroundComponent2Preview() {
         isTextFieldFocused = true,
         isViewUnrecordedState = true,
         onFocusChange = {},
+        isPlayingLoading = true
     )
 }

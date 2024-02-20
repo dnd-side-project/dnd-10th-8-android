@@ -147,6 +147,14 @@ private fun HistoryScreen(
     intent: (HistoryIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+
+    var isPlayingLoading by remember { mutableStateOf(true) }
+
+    isPlayingLoading = when (model.state) {
+        HistoryState.Init -> false
+        HistoryState.Loading -> true
+    }
+
     val focusManager = LocalFocusManager.current
     var isViewUnrecordedState by remember { mutableStateOf(true) }
     val contentHeight =
@@ -245,6 +253,7 @@ private fun HistoryScreen(
                 .nestedScroll(nestedScrollConnection)
         ) {
             HistoryBackgroundComponent(
+                isPlayingLoading = isPlayingLoading,
                 model = model,
                 onClickAlarm = {
 
@@ -266,194 +275,196 @@ private fun HistoryScreen(
                     //TODO delete Unrecorded (api)
                 }
             )
-            MotionLayout(
-                modifier = Modifier.fillMaxSize(),
-                start = ConstraintSet {
-                    val header = createRefFor("header")
-                    val body = createRefFor("body")
-                    constrain(header) {
-                        this.width = Dimension.matchParent
-                        this.height = Dimension.value(contentHeight)
-                    }
-                    constrain(body) {
-                        this.width = Dimension.matchParent
-                        this.height = Dimension.fillToConstraints
-                        this.top.linkTo(header.bottom, 0.dp)
-                        this.bottom.linkTo(parent.bottom, 0.dp)
-                    }
-                },
-                end = ConstraintSet {
-                    val header = createRefFor("header")
-                    val body = createRefFor("body")
-                    constrain(header) {
-                        this.width = Dimension.matchParent
-                        this.height = Dimension.value(0.dp)
-                    }
-                    constrain(body) {
-                        this.width = Dimension.matchParent
-                        this.height = Dimension.fillToConstraints
-                        this.top.linkTo(header.bottom, 0.dp)
-                        this.bottom.linkTo(parent.bottom, 0.dp)
-                    }
-                },
-                progress = computedProgress
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(Color.Transparent)
-                        .layoutId("header")
-                        .fillMaxWidth()
-                        .height(contentHeight)
-                )
-                Column(
-                    modifier = Modifier
-                        .layoutId("body")
-                        .fillMaxWidth()
-                        .background(
-                            color = Gray000,
-                            shape = when (swipeState.progress.to) {
-                                HistoryViewSwipingType.COLLAPSED -> RoundedCornerShape(
-                                    topStart = 16.dp,
-                                    topEnd = 16.dp
-                                )
-
-                                HistoryViewSwipingType.EXPANDED -> RoundedCornerShape(
-                                    topStart = 0.dp,
-                                    topEnd = 0.dp
-                                )
-                            }
-                        )
+            if (!isPlayingLoading) {
+                MotionLayout(
+                    modifier = Modifier.fillMaxSize(),
+                    start = ConstraintSet {
+                        val header = createRefFor("header")
+                        val body = createRefFor("body")
+                        constrain(header) {
+                            this.width = Dimension.matchParent
+                            this.height = Dimension.value(contentHeight)
+                        }
+                        constrain(body) {
+                            this.width = Dimension.matchParent
+                            this.height = Dimension.fillToConstraints
+                            this.top.linkTo(header.bottom, 0.dp)
+                            this.bottom.linkTo(parent.bottom, 0.dp)
+                        }
+                    },
+                    end = ConstraintSet {
+                        val header = createRefFor("header")
+                        val body = createRefFor("body")
+                        constrain(header) {
+                            this.width = Dimension.matchParent
+                            this.height = Dimension.value(0.dp)
+                        }
+                        constrain(body) {
+                            this.width = Dimension.matchParent
+                            this.height = Dimension.fillToConstraints
+                            this.top.linkTo(header.bottom, 0.dp)
+                            this.bottom.linkTo(parent.bottom, 0.dp)
+                        }
+                    },
+                    progress = computedProgress
                 ) {
                     Box(
                         modifier = Modifier
+                            .background(Color.Transparent)
+                            .layoutId("header")
                             .fillMaxWidth()
-                            .height(searchBoxHeightState.value)
-                            .padding(
-                                bottom = 2.dp,
-                                start = 20.dp,
-                                end = 20.dp
-                            ),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-                        val currentColorState = animateColorAsState(
-                            targetValue = if (isTextFieldFocused) Primary4 else Color.Transparent,
-                            label = "color state"
-                        )
-                        Surface(
-                            shape = RoundedCornerShape(100.dp),
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = currentColorState.value
-                            ),
-                            modifier = Modifier.height(45.dp),
-                        ) {
-                            TypingTextField(
-                                textType = TypingTextFieldType.Basic,
-                                text = searchText,
-                                backgroundColor = Gray200,
-                                onValueChange = {
-                                    searchText = it
-                                },
-                                fieldHeight = 45.dp,
-                                contentPadding = PaddingValues(
-                                    start = if (!isTextFieldFocused && searchText.isEmpty()) 6.dp else 16.dp,
-                                ),
-                                cursorColor = Primary4,
-                                basicBorderColor = Color.Transparent,
-                                hintText = "이름을 입력하세요.",
-                                hintTextColor = Gray500,
-                                leadingIconContent = {
-                                    if (!isTextFieldFocused && searchText.isEmpty()) {
-                                        Box(modifier = Modifier.padding(start = 16.dp)) {
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_search),
-                                                contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
-                                                colorFilter = ColorFilter.tint(Gray500)
-                                            )
-                                        }
-                                    }
-                                },
-                                trailingIconContent = if (searchText.isNotEmpty()) {
-                                    {
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_close_circle_gray),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .size(20.dp)
-                                                .clickable {
-                                                    searchText = ""
-                                                },
-                                        )
-                                    }
-                                } else null,
-                                onTextFieldFocusChange = {
-                                    isTextFieldFocused = it
-                                }
-                            )
-                        }
-                    }
-                    Box(
+                            .height(contentHeight)
+                    )
+                    Column(
                         modifier = Modifier
+                            .layoutId("body")
                             .fillMaxWidth()
-                            .height(50.dp)
-                    ) {
-                        TabRow(
-                            selectedTabIndex = pagerState.currentPage,
-                            backgroundColor = Color.White,
-                            contentColor = Primary4,
-                            modifier = Modifier
-                                .background(
-                                    Color.White,
-                                    shape = RoundedCornerShape(
+                            .background(
+                                color = Gray000,
+                                shape = when (swipeState.progress.to) {
+                                    HistoryViewSwipingType.COLLAPSED -> RoundedCornerShape(
                                         topStart = 16.dp,
                                         topEnd = 16.dp
                                     )
-                                )
-                                .padding(horizontal = 20.dp),
-                            divider = {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.Transparent)
-                                )
-                            }
+
+                                    HistoryViewSwipingType.EXPANDED -> RoundedCornerShape(
+                                        topStart = 0.dp,
+                                        topEnd = 0.dp
+                                    )
+                                }
+                            )
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(searchBoxHeightState.value)
+                                .padding(
+                                    bottom = 2.dp,
+                                    start = 20.dp,
+                                    end = 20.dp
+                                ),
+                            contentAlignment = Alignment.BottomCenter
                         ) {
-                            pages.forEachIndexed { index, pageText ->
-                                Tab(
-                                    selected = index == pagerState.currentPage,
-                                    onClick = {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(index)
+                            val currentColorState = animateColorAsState(
+                                targetValue = if (isTextFieldFocused) Primary4 else Color.Transparent,
+                                label = "color state"
+                            )
+                            Surface(
+                                shape = RoundedCornerShape(100.dp),
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = currentColorState.value
+                                ),
+                                modifier = Modifier.height(45.dp),
+                            ) {
+                                TypingTextField(
+                                    textType = TypingTextFieldType.Basic,
+                                    text = searchText,
+                                    backgroundColor = Gray200,
+                                    onValueChange = {
+                                        searchText = it
+                                    },
+                                    fieldHeight = 45.dp,
+                                    contentPadding = PaddingValues(
+                                        start = if (!isTextFieldFocused && searchText.isEmpty()) 6.dp else 16.dp,
+                                    ),
+                                    cursorColor = Primary4,
+                                    basicBorderColor = Color.Transparent,
+                                    hintText = "이름을 입력하세요.",
+                                    hintTextColor = Gray500,
+                                    leadingIconContent = {
+                                        if (!isTextFieldFocused && searchText.isEmpty()) {
+                                            Box(modifier = Modifier.padding(start = 16.dp)) {
+                                                Image(
+                                                    painter = painterResource(R.drawable.ic_search),
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(16.dp),
+                                                    colorFilter = ColorFilter.tint(Gray500)
+                                                )
+                                            }
                                         }
                                     },
-                                    text = {
-                                        Text(
-                                            text = pageText,
-                                            style = Headline3.merge(
-                                                color = if (index == pagerState.currentPage) Primary4 else Gray500,
-                                                fontWeight = FontWeight.SemiBold
+                                    trailingIconContent = if (searchText.isNotEmpty()) {
+                                        {
+                                            Image(
+                                                painter = painterResource(R.drawable.ic_close_circle_gray),
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .size(20.dp)
+                                                    .clickable {
+                                                        searchText = ""
+                                                    },
                                             )
-                                        )
+                                        }
+                                    } else null,
+                                    onTextFieldFocusChange = {
+                                        isTextFieldFocused = it
                                     }
                                 )
                             }
                         }
-                    }
-                    HorizontalPager(
-                        state = pagerState,
-                        userScrollEnabled = false
-                    ) { pageIndex ->
-                        val viewType = HistoryViewType.entries.getOrNull(pageIndex)
-                        HistoryPageScreen(
-                            appState = appState,
-                            model = model,
-                            event = event,
-                            intent = intent,
-                            handler = handler,
-                            viewType = viewType ?: HistoryViewType.TOTAL,
-                            searchText = searchText
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            TabRow(
+                                selectedTabIndex = pagerState.currentPage,
+                                backgroundColor = Color.White,
+                                contentColor = Primary4,
+                                modifier = Modifier
+                                    .background(
+                                        Color.White,
+                                        shape = RoundedCornerShape(
+                                            topStart = 16.dp,
+                                            topEnd = 16.dp
+                                        )
+                                    )
+                                    .padding(horizontal = 20.dp),
+                                divider = {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color.Transparent)
+                                    )
+                                }
+                            ) {
+                                pages.forEachIndexed { index, pageText ->
+                                    Tab(
+                                        selected = index == pagerState.currentPage,
+                                        onClick = {
+                                            scope.launch {
+                                                pagerState.animateScrollToPage(index)
+                                            }
+                                        },
+                                        text = {
+                                            Text(
+                                                text = pageText,
+                                                style = Headline3.merge(
+                                                    color = if (index == pagerState.currentPage) Primary4 else Gray500,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                        HorizontalPager(
+                            state = pagerState,
+                            userScrollEnabled = false
+                        ) { pageIndex ->
+                            val viewType = HistoryViewType.entries.getOrNull(pageIndex)
+                            HistoryPageScreen(
+                                appState = appState,
+                                model = model,
+                                event = event,
+                                intent = intent,
+                                handler = handler,
+                                viewType = viewType ?: HistoryViewType.TOTAL,
+                                searchText = searchText
+                            )
+                        }
                     }
                 }
             }

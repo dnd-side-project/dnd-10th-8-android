@@ -1,5 +1,6 @@
 package ac.dnd.mour.android.presentation.ui.main.splash
 
+import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.alarm.registerAlarm
 import ac.dnd.mour.android.presentation.common.util.alarm.unregisterAlarm
@@ -14,6 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +23,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
@@ -33,6 +39,10 @@ fun SplashScreen(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    val compositionSplash by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(resId = R.raw.splash)
+    )
 
     fun navigateToLogin() {
         appState.navController.navigate(LoginConstant.ROUTE) {
@@ -77,7 +87,10 @@ fun SplashScreen(
             ),
         contentAlignment = Alignment.Center
     ) {
-
+        LottieAnimation(
+            composition = compositionSplash,
+            iterations = LottieConstants.IterateForever
+        )
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
