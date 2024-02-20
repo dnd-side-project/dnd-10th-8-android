@@ -174,7 +174,7 @@ private fun StatisticsMeScreen(
                 formatted.append(",")
             }
         }
-        "${formatted}원"
+        "-${formatted}원"
     }
     val statisticsData: Map<Long, List<MyStatisticsItem>> = when (selectedChipType) {
         MyStatisticsChipType.Take -> model.myStatistics.take
@@ -304,7 +304,7 @@ private fun StatisticsMeScreen(
                     )
                 }
                 Box(
-                    modifier = Modifier.width(60.dp)
+                    modifier = Modifier.width(80.dp)
                 ) {
                     Box(
                         modifier = Modifier

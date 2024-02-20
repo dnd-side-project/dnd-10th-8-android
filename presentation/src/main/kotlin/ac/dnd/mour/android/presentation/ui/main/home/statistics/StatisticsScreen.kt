@@ -2,8 +2,10 @@ package ac.dnd.mour.android.presentation.ui.main.home.statistics
 
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Gray000
+import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
@@ -31,6 +33,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -129,19 +132,20 @@ private fun StatisticsScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
         ) {
+            Divider(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(1.dp),
+                color = Gray400
+            )
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                backgroundColor = Color.White,
+                backgroundColor = Color.Transparent,
+                contentColor = Gray800,
                 modifier = Modifier.padding(horizontal = 20.dp),
-                divider = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.Transparent)
-                    )
-                }
+                divider = { }
             ) {
                 pages.forEachIndexed { index, pageText ->
                     Tab(

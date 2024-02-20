@@ -14,7 +14,7 @@ private val EmptyTextStyle = TextStyle(
 )
 
 val Typography = Typography(
-    defaultFontFamily = FontFamily.Default,
+    defaultFontFamily = FontFamily(Font(R.font.pretendard)),
     h1 = EmptyTextStyle,
     h2 = EmptyTextStyle,
     h3 = EmptyTextStyle,
@@ -31,62 +31,62 @@ val Typography = Typography(
 )
 
 val Headline0 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 24.sp
 )
 val Headline1 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 20.sp
 )
 val Headline2 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 18.sp
 )
 val Headline3 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 16.sp
 )
 val Body0 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Normal,
     fontSize = 16.sp
 )
 val Body1 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Normal,
     fontSize = 14.sp
 )
 val Body2 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Normal,
     fontSize = 12.sp
 )
 val Caption1 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Normal,
     fontSize = 12.sp
 )
 val Caption2 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Medium,
     fontSize = 12.sp
 )
 val Caption3 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Normal,
     fontSize = 10.sp
 )
 val Caption4 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 10.sp
 )
 val Caption5 = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.pretendard)),
     fontWeight = FontWeight.Medium,
     fontSize = 10.sp
 )

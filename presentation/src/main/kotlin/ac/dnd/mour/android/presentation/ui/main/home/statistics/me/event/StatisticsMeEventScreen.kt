@@ -250,7 +250,11 @@ private fun StatisticsMeEventItemScreen(
                 formatted.append(",")
             }
         }
-        "${formatted}원"
+        if (isGive) {
+            "-${formatted}원"
+        } else {
+            "${formatted}원"
+        }
     }
 
     Card(
