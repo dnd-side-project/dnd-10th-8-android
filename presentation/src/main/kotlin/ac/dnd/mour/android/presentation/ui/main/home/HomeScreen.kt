@@ -178,7 +178,7 @@ private fun HomeBottomBarScreen(
     onClick: (Int) -> Unit
 ) {
     BottomNavigation(
-        elevation = 3.dp,
+        elevation = 15.dp,
         backgroundColor = Gray000,
         modifier = Modifier
             .fillMaxWidth()
