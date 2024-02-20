@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -153,7 +154,10 @@ fun ScheduleScreenItem(
                         ) {
                             Text(
                                 text = schedule.event,
-                                style = Body1.merge(Gray000)
+                                style = Body1.merge(
+                                    color = Gray000,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             )
                         }
                     }
@@ -218,7 +222,6 @@ fun ScheduleScreenItemDescription(
     @DrawableRes iconRes: Int,
     text: String
 ) {
-    Spacer(modifier = Modifier.height(6.dp))
     Row(
         modifier = Modifier
             .padding(horizontal = 16.dp)
