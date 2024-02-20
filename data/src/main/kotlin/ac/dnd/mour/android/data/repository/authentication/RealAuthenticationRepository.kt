@@ -7,6 +7,9 @@ import ac.dnd.mour.android.domain.model.legacy.Login
 import ac.dnd.mour.android.domain.model.legacy.Register
 import ac.dnd.mour.android.domain.repository.AuthenticationRepository
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class RealAuthenticationRepository @Inject constructor(
     private val authenticationApi: AuthenticationApi,
@@ -21,6 +24,9 @@ class RealAuthenticationRepository @Inject constructor(
         set(value) = sharedPreferencesManager.setString(ACCESS_TOKEN, value)
         get() = sharedPreferencesManager.getString(ACCESS_TOKEN, "")
 
+    private val _isRefreshTokenInvalid: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    override val isRefreshTokenInvalid: StateFlow<Boolean> = _isRefreshTokenInvalid.asStateFlow()
+
     override suspend fun refreshToken(
         refreshToken: String
     ): Result<JwtToken> {
@@ -29,6 +35,9 @@ class RealAuthenticationRepository @Inject constructor(
         ).onSuccess { token ->
             this.refreshToken = token.refreshToken
             this.accessToken = token.accessToken
+            _isRefreshTokenInvalid.value = false
+        }.onFailure { exception ->
+            _isRefreshTokenInvalid.value = true
         }.map { token ->
             JwtToken(
                 accessToken = token.accessToken,

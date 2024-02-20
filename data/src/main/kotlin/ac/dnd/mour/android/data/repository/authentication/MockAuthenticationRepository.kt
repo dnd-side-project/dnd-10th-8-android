@@ -8,6 +8,9 @@ import ac.dnd.mour.android.domain.model.legacy.Register
 import ac.dnd.mour.android.domain.repository.AuthenticationRepository
 import javax.inject.Inject
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MockAuthenticationRepository @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager
@@ -20,6 +23,9 @@ class MockAuthenticationRepository @Inject constructor(
     override var accessToken: String
         set(value) = sharedPreferencesManager.setString(ACCESS_TOKEN, value)
         get() = sharedPreferencesManager.getString(ACCESS_TOKEN, "")
+
+    private val _isRefreshTokenInvalid: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    override val isRefreshTokenInvalid: StateFlow<Boolean> = _isRefreshTokenInvalid.asStateFlow()
 
     override suspend fun refreshToken(
         refreshToken: String
