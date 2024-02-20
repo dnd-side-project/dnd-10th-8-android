@@ -3,6 +3,7 @@ package ac.dnd.mour.android.data.repository.authentication.token
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.data.remote.network.api.TokenApi
 import ac.dnd.mour.android.domain.model.authentication.JwtToken
+import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.repository.TokenRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,19 +29,25 @@ class RealTokenRepository @Inject constructor(
     override suspend fun refreshToken(
         refreshToken: String
     ): Result<JwtToken> {
-        return tokenApi.getAccessToken(
-            refreshToken = refreshToken
-        ).onSuccess { token ->
-            this.refreshToken = token.refreshToken
-            this.accessToken = token.accessToken
-            _isRefreshTokenInvalid.value = false
-        }.onFailure { exception ->
-            _isRefreshTokenInvalid.value = true
-        }.map { token ->
-            JwtToken(
-                accessToken = token.accessToken,
-                refreshToken = token.refreshToken
-            )
+        return if (refreshToken.isEmpty()) {
+            Result.failure(ServerException("Client Error", "refreshToken is empty."))
+        } else {
+            tokenApi.getAccessToken(
+                refreshToken = refreshToken
+            ).onSuccess { token ->
+                this.refreshToken = token.refreshToken
+                this.accessToken = token.accessToken
+                _isRefreshTokenInvalid.value = false
+            }.onFailure { exception ->
+                this.refreshToken = ""
+                this.accessToken = ""
+                _isRefreshTokenInvalid.value = true
+            }.map { token ->
+                JwtToken(
+                    accessToken = token.accessToken,
+                    refreshToken = token.refreshToken
+                )
+            }
         }
     }
 
