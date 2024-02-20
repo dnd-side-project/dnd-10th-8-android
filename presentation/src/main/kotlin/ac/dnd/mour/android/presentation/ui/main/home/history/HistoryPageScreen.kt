@@ -9,6 +9,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space16
@@ -177,7 +178,7 @@ fun HistoryPageScreen(
             Text(
                 text = "내역 ${relations.size}",
                 style = Body1.merge(
-                    color = Gray600,
+                    color = Gray700,
                     fontWeight = FontWeight.SemiBold
                 ),
                 modifier = Modifier.align(Alignment.CenterStart)
@@ -193,7 +194,7 @@ fun HistoryPageScreen(
                 Text(
                     text = viewSortType.typeName,
                     style = Body1.merge(
-                        color = Gray700,
+                        color = Gray800,
                         fontWeight = FontWeight.Medium
                     )
                 )
@@ -220,7 +221,7 @@ fun HistoryPageScreen(
                                 contentPadding = PaddingValues(0.dp),
                                 modifier = Modifier
                                     .width(116.dp)
-                                    .height(40.dp)
+                                    .wrapContentHeight()
                             ) {
                                 Row(
                                     modifier = Modifier
@@ -233,10 +234,8 @@ fun HistoryPageScreen(
                                 ) {
                                     if (viewSortType == type) {
                                         Image(
-                                            painter = painterResource(R.drawable.ic_check_line),
+                                            painter = painterResource(R.drawable.ic_history_check),
                                             contentDescription = null,
-                                            colorFilter = ColorFilter.tint(Primary4),
-                                            modifier = Modifier.size(Space24)
                                         )
                                     } else {
                                         Box(
