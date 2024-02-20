@@ -3,6 +3,7 @@ package ac.dnd.mour.android.presentation.common.view.chip
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray400
+import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Primary1
@@ -52,7 +53,7 @@ fun ChipItem(
     )
     val borderColor = animateColorAsState(
         targetValue = when (chipType) {
-            ChipType.BORDER -> if (isSelected) Primary4 else Gray400
+            ChipType.BORDER -> if (isSelected) Primary4 else Gray500
             else -> Color.Transparent
         },
         label = "borderColor"

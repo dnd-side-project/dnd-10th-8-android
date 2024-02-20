@@ -27,6 +27,7 @@ import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -131,8 +132,8 @@ fun StatisticsMeEventScreen(
                     contentDescription = null
                 )
             }
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
-                modifier = Modifier.padding(vertical = 10.dp),
                 text = "경사 별 금액 통계",
                 style = Headline1
             )
@@ -162,14 +163,14 @@ fun StatisticsMeEventScreen(
         }
         Spacer(modifier = Modifier.height(26.dp))
         Text(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+            modifier = Modifier.padding(horizontal = 20.dp),
             text = formattedTitle,
             style = Body1
         )
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 20.dp)
+                .padding(horizontal = 20.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -266,7 +267,7 @@ private fun StatisticsMeEventItemScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
+                Image(
                     modifier = Modifier.size(Icon24),
                     painter = painterResource(id = iconRes),
                     contentDescription = null
@@ -305,13 +306,13 @@ private fun StatisticsMeEventItemScreen(
                 )
             }
             Spacer(modifier = Modifier.height(2.dp))
-            if (item.memo.isNotEmpty()) {
+            if (HistoryEventType.getEventId(item.event) == -1L) {
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.CenterEnd),
-                        text = item.memo,
+                        text = item.event,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = Caption1.merge(Gray800)
@@ -333,24 +334,24 @@ private fun StatisticsMeEventScreenPreview1() {
                 give = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "이다빈",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "서지원",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "김경민",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "가나다라마바사아자차카타파하"
@@ -359,24 +360,24 @@ private fun StatisticsMeEventScreenPreview1() {
                 take = listOf(
                     MyStatisticsItem(
                         event = "결혼",
-                        relationName = "친구",
-                        groupName = "veri",
+                        relationName = "박예리나",
+                        groupName = "친구",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "생일",
-                        relationName = "가족",
-                        groupName = "antica",
+                        relationName = "김진우",
+                        groupName = "가족",
                         money = Random.nextLong(20_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
                     ),
                     MyStatisticsItem(
                         event = "그외",
-                        relationName = "가족",
-                        groupName = "anticas",
+                        relationName = "장성혁",
+                        groupName = "가족",
                         money = Random.nextLong(50_000, 150_000),
                         day = LocalDate(2021, 10, 1),
                         memo = "asdf"
