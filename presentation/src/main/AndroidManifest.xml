@@ -15,6 +15,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.invalid.InvalidJwtTokenActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".common.util.alarm.AlarmReceiver"
             android:enabled="true"
