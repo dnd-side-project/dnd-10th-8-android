@@ -7,8 +7,10 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("android")
     kotlin("kapt")
-    alias(libs.plugins.gms)
-    alias(libs.plugins.firebase.crashlytics)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+//    alias(libs.plugins.gms)
+//    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
