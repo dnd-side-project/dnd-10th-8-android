@@ -4,7 +4,6 @@ import ac.dnd.mour.android.data.remote.network.di.AuthHttpClient
 import ac.dnd.mour.android.data.remote.network.di.NoAuthHttpClient
 import ac.dnd.mour.android.data.remote.network.environment.BaseUrlProvider
 import ac.dnd.mour.android.data.remote.network.environment.ErrorMessageMapper
-import ac.dnd.mour.android.data.remote.network.model.authentication.GetAccessTokenRes
 import ac.dnd.mour.android.data.remote.network.model.authentication.LoginReq
 import ac.dnd.mour.android.data.remote.network.model.authentication.LoginRes
 import ac.dnd.mour.android.data.remote.network.model.authentication.RegisterReq
@@ -12,7 +11,6 @@ import ac.dnd.mour.android.data.remote.network.model.authentication.RegisterRes
 import ac.dnd.mour.android.data.remote.network.util.convert
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
-import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -25,14 +23,6 @@ class AuthenticationApi @Inject constructor(
 ) {
     private val baseUrl: String
         get() = baseUrlProvider.get()
-
-    suspend fun getAccessToken(
-        refreshToken: String
-    ): Result<GetAccessTokenRes> {
-        return noAuthClient.post("$baseUrl/api/v1/token/reissue") {
-            header("Token-Refresh", refreshToken)
-        }.convert(errorMessageMapper::map)
-    }
 
     suspend fun login(
         socialId: Long,
