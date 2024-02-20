@@ -14,6 +14,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Icon24
 import ac.dnd.mour.android.presentation.common.theme.Primary1
+import ac.dnd.mour.android.presentation.common.theme.Secondary1
 import ac.dnd.mour.android.presentation.common.theme.Space20
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
@@ -21,6 +22,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -88,21 +90,22 @@ fun NotificationScreen(
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .height(56.dp)
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 20.dp)
         ) {
             Box(
-                modifier = Modifier.clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = false),
-                    onClick = {
-                        appState.navController.navigateUp()
-                    }
-                )
+                modifier = Modifier
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = false),
+                        onClick = {
+                            appState.navController.navigateUp()
+                        }
+                    )
+                    .align(Alignment.CenterStart)
             ) {
                 Icon(
                     modifier = Modifier.size(Icon24),
@@ -111,6 +114,7 @@ fun NotificationScreen(
                 )
             }
             Text(
+                modifier = Modifier.align(Alignment.Center),
                 text = "알림",
                 style = Headline1
             )
@@ -297,10 +301,10 @@ private fun NotificationScreenItem(
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(Primary1)
+                .background(Secondary1)
                 .size(40.dp),
         ) {
-            Icon(
+            Image(
                 modifier = Modifier
                     .size(Space20)
                     .align(Alignment.Center),
