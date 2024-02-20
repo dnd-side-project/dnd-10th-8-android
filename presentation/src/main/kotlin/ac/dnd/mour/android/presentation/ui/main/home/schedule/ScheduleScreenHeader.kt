@@ -6,8 +6,11 @@ import ac.dnd.mour.android.domain.model.feature.schedule.Schedule
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
+import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
@@ -49,12 +52,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
+import kotlinx.datetime.todayIn
 
 @Composable
 fun ScheduleScreenHeader(
@@ -97,12 +103,13 @@ fun ScheduleScreenHeader(
             ) {
                 Text(
                     text = formattedDate,
-                    style = Headline1
+                    style = Headline1.merge(Gray900)
                 )
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(R.drawable.ic_drop_down),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Gray900
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -149,7 +156,8 @@ fun ScheduleScreenHeader(
                             } else {
                                 painterResource(R.drawable.ic_chevron_down)
                             },
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = Gray600
                         )
                     }
                 }
@@ -259,17 +267,19 @@ private fun ScheduleScreenHeaderCalendarItem(
     isExpanded: Boolean,
     onClickDay: (LocalDate) -> Unit
 ) {
+    val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
     val isSelected = item == selectedDate
+    val isToday = item == now
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val boxModifier = if (isSelected) {
+        val boxModifier = if (isSelected || isToday) {
             Modifier
                 .size(28.dp)
                 .clip(CircleShape)
-                .background(Primary4)
+                .background(if (isSelected) Primary4 else Gray400)
         } else {
             Modifier.size(28.dp)
         }
@@ -286,7 +296,7 @@ private fun ScheduleScreenHeaderCalendarItem(
             Text(
                 text = item.dayOfMonth.toString(),
                 style = Body1.merge(
-                    color = if (isSelected) Gray000 else Gray600,
+                    color = if (isSelected) Gray000 else if (isToday) Gray700 else Gray800,
                     fontWeight = FontWeight.SemiBold
                 )
             )

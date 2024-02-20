@@ -72,6 +72,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -298,7 +299,10 @@ fun ScheduleAddScreen(
             Row {
                 Text(
                     text = "이름",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
@@ -363,7 +367,10 @@ fun ScheduleAddScreen(
             ) {
                 Text(
                     text = "날짜",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
@@ -385,7 +392,10 @@ fun ScheduleAddScreen(
             ) {
                 Text(
                     text = "경사 종류",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
@@ -449,7 +459,10 @@ fun ScheduleAddScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "미리 알림",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -473,7 +486,10 @@ fun ScheduleAddScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "시간",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
             FieldSelectComponent(
@@ -496,7 +512,10 @@ fun ScheduleAddScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "위치",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -525,7 +544,10 @@ fun ScheduleAddScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "초대장 링크",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -554,7 +576,10 @@ fun ScheduleAddScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "메모",
-                    style = Body1
+                    style = Body1.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))

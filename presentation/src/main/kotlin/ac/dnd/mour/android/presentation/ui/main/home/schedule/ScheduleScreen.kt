@@ -168,7 +168,7 @@ private fun ScheduleScreen(
                     .padding(horizontal = 20.dp)
             ) {
                 Text(
-                    text = "통계",
+                    text = "일정",
                     style = Headline1,
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -245,7 +245,7 @@ private fun ScheduleScreen(
                             ) { style ->
                                 Text(
                                     text = "일정 등록하기",
-                                    style = style
+                                    style = style.merge(Gray600)
                                 )
                             }
                         }

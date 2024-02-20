@@ -416,7 +416,6 @@ fun HistoryRegistrationScreen(
                     type = ConfirmButtonType.Primary
                 ),
                 isEnabled = isRegistrable,
-                enableBackgroundColor = Primary4,
                 onClick = {
                     register(continuousState = false)
                 },

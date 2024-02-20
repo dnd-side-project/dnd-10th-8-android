@@ -40,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -181,13 +180,9 @@ fun TypingTextField(
                 )
             }
         }
-        if (textType == TypingTextFieldType.Basic) {
+        if (textType == TypingTextFieldType.Basic && isError) {
             Spacer(Modifier.height(Space8))
-            Box(
-                modifier = Modifier.alpha(if (isError) 1f else 0f)
-            ) {
-                errorMessageContent()
-            }
+            errorMessageContent()
         }
     }
 }
