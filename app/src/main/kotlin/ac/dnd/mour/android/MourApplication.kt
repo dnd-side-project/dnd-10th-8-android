@@ -9,6 +9,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 
@@ -21,6 +23,9 @@ open class MourApplication : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             initializeChannel(this)
         }
+
+        // Firebase Initialize
+        Firebase.analytics
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

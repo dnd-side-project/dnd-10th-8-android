@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("android")
     kotlin("kapt")
+    alias(libs.plugins.gms)
 }
 
 android {
@@ -46,7 +47,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            applicationIdSuffix = ".debug"
             buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("KAKAO_APP_KEY"))
             resValue("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
         }
@@ -122,6 +122,7 @@ dependencies {
     implementation(libs.bundles.androidx.data)
     implementation(libs.bundles.network)
 
+    implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.logging)
     debugImplementation(libs.leakcanary)
 

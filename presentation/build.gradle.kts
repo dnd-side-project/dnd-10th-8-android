@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.parcelize")
     kotlin("android")
     kotlin("kapt")
+    alias(libs.plugins.gms)
 }
 
 android {
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.google.system.contoller)
     implementation(libs.ted.permission)
 
+    implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.logging)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
