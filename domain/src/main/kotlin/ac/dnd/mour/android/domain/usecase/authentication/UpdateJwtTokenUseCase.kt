@@ -1,14 +1,14 @@
 package ac.dnd.mour.android.domain.usecase.authentication
 
-import ac.dnd.mour.android.domain.repository.AuthenticationRepository
+import ac.dnd.mour.android.domain.repository.TokenRepository
 import javax.inject.Inject
 
 class UpdateJwtTokenUseCase @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+    private val tokenRepository: TokenRepository
 ) {
     suspend operator fun invoke(): Result<Unit> {
-        return authenticationRepository.refreshToken(
-            refreshToken = authenticationRepository.refreshToken
+        return tokenRepository.refreshToken(
+            refreshToken = tokenRepository.refreshToken
         ).map { }
     }
 }

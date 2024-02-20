@@ -1,6 +1,6 @@
 package ac.dnd.mour.android
 
-import ac.dnd.mour.android.domain.repository.AuthenticationRepository
+import ac.dnd.mour.android.domain.repository.TokenRepository
 import ac.dnd.mour.android.presentation.common.CHANNEL_1
 import ac.dnd.mour.android.presentation.common.CHANNEL_GROUP_1
 import ac.dnd.mour.android.presentation.ui.invalid.InvalidJwtTokenActivity
@@ -31,7 +31,7 @@ import timber.log.Timber
 open class MourApplication : Application() {
 
     @Inject
-    lateinit var authenticationRepository: AuthenticationRepository
+    lateinit var tokenRepository: TokenRepository
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         Timber.d(exception)
@@ -84,7 +84,7 @@ open class MourApplication : Application() {
         with(ProcessLifecycleOwner.get()) {
             lifecycleScope.launch(handler) {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    authenticationRepository.isRefreshTokenInvalid.collect { isRefreshTokenInvalid ->
+                    tokenRepository.isRefreshTokenInvalid.collect { isRefreshTokenInvalid ->
                         if (isRefreshTokenInvalid) {
                             val intent = Intent(
                                 this@MourApplication,

@@ -1,22 +1,9 @@
 package ac.dnd.mour.android.domain.repository
 
-import ac.dnd.mour.android.domain.model.authentication.JwtToken
 import ac.dnd.mour.android.domain.model.legacy.Login
 import ac.dnd.mour.android.domain.model.legacy.Register
-import kotlinx.coroutines.flow.StateFlow
 
 interface AuthenticationRepository {
-
-    var refreshToken: String
-
-    var accessToken: String
-
-    val isRefreshTokenInvalid: StateFlow<Boolean>
-
-    suspend fun refreshToken(
-        refreshToken: String
-    ): Result<JwtToken>
-
     suspend fun login(
         socialId: Long,
         email: String

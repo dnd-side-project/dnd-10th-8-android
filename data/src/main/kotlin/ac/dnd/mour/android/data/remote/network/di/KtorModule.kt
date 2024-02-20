@@ -1,6 +1,6 @@
 package ac.dnd.mour.android.data.remote.network.di
 
-import ac.dnd.mour.android.domain.repository.AuthenticationRepository
+import ac.dnd.mour.android.domain.repository.TokenRepository
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import dagger.Module
@@ -40,7 +40,7 @@ internal object KtorModule {
     ): HttpClient {
         return HttpClient(OkHttp) {
             // default validation to throw exceptions for non-2xx responses
-            expectSuccess = true
+            expectSuccess = false
 
             engine {
                 if (debugInterceptor.isPresent) {
@@ -61,14 +61,13 @@ internal object KtorModule {
     fun provideAuthHttpClient(
         @ApplicationContext context: Context,
         @DebugInterceptor debugInterceptor: Optional<Interceptor>,
-        authenticationRepository: AuthenticationRepository
+        tokenRepository: TokenRepository
     ): HttpClient {
         val isDebug: Boolean =
             (0 != context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)
 
         return HttpClient(OkHttp) {
             // default validation to throw exceptions for non-2xx responses
-            // TODO
             expectSuccess = false
 
             engine {
@@ -84,8 +83,8 @@ internal object KtorModule {
             install(Auth) {
                 bearer {
                     loadTokens {
-                        val accessToken = authenticationRepository.accessToken
-                        val refreshToken = authenticationRepository.refreshToken
+                        val accessToken = tokenRepository.accessToken
+                        val refreshToken = tokenRepository.refreshToken
                         if (accessToken.isEmpty() || refreshToken.isEmpty()) {
                             return@loadTokens null
                         }
@@ -97,12 +96,12 @@ internal object KtorModule {
                     }
 
                     refreshTokens {
-                        val refreshToken = authenticationRepository.refreshToken
+                        val refreshToken = tokenRepository.refreshToken
                         if (refreshToken.isEmpty()) {
                             return@refreshTokens null
                         }
 
-                        authenticationRepository.refreshToken(
+                        tokenRepository.refreshToken(
                             refreshToken
                         ).getOrNull()?.let { token ->
                             BearerTokens(
