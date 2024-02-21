@@ -144,7 +144,7 @@ fun MyPageSettingWithdrawScreen(
             Image(
                 painter = painterResource(imageResource),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(22.dp)
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(

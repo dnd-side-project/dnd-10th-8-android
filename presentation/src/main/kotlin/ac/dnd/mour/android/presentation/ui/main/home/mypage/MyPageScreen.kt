@@ -206,8 +206,10 @@ private fun MyPageScreen(
                     .clickable {
                         navigateToEditProfile()
                     }
-                    .width(79.dp)
-                    .height(34.dp),
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 6.5.dp
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -227,9 +229,10 @@ private fun MyPageScreen(
                     color = Gray100,
                     shape = Shapes.medium
                 )
-                .padding(20.dp)
+                .padding(horizontal = 20.dp)
                 .fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -276,6 +279,7 @@ private fun MyPageScreen(
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )
             }
+            Spacer(modifier = Modifier.height(20.dp))
         }
         Spacer(modifier = Modifier.height(32.dp))
 

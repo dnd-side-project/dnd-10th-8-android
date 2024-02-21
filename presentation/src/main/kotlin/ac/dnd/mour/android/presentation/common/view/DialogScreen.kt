@@ -1,6 +1,12 @@
 package ac.dnd.mour.android.presentation.common.view
 
 import ac.dnd.mour.android.presentation.R
+import ac.dnd.mour.android.presentation.common.theme.Body1
+import ac.dnd.mour.android.presentation.common.theme.Gray000
+import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
+import ac.dnd.mour.android.presentation.common.theme.Headline3
+import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
@@ -8,11 +14,11 @@ import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,27 +56,33 @@ fun DialogScreen(
     ) {
         Card(
             backgroundColor = Color.White,
-            shape = RoundedCornerShape(10.dp)
+            shape = Shapes.large
         ) {
             Column(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 25.dp, start = 20.dp, end = 20.dp, bottom = 20.dp),
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = title,
-                    fontSize = 24.sp,
-                    color = Color.Black
-                )
+                Spacer(modifier = Modifier.height(15.dp))
+                if (title.isNotEmpty()) {
+                    Text(
+                        text = title,
+                        fontSize = 24.sp,
+                        color = Color.Black
+                    )
+                }
 
                 if (message.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(15.dp))
 
                     Text(
                         text = message,
-                        fontSize = 16.sp,
-                        color = Color.Black,
+                        style = Body1.merge(
+                            color = Gray900,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -88,14 +101,16 @@ fun DialogScreen(
                                 onCancel()
                                 onDismissRequest()
                             }
-                        ) { style ->
+                        ) {
                             Text(
                                 text = cancelMessage,
-                                style = style
+                                style = Headline3.merge(
+                                    color = Gray800,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             )
                         }
-
-                        Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
                     }
 
                     ConfirmButton(
@@ -108,13 +123,17 @@ fun DialogScreen(
                             onConfirm()
                             onDismissRequest()
                         }
-                    ) { style ->
+                    ) {
                         Text(
                             text = confirmMessage,
-                            style = style
+                            style = Headline3.merge(
+                                color = Gray000,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -122,7 +141,7 @@ fun DialogScreen(
 
 @Preview
 @Composable
-fun DialogScreenPreview1() {
+private fun DialogScreenPreview1() {
     DialogScreen(
         title = "제목",
         message = "내용\n여러줄 넘어가면 이렇게 됨.\n가가가가가가가가가가가가가가가가가가가가가가가",
@@ -133,9 +152,19 @@ fun DialogScreenPreview1() {
 
 @Preview
 @Composable
-fun DialogScreenPreview2() {
+private fun DialogScreenPreview2() {
     DialogScreen(
         title = "제목",
+        onDismissRequest = {}
+    )
+}
+
+@Preview
+@Composable
+private fun DialogScreenPreview3() {
+    DialogScreen(
+        message = "메시지",
+        onCancel = {},
         onDismissRequest = {}
     )
 }
