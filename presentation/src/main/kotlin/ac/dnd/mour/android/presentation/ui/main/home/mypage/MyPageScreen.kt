@@ -107,7 +107,7 @@ private fun MyPageScreen(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    var isShowingLogoutDialog by remember { mutableStateOf(true) }
+    var isShowingLogoutDialog by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     fun navigateToLink() {
