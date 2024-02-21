@@ -7,8 +7,8 @@ import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Caption2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
-import ac.dnd.mour.android.presentation.common.theme.Gray300
-import ac.dnd.mour.android.presentation.common.theme.Gray500
+import ac.dnd.mour.android.presentation.common.theme.Gray400
+import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline3
@@ -49,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -118,7 +119,7 @@ private fun HistoryDetailInformationScreen(
                     .padding(Space8)
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_close),
+                    painter = painterResource(R.drawable.ic_close_rounded),
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
@@ -155,7 +156,7 @@ private fun HistoryDetailInformationScreen(
                 Text(
                     text = model.relationDetail.name,
                     style = Headline3.merge(
-                        color = Gray700,
+                        color = Gray800,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -163,7 +164,7 @@ private fun HistoryDetailInformationScreen(
                 Text(
                     text = "•",
                     style = Headline3.merge(
-                        color = Gray700,
+                        color = Gray800,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -171,7 +172,7 @@ private fun HistoryDetailInformationScreen(
                 Text(
                     text = model.relationDetail.group.name,
                     style = Headline3.merge(
-                        color = Gray700,
+                        color = Gray800,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -183,7 +184,7 @@ private fun HistoryDetailInformationScreen(
                     .border(
                         shape = Shapes.medium,
                         width = 1.dp,
-                        color = Gray300
+                        color = Gray400
                     )
                     .clickable {
                         onResult()
@@ -194,40 +195,45 @@ private fun HistoryDetailInformationScreen(
                     )
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_edit),
+                    painter = painterResource(R.drawable.ic_history_edit),
                     contentDescription = null
                 )
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.width(2.dp))
                 Text(
                     text = "편집",
+                    fontSize = 14.sp,
                     style = Caption2.merge(
-                        color = Gray500,
+                        color = Gray600,
                         fontWeight = FontWeight.Medium
                     )
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(
-                        color = Gray200,
-                        shape = Shapes.large
-                    )
-            ) {
-                Text(
+            if (model.relationDetail.memo.isEmpty()) {
+                Spacer(modifier = Modifier.height(103.dp))
+            } else {
+                Box(
                     modifier = Modifier
-                        .padding(20.dp)
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    text = model.relationDetail.memo,
-                    minLines = 3,
-                    style = Body1.merge(
-                        color = Gray800,
-                        fontWeight = FontWeight.Normal
+                        .wrapContentHeight()
+                        .background(
+                            color = Gray200,
+                            shape = Shapes.large
+                        )
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        text = model.relationDetail.memo,
+                        minLines = 3,
+                        style = Body1.merge(
+                            color = Gray800,
+                            fontWeight = FontWeight.Normal
+                        )
                     )
-                )
+                }
             }
             Spacer(modifier = Modifier.height(30.dp))
         }
@@ -251,7 +257,7 @@ private fun HistoryDetailInformationScreenPreview() {
                 id = 0L,
                 name = "김진우",
                 imageUrl = "",
-                memo = "무르는 경사비 관리앱으로 사용자가 다양한 개인적인 축하 상황에 대해 금전적 기여를 쉽게 할 수 있게 돕는 모바일 애플리케이션입니다",
+                memo = "",
                 group = RelationDetailGroup(
                     id = 0,
                     name = "친척"

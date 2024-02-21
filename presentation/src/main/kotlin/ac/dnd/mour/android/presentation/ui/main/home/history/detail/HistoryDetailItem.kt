@@ -8,6 +8,7 @@ import ac.dnd.mour.android.presentation.common.theme.Caption2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray600
+import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary1
@@ -28,11 +29,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -40,8 +41,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.text.DecimalFormat
 import kotlinx.datetime.LocalDate
+import java.text.DecimalFormat
 
 @Composable
 fun HistoryDetailItem(
@@ -50,12 +51,13 @@ fun HistoryDetailItem(
 ) {
     val currentViewWidth = LocalConfiguration.current.screenWidthDp.dp
 
-    Card(
-        shape = Shapes.medium,
-        backgroundColor = Gray000,
-        modifier = Modifier.clickable {
-            onClick(relatedHeart)
-        }
+    Box(
+        modifier = Modifier
+            .clip(Shapes.medium)
+            .background(Gray000)
+            .clickable {
+                onClick(relatedHeart)
+            }
     ) {
         Box(
             modifier = Modifier
@@ -109,16 +111,18 @@ fun HistoryDetailItem(
                     fontWeight = FontWeight.Normal
                 )
                 if (measureTextWidth(relatedHeart.memo, memeStyle) <= currentViewWidth - 80.dp) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_board),
-                            contentDescription = null
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = relatedHeart.memo,
-                            style = memeStyle
-                        )
+                    if (relatedHeart.memo.isNotEmpty()) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_board),
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = relatedHeart.memo,
+                                style = memeStyle
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -138,7 +142,7 @@ fun HistoryDetailItem(
                                 Text(
                                     text = tag,
                                     style = Caption2.merge(
-                                        color = Gray600,
+                                        color = Gray700,
                                         fontWeight = FontWeight.Medium
                                     ),
                                     lineHeight = 18.sp
