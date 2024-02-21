@@ -4,7 +4,7 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray300
-import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space16
 import androidx.compose.animation.animateColorAsState
@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun PriceChipComponent(
     scope: CoroutineScope,
     chipPressColor: Color = Gray300,
     chipUnPressColor: Color = Gray200,
-    chipContentColor: Color = Gray700,
+    chipContentColor: Color = Gray800,
     chipList: Map<String, Long> = mapOf(
         "1만" to 10_000,
         "5만" to 50_000,
@@ -78,7 +79,8 @@ fun PriceChipComponent(
                 Image(
                     painter = painterResource(R.drawable.ic_plus),
                     contentDescription = null,
-                    modifier = Modifier.size(Space16)
+                    modifier = Modifier.size(Space16),
+                    colorFilter = ColorFilter.tint(Gray800)
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
