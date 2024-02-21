@@ -29,6 +29,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldTyp
 import ac.dnd.mour.android.presentation.model.history.HistoryViewSwipingType
 import ac.dnd.mour.android.presentation.model.history.HistoryViewType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.RelationConstant
 import ac.dnd.mour.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
 import ac.dnd.mour.android.presentation.ui.main.home.history.unrecorded.HistoryUnrecordedConstant
@@ -49,9 +50,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -80,6 +83,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -149,6 +153,7 @@ private fun HistoryScreen(
 ) {
 
     var isPlayingLoading by remember { mutableStateOf(true) }
+    var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
     isPlayingLoading = when (model.state) {
         HistoryState.Init -> false
@@ -220,6 +225,10 @@ private fun HistoryScreen(
         appState.navController.navigate(HistoryUnrecordedConstant.ROUTE)
     }
 
+    fun navigateToNotification() {
+        appState.navController.navigate(NotificationConstant.ROUTE)
+    }
+
     fun navigateToAddRelation() {
         appState.navController.navigate(RelationConstant.ROUTE)
     }
@@ -256,7 +265,7 @@ private fun HistoryScreen(
                 isPlayingLoading = isPlayingLoading,
                 model = model,
                 onClickAlarm = {
-
+                    navigateToNotification()
                 },
                 isTextFieldFocused = isTextFieldFocused,
                 isViewUnrecordedState = isViewUnrecordedState,
@@ -420,6 +429,7 @@ private fun HistoryScreen(
                                             topEnd = 16.dp
                                         )
                                     )
+                                    .fillMaxHeight()
                                     .padding(horizontal = 20.dp),
                                 divider = {
                                     Box(
@@ -441,7 +451,7 @@ private fun HistoryScreen(
                                             Text(
                                                 text = pageText,
                                                 style = Headline3.merge(
-                                                    color = if (index == pagerState.currentPage) Primary4 else Gray500,
+                                                    color = if (index == pagerState.currentPage) Primary4 else Gray600,
                                                     fontWeight = FontWeight.SemiBold
                                                 )
                                             )
@@ -468,8 +478,113 @@ private fun HistoryScreen(
                     }
                 }
             }
+        }
 
-            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+        if (isDropDownMenuExpanded) {
+            val isNotEmptyRelation = model.groups.isNotEmpty()
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        isDropDownMenuExpanded = false
+                    }
+                    .background(Color(0x66313131))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(
+                            x = (-14).dp,
+                            y = (-152).dp
+                        )
+                        .clip(RoundedCornerShape(100.dp))
+                        .clickable {
+                            isDropDownMenuExpanded = false
+                            if (isNotEmptyRelation) {
+                                isDropDownMenuExpanded = false
+                                navigateToAddHeart()
+                            }
+                        }
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(100.dp),
+                            color = if (isNotEmptyRelation) Gray300 else Gray500
+                        )
+                        .background(
+                            color = if (isNotEmptyRelation) Gray000 else Gray500,
+                            shape = RoundedCornerShape(100.dp)
+                        )
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 12.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    val iconResource =
+                        if (isNotEmptyRelation) R.drawable.ic_gift_activate else R.drawable.ic_gift_disabled
+                    Image(
+                        painter = painterResource(iconResource),
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "마음 등록",
+                        style = Headline3.merge(
+                            color = if (isNotEmptyRelation) Primary3 else Gray600,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(
+                            x = (-14).dp,
+                            y = (-92).dp
+                        )
+                        .clickable {
+                            isDropDownMenuExpanded = false
+                            navigateToAddRelation()
+                        }
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(100.dp),
+                            color = Gray300
+                        )
+                        .background(
+                            color = Gray000,
+                            shape = RoundedCornerShape(100.dp)
+                        )
+                        .clip(RoundedCornerShape(100.dp))
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 12.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person),
+                        colorFilter = ColorFilter.tint(Secondary5),
+                        modifier = Modifier.size(24.dp),
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "관계 등록",
+                        style = Headline3.merge(
+                            color = Secondary6,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxSize()) {
             FloatingActionButton(
                 modifier = Modifier
                     .padding(bottom = 24.dp, end = 20.dp)
@@ -477,13 +592,13 @@ private fun HistoryScreen(
                     .align(Alignment.BottomEnd),
                 backgroundColor = if (isDropDownMenuExpanded) Gray000 else Gray800,
                 onClick = {
-                    isDropDownMenuExpanded = true
+                    isDropDownMenuExpanded = !isDropDownMenuExpanded
                 }
             ) {
                 if (isDropDownMenuExpanded) {
                     Icon(
                         modifier = Modifier.size(32.dp),
-                        painter = painterResource(id = R.drawable.ic_close),
+                        painter = painterResource(id = R.drawable.ic_close_rounded),
                         contentDescription = null,
                         tint = Gray800
                     )
@@ -494,117 +609,6 @@ private fun HistoryScreen(
                         contentDescription = null,
                         tint = Gray000
                     )
-                }
-
-                val isNotEmptyRelation = model.groups.isNotEmpty()
-
-                MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(100.dp))) {
-                    DropdownMenu(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(100.dp),
-                                color = if (isNotEmptyRelation) Gray300 else Gray500
-                            )
-                            .background(
-                                color = if (isNotEmptyRelation) Gray000 else Gray500,
-                                shape = RoundedCornerShape(100.dp)
-                            )
-                            .width(120.dp)
-                            .height(48.dp),
-                        onDismissRequest = {
-                            isDropDownMenuExpanded = false
-                        },
-                        offset = DpOffset(y = 76.dp, x = 0.dp),
-                        expanded = isDropDownMenuExpanded
-                    ) {
-                        DropdownMenuItem(
-                            contentPadding = PaddingValues(bottom = 12.dp),
-                            onClick = {
-                                if (isNotEmptyRelation) {
-                                    isDropDownMenuExpanded = false
-                                    navigateToAddHeart()
-                                }
-                            },
-                            modifier = Modifier.height(48.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                val iconResource =
-                                    if (isNotEmptyRelation) R.drawable.ic_gift_activate else R.drawable.ic_gift_disabled
-                                Image(
-                                    painter = painterResource(iconResource),
-                                    contentDescription = null,
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "마음 등록",
-                                    style = Headline3.merge(
-                                        color = if (isNotEmptyRelation) Primary3 else Gray600,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                )
-                            }
-                        }
-                    }
-                }
-
-                MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(100.dp))) {
-                    DropdownMenu(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(100.dp),
-                                color = Gray300
-                            )
-                            .background(
-                                color = Gray000,
-                                shape = RoundedCornerShape(100.dp)
-                            )
-                            .width(120.dp)
-                            .height(48.dp),
-                        onDismissRequest = {
-                            isDropDownMenuExpanded = false
-                        },
-                        properties = PopupProperties(
-                            dismissOnClickOutside = false
-                        ),
-                        offset = DpOffset(y = 16.dp, x = 0.dp),
-                        expanded = isDropDownMenuExpanded
-                    ) {
-                        DropdownMenuItem(
-                            contentPadding = PaddingValues(bottom = 12.dp),
-                            onClick = {
-                                isDropDownMenuExpanded = false
-                                navigateToAddRelation()
-                            },
-                            modifier = Modifier.height(48.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_person),
-                                    colorFilter = ColorFilter.tint(Secondary5),
-                                    modifier = Modifier.size(24.dp),
-                                    contentDescription = null,
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "관계 등록",
-                                    style = Headline3.merge(
-                                        color = Secondary6,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                )
-                            }
-                        }
-                    }
                 }
             }
         }

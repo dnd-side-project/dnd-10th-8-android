@@ -7,6 +7,7 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray500
+import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Primary2
@@ -64,7 +65,7 @@ fun HistoryBackgroundComponent(
     isTextFieldFocused: Boolean,
     isViewUnrecordedState: Boolean,
     onFocusChange: (Boolean) -> Unit,
-    alarmState: Boolean = true,
+    alarmState: Boolean = false,
     onClickUnrecorded: () -> Unit,
     onDeleteUnrecorded: () -> Unit,
     onClickAlarm: () -> Unit,
@@ -83,11 +84,6 @@ fun HistoryBackgroundComponent(
         label = "color state"
     )
 
-    @Composable
-    fun getAlarmImage(): Painter {
-        return painterResource(if (alarmState) R.drawable.ic_notification_on else R.drawable.ic_notification)
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,7 +101,7 @@ fun HistoryBackgroundComponent(
                 modifier = Modifier.align(Alignment.CenterStart)
             )
             Image(
-                painter = getAlarmImage(),
+                painter = painterResource(R.drawable.ic_alarm_white),
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
@@ -206,7 +202,7 @@ fun HistoryBackgroundComponent(
                                     .padding(16.dp)
                             ) {
                                 Image(
-                                    painter = painterResource(R.drawable.ic_close_circle),
+                                    painter = painterResource(R.drawable.ic_close_circle_inner_gray),
                                     contentDescription = null,
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
@@ -242,14 +238,13 @@ fun HistoryBackgroundComponent(
                                             Text(
                                                 text = "한번에 기록하기",
                                                 style = Body1.merge(
-                                                    color = Gray500,
+                                                    color = Gray600,
                                                     fontWeight = FontWeight.Medium
                                                 )
                                             )
                                             Image(
-                                                painter = painterResource(R.drawable.ic_chevron_right),
+                                                painter = painterResource(R.drawable.ic_chevron_right_gray),
                                                 contentDescription = null,
-                                                modifier = Modifier.size(16.dp)
                                             )
                                         }
                                     }
