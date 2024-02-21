@@ -6,9 +6,9 @@ import ac.dnd.mour.android.presentation.common.theme.Body0
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray500
-import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Shapes
@@ -40,6 +40,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -136,10 +137,12 @@ private fun GetGroupScreen(
                         .fillMaxWidth()
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_close),
+                        painter = painterResource(R.drawable.ic_close_rounded),
                         contentDescription = null,
+                        colorFilter = ColorFilter.tint(Gray900),
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
+                            .size(24.dp)
                             .clickable {
                                 onDismissRequest()
                             }
@@ -177,7 +180,7 @@ private fun GetGroupScreen(
                             Text(
                                 text = group.name,
                                 style = Headline3.merge(
-                                    color = Gray700,
+                                    color = Gray800,
                                     fontWeight = FontWeight.SemiBold
                                 ),
                                 modifier = Modifier.weight(1f)
@@ -287,7 +290,7 @@ private fun GetGroupScreen(
                     .height(56.dp)
                     .padding(horizontal = 20.dp)
                     .align(Alignment.BottomCenter),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.CenterStart
             ) {
                 Row(
                     modifier = Modifier
@@ -308,7 +311,7 @@ private fun GetGroupScreen(
                     Text(
                         text = "그룹 등록하기",
                         style = Headline3.merge(
-                            color = Gray600,
+                            color = Gray700,
                             fontWeight = FontWeight.SemiBold
                         )
                     )

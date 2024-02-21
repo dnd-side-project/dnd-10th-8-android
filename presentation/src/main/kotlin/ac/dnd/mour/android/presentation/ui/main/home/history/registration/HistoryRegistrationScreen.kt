@@ -4,12 +4,11 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
-import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
-import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Space12
 import ac.dnd.mour.android.presentation.common.theme.Space16
 import ac.dnd.mour.android.presentation.common.theme.Space20
@@ -56,6 +55,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -126,7 +126,7 @@ fun HistoryRegistrationScreen(
 
     @Composable
     fun getTypeTextColor(currentType: HistoryRegistrationType) = animateColorAsState(
-        targetValue = if (historyTypeState == currentType) Gray800 else Gray600,
+        targetValue = if (historyTypeState == currentType) Gray900 else Gray700,
         label = "type text color"
     )
 
@@ -315,8 +315,21 @@ fun HistoryRegistrationScreen(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     hintText = "직접 입력",
+                    trailingIconContent = {
+                        if (eventTypeText.isNotEmpty()) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_close_circle),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable {
+                                        eventTypeText = ""
+                                    }
+                            )
+                        }
+                    },
                 )
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 HistoryEventType.entries.chunked(5).forEach { registrationEventTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         registrationEventTypes.forEach { type ->

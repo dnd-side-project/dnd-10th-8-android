@@ -1,7 +1,8 @@
 package ac.dnd.mour.android.presentation.common.view.textfield
 
 import ac.dnd.mour.android.presentation.common.theme.Gray500
-import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray600
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Negative
 import ac.dnd.mour.android.presentation.common.theme.Primary3
@@ -99,7 +100,7 @@ fun TypingPriceField(
                 .fillMaxWidth()
                 .height(textFieldHeight),
             textStyle = Headline3.merge(
-                color = Gray800,
+                color = Gray900,
                 fontWeight = FontWeight.SemiBold
             ),
             singleLine = true,
@@ -120,7 +121,7 @@ fun TypingPriceField(
                     Text(
                         text = hintText,
                         style = Headline3.merge(
-                            color = Gray500,
+                            color = Gray600,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -132,7 +133,7 @@ fun TypingPriceField(
                 contentPadding = innerPadding
             )
         }
-        Spacer(modifier = Modifier.height(11.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
