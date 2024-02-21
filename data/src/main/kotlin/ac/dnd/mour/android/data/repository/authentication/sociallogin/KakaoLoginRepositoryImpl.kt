@@ -18,11 +18,12 @@ class KakaoLoginRepositoryImpl @Inject constructor(
 ) : KakaoLoginRepository {
 
     override suspend fun login(): Result<String> = runCatching {
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            loginWithKakaoTalkFlow()
-        } else {
-            UserApiClient.loginWithKakaoAccount()
-        }
+        UserApiClient.loginWithKakaoAccount()
+//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
+//            loginWithKakaoTalkFlow()
+//        } else {
+//            UserApiClient.loginWithKakaoAccount()
+//        }
     }
 
     private suspend fun loginWithKakaoTalkFlow() = runCatching {
