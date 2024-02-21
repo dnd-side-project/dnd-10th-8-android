@@ -78,6 +78,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -184,6 +185,7 @@ private fun HistoryDetailEditScreen(
                     isShowingSuccessEditSnackBar = true
                     delay(500L)
                     isShowingSuccessEditSnackBar = false
+                    isEditMode = false
                 }
             }
         }
@@ -220,7 +222,7 @@ private fun HistoryDetailEditScreen(
                         .padding(Space8)
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_close),
+                        painter = painterResource(R.drawable.ic_close_rounded),
                         contentDescription = null,
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
@@ -296,9 +298,8 @@ private fun HistoryDetailEditScreen(
                             }
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.ic_chevron_right),
+                                painter = painterResource(R.drawable.ic_text_field_chevron_right),
                                 contentDescription = null,
-                                colorFilter = ColorFilter.tint(Gray500)
                             )
                         }
                     },
@@ -322,6 +323,7 @@ private fun HistoryDetailEditScreen(
                         horizontal = 16.dp
                     ),
                     fieldHeight = 97.dp,
+                    hintText = "메모를 입력해주세요",
                     onTextFieldFocusChange = {
                         isMemoSelected = it
                     },
@@ -341,9 +343,8 @@ private fun HistoryDetailEditScreen(
                             }
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.ic_chevron_right),
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(Gray500)
+                                painter = painterResource(R.drawable.ic_text_field_chevron_right),
+                                contentDescription = null
                             )
                         }
                     },

@@ -72,10 +72,9 @@ fun FieldSelectComponent(
         )
 
         Image(
-            painter = painterResource(R.drawable.ic_chevron_right),
+            painter = painterResource(R.drawable.ic_text_field_chevron_right),
             contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterEnd),
-            colorFilter = ColorFilter.tint(Gray500)
+            modifier = Modifier.align(Alignment.CenterEnd)
         )
     }
 }

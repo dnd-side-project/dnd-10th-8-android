@@ -1,15 +1,17 @@
 package ac.dnd.mour.android.presentation.ui.main.home.history.unrecorded
 
 import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedSchedule
+import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedScheduleRelation
+import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedScheduleRelationGroup
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body0
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
-import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.theme.Headline3
@@ -53,7 +55,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 
 @Composable
 fun HistoryUnrecordedPageScreen(
@@ -83,7 +88,7 @@ fun HistoryUnrecordedPageScreen(
                     Text(
                         text = "지난 일정이 \n${unRecordSize}개 있습니다.",
                         style = Headline1.merge(
-                            color = Gray700,
+                            color = Gray900,
                             fontWeight = FontWeight.SemiBold
                         ),
                     )
@@ -91,7 +96,7 @@ fun HistoryUnrecordedPageScreen(
                     Text(
                         text = "얼마를 지출하셨나요?",
                         style = Body1.merge(
-                            color = Gray600,
+                            color = Gray700,
                             fontWeight = FontWeight.Medium
                         )
                     )
@@ -104,11 +109,14 @@ fun HistoryUnrecordedPageScreen(
                     Image(
                         painter = painterResource(R.drawable.ic_unrecorded_flower),
                         contentDescription = null,
-                        modifier = Modifier.align(Alignment.TopEnd)
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .height(98.dp)
+                            .width(53.dp)
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(31.dp))
             Row(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
@@ -208,6 +216,7 @@ fun HistoryUnrecordedPageScreen(
                 }
             }
             Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Column(
                 modifier = Modifier
                     .background(Gray000)
@@ -224,7 +233,7 @@ fun HistoryUnrecordedPageScreen(
                         moneyText = it
                     }
                 )
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(32.dp))
                 FieldSubject(
                     subject = "태그",
                     isViewIcon = false
@@ -290,7 +299,7 @@ fun HistoryUnrecordedPageScreen(
             Text(
                 text = "건너뛰기",
                 style = Headline3.merge(
-                    color = Gray500,
+                    color = Gray600,
                     fontWeight = FontWeight.SemiBold
                 ),
                 modifier = Modifier
@@ -301,4 +310,31 @@ fun HistoryUnrecordedPageScreen(
             Spacer(Modifier.height(20.dp))
         }
     }
+}
+
+@Preview
+@Composable
+private fun HistoryUnrecordedPagePreview() {
+    HistoryUnrecordedPageScreen(
+        unRecordSize = 5,
+        unrecordedSchedule = UnrecordedSchedule(
+            0,
+            UnrecordedScheduleRelation(
+                0,
+                "김진우",
+                UnrecordedScheduleRelationGroup(
+                    0,
+                    "친척"
+                )
+            ),
+            day = LocalDate(2024, 1, 1),
+            event = "결혼",
+            time = LocalTime(12, 12),
+            link = "",
+            location = ""
+        ),
+        intent = {
+
+        }
+    )
 }
