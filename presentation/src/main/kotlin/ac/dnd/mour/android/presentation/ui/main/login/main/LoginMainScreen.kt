@@ -9,9 +9,9 @@ import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState

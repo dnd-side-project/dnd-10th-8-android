@@ -11,9 +11,9 @@ import ac.dnd.mour.android.domain.usecase.feature.relation.EditRelationWithUploa
 import ac.dnd.mour.android.domain.usecase.feature.relation.GetKakaoFriendInfoUseCase
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
 import ac.dnd.mour.android.presentation.common.base.ErrorEvent
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

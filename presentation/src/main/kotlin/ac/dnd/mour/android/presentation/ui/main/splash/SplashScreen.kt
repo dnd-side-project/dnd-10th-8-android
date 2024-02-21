@@ -4,9 +4,9 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.alarm.registerAlarm
 import ac.dnd.mour.android.presentation.common.util.alarm.unregisterAlarm
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.login.LoginConstant

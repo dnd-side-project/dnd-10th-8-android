@@ -1,8 +1,8 @@
 package ac.dnd.mour.android.presentation.common.base
 
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.asEventFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler

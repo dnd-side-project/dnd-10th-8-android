@@ -15,7 +15,7 @@ import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space16
 import ac.dnd.mour.android.presentation.common.theme.Space24
 import ac.dnd.mour.android.presentation.common.theme.Space4
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType

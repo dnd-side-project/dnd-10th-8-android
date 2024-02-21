@@ -7,9 +7,9 @@ import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType

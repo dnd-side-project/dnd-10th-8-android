@@ -17,9 +17,9 @@ import ac.dnd.mour.android.presentation.common.theme.Primary1
 import ac.dnd.mour.android.presentation.common.theme.Secondary1
 import ac.dnd.mour.android.presentation.common.theme.Space20
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image

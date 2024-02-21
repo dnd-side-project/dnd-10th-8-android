@@ -1,5 +1,6 @@
 package ac.dnd.mour.android.domain.repository
 
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
 import ac.dnd.mour.android.domain.model.authentication.JwtToken
 import kotlinx.coroutines.flow.StateFlow
 
@@ -9,11 +10,9 @@ interface TokenRepository {
 
     var accessToken: String
 
-    val isRefreshTokenInvalid: StateFlow<Boolean>
+    val refreshFailEvent: EventFlow<Unit>
 
     suspend fun refreshToken(
         refreshToken: String
     ): Result<JwtToken>
-
-    suspend fun resetRefreshTokenInvalidFlag()
 }

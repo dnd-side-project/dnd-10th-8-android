@@ -5,9 +5,9 @@ import ac.dnd.mour.android.domain.usecase.authentication.LoginUseCase
 import ac.dnd.mour.android.domain.usecase.authentication.sociallogin.GetKakaoUserInfoUseCase
 import ac.dnd.mour.android.domain.usecase.authentication.sociallogin.LoginKakaoUseCase
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.asEventFlow
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.model.login.toUiModel
 import androidx.lifecycle.SavedStateHandle

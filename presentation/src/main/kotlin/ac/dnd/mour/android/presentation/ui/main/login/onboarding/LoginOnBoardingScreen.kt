@@ -5,9 +5,9 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray100
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize

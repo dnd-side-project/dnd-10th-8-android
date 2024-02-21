@@ -1,4 +1,4 @@
-package ac.dnd.mour.android.presentation.common.util.coroutine.event
+package ac.dnd.mour.android.common.coroutine.event
 
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector

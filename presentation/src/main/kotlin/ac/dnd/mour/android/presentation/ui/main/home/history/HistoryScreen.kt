@@ -20,9 +20,9 @@ import ac.dnd.mour.android.presentation.common.theme.Secondary5
 import ac.dnd.mour.android.presentation.common.theme.Secondary6
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType

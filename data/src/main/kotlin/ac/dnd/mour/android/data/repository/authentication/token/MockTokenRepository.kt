@@ -1,5 +1,8 @@
 package ac.dnd.mour.android.data.repository.authentication.token
 
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.asEventFlow
 import ac.dnd.mour.android.data.remote.local.SharedPreferencesManager
 import ac.dnd.mour.android.domain.model.authentication.JwtToken
 import ac.dnd.mour.android.domain.repository.TokenRepository
@@ -21,8 +24,8 @@ class MockTokenRepository @Inject constructor(
         set(value) = sharedPreferencesManager.setString(ACCESS_TOKEN, value)
         get() = sharedPreferencesManager.getString(ACCESS_TOKEN, "")
 
-    private val _isRefreshTokenInvalid: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    override val isRefreshTokenInvalid: StateFlow<Boolean> = _isRefreshTokenInvalid.asStateFlow()
+    private val _refreshFailEvent: MutableEventFlow<Unit> = MutableEventFlow()
+    override val refreshFailEvent: EventFlow<Unit> = _refreshFailEvent.asEventFlow()
 
     override suspend fun refreshToken(
         refreshToken: String
@@ -34,10 +37,6 @@ class MockTokenRepository @Inject constructor(
                 refreshToken = "mock_refresh_token"
             )
         )
-    }
-
-    override suspend fun resetRefreshTokenInvalidFlag() {
-        _isRefreshTokenInvalid.value = false
     }
 
     private suspend fun randomShortDelay() {

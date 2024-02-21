@@ -1,4 +1,4 @@
-package ac.dnd.mour.android.presentation.common.util.coroutine
+package ac.dnd.mour.android.common.coroutine
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

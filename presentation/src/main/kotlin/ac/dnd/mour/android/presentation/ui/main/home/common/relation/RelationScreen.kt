@@ -24,9 +24,9 @@ import ac.dnd.mour.android.presentation.common.theme.Space56
 import ac.dnd.mour.android.presentation.common.theme.Space8
 import ac.dnd.mour.android.presentation.common.theme.Space80
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen

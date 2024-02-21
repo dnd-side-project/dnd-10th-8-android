@@ -12,7 +12,7 @@ import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space24
 import ac.dnd.mour.android.presentation.common.theme.Space4
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
 import ac.dnd.mour.android.presentation.model.history.HistoryDetailSortedType
 import ac.dnd.mour.android.presentation.model.history.HistorySortedType

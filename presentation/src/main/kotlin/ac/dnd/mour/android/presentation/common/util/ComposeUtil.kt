@@ -3,7 +3,7 @@ package ac.dnd.mour.android.presentation.common.util
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
 import ac.dnd.mour.android.presentation.common.base.ErrorEvent
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

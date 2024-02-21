@@ -18,9 +18,9 @@ import ac.dnd.mour.android.presentation.common.theme.Space20
 import ac.dnd.mour.android.presentation.common.theme.Space32
 import ac.dnd.mour.android.presentation.common.theme.Space4
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
-import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.common.coroutine.event.EventFlow
+import ac.dnd.mour.android.common.coroutine.event.MutableEventFlow
+import ac.dnd.mour.android.common.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
