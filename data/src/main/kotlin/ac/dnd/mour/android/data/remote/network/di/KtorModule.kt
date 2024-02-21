@@ -14,7 +14,8 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.resources.Resources
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import java.util.Optional
 import javax.inject.Qualifier
@@ -51,7 +52,11 @@ internal object KtorModule {
             install(ContentNegotiation) {
                 json(jsonConfiguration)
             }
-            install(Resources)
+
+            // TODO : 이거 왜 안 들어가고 있는지 확인
+            defaultRequest {
+                header("Content-Type", "application/json")
+            }
         }
     }
 
@@ -111,6 +116,11 @@ internal object KtorModule {
                         }
                     }
                 }
+            }
+
+            // TODO : 이거 왜 안 들어가고 있는지 확인
+            defaultRequest {
+                header("Content-Type", "application/json")
             }
         }
     }
