@@ -2,7 +2,7 @@ package ac.dnd.mour.android.presentation.common.view.component
 
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
-import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ fun FieldSubject(
             Text(
                 text = subject,
                 style = Body1.merge(
-                    color = Gray700,
+                    color = Gray800,
                     fontWeight = FontWeight.SemiBold
                 )
             )

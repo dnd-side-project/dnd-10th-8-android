@@ -5,6 +5,7 @@ import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Body2
 import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray600
+import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Negative
 import ac.dnd.mour.android.presentation.common.theme.Primary4
@@ -72,7 +73,7 @@ fun TypingTextField(
     backgroundColor: Color = Color.White,
     basicBorderColor: Color = Gray400,
     cursorColor: Color? = null,
-    hintTextColor: Color = Gray600,
+    hintTextColor: Color = Gray700,
     textStyle: TextStyle = Body1.merge(
         color = Gray800,
         fontWeight = FontWeight.Normal
