@@ -72,6 +72,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -80,6 +81,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -118,6 +120,8 @@ fun RelationScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
+    val lazyScrollState = rememberLazyListState()
+    val lazyState = remember { derivedStateOf { lazyScrollState.firstVisibleItemIndex } }
     var isRecordState by remember { mutableStateOf(false) }
     var isNameTypeTyping by remember { mutableStateOf(true) }
     var currentImageUrl by remember { mutableStateOf(model.relationDetail.imageUrl) }
@@ -126,7 +130,7 @@ fun RelationScreen(
     var currentNameText by remember { mutableStateOf(model.relationDetail.name) }
     var isKakaoNameInValid by remember { mutableStateOf(false) }
     var kakaoNameTextFocus by remember { mutableStateOf(false) }
-    var kakaoNameText by remember { mutableStateOf("카카오에서 친구 선택") }
+    var kakaoNameText by remember { mutableStateOf("카카오톡에서 친구 선택") }
     var currentGroupId by remember { mutableLongStateOf(model.relationDetail.group.id) }
     var isMemoTextFocus by remember { mutableStateOf(false) }
     var memoText by remember { mutableStateOf(model.relationDetail.memo) }
@@ -306,7 +310,7 @@ fun RelationScreen(
                                     Text(
                                         text = "카카오톡에서 자동으로 친구 정보를 가져와요.",
                                         style = Body2.merge(
-                                            color = Gray700,
+                                            color = Gray800,
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     )
@@ -363,6 +367,8 @@ fun RelationScreen(
                         currentNameText = it
                         isUserNameInValid = currentNameText.length > 5
                     },
+                    hintText = "닉네임 입력 (15자 이내)",
+                    hintTextColor = Gray700,
                     isError = isUserNameInValid,
                     errorMessageContent = {
                         if (isUserNameInValid) {
@@ -400,10 +406,7 @@ fun RelationScreen(
                         onClick = {},
                     )
                 } else {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         Box(
                             modifier = Modifier.weight(1f)
                         ) {
@@ -473,7 +476,7 @@ fun RelationScreen(
                             Text(
                                 text = "재등록",
                                 style = Body1.merge(
-                                    color = Gray600,
+                                    color = Gray700,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             )
@@ -491,6 +494,7 @@ fun RelationScreen(
                     .height(52.dp)
             ) {
                 LazyRow(
+                    state = lazyScrollState,
                     modifier = Modifier.padding(
                         top = 6.dp,
                         bottom = 12.dp
@@ -509,6 +513,22 @@ fun RelationScreen(
                             chipId = group.id
                         )
                     }
+                }
+                if (lazyState.value > 0) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .width(56.dp)
+                            .fillMaxHeight()
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(
+                                        Color(0xFFFFFFFF),
+                                        Color(0x00FFFFFF),
+                                    )
+                                )
+                            )
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -539,14 +559,15 @@ fun RelationScreen(
                     )
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_edit),
-                    contentDescription = null
+                    painter = painterResource(R.drawable.ic_history_edit),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Gray600)
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
                     text = "편집",
                     style = Caption2.merge(
-                        color = Gray600,
+                        color = Gray700,
                         fontWeight = FontWeight.Medium
                     )
                 )
@@ -605,7 +626,8 @@ fun RelationScreen(
                         onValueChange = {
                             memoText = it
                         },
-                        textType = TypingTextFieldType.LongSentence
+                        textType = TypingTextFieldType.LongSentence,
+                        hintText = "경사 관련 메모를 입력해주세요"
                     )
                 }
             }
@@ -617,6 +639,7 @@ fun RelationScreen(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .height(Space56)
+                .background(color = Gray000)
                 .fillMaxWidth()
                 .padding(
                     horizontal = 20.dp,
@@ -731,7 +754,7 @@ fun RelationScreen(
                             Text(
                                 text = "바로 마음 기록",
                                 style = Headline3.merge(
-                                    color = Gray700,
+                                    color = Gray800,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             )
