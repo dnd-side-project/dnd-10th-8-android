@@ -8,6 +8,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space24
@@ -119,13 +120,13 @@ fun HistoryDetailPageScreen(
                     Text(
                         text = viewSortType.typeName,
                         style = Body1.merge(
-                            color = Gray700,
+                            color = Gray800,
                             fontWeight = FontWeight.Medium
                         )
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                     Image(
-                        painter = painterResource(R.drawable.ic_chevron_down),
+                        painter = painterResource(R.drawable.ic_chevron_down_history),
                         contentDescription = null,
                         modifier = Modifier.size(16.dp)
                     )

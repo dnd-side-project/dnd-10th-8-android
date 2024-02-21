@@ -8,6 +8,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Shapes
@@ -21,7 +22,6 @@ import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,9 +32,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,12 +57,13 @@ fun HistoryDetailGrowthScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
-
+    val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .background(Gray200)
             .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
     ) {
         Box(
             modifier = Modifier
@@ -84,7 +85,7 @@ fun HistoryDetailGrowthScreen(
         Text(
             text = "성장 단계",
             style = Headline1.merge(
-                color = Gray800,
+                color = Gray900,
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -92,105 +93,101 @@ fun HistoryDetailGrowthScreen(
         Text(
             text = "총 6단계",
             style = Body1.merge(
-                color = Gray600,
+                color = Gray700,
                 fontWeight = FontWeight.Normal
             )
         )
         Spacer(modifier = Modifier.height(33.dp))
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(5.dp)
-        ) {
-            items(HistoryDetailGrowthType.entries) { type ->
-                Box(
+        HistoryDetailGrowthType.entries.forEach { type ->
+            Box(
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .height(102.dp)
+            ) {
+                Row(
                     modifier = Modifier
-                        .background(Color.Transparent)
-                        .height(102.dp)
+                        .padding(vertical = 7.dp)
+                        .align(Alignment.Center)
+                        .background(
+                            color = Gray000,
+                            shape = Shapes.large
+                        )
+                        .padding(20.dp)
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
+                    Box(
                         modifier = Modifier
-                            .padding(vertical = 7.dp)
-                            .align(Alignment.Center)
                             .background(
-                                color = Gray000,
-                                shape = Shapes.large
+                                color = Gray200,
+                                shape = RoundedCornerShape(6.dp)
                             )
-                            .padding(20.dp)
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = Gray200,
-                                    shape = RoundedCornerShape(6.dp)
-                                )
-                        ) {
-                            Image(
-                                painter = painterResource(type.iconImageResource),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = type.typeName,
-                                style = Headline3.merge(
-                                    color = Gray800,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = HistoryDetailGrowthType.getTypeString(type),
-                                style = Body1.merge(
-                                    color = Gray600,
-                                    fontWeight = FontWeight.Normal
-                                )
-                            )
-                        }
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(
-                                text = "Lv.${type.level}",
-                                modifier = Modifier.align(Alignment.BottomEnd),
-                                style = Body2.merge(
-                                    color = Gray600,
-                                    fontWeight = FontWeight.Normal
-                                )
-                            )
-                        }
+                        Image(
+                            painter = painterResource(type.iconImageResource),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop
+                        )
                     }
-
-                    if (model.currentType == type) {
-                        Box(
-                            modifier = Modifier
-                                .padding(end = 20.dp)
-                                .align(Alignment.TopEnd)
-                                .background(
-                                    color = Gray700,
-                                    shape = RoundedCornerShape(100.dp)
-                                )
-                                .padding(
-                                    horizontal = 12.dp,
-                                    vertical = 5.dp
-                                )
-                        ) {
-                            Text(
-                                text = "현재 달성",
-                                style = Body2.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = type.typeName,
+                            style = Headline3.merge(
+                                color = Gray800,
+                                fontWeight = FontWeight.SemiBold
                             )
-                        }
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = HistoryDetailGrowthType.getTypeString(type),
+                            style = Body1.merge(
+                                color = Gray600,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                    }
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = "Lv.${type.level}",
+                            modifier = Modifier.align(Alignment.BottomEnd),
+                            style = Body2.merge(
+                                color = Gray600,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                    }
+                }
+
+                if (model.currentType == type) {
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .align(Alignment.TopEnd)
+                            .background(
+                                color = Gray700,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .padding(
+                                horizontal = 12.dp,
+                                vertical = 5.dp
+                            )
+                    ) {
+                        Text(
+                            text = "현재 달성",
+                            style = Body2.merge(
+                                color = Gray000,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
                     }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(31.dp))
+        Spacer(modifier = Modifier.height(61.dp))
     }
 
     LaunchedEffectWithLifecycle(event, handler) {
