@@ -532,12 +532,12 @@ fun ScheduleAddScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(46.dp))
+            Spacer(modifier = Modifier.height(22.dp))
             Divider(
                 modifier = Modifier.height(8.dp),
                 color = Gray200
             )
-            Spacer(modifier = Modifier.height(46.dp))
+            Spacer(modifier = Modifier.height(22.dp))
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
@@ -546,9 +546,8 @@ fun ScheduleAddScreen(
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
-                        painter = painterResource(id = R.drawable.ic_notification),
+                        painter = painterResource(id = R.drawable.ic_alarm_mini),
                         contentDescription = null,
-                        tint = Gray600
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -586,6 +585,7 @@ fun ScheduleAddScreen(
                         )
                     )
                 }
+                Spacer(modifier = Modifier.height(6.dp))
                 FieldSelectComponent(
                     isSelected = isTimePickerShowing,
                     text = formattedTime,

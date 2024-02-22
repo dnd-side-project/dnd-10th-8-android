@@ -307,7 +307,12 @@ private fun StatisticsMeScreen(
                     )
                 }
                 Box(
-                    modifier = Modifier.width(80.dp)
+                    modifier = Modifier.width(
+                        when(selectedSegmentType){
+                            MyStatisticsSegmentType.Monthly -> 60.dp
+                            MyStatisticsSegmentType.Yearly -> 80.dp
+                        }
+                    )
                 ) {
                     Box(
                         modifier = Modifier
@@ -415,7 +420,7 @@ private fun StatisticsMeScreen(
         Text(
             modifier = Modifier
                 .padding(horizontal = 20.dp),
-            text = "경사 별 받은 통계",
+            text = "경사 별 금액 통계",
             style = Headline2
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -463,11 +468,15 @@ private fun StatisticsMeScreen(
             dataList = chartData,
             thickness = 0.5f
         )
+        val chipText = when(selectedChipType){
+            MyStatisticsChipType.Give -> "보낸"
+            MyStatisticsChipType.Take -> "받은"
+        }
         if (statisticsData.isEmpty()) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "이번달은 받은 내역이 없어요",
+                text = "이번달은 $chipText 내역이 없어요",
                 style = Body1.merge(
                     color = Gray700,
                     fontWeight = FontWeight.SemiBold

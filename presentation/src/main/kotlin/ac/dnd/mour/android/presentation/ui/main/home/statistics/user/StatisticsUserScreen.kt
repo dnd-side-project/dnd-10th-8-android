@@ -58,12 +58,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlin.random.Random
 import kotlinx.coroutines.CoroutineExceptionHandler
+import okhttp3.internal.notify
 
 @Composable
 fun StatisticsUserScreen(
@@ -240,7 +242,11 @@ private fun StatisticsUserScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "경사에 한번 참여했을 때 \n얼마를 지출하고 있는지 확인해보세요",
-            style = Body1.merge(Gray700)
+            style = Body1.merge(
+                color = Gray700,
+                fontWeight = FontWeight.Normal
+            ),
+
         )
         if (chartData.isEmpty()) {
             Column(
