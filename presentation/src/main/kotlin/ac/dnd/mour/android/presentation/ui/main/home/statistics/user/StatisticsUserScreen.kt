@@ -242,7 +242,6 @@ private fun StatisticsUserScreen(
             text = "경사에 한번 참여했을 때 \n얼마를 지출하고 있는지 확인해보세요",
             style = Body1.merge(Gray700)
         )
-        Spacer(modifier = Modifier.height(80.dp))
         if (chartData.isEmpty()) {
             Column(
                 modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -262,6 +261,7 @@ private fun StatisticsUserScreen(
                 )
             }
         } else {
+            Spacer(modifier = Modifier.height(80.dp))
             StickChart(
                 modifier = Modifier
                     .fillMaxWidth()
