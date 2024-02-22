@@ -39,7 +39,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -149,6 +151,7 @@ private fun StatisticsUserScreen(
         modifier = Modifier
             .padding(horizontal = 20.dp)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         if (isTooltipShowing) {
@@ -239,12 +242,9 @@ private fun StatisticsUserScreen(
             text = "경사에 한번 참여했을 때 \n얼마를 지출하고 있는지 확인해보세요",
             style = Body1.merge(Gray700)
         )
-        Spacer(modifier = Modifier.height(80.dp))
         if (chartData.isEmpty()) {
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
+                modifier = Modifier.weight(1f).fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -261,6 +261,7 @@ private fun StatisticsUserScreen(
                 )
             }
         } else {
+            Spacer(modifier = Modifier.height(80.dp))
             StickChart(
                 modifier = Modifier
                     .fillMaxWidth()

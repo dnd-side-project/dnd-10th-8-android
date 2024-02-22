@@ -99,7 +99,6 @@ private fun StatisticsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray000)
-            .verticalScroll(rememberScrollState())
     ) {
         Box(
             modifier = Modifier
@@ -170,6 +169,7 @@ private fun StatisticsScreen(
         }
 
         HorizontalPager(
+            modifier = Modifier.fillMaxSize(),
             state = pagerState,
             userScrollEnabled = false
         ) { pageIndex ->
