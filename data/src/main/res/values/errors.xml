@@ -2,4 +2,32 @@
 <resources>
     <string name="error_unknown">알 수 없는 오류가 발생했습니다.</string>
     <string name="error_internal_server_error">서버가 응답하지 않습니다.\n잠시 후 다시 시도해주세요.</string>
+
+    <string name="error_auth_required">인증이 필요합니다.</string>
+    <string name="error_invalid_token">로그인이 만료되었습니다.</string>
+    <string name="error_invalid_permission">권한이 없습니다.</string>
+
+    <string name="error_invalid_file_extension">파일 확장자는 [JPG, JPEG, PNG]만 가능합니다</string>
+
+    <string name="error_group_not_found">그룹 정보가 존재하지 않습니다.</string>
+    <string name="error_group_already_exists">이미 존재하는 그룹입니다.</string>
+
+    <string name="error_heart_not_found">마음 정보가 존재하지 않습니다.</string>
+    <string name="error_invalid_sort">제공하지 않는 정렬 타입입니다.</string>
+    <string name="error_invalid_type">제공하지 않는 통계 기준입니다.</string>
+
+    <string name="error_member_not_found">사용자 정보가 존재하지 않습니다.</string>
+    <string name="error_invalid_email_pattern">이메일 형식에 맞지 않습니다.</string>
+    <string name="error_invalid_gender">잘못된 성별입니다.</string>
+    <string name="error_invalid_nickname_pattern">닉네임 형식에 맞지 않습니다.</string>
+    <string name="error_duplicate_nickname">이미 사용중인 닉네임입니다.</string>
+    <string name="error_member_group_name_too_long">그룹 이름은 최대 8자까지 가능합니다.</string>
+    <string name="error_member_group_already_exists">동일한 그룹을 중복해서 추가할 수 없습니다.</string>
+    <string name="error_member_group_not_found">그룹 정보가 존재하지 않습니다.</string>
+
+    <string name="error_relation_not_found">관계 정보가 존재하지 않습니다.</string>
+
+    <string name="error_schedule_not_found">일정 정보가 존재하지 않습니다.</string>
+    <string name="error_invalid_repeat_type">제공하는 않는 일정 반복 주기입니다.</string>
+    <string name="error_invalid_schedule_day">지나간 일정은 등록할 수 없습니다.</string>
 </resources>
