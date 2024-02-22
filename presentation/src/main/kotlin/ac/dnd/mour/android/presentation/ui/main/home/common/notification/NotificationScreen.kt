@@ -13,7 +13,6 @@ import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Icon24
-import ac.dnd.mour.android.presentation.common.theme.Primary1
 import ac.dnd.mour.android.presentation.common.theme.Secondary1
 import ac.dnd.mour.android.presentation.common.theme.Space20
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -119,7 +118,7 @@ fun NotificationScreen(
                 style = Headline1
             )
         }
-        if (model.alarmList.isEmpty()) {
+        if (recentAlarmList.isEmpty() && lateAlarmList.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
