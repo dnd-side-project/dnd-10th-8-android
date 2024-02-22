@@ -6,11 +6,9 @@ import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray400
-import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
-import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space16
 import ac.dnd.mour.android.presentation.common.theme.Space24
@@ -47,8 +45,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,7 +58,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,7 +73,8 @@ fun HistoryPageScreen(
     intent: (HistoryIntent) -> Unit,
     handler: CoroutineExceptionHandler,
     viewType: HistoryViewType,
-    searchText: String
+    searchText: String,
+    onRecord: () -> Unit
 ) {
     var selectedGroupId by remember { mutableLongStateOf(-1) }
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
@@ -130,134 +127,180 @@ fun HistoryPageScreen(
         appState.navController.navigate(route)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Gray200)
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(6.dp))
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(
-                    bottom = 2.dp,
-                    start = 20.dp,
-                    end = 20.dp
-                ),
-            contentAlignment = Alignment.CenterStart
+                .fillMaxSize()
+                .background(Gray200)
         ) {
-            GroupChipListComponent(
-                chipType = ChipType.MAIN,
-                currentSelectedId = selectedGroupId,
-                groups = groups,
-                onSelectChip = { groupId ->
-                    selectedGroupId = groupId
-                }
-            )
+            Spacer(modifier = Modifier.height(6.dp))
             Box(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .width(56.dp)
-                    .fillMaxHeight()
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                Color(0x00F6F6F7),
-                                Color(0xFFF6F6F7),
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(
+                        bottom = 2.dp,
+                        start = 20.dp,
+                        end = 20.dp
+                    ),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                GroupChipListComponent(
+                    chipType = ChipType.MAIN,
+                    currentSelectedId = selectedGroupId,
+                    groups = groups,
+                    onSelectChip = { groupId ->
+                        selectedGroupId = groupId
+                    }
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .width(56.dp)
+                        .fillMaxHeight()
+                        .background(
+                            Brush.horizontalGradient(
+                                listOf(
+                                    Color(0x00F6F6F7),
+                                    Color(0xFFF6F6F7),
+                                )
                             )
                         )
-                    )
-            )
-        }
-        Box(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "내역 ${relations.size}",
-                style = Body1.merge(
-                    color = Gray700,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.align(Alignment.CenterStart)
-            )
-            Row(
+                )
+            }
+            Box(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .clickable {
-                        isDropDownMenuExpanded = true
-                    },
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth()
             ) {
                 Text(
-                    text = viewSortType.typeName,
+                    text = "내역",
                     style = Body1.merge(
-                        color = Gray800,
-                        fontWeight = FontWeight.Medium
-                    )
+                        color = Gray700,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.align(Alignment.CenterStart)
                 )
-                Spacer(modifier = Modifier.width(2.dp))
-                Image(
-                    painter = painterResource(R.drawable.ic_chevron_down),
-                    contentDescription = null,
-                    modifier = Modifier.size(Space16)
-                )
-                DropdownMenu(
+                Row(
                     modifier = Modifier
-                        .wrapContentHeight()
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            isDropDownMenuExpanded = true
+                        },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = viewSortType.typeName,
+                        style = Body1.merge(
+                            color = Gray800,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Image(
+                        painter = painterResource(R.drawable.ic_chevron_down),
+                        contentDescription = null,
+                        modifier = Modifier.size(Space16)
+                    )
+                }
+            }
+
+            if (relations.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    EmptyRelationView(
+                        onRecord = onRecord
+                    )
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(Space16),
+                    verticalArrangement = Arrangement.spacedBy(Space16),
+                    contentPadding = PaddingValues(
+                        horizontal = 20.dp,
+                        vertical = 12.dp
+                    )
+                ) {
+                    items(relations) { relation ->
+                        HistoryRelationItem(
+                            viewType = viewType,
+                            relation = relation,
+                            onSelectCard = {
+                                navigateToHistoryDetail(it.id)
+                            },
+                        )
+                    }
+                }
+            }
+        }
+
+        if (isDropDownMenuExpanded) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .clickable {
+                        isDropDownMenuExpanded = false
+                    }
+            ) {
+                Card(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(
+                            top = 86.dp,
+                            end = 20.dp
+                        )
                         .background(
                             color = Gray000,
                             shape = Shapes.medium
                         ),
-                    expanded = isDropDownMenuExpanded,
-                    onDismissRequest = { isDropDownMenuExpanded = false }
+                    elevation = 5.dp
                 ) {
                     Column(verticalArrangement = Arrangement.Center) {
                         HistorySortedType.entries.forEachIndexed { index, type ->
-                            DropdownMenuItem(
-                                onClick = {},
-                                contentPadding = PaddingValues(0.dp),
+                            Row(
                                 modifier = Modifier
-                                    .width(116.dp)
-                                    .wrapContentHeight()
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .clickable {
-                                            viewSortType = type
-                                            isDropDownMenuExpanded = false
-                                        }
-                                        .padding(horizontal = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    if (viewSortType == type) {
-                                        Image(
-                                            painter = painterResource(R.drawable.ic_history_check),
-                                            contentDescription = null,
-                                        )
-                                    } else {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(Space24)
-                                                .background(Color.White)
-                                        )
+                                    .width(104.dp)
+                                    .clickable {
+                                        viewSortType = type
+                                        isDropDownMenuExpanded = false
                                     }
-                                    Spacer(Modifier.width(Space4))
-                                    Text(
-                                        text = type.typeName,
-                                        style = Body1.merge(
-                                            color = Gray700,
-                                            fontWeight = FontWeight.Normal
-                                        )
+                                    .padding(
+                                        horizontal = 6.dp,
+                                        vertical = 8.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (viewSortType == type) {
+                                    Image(
+                                        painter = painterResource(R.drawable.ic_history_check),
+                                        contentDescription = null,
+                                    )
+                                } else {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(Space24)
+                                            .background(Color.Transparent)
                                     )
                                 }
+                                Spacer(Modifier.width(Space4))
+                                Text(
+                                    text = type.typeName,
+                                    style = Body1.merge(
+                                        color = Gray800,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
                             }
                             if (index != HistorySortedType.entries.lastIndex) {
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .width(104.dp)
                                         .height(1.dp)
                                         .padding(top = 0.5.dp)
                                         .background(color = Gray200)
@@ -265,30 +308,6 @@ fun HistoryPageScreen(
                             }
                         }
                     }
-                }
-            }
-        }
-
-        if (relations.isEmpty()) {
-            EmptyRelationView()
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(Space16),
-                verticalArrangement = Arrangement.spacedBy(Space16),
-                contentPadding = PaddingValues(
-                    horizontal = 20.dp,
-                    vertical = 12.dp
-                )
-            ) {
-                items(relations) { relation ->
-                    HistoryRelationItem(
-                        viewType = viewType,
-                        relation = relation,
-                        onSelectCard = {
-                            navigateToHistoryDetail(it.id)
-                        },
-                    )
                 }
             }
         }
@@ -331,9 +350,13 @@ private fun GroupChipListComponent(
 }
 
 @Composable
-private fun EmptyRelationView() {
+private fun EmptyRelationView(
+    onRecord: () -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -341,7 +364,7 @@ private fun EmptyRelationView() {
         Text(
             text = "아직 주고 받은 내역이 없어요.",
             style = Body1.merge(
-                color = Gray600,
+                color = Gray700,
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -349,7 +372,7 @@ private fun EmptyRelationView() {
         Text(
             text = "관계를 등록하고 마음을 기록해 보세요",
             style = Body1.merge(
-                color = Gray500,
+                color = Gray600,
                 fontWeight = FontWeight.Medium
             )
         )
@@ -358,6 +381,9 @@ private fun EmptyRelationView() {
             modifier = Modifier
                 .clip(Shapes.medium)
                 .background(color = Gray000)
+                .clickable {
+                    onRecord()
+                }
                 .border(
                     width = 1.dp,
                     color = Gray400,
@@ -371,12 +397,12 @@ private fun EmptyRelationView() {
             Text(
                 text = "관계 등록하기",
                 style = Body1.merge(
-                    color = Gray500,
+                    color = Gray600,
                     fontWeight = FontWeight.SemiBold
                 )
             )
         }
-        Spacer(modifier = Modifier.weight(32f))
+        Spacer(modifier = Modifier.weight(118f))
     }
 }
 
@@ -384,6 +410,8 @@ private fun EmptyRelationView() {
 @Preview
 private fun EmptyRelationViewPreview() {
     Box(modifier = Modifier.height(198.dp)) {
-        EmptyRelationView()
+        EmptyRelationView(
+            onRecord = {}
+        )
     }
 }

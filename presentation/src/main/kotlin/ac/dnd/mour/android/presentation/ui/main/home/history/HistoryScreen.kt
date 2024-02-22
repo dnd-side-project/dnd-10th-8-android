@@ -380,15 +380,15 @@ private fun HistoryScreen(
                                     cursorColor = Primary4,
                                     basicBorderColor = Color.Transparent,
                                     hintText = "이름을 입력하세요.",
-                                    hintTextColor = Gray500,
+                                    hintTextColor = Gray600,
                                     leadingIconContent = {
                                         if (!isTextFieldFocused && searchText.isEmpty()) {
                                             Box(modifier = Modifier.padding(start = 16.dp)) {
                                                 Image(
-                                                    painter = painterResource(R.drawable.ic_search),
+                                                    painter = painterResource(R.drawable.ic_search_history),
                                                     contentDescription = null,
                                                     modifier = Modifier.size(16.dp),
-                                                    colorFilter = ColorFilter.tint(Gray500)
+                                                    colorFilter = ColorFilter.tint(Gray600)
                                                 )
                                             }
                                         }
@@ -472,7 +472,10 @@ private fun HistoryScreen(
                                 intent = intent,
                                 handler = handler,
                                 viewType = viewType ?: HistoryViewType.TOTAL,
-                                searchText = searchText
+                                searchText = searchText,
+                                onRecord = {
+                                    navigateToAddRelation()
+                                }
                             )
                         }
                     }

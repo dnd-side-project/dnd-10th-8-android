@@ -7,9 +7,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
-import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
-import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space24
 import ac.dnd.mour.android.presentation.common.theme.Space4
@@ -27,7 +25,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,10 +33,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -130,70 +124,6 @@ fun HistoryDetailPageScreen(
                         contentDescription = null,
                         modifier = Modifier.size(16.dp)
                     )
-                    DropdownMenu(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .background(
-                                color = Gray000,
-                                shape = Shapes.medium
-                            ),
-                        expanded = isDropDownMenuExpanded,
-                        onDismissRequest = { isDropDownMenuExpanded = false }
-                    ) {
-                        Column(verticalArrangement = Arrangement.Center) {
-                            HistoryDetailSortedType.entries.forEachIndexed { index, type ->
-                                DropdownMenuItem(
-                                    onClick = {},
-                                    contentPadding = PaddingValues(0.dp),
-                                    modifier = Modifier
-                                        .width(116.dp)
-                                        .height(40.dp)
-                                ) {
-                                    Row(
-                                        modifier = Modifier
-                                            .clickable {
-                                                viewSortType = type
-                                                isDropDownMenuExpanded = false
-                                            }
-                                            .padding(horizontal = 8.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        if (viewSortType == type) {
-                                            Image(
-                                                painter = painterResource(R.drawable.ic_check_line),
-                                                contentDescription = null,
-                                                colorFilter = ColorFilter.tint(Primary4),
-                                                modifier = Modifier.size(Space24)
-                                            )
-                                        } else {
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(Space24)
-                                                    .background(Color.White)
-                                            )
-                                        }
-                                        Spacer(Modifier.width(Space4))
-                                        Text(
-                                            text = type.typeName,
-                                            style = Body1.merge(
-                                                color = Gray700,
-                                                fontWeight = FontWeight.Normal
-                                            )
-                                        )
-                                    }
-                                }
-                                if (index != HistorySortedType.entries.lastIndex) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                            .padding(top = 0.5.dp)
-                                            .background(color = Gray200)
-                                    )
-                                }
-                            }
-                        }
-                    }
                 }
             }
             if (hearts.isEmpty()) {
@@ -241,6 +171,79 @@ fun HistoryDetailPageScreen(
         if (isShowingSuccessDeleteSnackBar) {
             Box(modifier = Modifier.align(Alignment.TopCenter)) {
                 SnackBarScreen("삭제가 완료되었습니다.")
+            }
+        }
+
+        if (isDropDownMenuExpanded) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .clickable {
+                        isDropDownMenuExpanded = false
+                    }
+            ) {
+                Card(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(
+                            top = 42.dp,
+                            end = 20.dp
+                        )
+                        .background(
+                            color = Gray000,
+                            shape = Shapes.medium
+                        ),
+                    elevation = 5.dp
+                ) {
+                    Column(verticalArrangement = Arrangement.Center) {
+                        HistoryDetailSortedType.entries.forEachIndexed { index, type ->
+                            Row(
+                                modifier = Modifier
+                                    .width(104.dp)
+                                    .clickable {
+                                        viewSortType = type
+                                        isDropDownMenuExpanded = false
+                                    }
+                                    .padding(
+                                        horizontal = 6.dp,
+                                        vertical = 8.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (viewSortType == type) {
+                                    Image(
+                                        painter = painterResource(R.drawable.ic_history_check),
+                                        contentDescription = null,
+                                    )
+                                } else {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(Space24)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+                                Spacer(Modifier.width(Space4))
+                                Text(
+                                    text = type.typeName,
+                                    style = Body1.merge(
+                                        color = Gray800,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                            }
+                            if (index != HistorySortedType.entries.lastIndex) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(104.dp)
+                                        .height(1.dp)
+                                        .padding(top = 0.5.dp)
+                                        .background(color = Gray200)
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
