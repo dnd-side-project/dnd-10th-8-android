@@ -50,6 +50,9 @@ fun RegistraionUserDate(
                         if (it.length == 4) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserYearTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -63,6 +66,9 @@ fun RegistraionUserDate(
                         if (it.length == 2) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserMonthTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -73,6 +79,9 @@ fun RegistraionUserDate(
                 onValueChange = {
                     if (userDayText.length < 2) onUserDayTextChange(it)
                 },
+                onFiledReset = {
+                    onUserDayTextChange("")
+                }
             )
         }
     }

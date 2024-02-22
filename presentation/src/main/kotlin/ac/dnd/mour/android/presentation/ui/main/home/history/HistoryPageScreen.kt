@@ -96,7 +96,9 @@ fun HistoryPageScreen(
         )
     }
     val relations =
-        if (selectedGroupId < 0) groups.flatMap { it.relationList } else groups.find { it.id == selectedGroupId }
+        if (selectedGroupId == -1L) groups.flatMap { it.relationList }
+        else if (selectedGroupId < -1L) listOf()
+        else groups.find { it.id == selectedGroupId }
             ?.relationList
             ?: groups.flatMap { it.relationList }
                 .sortedByDescending {
@@ -331,7 +333,7 @@ private fun GroupChipListComponent(
                 currentSelectedId = setOf(currentSelectedId),
                 chipId = (-index - 1).toLong(),
                 chipText = defaultList[index],
-                chipCount = groups.size,
+                chipCount = if (index==0) groups.size else 0,
                 onSelectChip = {
                     onSelectChip((-index - 1).toLong())
                 }

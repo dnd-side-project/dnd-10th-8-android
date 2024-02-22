@@ -445,6 +445,9 @@ private fun UserDate(
                         if (it.length == 4) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserYearTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -458,6 +461,9 @@ private fun UserDate(
                         if (it.length == 2) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserMonthTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -468,6 +474,9 @@ private fun UserDate(
                 onValueChange = {
                     if (userDayText.length < 2) onUserDayTextChange(it)
                 },
+                onFiledReset = {
+                    onUserDayTextChange("")
+                }
             )
         }
     }

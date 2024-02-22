@@ -6,7 +6,6 @@ import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedScheduleRelat
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
-import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Headline1
@@ -44,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +51,6 @@ import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -108,7 +105,7 @@ fun HistoryBackgroundComponent(
                     .clickable {
                         onClickAlarm()
                     }
-            ){
+            ) {
                 Image(
                     painter = painterResource(R.drawable.ic_alarm_white),
                     contentDescription = null,
@@ -182,16 +179,14 @@ fun HistoryBackgroundComponent(
                             end = 20.dp
                         )
                 ) {
-                    Column(modifier = Modifier.height(60.dp)) {
-                        Text(
-                            text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
-                            style = Headline1.merge(
-                                color = Gray000,
-                                fontWeight = FontWeight.SemiBold
-                            ),
-                            lineHeight = 30.sp
-                        )
-                    }
+                    Text(
+                        text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
+                        style = Headline1.merge(
+                            color = Gray000,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        lineHeight = 30.sp
+                    )
                     Spacer(modifier = Modifier.height(32.dp))
                     if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) {
                         Card(shape = RoundedCornerShape(16.dp)) {

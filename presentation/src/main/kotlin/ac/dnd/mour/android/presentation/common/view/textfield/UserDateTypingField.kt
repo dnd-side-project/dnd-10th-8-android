@@ -51,7 +51,8 @@ fun UserDateTypingField(
     hintText: String,
     text: String,
     onValueChange: (String) -> Unit,
-    onTextFieldFocusChange: (Boolean) -> Unit = {}
+    onTextFieldFocusChange: (Boolean) -> Unit = {},
+    onFiledReset: () -> Unit
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
@@ -126,7 +127,7 @@ fun UserDateTypingField(
                 if (text.isNotEmpty()) {
                     IconButton(
                         onClick = {
-                            onValueChange("")
+                            onFiledReset()
                         }
                     ) {
                         Image(
@@ -153,7 +154,8 @@ private fun UserDateTypingFieldPreview() {
             onValueChange = {
 
             },
-            hintText = "xxxx"
+            hintText = "xxxx",
+            onFiledReset = {}
         )
     }
 }

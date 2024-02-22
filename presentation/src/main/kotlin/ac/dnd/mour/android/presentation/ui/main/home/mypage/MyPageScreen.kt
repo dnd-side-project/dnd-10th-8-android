@@ -109,14 +109,24 @@ private fun MyPageScreen(
     var isShowingLogoutDialog by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
-    fun navigateToLink() {
+    fun navigateToInquiry() {
         val browserIntent =
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSePnH7MAeuaPzsOp9WXIfgFmnxVelsHBixcc912bH5O7ze1MQ/viewform")
+                Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLScLvjJ109MyRI6JxtsZkTjKDF4cxty2CFGznt1SpsINNlBimw/viewform?usp=sf_link")
             )
         ContextCompat.startActivity(context, browserIntent, null)
     }
+
+    fun navigateToTermsOfUse(){
+        val browserIntent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://heliotrope-subway-1e1.notion.site/aa5c29fe08854bfdab683de60eae60ed?pvs=4")
+            )
+        ContextCompat.startActivity(context, browserIntent, null)
+    }
+
 
     fun navigateToEditProfile() {
         appState.navController.navigate(MyPageProfileConstant.ROUTE)
@@ -288,7 +298,7 @@ private fun MyPageScreen(
             modifier = Modifier
                 .height(64.dp)
                 .clickable {
-                    navigateToLink()
+                    navigateToInquiry()
                 }
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -347,7 +357,7 @@ private fun MyPageScreen(
             modifier = Modifier
                 .height(64.dp)
                 .clickable {
-
+                    navigateToTermsOfUse()
                 }
                 .padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically
