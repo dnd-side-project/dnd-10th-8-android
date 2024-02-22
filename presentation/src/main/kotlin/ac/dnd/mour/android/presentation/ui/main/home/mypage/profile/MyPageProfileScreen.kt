@@ -30,6 +30,7 @@ import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType
+import ac.dnd.mour.android.presentation.common.view.textfield.UserDateTypingField
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.common.gallery.GalleryScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
@@ -52,7 +53,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -73,7 +73,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -301,10 +300,10 @@ fun MyPageProfileScreen(
                         .height(48.dp),
                     shape = Shapes.large,
                     colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = if (userGender != "남자") Primary1 else Gray000
+                        backgroundColor = if (userGender == "여자") Primary1 else Gray000
                     ),
                     border = BorderStroke(
-                        color = if (userGender != "남자") Primary4 else Gray400,
+                        color = if (userGender == "여자") Primary4 else Gray400,
                         width = 1.dp,
                     ),
                     onClick = {
@@ -436,8 +435,7 @@ private fun UserDate(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Box(modifier = Modifier.weight(114f)) {
-            TypingTextField(
-                textType = TypingTextFieldType.Basic,
+            UserDateTypingField(
                 text = userYearText,
                 hintText = "YYYY",
                 onValueChange = {
@@ -446,28 +444,11 @@ private fun UserDate(
                         if (it.length == 4) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
-                trailingIconContent = {
-                    if (userYearText.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                onUserYearTextChange("")
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_close_circle),
-                                contentDescription = "close icon",
-                                modifier = Modifier.size(Space20)
-                            )
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
         Spacer(Modifier.weight(10f))
         Box(modifier = Modifier.weight(90f)) {
-            TypingTextField(
-                textType = TypingTextFieldType.Basic,
+            UserDateTypingField(
                 text = userMonthText,
                 hintText = "MM",
                 onValueChange = {
@@ -476,50 +457,16 @@ private fun UserDate(
                         if (it.length == 2) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
-                trailingIconContent = {
-                    if (userMonthText.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                onUserMonthTextChange("")
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_close_circle),
-                                contentDescription = "close icon",
-                                modifier = Modifier.size(Space20)
-                            )
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
         Spacer(Modifier.weight(10f))
         Box(modifier = Modifier.weight(90f)) {
-            TypingTextField(
-                textType = TypingTextFieldType.Basic,
+            UserDateTypingField(
                 text = userDayText,
                 hintText = "DD",
                 onValueChange = {
                     if (userDayText.length < 2) onUserDayTextChange(it)
                 },
-                trailingIconContent = {
-                    if (userDayText.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                onUserDayTextChange("")
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_close_circle),
-                                contentDescription = "close icon",
-                                modifier = Modifier.size(Space20)
-                            )
-
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
     }

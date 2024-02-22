@@ -7,7 +7,10 @@ import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
+import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
+import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary1
 import ac.dnd.mour.android.presentation.common.theme.Primary4
@@ -154,16 +157,16 @@ fun RegistrationNamingScreen(
             .background(color = Color.White),
     ) {
 
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
-                .height(80.dp)
+                .height(56.dp)
+                .padding(horizontal = 20.dp)
                 .padding(
-                    start = 10.dp,
                     bottom = 12.67.dp
                 ),
-            contentAlignment = Alignment.BottomStart
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_chevron_left),
@@ -174,18 +177,26 @@ fun RegistrationNamingScreen(
                     },
                 contentDescription = "back press"
             )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "개인정보 입력",
+                style = Headline1.merge(
+                    color = Gray900,
+                    fontWeight = FontWeight.SemiBold
+                )
+            )
         }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.Center)
+                .padding(top = 90.dp)
                 .padding(horizontal = 20.dp)
         ) {
             Text(
                 text = "닉네임",
                 style = Body1.merge(
-                    color = Gray600,
+                    color = Gray700,
                     fontWeight = FontWeight.SemiBold
                 )
             )
@@ -290,7 +301,7 @@ fun RegistrationNamingScreen(
             Text(
                 text = "성별",
                 style = Body1.merge(
-                    color = Gray600,
+                    color = Gray700,
                     fontWeight = FontWeight.SemiBold
                 )
             )
@@ -300,7 +311,7 @@ fun RegistrationNamingScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
-                    shape = Shapes.large,
+                    shape = Shapes.medium,
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = if (userGender == UserGender.Male) Primary1 else Gray000
                     ),
@@ -323,7 +334,7 @@ fun RegistrationNamingScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
-                    shape = Shapes.large,
+                    shape = Shapes.medium,
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = if (userGender == UserGender.Female) Primary1 else Gray000
                     ),

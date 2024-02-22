@@ -1,6 +1,8 @@
 package ac.dnd.mour.android.presentation.ui.main.home.history
 
 import ac.dnd.mour.android.domain.model.feature.group.GroupWithRelationDetail
+import ac.dnd.mour.android.domain.model.feature.relation.RelationDetail
+import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
@@ -91,9 +93,8 @@ fun HistoryPageScreen(
                 }
             }
         )
-    }.filter { group ->
-        group.relationList.isNotEmpty()
     }
+
     val relations = groups.find { it.id == selectedGroupId }
         ?.relationList
         ?: groups.flatMap { it.relationList }
@@ -321,19 +322,25 @@ private fun GroupChipListComponent(
     onSelectChip: (Long) -> Unit,
     groups: List<GroupWithRelationDetail>
 ) {
+    val defaultList = listOf("전체", "가족", "친구", "지인", "직장")
+        .filter { value ->
+            value !in groups.map { it.name }
+        }
+
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        item(1) {
+        items(defaultList.size) { index ->
             ChipItem(
                 chipType = chipType,
                 currentSelectedId = setOf(currentSelectedId),
-                chipId = -1,
-                chipText = "전체",
+                chipId = (-defaultList.size - 1).toLong(),
+                chipText = defaultList[index],
                 chipCount = groups.size,
                 onSelectChip = {
                     onSelectChip(-1)
                 }
             )
         }
+
         items(groups) { group ->
             ChipItem(
                 chipType = chipType,
@@ -414,4 +421,127 @@ private fun EmptyRelationViewPreview() {
             onRecord = {}
         )
     }
+}
+
+@Composable
+@Preview
+private fun GroupChipListComponent1Preview() {
+    GroupChipListComponent(
+        chipType = ChipType.MAIN,
+        currentSelectedId = -1,
+        groups = listOf(),
+        onSelectChip = {
+
+        }
+    )
+}
+
+@Composable
+@Preview
+private fun GroupChipListComponent2Preview() {
+    GroupChipListComponent(
+        chipType = ChipType.MAIN,
+        currentSelectedId = -1,
+        groups = listOf(
+            GroupWithRelationDetail(
+                id = 0,
+                name = "전체",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            ),
+            GroupWithRelationDetail(
+                id = 1,
+                name = "친구",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            ),
+            GroupWithRelationDetail(
+                id = 1,
+                name = "가족",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            ),
+            GroupWithRelationDetail(
+                id = 1,
+                name = "지인",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            ),
+            GroupWithRelationDetail(
+                id = 1,
+                name = "직장",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            ),
+            GroupWithRelationDetail(
+                id = 1,
+                name = "지인2",
+                relationList = listOf(
+                    RelationDetail(
+                        id = 0,
+                        name = "이름",
+                        group = RelationDetailGroup(
+                            id = 0,
+                            name = "친구"
+                        ),
+                        giveMoney = 10000,
+                        takeMoney = 10000
+                    )
+                )
+            )
+        ),
+        onSelectChip = {
+
+        }
+    )
 }
