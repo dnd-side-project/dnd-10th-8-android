@@ -11,10 +11,10 @@ import ac.dnd.mour.android.data.remote.network.model.schedule.GetScheduleListRes
 import ac.dnd.mour.android.data.remote.network.model.schedule.GetScheduleRes
 import ac.dnd.mour.android.data.remote.network.model.schedule.GetUnrecordedScheduleListRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -101,7 +101,7 @@ class ScheduleApi @Inject constructor(
         name: String
     ): Result<GetUnrecordedScheduleListRes> {
         return client.get("$baseUrl/api/v1/schedules/unrecorded") {
-            parameter("name", name)
+            parameterFiltered("name", name)
         }.convert(errorMessageMapper::map)
     }
 
@@ -117,8 +117,8 @@ class ScheduleApi @Inject constructor(
         month: Int
     ): Result<GetScheduleListRes> {
         return client.get("$baseUrl/api/v1/schedules/me") {
-            parameter("year", year)
-            parameter("month", month)
+            parameterFiltered("year", year)
+            parameterFiltered("month", month)
         }.convert(errorMessageMapper::map)
     }
 

@@ -11,10 +11,10 @@ import ac.dnd.mour.android.data.remote.network.model.heart.EditHeartReq
 import ac.dnd.mour.android.data.remote.network.model.heart.GetHeartListRes
 import ac.dnd.mour.android.data.remote.network.model.heart.GetRelatedHeartListRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -102,8 +102,8 @@ class HeartApi @Inject constructor(
         name: String
     ): Result<GetHeartListRes> {
         return client.get("$baseUrl/api/v1/hearts/me") {
-            parameter("sort", sort) // recent, intimacy
-            parameter("name", name)
+            parameterFiltered("sort", sort) // recent, intimacy
+            parameterFiltered("name", name)
         }.convert(errorMessageMapper::map)
     }
 
@@ -112,7 +112,7 @@ class HeartApi @Inject constructor(
         sort: String
     ): Result<GetRelatedHeartListRes> {
         return client.get("$baseUrl/api/v1/hearts/me/$id") {
-            parameter("sort", sort) // recent, old
+            parameterFiltered("sort", sort) // recent, old
         }.convert(errorMessageMapper::map)
     }
 }

@@ -6,13 +6,13 @@ import ac.dnd.mour.android.data.remote.network.environment.BaseUrlProvider
 import ac.dnd.mour.android.data.remote.network.environment.ErrorMessageMapper
 import ac.dnd.mour.android.data.remote.network.model.file.GetPreSignedUrlRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import java.io.File
@@ -30,8 +30,8 @@ class FileApi @Inject constructor(
     suspend fun getPreSignedUrl(
         fileName: String
     ): Result<GetPreSignedUrlRes> {
-        return client.get("$baseUrl/api/v1/files/presigned") {
-            parameter("fileName", fileName)
+        return client.get("$baseUrl/api/v1/files/presigned/image") {
+            parameterFiltered("fileName", fileName)
         }.convert(errorMessageMapper::map)
     }
 

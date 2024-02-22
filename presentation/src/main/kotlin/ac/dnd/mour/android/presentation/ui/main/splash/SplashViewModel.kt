@@ -1,7 +1,7 @@
 package ac.dnd.mour.android.presentation.ui.main.splash
 
 import ac.dnd.mour.android.domain.model.error.ServerException
-import ac.dnd.mour.android.domain.usecase.authentication.UpdateJwtTokenUseCase
+import ac.dnd.mour.android.domain.usecase.authentication.IsRefreshTokenEmptyUseCase
 import ac.dnd.mour.android.domain.usecase.feature.schedule.GetAlarmListUseCase
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
 import ac.dnd.mour.android.presentation.common.base.ErrorEvent
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val updateJwtTokenUseCase: UpdateJwtTokenUseCase,
+    private val isRefreshTokenEmptyUseCase: IsRefreshTokenEmptyUseCase,
     private val getAlarmListUseCase: GetAlarmListUseCase
 ) : BaseViewModel() {
 
@@ -43,7 +43,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private suspend fun checkJwtToken() {
-        updateJwtTokenUseCase().map {
+        isRefreshTokenEmptyUseCase().map {
             getAlarmListUseCase().getOrThrow()
         }.onSuccess { alarmList ->
             _event.emit(SplashEvent.Login.Success(alarmList))

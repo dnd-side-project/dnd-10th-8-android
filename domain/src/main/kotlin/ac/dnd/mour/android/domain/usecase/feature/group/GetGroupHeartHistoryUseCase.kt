@@ -10,7 +10,7 @@ class GetGroupHeartHistoryUseCase @Inject constructor(
     private val getHeartListUseCase: GetHeartListUseCase
 ) {
     suspend operator fun invoke(): Result<List<GroupWithRelationDetail>> {
-        return getHeartListUseCase("", "").map { heartList ->
+        return getHeartListUseCase("recent", "").map { heartList ->
             heartList.groupBy { heart ->
                 heart.relation.group.id
             }.map { (key, heartList) ->

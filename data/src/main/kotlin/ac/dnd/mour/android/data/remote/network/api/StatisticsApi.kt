@@ -6,9 +6,9 @@ import ac.dnd.mour.android.data.remote.network.environment.ErrorMessageMapper
 import ac.dnd.mour.android.data.remote.network.model.statistics.GetGroupStatisticsRes
 import ac.dnd.mour.android.data.remote.network.model.statistics.GetMyStatisticsRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class StatisticsApi @Inject constructor(
@@ -24,8 +24,8 @@ class StatisticsApi @Inject constructor(
         month: Int? = null
     ): Result<GetMyStatisticsRes> {
         return client.get("$baseUrl/api/v1/statistics/me") {
-            parameter("year", year)
-            parameter("month", month)
+            parameterFiltered("year", year)
+            parameterFiltered("month", month)
         }.convert(errorMessageMapper::map)
     }
 
@@ -34,8 +34,8 @@ class StatisticsApi @Inject constructor(
         range: Int
     ): Result<GetGroupStatisticsRes> {
         return client.get("$baseUrl/api/v1/statistics/users") {
-            parameter("gender", gender) // male, female
-            parameter("range", range) // 20, 30, 40, 50
+            parameterFiltered("gender", gender) // male, female
+            parameterFiltered("range", range) // 20, 30, 40, 50
         }.convert(errorMessageMapper::map)
     }
 }

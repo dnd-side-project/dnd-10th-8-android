@@ -295,6 +295,10 @@ private fun ScheduleScreen(
 
         }
     }
+
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(ScheduleIntent.ChangeDate(selectedDate))
+    }
 }
 
 @Preview

@@ -8,9 +8,9 @@ import ac.dnd.mour.android.data.remote.network.model.member.CheckNicknameRes
 import ac.dnd.mour.android.data.remote.network.model.member.EditProfileReq
 import ac.dnd.mour.android.data.remote.network.model.member.GetProfileRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class MemberApi @Inject constructor(
         nickname: String
     ): Result<CheckNicknameRes> {
         return noAuthClient.get("$baseUrl/api/v1/members/check-nickname") {
-            parameter("nickname", nickname)
+            parameterFiltered("nickname", nickname)
         }.convert(errorMessageMapper::map)
     }
 
