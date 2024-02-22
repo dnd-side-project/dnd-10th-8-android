@@ -75,7 +75,7 @@ fun ErrorObserver(
 
 @Composable
 fun LaunchedEffectWithLifecycle(
-    key1: Any?,
+    key1: Any? = LocalLifecycleOwner.current,
     context: CoroutineContext = EmptyCoroutineContext,
     block: suspend CoroutineScope.() -> Unit
 ) {

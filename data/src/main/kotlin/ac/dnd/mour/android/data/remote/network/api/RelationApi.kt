@@ -9,10 +9,10 @@ import ac.dnd.mour.android.data.remote.network.model.relation.EditRelationReq
 import ac.dnd.mour.android.data.remote.network.model.relation.GetRelationListRes
 import ac.dnd.mour.android.data.remote.network.model.relation.GetRelationRes
 import ac.dnd.mour.android.data.remote.network.util.convert
+import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -81,7 +81,7 @@ class RelationApi @Inject constructor(
         name: String
     ): Result<GetRelationListRes> {
         return client.get("$baseUrl/api/v1/relations/me") {
-            parameter("name", name)
+            parameterFiltered("name", name)
         }.convert(errorMessageMapper::map)
     }
 }
