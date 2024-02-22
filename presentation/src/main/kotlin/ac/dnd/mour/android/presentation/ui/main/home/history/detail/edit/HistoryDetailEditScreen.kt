@@ -322,7 +322,7 @@ private fun HistoryDetailEditScreen(
                         vertical = 15.dp,
                         horizontal = 16.dp
                     ),
-                    fieldHeight = 97.dp,
+                    fieldHeight = 0.dp,
                     hintText = "메모를 입력해주세요",
                     onTextFieldFocusChange = {
                         isMemoSelected = it
