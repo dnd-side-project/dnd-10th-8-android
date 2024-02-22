@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
@@ -100,15 +101,19 @@ fun HistoryBackgroundComponent(
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.CenterStart)
             )
-            Image(
-                painter = painterResource(R.drawable.ic_alarm_white),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
+                    .clip(CircleShape)
                     .clickable {
                         onClickAlarm()
                     }
-            )
+            ){
+                Image(
+                    painter = painterResource(R.drawable.ic_alarm_white),
+                    contentDescription = null,
+                )
+            }
         }
         if (isPlayingLoading) {
             Box(
@@ -140,8 +145,6 @@ fun HistoryBackgroundComponent(
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_star),
-                        modifier = Modifier
-                            .size(83.dp),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
                     )
@@ -150,12 +153,11 @@ fun HistoryBackgroundComponent(
                     modifier = Modifier
                         .padding(top = 82.dp)
                         .offset(x = (-34).dp)
+                        .size(72.dp)
                         .align(Alignment.TopStart)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_star),
-                        modifier = Modifier
-                            .size(72.dp),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(Color(0x26FFFFFF))
                     )
@@ -293,13 +295,13 @@ fun HistoryBackgroundComponent(
                             trailingIconContent = if (searchText.isNotEmpty()) {
                                 {
                                     Image(
-                                        painter = painterResource(R.drawable.ic_close_circle),
+                                        painter = painterResource(R.drawable.ic_close_circle_white),
                                         contentDescription = null,
                                         modifier = Modifier
                                             .size(20.dp)
                                             .clickable {
                                                 onSearchValueChange("")
-                                            }
+                                            },
                                     )
                                 }
                             } else null,
