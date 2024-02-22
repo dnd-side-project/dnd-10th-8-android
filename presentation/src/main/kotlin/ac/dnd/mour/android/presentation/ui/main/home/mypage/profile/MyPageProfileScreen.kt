@@ -250,14 +250,10 @@ fun MyPageProfileScreen(
                     userYearText = newText
                 },
                 onUserMonthTextChange = { newText ->
-                    if (newText.toInt() in 1..12) {
-                        userMonthText = newText
-                    }
+                    userMonthText = newText
                 },
                 onUserDayTextChange = { newText ->
-                    if (newText.toInt() in 1..31) {
-                        userDayText = newText
-                    }
+                    userDayText = newText
                 }
             )
 
@@ -339,7 +335,16 @@ fun MyPageProfileScreen(
                     type = ConfirmButtonType.Primary
                 ),
                 onClick = {
-                    if (!isUserNameInValid && userNameText.isNotEmpty()) {
+                    val birth = try {
+                        LocalDate(
+                            userYearText.toInt(),
+                            userMonthText.toInt(),
+                            userDayText.toInt()
+                        )
+                    } catch (e: Exception) {
+                        LocalDate(1, 1, 1)
+                    }
+                    if (!isUserNameInValid && userNameText.isNotEmpty() && birth.year != 1) {
                         intent(
                             MyPageProfileIntent.OnEdit(
                                 Profile(
@@ -349,11 +354,7 @@ fun MyPageProfileScreen(
                                     name = model.profile.name,
                                     nickname = userNameText,
                                     gender = if (userGender == "남자") "male" else "female",
-                                    birth = LocalDate(
-                                        userYearText.toInt(),
-                                        userMonthText.toInt(),
-                                        userDayText.toInt()
-                                    )
+                                    birth = birth
                                 ),
                                 imageName = currentImageName
                             )
@@ -444,6 +445,9 @@ private fun UserDate(
                         if (it.length == 4) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserYearTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -457,6 +461,9 @@ private fun UserDate(
                         if (it.length == 2) focusManager.moveFocus(FocusDirection.Right)
                     }
                 },
+                onFiledReset = {
+                    onUserMonthTextChange("")
+                }
             )
         }
         Spacer(Modifier.weight(10f))
@@ -467,6 +474,9 @@ private fun UserDate(
                 onValueChange = {
                     if (userDayText.length < 2) onUserDayTextChange(it)
                 },
+                onFiledReset = {
+                    onUserDayTextChange("")
+                }
             )
         }
     }

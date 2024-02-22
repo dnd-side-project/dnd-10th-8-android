@@ -65,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
+import timber.log.Timber
 
 @SuppressLint("InvalidColorHexValue")
 @Composable
@@ -94,31 +95,33 @@ fun HistoryPageScreen(
             }
         )
     }
-
-    val relations = groups.find { it.id == selectedGroupId }
-        ?.relationList
-        ?: groups.flatMap { it.relationList }
-            .sortedByDescending {
-                if (viewSortType == HistorySortedType.LATEST) it.id else null
-            }
-            .sortedBy {
-                if (viewSortType == HistorySortedType.INTIMACY) {
-                    when (viewType) {
-                        HistoryViewType.TOTAL -> it.giveMoney + it.takeMoney
-                        HistoryViewType.GIVE -> it.giveMoney
-                        HistoryViewType.TAKE -> it.takeMoney
+    val relations =
+        if (selectedGroupId == -1L) groups.flatMap { it.relationList }
+        else if (selectedGroupId < -1L) listOf()
+        else groups.find { it.id == selectedGroupId }
+            ?.relationList
+            ?: groups.flatMap { it.relationList }
+                .sortedByDescending {
+                    if (viewSortType == HistorySortedType.LATEST) it.id else null
+                }
+                .sortedBy {
+                    if (viewSortType == HistorySortedType.INTIMACY) {
+                        when (viewType) {
+                            HistoryViewType.TOTAL -> it.giveMoney + it.takeMoney
+                            HistoryViewType.GIVE -> it.giveMoney
+                            HistoryViewType.TAKE -> it.takeMoney
+                        }
+                    } else {
+                        null
                     }
-                } else {
-                    null
                 }
-            }
-            .filter {
-                if (searchText.isNotEmpty()) {
-                    it.name.contains(searchText)
-                } else {
-                    true
+                .filter {
+                    if (searchText.isNotEmpty()) {
+                        it.name.contains(searchText)
+                    } else {
+                        true
+                    }
                 }
-            }
 
     fun navigateToHistoryDetail(id: Long) {
         val route = makeRoute(
@@ -266,15 +269,12 @@ fun HistoryPageScreen(
                         HistorySortedType.entries.forEachIndexed { index, type ->
                             Row(
                                 modifier = Modifier
-                                    .width(104.dp)
                                     .clickable {
                                         viewSortType = type
                                         isDropDownMenuExpanded = false
                                     }
-                                    .padding(
-                                        horizontal = 6.dp,
-                                        vertical = 8.dp
-                                    ),
+                                    .padding(start = 6.dp, end = 34.dp)
+                                    .padding(vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 if (viewSortType == type) {
@@ -301,7 +301,6 @@ fun HistoryPageScreen(
                             if (index != HistorySortedType.entries.lastIndex) {
                                 Box(
                                     modifier = Modifier
-                                        .width(104.dp)
                                         .height(1.dp)
                                         .padding(top = 0.5.dp)
                                         .background(color = Gray200)
@@ -332,11 +331,11 @@ private fun GroupChipListComponent(
             ChipItem(
                 chipType = chipType,
                 currentSelectedId = setOf(currentSelectedId),
-                chipId = (-defaultList.size - 1).toLong(),
+                chipId = (-index - 1).toLong(),
                 chipText = defaultList[index],
-                chipCount = groups.size,
+                chipCount = if (index==0) groups.size else 0,
                 onSelectChip = {
-                    onSelectChip(-1)
+                    onSelectChip((-index - 1).toLong())
                 }
             )
         }

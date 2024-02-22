@@ -200,15 +200,12 @@ fun HistoryDetailPageScreen(
                         HistoryDetailSortedType.entries.forEachIndexed { index, type ->
                             Row(
                                 modifier = Modifier
-                                    .width(104.dp)
                                     .clickable {
                                         viewSortType = type
                                         isDropDownMenuExpanded = false
                                     }
-                                    .padding(
-                                        horizontal = 6.dp,
-                                        vertical = 8.dp
-                                    ),
+                                    .padding(start = 6.dp, end = 34.dp)
+                                    .padding(vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 if (viewSortType == type) {

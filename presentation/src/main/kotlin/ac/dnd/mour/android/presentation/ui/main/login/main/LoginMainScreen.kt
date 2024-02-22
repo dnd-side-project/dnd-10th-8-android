@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -96,8 +97,22 @@ fun LoginMainScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Gray100)
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color(0xFFF6D1FE),
+                        Color(0xFFF9E1FE),
+                        Color(0xFFFFFFFF),
+                    )
+                )
+            )
     ) {
+        Image(
+            painter = painterResource(R.drawable.bc_login),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()

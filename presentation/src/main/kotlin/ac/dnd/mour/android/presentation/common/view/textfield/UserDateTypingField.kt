@@ -51,7 +51,8 @@ fun UserDateTypingField(
     hintText: String,
     text: String,
     onValueChange: (String) -> Unit,
-    onTextFieldFocusChange: (Boolean) -> Unit = {}
+    onTextFieldFocusChange: (Boolean) -> Unit = {},
+    onFiledReset: () -> Unit
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
@@ -116,28 +117,28 @@ fun UserDateTypingField(
                 ),
             )
         }
-//        if (isTextFieldFocused) {
-        Box(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(20.dp)
-                .align(Alignment.CenterEnd)
-        ) {
-            if (text.isNotEmpty()) {
-                IconButton(
-                    onClick = {
-                        onValueChange("")
+        if (isTextFieldFocused) {
+            Box(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(20.dp)
+                    .align(Alignment.CenterEnd)
+            ) {
+                if (text.isNotEmpty()) {
+                    IconButton(
+                        onClick = {
+                            onFiledReset()
+                        }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_close_circle),
+                            contentDescription = "close icon",
+                            modifier = Modifier.size(Space20)
+                        )
                     }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_close_circle),
-                        contentDescription = "close icon",
-                        modifier = Modifier.size(Space20)
-                    )
                 }
             }
         }
-//        }
     }
 }
 
@@ -153,7 +154,8 @@ private fun UserDateTypingFieldPreview() {
             onValueChange = {
 
             },
-            hintText = "xxxx"
+            hintText = "xxxx",
+            onFiledReset = {}
         )
     }
 }
