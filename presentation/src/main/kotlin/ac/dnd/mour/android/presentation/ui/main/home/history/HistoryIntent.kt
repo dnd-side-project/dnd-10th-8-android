@@ -1,3 +1,5 @@
 package ac.dnd.mour.android.presentation.ui.main.home.history
 
-sealed interface HistoryIntent
+sealed interface HistoryIntent{
+    data object LoadData : HistoryIntent
+}

@@ -13,10 +13,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.zip
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
@@ -40,6 +40,10 @@ class HistoryViewModel @Inject constructor(
     val groups: StateFlow<List<GroupWithRelationDetail>> = _groups.asStateFlow()
 
     init {
+        loadData()
+    }
+
+    private fun loadData() {
         launch {
             _state.value = HistoryState.Loading
             zip(
@@ -65,6 +69,8 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun onIntent(intent: HistoryIntent) {
-
+        when (intent) {
+            HistoryIntent.LoadData -> loadData()
+        }
     }
 }

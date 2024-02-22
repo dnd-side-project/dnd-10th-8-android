@@ -147,6 +147,10 @@ private fun HistoryScreen(
     handler: CoroutineExceptionHandler
 ) {
 
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(HistoryIntent.LoadData)
+    }
+
     var isPlayingLoading by remember { mutableStateOf(true) }
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
@@ -479,7 +483,7 @@ private fun HistoryScreen(
         }
 
         if (isDropDownMenuExpanded) {
-            val isNotEmptyRelation = model.groups.isNotEmpty()
+            val isNotEmptyRelation = true //TODO edit to prevent
 
             Box(
                 modifier = Modifier
