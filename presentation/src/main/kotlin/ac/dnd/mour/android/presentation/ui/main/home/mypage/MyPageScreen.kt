@@ -22,8 +22,6 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
-import ac.dnd.mour.android.presentation.model.mypage.ProfileModel
-import ac.dnd.mour.android.presentation.model.mypage.toUiModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.profile.MyPageProfileConstant
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.setting.withdraw.MyPageSettingWithdrawConstant
@@ -45,6 +43,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -68,7 +67,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.LocalDate
@@ -105,6 +103,7 @@ private fun MyPageScreen(
     intent: (MyPageIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var isShowingLogoutDialog by remember { mutableStateOf(false) }
@@ -120,7 +119,7 @@ private fun MyPageScreen(
     }
 
     fun navigateToEditProfile() {
-        appState.navController.sendProfileModel(model.profile.toUiModel())
+        appState.navController.navigate(MyPageProfileConstant.ROUTE)
     }
 
     fun navigateToWithdraw() {
@@ -186,7 +185,9 @@ private fun MyPageScreen(
                 AsyncImage(
                     model = model.profile.profileImageUrl,
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
             }
@@ -435,16 +436,6 @@ private fun MyPageScreen(
             }
         }
     }
-}
-
-private fun NavHostController.sendProfileModel(profileModel: ProfileModel) {
-    currentBackStackEntry?.savedStateHandle?.apply {
-        set(
-            key = MyPageProfileConstant.ROURE_ARGUMENT_USER_MODEL,
-            value = profileModel
-        )
-    }
-    navigate(MyPageProfileConstant.CONTAIN_USER_MODEL)
 }
 
 @Preview

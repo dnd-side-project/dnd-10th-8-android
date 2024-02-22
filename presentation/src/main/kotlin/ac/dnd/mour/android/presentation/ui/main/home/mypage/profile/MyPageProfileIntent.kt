@@ -1,10 +1,10 @@
 package ac.dnd.mour.android.presentation.ui.main.home.mypage.profile
 
-import ac.dnd.mour.android.presentation.model.mypage.ProfileModel
+import ac.dnd.mour.android.domain.model.member.Profile
 
 sealed interface MyPageProfileIntent {
     data class OnEdit(
-        val profile: ProfileModel,
+        val profile: Profile,
         val imageName: String
     ) : MyPageProfileIntent
 }

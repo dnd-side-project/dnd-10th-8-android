@@ -1,5 +1,6 @@
 package ac.dnd.mour.android.presentation.ui.main.home.mypage.profile
 
+import ac.dnd.mour.android.domain.model.member.Profile
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
@@ -29,7 +30,6 @@ import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType
-import ac.dnd.mour.android.presentation.model.mypage.ProfileModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.common.gallery.GalleryScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
@@ -96,7 +96,7 @@ fun MyPageProfileScreen(
     val scrollState = rememberScrollState()
     var isShowingGalleryView by remember { mutableStateOf(false) }
     var isUserNameInValid by remember { mutableStateOf(false) }
-    var userNameText by remember { mutableStateOf(model.profile.name) }
+    var userNameText by remember { mutableStateOf(model.profile.nickname) }
     var userYearText by remember { mutableStateOf(model.profile.birth.year.toString()) }
     var userMonthText by remember { mutableStateOf(model.profile.birth.monthNumber.toString()) }
     var userDayText by remember { mutableStateOf(model.profile.birth.dayOfMonth.toString()) }
@@ -343,7 +343,7 @@ fun MyPageProfileScreen(
                     if (!isUserNameInValid && userNameText.isNotEmpty()) {
                         intent(
                             MyPageProfileIntent.OnEdit(
-                                ProfileModel(
+                                Profile(
                                     id = model.profile.id,
                                     email = model.profile.email,
                                     profileImageUrl = currentImageUrl,
@@ -533,7 +533,7 @@ fun MyPageProfileScreenPreview() {
         appState = rememberApplicationState(),
         model = MyPageProfileModel(
             state = MyPageProfileState.Init,
-            profile = ProfileModel(
+            profile = Profile(
                 id = 0L,
                 email = "",
                 profileImageUrl = "",
