@@ -128,14 +128,20 @@ fun TypingTextField(
                         }
                     },
                     enabled = isEnabled,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(
-                            when (textType) {
-                                TypingTextFieldType.Basic -> fieldHeight
-                                TypingTextFieldType.LongSentence -> 96.5.dp
-                            }
-                        ),
+                    modifier = if (fieldHeight == 0.dp) {
+                        Modifier
+                            .weight(1f)
+                            .wrapContentHeight()
+                    } else {
+                        Modifier
+                            .weight(1f)
+                            .height(
+                                when (textType) {
+                                    TypingTextFieldType.Basic -> fieldHeight
+                                    TypingTextFieldType.LongSentence -> 96.5.dp
+                                }
+                            )
+                    },
                     textStyle = textStyle,
                     singleLine = if (textType == TypingTextFieldType.LongSentence) false else isSingleLine,
                     minLines = if (isSingleLine) 1 else 3,
