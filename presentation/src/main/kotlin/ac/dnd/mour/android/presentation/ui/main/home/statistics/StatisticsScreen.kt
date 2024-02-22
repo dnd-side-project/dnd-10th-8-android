@@ -159,7 +159,7 @@ private fun StatisticsScreen(
                             Text(
                                 text = pageText,
                                 style = Headline3.merge(
-                                    color = if (index == pagerState.currentPage) Gray700 else Gray500,
+                                    color = if (index == pagerState.currentPage) Gray800 else Gray500,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             )
