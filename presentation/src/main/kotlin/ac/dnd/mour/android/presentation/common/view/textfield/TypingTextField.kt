@@ -53,6 +53,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -160,10 +161,8 @@ fun TypingTextField(
                         placeholder = {
                             Text(
                                 text = hintText,
-                                style = Body1.merge(
-                                    color = hintTextColor,
-                                    fontWeight = FontWeight.Normal
-                                )
+                                style = Body1.merge(color = hintTextColor),
+                                letterSpacing = (-0.25).sp
                             )
                         },
                         contentPadding = contentPadding,

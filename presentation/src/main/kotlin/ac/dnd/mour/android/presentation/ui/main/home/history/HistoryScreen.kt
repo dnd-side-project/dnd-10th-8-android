@@ -164,6 +164,14 @@ private fun HistoryScreen(
     val contentHeight =
         (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
+
+    appState.setStatusBarColor(
+        when (swipeState.progress.to) {
+            HistoryViewSwipingType.EXPANDED -> Gray000
+            HistoryViewSwipingType.COLLAPSED -> Primary3
+        }
+    )
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {

@@ -28,6 +28,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
@@ -117,6 +118,8 @@ fun RelationScreen(
     intent: (RelationIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+
+    appState.setStatusBarColor(Gray000)
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
@@ -170,7 +173,15 @@ fun RelationScreen(
         when (event) {
             is RelationEvent.AddRelation.Success -> {
                 if (isRecordState) {
-                    appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
+                    val route = makeRoute(
+                        HistoryRegistrationConstant.ROUTE,
+                        listOf(
+                            HistoryRegistrationConstant.ROUTE_ARGUMENT_ID to event.relationId,
+                            HistoryRegistrationConstant.ROUTE_ARGUMENT_NAME to event.name,
+                            HistoryRegistrationConstant.ROUTE_ARGUMENT_IS_HOME to true
+                        )
+                    )
+                    appState.navController.navigate(route)
                 } else {
                     appState.navController.popBackStack()
                 }

@@ -22,6 +22,7 @@ import ac.dnd.mour.android.presentation.ui.main.home.test.TestConstant
 import ac.dnd.mour.android.presentation.ui.main.home.test.TestScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -84,12 +85,12 @@ fun HomeScreen(
             iconSelectedRes = R.drawable.ic_mypage_selected,
             iconUnselectedRes = R.drawable.ic_mypage_unselected
         ),
-        MainBottomBarItem(
-            route = TestConstant.ROUTE,
-            name = "Test Page",
-            iconSelectedRes = R.drawable.ic_warning,
-            iconUnselectedRes = R.drawable.ic_warning
-        )
+//        MainBottomBarItem(
+//            route = TestConstant.ROUTE,
+//            name = "Test Page",
+//            iconSelectedRes = R.drawable.ic_warning,
+//            iconUnselectedRes = R.drawable.ic_warning
+//        )
     )
     val scaffoldState = rememberScaffoldState()
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
@@ -122,34 +123,38 @@ fun HomeScreen(
         ) { page ->
             when (bottomBarItemList[page].route) {
                 HistoryConstant.ROUTE -> {
+
                     HistoryScreen(
                         appState = appState
                     )
                 }
 
                 ScheduleConstant.ROUTE -> {
+                    appState.setStatusBarColor(Gray000)
                     ScheduleScreen(
                         appState = appState
                     )
                 }
 
                 StatisticsConstant.ROUTE -> {
+                    appState.setStatusBarColor(Gray000)
                     StatisticsScreen(
                         appState = appState
                     )
                 }
 
                 MyPageConstant.ROUTE -> {
+                    appState.setStatusBarColor(Gray000)
                     MyPageScreen(
                         appState = appState
                     )
                 }
 
-                TestConstant.ROUTE -> {
-                    TestScreen(
-                        appState = appState
-                    )
-                }
+//                TestConstant.ROUTE -> {
+//                    TestScreen(
+//                        appState = appState
+//                    )
+//                }
             }
         }
     }
@@ -190,7 +195,7 @@ private fun HomeBottomBarScreen(
                 icon = {
                     val icon =
                         if (index == selectedItem) item.iconSelectedRes else item.iconUnselectedRes
-                    Icon(
+                    Image(
                         modifier = Modifier.size(Icon24),
                         painter = painterResource(id = icon),
                         contentDescription = "bottom icon"

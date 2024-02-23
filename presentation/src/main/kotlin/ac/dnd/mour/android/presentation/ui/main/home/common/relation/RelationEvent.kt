@@ -2,7 +2,10 @@ package ac.dnd.mour.android.presentation.ui.main.home.common.relation
 
 sealed interface RelationEvent {
     sealed interface AddRelation : RelationEvent {
-        data object Success : AddRelation
+        data class Success(
+            val relationId : Long,
+            val name : String
+        ) : AddRelation
     }
 
     sealed interface EditRelation : RelationEvent {

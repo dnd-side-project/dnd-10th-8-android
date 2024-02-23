@@ -64,6 +64,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
 
@@ -372,7 +373,8 @@ private fun EmptyRelationView(
             style = Body1.merge(
                 color = Gray700,
                 fontWeight = FontWeight.SemiBold
-            )
+            ),
+            letterSpacing = (-0.25).sp
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
@@ -380,7 +382,8 @@ private fun EmptyRelationView(
             style = Body1.merge(
                 color = Gray600,
                 fontWeight = FontWeight.Medium
-            )
+            ),
+            letterSpacing = (-0.25).sp
         )
         Spacer(modifier = Modifier.height(24.dp))
         Box(
@@ -405,7 +408,8 @@ private fun EmptyRelationView(
                 style = Body1.merge(
                     color = Gray600,
                     fontWeight = FontWeight.SemiBold
-                )
+                ),
+                letterSpacing = (-0.25).sp
             )
         }
         Spacer(modifier = Modifier.weight(118f))

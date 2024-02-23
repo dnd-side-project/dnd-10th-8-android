@@ -74,7 +74,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlin.random.Random
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -84,6 +83,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
+import kotlin.random.Random
 
 @Composable
 fun StatisticsMeScreen(
@@ -282,82 +282,85 @@ private fun StatisticsMeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = false),
-                        onClick = {
-                            date = when (selectedSegmentType) {
-                                MyStatisticsSegmentType.Monthly -> {
-                                    date.minus(1, DateTimeUnit.MONTH)
-                                }
-
-                                MyStatisticsSegmentType.Yearly -> {
-                                    date.minus(1, DateTimeUnit.YEAR)
-                                }
-                            }
-                            onClickDateChange()
-                        }
-                    )
-                ) {
-                    Icon(
-                        modifier = Modifier.size(Icon24),
-                        painter = painterResource(id = R.drawable.ic_drop_left),
-                        contentDescription = null,
-                        tint = Gray000
-                    )
-                }
-                Box(
-                    modifier = Modifier.width(
-                        when(selectedSegmentType){
-                            MyStatisticsSegmentType.Monthly -> 60.dp
-                            MyStatisticsSegmentType.Yearly -> 80.dp
-                        }
-                    )
+                    modifier = Modifier.width(108.dp)
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(4.dp)
-                            .clickable {
-                                isDatePickerShowing = true
-                            }
-                            .align(Alignment.Center)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = rememberRipple(bounded = false),
+                                onClick = {
+                                    date = when (selectedSegmentType) {
+                                        MyStatisticsSegmentType.Monthly -> {
+                                            date.minus(1, DateTimeUnit.MONTH)
+                                        }
+
+                                        MyStatisticsSegmentType.Yearly -> {
+                                            date.minus(1, DateTimeUnit.YEAR)
+                                        }
+                                    }
+                                    onClickDateChange()
+                                }
+                            )
+                            .align(Alignment.CenterStart)
                     ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = formattedDate,
-                            style = when (selectedSegmentType) {
-                                MyStatisticsSegmentType.Monthly -> Headline0.merge(color = Gray000)
-                                MyStatisticsSegmentType.Yearly -> Headline1.merge(color = Gray000)
-                            }
+                        Icon(
+                            modifier = Modifier.size(Icon24),
+                            painter = painterResource(id = R.drawable.ic_drop_left),
+                            contentDescription = null,
+                            tint = Gray000
                         )
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
 
-                Box(
-                    modifier = Modifier.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = false),
-                        onClick = {
-                            date = when (selectedSegmentType) {
-                                MyStatisticsSegmentType.Monthly -> {
-                                    date.plus(1, DateTimeUnit.MONTH)
-                                }
+                    Box(
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(bounded = false),
+                            onClick = {
+                                date = when (selectedSegmentType) {
+                                    MyStatisticsSegmentType.Monthly -> {
+                                        date.plus(1, DateTimeUnit.MONTH)
+                                    }
 
-                                MyStatisticsSegmentType.Yearly -> {
-                                    date.plus(1, DateTimeUnit.YEAR)
+                                    MyStatisticsSegmentType.Yearly -> {
+                                        date.plus(1, DateTimeUnit.YEAR)
+                                    }
                                 }
+                                onClickDateChange()
                             }
-                            onClickDateChange()
+                        )
+                            .align(Alignment.CenterEnd)
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(Icon24),
+                            painter = painterResource(id = R.drawable.ic_drop_right),
+                            contentDescription = null,
+                            tint = Gray000
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier.align(Alignment.Center)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable {
+                                    isDatePickerShowing = true
+                                }
+                                .align(Alignment.Center)
+                        ) {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                text = formattedDate,
+                                style = when (selectedSegmentType) {
+                                    MyStatisticsSegmentType.Monthly -> Headline0.merge(color = Gray000)
+                                    MyStatisticsSegmentType.Yearly -> Headline1.merge(color = Gray000)
+                                }
+                            )
                         }
-                    )
-                ) {
-                    Icon(
-                        modifier = Modifier.size(Icon24),
-                        painter = painterResource(id = R.drawable.ic_drop_right),
-                        contentDescription = null,
-                        tint = Gray000
-                    )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(9.dp))
@@ -468,7 +471,7 @@ private fun StatisticsMeScreen(
             dataList = chartData,
             thickness = 0.5f
         )
-        val chipText = when(selectedChipType){
+        val chipText = when (selectedChipType) {
             MyStatisticsChipType.Give -> "보낸"
             MyStatisticsChipType.Take -> "받은"
         }

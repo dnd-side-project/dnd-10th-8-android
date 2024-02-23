@@ -23,6 +23,7 @@ import ac.dnd.mour.android.presentation.model.relation.RelationDetailWithUserInf
 import ac.dnd.mour.android.presentation.model.relation.toUiModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.RelationConstant
+import ac.dnd.mour.android.presentation.ui.main.home.history.HistoryIntent
 import ac.dnd.mour.android.presentation.ui.main.home.history.detail.growth.HistoryDetailGrowthConstant
 import ac.dnd.mour.android.presentation.ui.main.home.history.detail.information.HistoryDetailInformationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
@@ -66,6 +67,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,8 +93,13 @@ fun HistoryDetailScreen(
     model: HistoryDetailModel,
     event: EventFlow<HistoryDetailEvent>,
     intent: (HistoryDetailIntent) -> Unit,
-    handler: CoroutineExceptionHandler
+    handler: CoroutineExceptionHandler,
+    id : Long
 ) {
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(HistoryDetailIntent.OnRefresh(id))
+    }
+
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
     val backgroundHeight = 430.dp
@@ -140,6 +147,8 @@ fun HistoryDetailScreen(
     val currentGrowthType = HistoryDetailGrowthType.getGrowthType(
         model.relationDetail.takeMoney + model.relationDetail.giveMoney
     )
+
+    appState.setStatusBarColor(Color(currentGrowthType.backgroundColor))
     val pages = listOf("전체", "받은 마음", "보낸 마음")
     val pagerState = rememberPagerState(
         pageCount = { 3 }
@@ -440,6 +449,7 @@ fun HistoryDetailScreenPreview() {
         ),
         event = MutableEventFlow(),
         intent = {},
-        handler = CoroutineExceptionHandler { _, _ -> }
+        handler = CoroutineExceptionHandler { _, _ -> },
+        id = 0L
     )
 }

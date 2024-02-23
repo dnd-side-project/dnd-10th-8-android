@@ -54,7 +54,8 @@ fun NavGraphBuilder.historyDetailDestination(
             model = model,
             event = viewModel.event,
             intent = viewModel::onIntent,
-            handler = viewModel.handler
+            handler = viewModel.handler,
+            id = id
         )
     }
 }
