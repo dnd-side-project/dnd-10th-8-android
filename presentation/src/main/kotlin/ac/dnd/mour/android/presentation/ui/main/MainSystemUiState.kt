@@ -6,6 +6,7 @@ import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.ScheduleAddConstant
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -21,6 +22,9 @@ fun ManageSystemUiState(
     when (route) {
         HomeConstant.ROUTE,
         ScheduleAddConstant.ROUTE -> {
+            SideEffect {
+                appState.systemUiController.setStatusBarColor(Gray000)
+            }
             appState.systemUiController.setSystemBarsColor(Gray000)
         }
 

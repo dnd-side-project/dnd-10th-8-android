@@ -89,8 +89,8 @@ fun ScheduleScreenItem(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
+                    modifier = Modifier.size(20.dp),
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(DefaultGroupType.getGroupResource(schedule.relation.group.name)),
                     contentDescription = null
                 )

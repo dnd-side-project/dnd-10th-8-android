@@ -3,6 +3,7 @@ package ac.dnd.mour.android.presentation.ui.main.home
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Icon24
+import ac.dnd.mour.android.presentation.common.theme.Primary3
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -18,8 +19,6 @@ import ac.dnd.mour.android.presentation.ui.main.home.schedule.ScheduleConstant
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.ScheduleScreen
 import ac.dnd.mour.android.presentation.ui.main.home.statistics.StatisticsConstant
 import ac.dnd.mour.android.presentation.ui.main.home.statistics.StatisticsScreen
-import ac.dnd.mour.android.presentation.ui.main.home.test.TestConstant
-import ac.dnd.mour.android.presentation.ui.main.home.test.TestScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -32,13 +31,14 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -59,7 +59,7 @@ fun HomeScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
-
+    var historyExpandedState by remember { mutableStateOf(false) }
     val bottomBarItemList: List<MainBottomBarItem> = listOf(
         MainBottomBarItem(
             route = HistoryConstant.ROUTE,
@@ -98,7 +98,12 @@ fun HomeScreen(
         pageCount = { bottomBarItemList.size }
     )
 
-    LaunchedEffect(selectedItem) {
+    LaunchedEffect(selectedItem, historyExpandedState) {
+        if (selectedItem != 0 || historyExpandedState) {
+            appState.systemUiController.setStatusBarColor(Gray000)
+        } else {
+            appState.systemUiController.setStatusBarColor(Primary3)
+        }
         pagerState.animateScrollToPage(selectedItem)
     }
 
@@ -123,28 +128,27 @@ fun HomeScreen(
         ) { page ->
             when (bottomBarItemList[page].route) {
                 HistoryConstant.ROUTE -> {
-
                     HistoryScreen(
-                        appState = appState
+                        appState = appState,
+                        changeState = {
+                            historyExpandedState = it
+                        }
                     )
                 }
 
                 ScheduleConstant.ROUTE -> {
-                    appState.setStatusBarColor(Gray000)
                     ScheduleScreen(
                         appState = appState
                     )
                 }
 
                 StatisticsConstant.ROUTE -> {
-                    appState.setStatusBarColor(Gray000)
                     StatisticsScreen(
                         appState = appState
                     )
                 }
 
                 MyPageConstant.ROUTE -> {
-                    appState.setStatusBarColor(Gray000)
                     MyPageScreen(
                         appState = appState
                     )

@@ -162,8 +162,8 @@ fun HistoryDetailPageScreen(
                         isShowingSuccessDeleteSnackBar = false
                     }
                 },
-                onEdit = { heart ->
-                    intent(HistoryDetailIntent.OnEdit(heart))
+                onEdit = {
+                    intent(HistoryDetailIntent.OnRefresh(model.relationDetail.id))
                 }
             )
         }

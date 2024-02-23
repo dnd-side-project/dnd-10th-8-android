@@ -23,7 +23,6 @@ import ac.dnd.mour.android.presentation.model.relation.RelationDetailWithUserInf
 import ac.dnd.mour.android.presentation.model.relation.toUiModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.RelationConstant
-import ac.dnd.mour.android.presentation.ui.main.home.history.HistoryIntent
 import ac.dnd.mour.android.presentation.ui.main.home.history.detail.growth.HistoryDetailGrowthConstant
 import ac.dnd.mour.android.presentation.ui.main.home.history.detail.information.HistoryDetailInformationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
@@ -67,7 +66,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -450,6 +448,6 @@ fun HistoryDetailScreenPreview() {
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },
-        id = 0L
+        id = 0
     )
 }

@@ -152,10 +152,10 @@ private fun SearchRelationScreen(
             modifier = Modifier
                 .wrapContentHeight()
                 .background(Gray200)
-                .padding(horizontal = 20.dp)
         ) {
             Column(
                 modifier = Modifier
+                    .padding(horizontal = 20.dp)
                     .wrapContentHeight(),
                 verticalArrangement = Arrangement.Center
             ) {
@@ -344,9 +344,11 @@ private fun SearchRelationScreen(
             }
             Box(
                 modifier = Modifier
+                    .background(Gray200)
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
+                    .padding(horizontal = 20.dp)
             ) {
                 ConfirmButton(
                     modifier = Modifier.fillMaxWidth(),
