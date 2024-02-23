@@ -62,7 +62,6 @@ fun LoginMainScreen(
     intent: (LoginMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
-    appState.setStatusBarColor(Primary2)
     var isDialogShowing by remember { mutableStateOf(false) }
 
     fun navigateToOnBoarding(kakaoUserModel: KakaoUserInformationModel) {
