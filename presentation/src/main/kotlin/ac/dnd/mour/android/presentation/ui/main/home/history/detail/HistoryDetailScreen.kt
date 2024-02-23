@@ -51,6 +51,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -145,8 +146,11 @@ fun HistoryDetailScreen(
     val currentGrowthType = HistoryDetailGrowthType.getGrowthType(
         model.relationDetail.takeMoney + model.relationDetail.giveMoney
     )
+    when(swipeState.progress.to){
+        HistoryViewSwipingType.EXPANDED -> appState.setStatusBarColor(Gray000)
+        HistoryViewSwipingType.COLLAPSED -> appState.setStatusBarColor(Color(currentGrowthType.backgroundColor))
+    }
 
-    appState.setStatusBarColor(Color(currentGrowthType.backgroundColor))
     val pages = listOf("전체", "받은 마음", "보낸 마음")
     val pagerState = rememberPagerState(
         pageCount = { 3 }
