@@ -53,6 +53,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -146,219 +148,228 @@ private fun SearchRelationScreen(
             )
         )
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .wrapContentHeight()
                 .background(Gray200)
-                .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(horizontal = 20.dp)
+                    .wrapContentHeight(),
+                verticalArrangement = Arrangement.Center
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = null,
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .clickable {
-                            onDismissRequest()
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                onDismissRequest()
+                            }
+                    )
+                }
+                Text(
+                    text = "이름 선택",
+                    style = Headline2.merge(
+                        color = Gray900,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Text(
+                    text = "이전에 등록한 관계에서 찾아보세요.",
+                    style = Body0.merge(
+                        color = Gray800,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                TypingTextField(
+                    textType = TypingTextFieldType.Basic,
+                    text = text,
+                    onValueChange = {
+                        text = it
+                    },
+                    fieldHeight = 39.dp,
+                    isSingleLine = true,
+                    textStyle = Body1.merge(
+                        color = Gray700,
+                        fontWeight = FontWeight.Normal
+                    ),
+                    contentPadding = PaddingValues(
+                        start = if (!isTextFieldFocus && text.isEmpty()) 6.dp else 16.dp,
+                    ),
+                    backgroundColor = Gray000,
+                    hintText = "이름을 입력하세요.",
+                    hintTextColor = Gray500,
+                    basicBorderColor = Color.Transparent,
+                    leadingIconContent = {
+                        if (!isTextFieldFocus && text.isEmpty()) {
+                            Box(modifier = Modifier.padding(start = 16.dp)) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_search_group),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
-                )
-            }
-            Text(
-                text = "이름 선택",
-                style = Headline2.merge(
-                    color = Gray900,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            Text(
-                text = "이전에 등록한 관계에서 찾아보세요.",
-                style = Body0.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.Normal
-                )
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            TypingTextField(
-                textType = TypingTextFieldType.Basic,
-                text = text,
-                onValueChange = {
-                    text = it
-                },
-                fieldHeight = 39.dp,
-                isSingleLine = true,
-                textStyle = Body1.merge(
-                    color = Gray700,
-                    fontWeight = FontWeight.Normal
-                ),
-                contentPadding = PaddingValues(
-                    start = if (!isTextFieldFocus && text.isEmpty()) 6.dp else 16.dp,
-                ),
-                backgroundColor = Gray000,
-                hintText = "이름을 입력하세요.",
-                hintTextColor = Gray500,
-                basicBorderColor = Color.Transparent,
-                leadingIconContent = {
-                    if (!isTextFieldFocus && text.isEmpty()) {
-                        Box(modifier = Modifier.padding(start = 16.dp)) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_search),
+                    },
+                    trailingIconContent = if (text.isNotEmpty()) {
+                        {
+                            Image(
+                                painter = painterResource(R.drawable.ic_close_circle),
                                 contentDescription = null,
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable {
+                                        text = ""
+                                    }
+                            )
+                        }
+                    } else null,
+                    onTextFieldFocusChange = {
+                        isTextFieldFocus = it
+                    }
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                if (filteredGroups.isEmpty()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(243.36.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "관계를 찾을 수 없어요.",
+                            fontFamily = FontFamily(Font(R.font.pretendard)),
+                            fontSize = 14.2.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = (-0.25).sp,
+                            color = Gray700
+                        )
+                        Spacer(modifier = Modifier.height(16.22.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .clip(Shapes.medium)
+                                .clickable {
+                                    navigateToEditRelation()
+                                }
+                                .background(color = Gray000)
+                                .border(
+                                    color = Gray500,
+                                    width = 1.dp,
+                                    shape = Shapes.medium
+                                )
+                                .padding(
+                                    horizontal = 8.dp,
+                                    vertical = 6.5.dp
+                                )
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_plus),
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                colorFilter = ColorFilter.tint(Gray700)
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                            Text(
+                                text = "관계 등록하기",
+                                style = Body1.merge(
+                                    color = Gray700,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             )
                         }
                     }
-                },
-                trailingIconContent = if (text.isNotEmpty()) {
-                    {
-                        Image(
-                            painter = painterResource(R.drawable.ic_close_circle),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable {
-                                    text = ""
-                                }
-                        )
+                } else {
+                    LazyColumn {
+                        filteredGroups.forEach { group ->
+                            item {
+                                var isExpanded by remember { mutableStateOf(false) }
+                                SearchRelationGroup(
+                                    group = group,
+                                    selectedRelation = selectedRelation,
+                                    isExpanded = isExpanded,
+                                    onExpandRequest = {
+                                        isExpanded = !isExpanded
+                                    },
+                                    onClick = { relation ->
+                                        selectedRelation = relation
+                                    }
+                                )
+                            }
+                        }
                     }
-                } else null,
-                onTextFieldFocusChange = {
-                    isTextFieldFocus = it
-                }
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            if (filteredGroups.isEmpty()){
-                Column (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(243.36.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Text(
-                        text = "관계를 찾을 수 없어요.",
-                        fontFamily = FontFamily(Font(R.font.pretendard)),
-                        fontSize = 14.2.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = (-0.25).sp,
-                        color = Gray700
-                    )
-                    Spacer(modifier = Modifier.height(16.22.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clip(Shapes.medium)
+                            .background(Gray200)
                             .clickable {
                                 navigateToEditRelation()
                             }
-                            .background(color = Gray000)
-                            .border(
-                                color = Gray500,
-                                width = 1.dp,
-                                shape = Shapes.medium
-                            )
                             .padding(
-                                horizontal = 8.dp,
-                                vertical = 6.5.dp
+                                start = 2.dp,
+                                top = 16.dp,
+                                bottom = 16.dp
                             )
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.ic_plus),
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            colorFilter = ColorFilter.tint(Gray700)
+                            painter = painterResource(R.drawable.ic_circle_plus),
+                            contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(2.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "관계 등록하기",
-                            style = Body1.merge(
-                                color = Gray700,
+                            style = Headline3.merge(
+                                color = Gray600,
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
                     }
                 }
-            }else {
-                LazyColumn {
-                    filteredGroups.forEach { group ->
-                        item {
-                            var isExpanded by remember { mutableStateOf(false) }
-                            SearchRelationGroup(
-                                group = group,
-                                selectedRelation = selectedRelation,
-                                isExpanded = isExpanded,
-                                onExpandRequest = {
-                                    isExpanded = !isExpanded
-                                },
-                                onClick = { relation ->
-                                    selectedRelation = relation
-                                }
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .background(Gray200)
-                        .clickable {
-                            navigateToEditRelation()
-                        }
-                        .padding(
-                            start = 2.dp,
-                            top = 16.dp,
-                            bottom = 16.dp
-                        )
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_circle_plus),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "관계 등록하기",
-                        style = Headline3.merge(
-                            color = Gray600,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    )
-                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(52.dp))
             }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            ConfirmButton(
+            Box(
                 modifier = Modifier
+                    .background(Gray200)
+                    .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 12.dp
+                    .padding(vertical = 12.dp)
+                    .padding(horizontal = 20.dp)
+            ) {
+                ConfirmButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    properties = ConfirmButtonProperties(
+                        size = ConfirmButtonSize.Xlarge,
+                        type = ConfirmButtonType.Primary
                     ),
-                properties = ConfirmButtonProperties(
-                    size = ConfirmButtonSize.Xlarge,
-                    type = ConfirmButtonType.Primary
-                ),
-                isEnabled = selectedRelation != null,
-                onClick = {
-                    selectedRelation?.let { relation ->
-                        onResult(relation)
-                        onDismissRequest()
-                    }
+                    isEnabled = selectedRelation != null,
+                    onClick = {
+                        selectedRelation?.let { relation ->
+                            onResult(relation)
+                            onDismissRequest()
+                        }
 
+                    }
+                ) { style ->
+                    Text(
+                        text = "선택",
+                        style = style
+                    )
                 }
-            ) { style ->
-                Text(
-                    text = "선택",
-                    style = style
-                )
             }
         }
     }
@@ -475,6 +486,7 @@ private fun SearchRelationRelation(
     onClick: (RelationSimple) -> Unit
 ) {
     Surface(
+        color = Gray000,
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp),

@@ -37,6 +37,7 @@ import ac.dnd.mour.android.presentation.model.history.HistoryRegistrationType
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
+import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.animation.animateColorAsState
@@ -90,15 +91,20 @@ fun HistoryRegistrationScreen(
     event: EventFlow<HistoryRegistrationEvent>,
     intent: (HistoryRegistrationIntent) -> Unit,
     handler: CoroutineExceptionHandler,
-    calendarConfig: CalendarConfig = CalendarConfig()
+    calendarConfig: CalendarConfig = CalendarConfig(),
+    id : Long,
+    name : String,
+    isHome : Boolean
 ) {
+    appState.setStatusBarColor(Gray000)
+
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
     var isContinuousState by remember { mutableStateOf(false) }
     var historyTypeState by remember { mutableStateOf(HistoryRegistrationType.TAKE) }
     var priceText by remember { mutableStateOf("") }
-    var userNameText by remember { mutableStateOf("이름 선택") }
-    var relationId by remember { mutableLongStateOf(-1) }
+    var userNameText by remember { mutableStateOf(name) }
+    var relationId by remember { mutableLongStateOf(id) }
     var selectedYear by remember { mutableIntStateOf(calendarConfig.getCalendarYear()) }
     var selectedMonth by remember { mutableIntStateOf(calendarConfig.getCalendarMonth()) }
     var selectedDay by remember { mutableIntStateOf(calendarConfig.getCalendarDay()) }
@@ -145,7 +151,11 @@ fun HistoryRegistrationScreen(
             memoText = ""
             tagIdList.clear()
         } else {
-            appState.navController.popBackStack()
+            if (isHome){
+                appState.navController.navigate(HomeConstant.ROUTE)
+            }else {
+                appState.navController.popBackStack()
+            }
         }
     }
 
@@ -367,7 +377,7 @@ fun HistoryRegistrationScreen(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
-                FieldSubject("태그")
+                FieldSubject("태그", isViewIcon = false)
                 Spacer(modifier = Modifier.height(6.dp))
                 HistoryTagType.entries.chunked(5).forEach { registrationTagTypes ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -509,6 +519,9 @@ fun HistoryRegistrationScreenPreview() {
         ),
         event = MutableEventFlow(),
         intent = {},
-        handler = CoroutineExceptionHandler { _, _ -> }
+        handler = CoroutineExceptionHandler { _, _ -> },
+        id = -1L,
+        name = "",
+        isHome = true
     )
 }

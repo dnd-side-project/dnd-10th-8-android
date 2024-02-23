@@ -2,6 +2,7 @@ package ac.dnd.mour.android.presentation.common.view.textfield
 
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
+import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray900
@@ -56,7 +57,7 @@ fun UserDateTypingField(
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
-    val currentColor = if (isTextFieldFocused) Primary4 else Gray500
+    val currentColor = if (isTextFieldFocused) Primary4 else Gray400
     val currentColorState = animateColorAsState(
         targetValue = currentColor,
         label = "color state"
@@ -64,14 +65,14 @@ fun UserDateTypingField(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                color = Color.White,
-                shape = Shapes.medium
-            )
             .border(
                 width = 1.dp,
                 shape = Shapes.medium,
                 color = currentColorState.value
+            )
+            .background(
+                color = Color.White,
+                shape = Shapes.medium
             )
             .onFocusChanged {
                 isTextFieldFocused = it.isFocused

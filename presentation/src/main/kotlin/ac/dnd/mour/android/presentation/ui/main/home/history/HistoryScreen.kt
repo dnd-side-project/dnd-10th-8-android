@@ -72,6 +72,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -109,6 +110,7 @@ import kotlinx.datetime.LocalTime
 @Composable
 fun HistoryScreen(
     appState: ApplicationState,
+    changeState: (Boolean) -> Unit,
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
 
@@ -129,7 +131,8 @@ fun HistoryScreen(
         model = model,
         event = viewModel.event,
         intent = viewModel::onIntent,
-        handler = viewModel.handler
+        handler = viewModel.handler,
+        changeState = changeState
     )
 }
 
@@ -144,7 +147,8 @@ private fun HistoryScreen(
     model: HistoryModel,
     event: EventFlow<HistoryEvent>,
     intent: (HistoryIntent) -> Unit,
-    handler: CoroutineExceptionHandler
+    handler: CoroutineExceptionHandler,
+    changeState: (Boolean) -> Unit
 ) {
 
     LaunchedEffectWithLifecycle(context = handler) {
@@ -164,6 +168,14 @@ private fun HistoryScreen(
     val contentHeight =
         (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
+
+    LaunchedEffect(swipeState.progress.to){
+        when (swipeState.progress.to) {
+            HistoryViewSwipingType.EXPANDED -> changeState(true)
+            HistoryViewSwipingType.COLLAPSED -> changeState(false)
+        }
+    }
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -749,6 +761,7 @@ private fun HistoryScreenPreview1() {
         ),
         event = MutableEventFlow(),
         intent = {},
-        handler = CoroutineExceptionHandler { _, _ -> }
+        handler = CoroutineExceptionHandler { _, _ -> },
+        changeState = {}
     )
 }

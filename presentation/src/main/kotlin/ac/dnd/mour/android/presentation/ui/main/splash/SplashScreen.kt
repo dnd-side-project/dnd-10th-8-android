@@ -37,6 +37,8 @@ fun SplashScreen(
     intent: (SplashIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+    appState.setStatusBarColor(Color(0xFFE579FF))
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 

@@ -186,10 +186,7 @@ fun HistoryCalendarScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = Space20,
-                        vertical = Space12
-                    )
+                    .padding(vertical = Space12)
             ) {
                 ConfirmButton(
                     modifier = Modifier.fillMaxWidth(),

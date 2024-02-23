@@ -91,8 +91,13 @@ fun HistoryDetailScreen(
     model: HistoryDetailModel,
     event: EventFlow<HistoryDetailEvent>,
     intent: (HistoryDetailIntent) -> Unit,
-    handler: CoroutineExceptionHandler
+    handler: CoroutineExceptionHandler,
+    id : Long
 ) {
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(HistoryDetailIntent.OnRefresh(id))
+    }
+
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
     val backgroundHeight = 430.dp
@@ -140,6 +145,8 @@ fun HistoryDetailScreen(
     val currentGrowthType = HistoryDetailGrowthType.getGrowthType(
         model.relationDetail.takeMoney + model.relationDetail.giveMoney
     )
+
+    appState.setStatusBarColor(Color(currentGrowthType.backgroundColor))
     val pages = listOf("전체", "받은 마음", "보낸 마음")
     val pagerState = rememberPagerState(
         pageCount = { 3 }
@@ -440,6 +447,7 @@ fun HistoryDetailScreenPreview() {
         ),
         event = MutableEventFlow(),
         intent = {},
-        handler = CoroutineExceptionHandler { _, _ -> }
+        handler = CoroutineExceptionHandler { _, _ -> },
+        id = 0
     )
 }

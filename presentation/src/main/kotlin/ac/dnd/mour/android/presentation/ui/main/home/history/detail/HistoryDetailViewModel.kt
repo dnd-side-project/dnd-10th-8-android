@@ -92,6 +92,9 @@ class HistoryDetailViewModel @Inject constructor(
             is HistoryDetailIntent.OnDelete -> {
                 _hearts.value = _hearts.value.filter { it.id != intent.deleteId }
             }
+            is HistoryDetailIntent.OnRefresh -> {
+                loadRelationDetail(intent.id)
+            }
         }
     }
 }

@@ -124,7 +124,12 @@ class RelationViewModel @Inject constructor(
             )
                 .onSuccess {
                     _state.value = RelationState.Init
-                    _event.emit(RelationEvent.AddRelation.Success)
+                    _event.emit(
+                        RelationEvent.AddRelation.Success(
+                            relationId = it,
+                            name = name
+                        )
+                    )
                 }
                 .onFailure { exception ->
                     _state.value = RelationState.Init
@@ -159,7 +164,12 @@ class RelationViewModel @Inject constructor(
             )
                 .onSuccess {
                     _state.value = RelationState.Init
-                    _event.emit(RelationEvent.AddRelation.Success)
+                    _event.emit(
+                        RelationEvent.AddRelation.Success(
+                            relationId = it,
+                            name = name
+                        )
+                    )
                 }
                 .onFailure { exception ->
                     _state.value = RelationState.Init

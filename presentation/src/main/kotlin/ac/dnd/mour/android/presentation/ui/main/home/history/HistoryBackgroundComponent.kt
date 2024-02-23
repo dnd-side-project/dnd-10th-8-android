@@ -43,9 +43,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -173,19 +175,17 @@ fun HistoryBackgroundComponent(
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 40.dp,
-                            bottom = 24.dp,
                             start = 20.dp,
                             end = 20.dp
                         )
                 ) {
+                    Spacer(modifier = Modifier.height(40.dp))
                     Text(
+                        style = Headline1.merge(color = Gray000),
                         text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
-                        style = Headline1.merge(
-                            color = Gray000,
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        lineHeight = 30.sp
+                        fontSize = 20.scaledSp(),
+                        letterSpacing = (-0.25).sp,
+                        modifier = Modifier.height(60.dp)
                     )
                     Spacer(modifier = Modifier.height(32.dp))
                     if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) {
@@ -382,4 +382,14 @@ private fun HistoryBackgroundComponent2Preview() {
         onFocusChange = {},
         isPlayingLoading = true
     )
+}
+
+@Composable
+fun Int.scaledSp(): TextUnit {
+    val value: Int = this
+    return with(LocalDensity.current) {
+        val fontScale = this.fontScale
+        val textSize = value / fontScale
+        textSize.sp
+    }
 }

@@ -57,7 +57,7 @@ class KakaoFriendRepositoryImpl @Inject constructor(
                     val user = selectedUsers?.users?.firstOrNull()
                     val name = user?.profileNickname ?: ""
                     val image = user?.profileThumbnailImage ?: ""
-                    if (name.isEmpty() || image.isEmpty()) {
+                    if (name.isEmpty()) {
                         continuation.resumeWithException(RuntimeException("Can't find user"))
                     } else {
                         continuation.resume(

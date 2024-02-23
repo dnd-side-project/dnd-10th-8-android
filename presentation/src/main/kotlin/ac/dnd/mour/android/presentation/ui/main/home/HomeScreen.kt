@@ -3,6 +3,7 @@ package ac.dnd.mour.android.presentation.ui.main.home
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Icon24
+import ac.dnd.mour.android.presentation.common.theme.Primary3
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -18,10 +19,9 @@ import ac.dnd.mour.android.presentation.ui.main.home.schedule.ScheduleConstant
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.ScheduleScreen
 import ac.dnd.mour.android.presentation.ui.main.home.statistics.StatisticsConstant
 import ac.dnd.mour.android.presentation.ui.main.home.statistics.StatisticsScreen
-import ac.dnd.mour.android.presentation.ui.main.home.test.TestConstant
-import ac.dnd.mour.android.presentation.ui.main.home.test.TestScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,13 +31,14 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -58,7 +59,7 @@ fun HomeScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
-
+    var historyExpandedState by remember { mutableStateOf(false) }
     val bottomBarItemList: List<MainBottomBarItem> = listOf(
         MainBottomBarItem(
             route = HistoryConstant.ROUTE,
@@ -84,12 +85,12 @@ fun HomeScreen(
             iconSelectedRes = R.drawable.ic_mypage_selected,
             iconUnselectedRes = R.drawable.ic_mypage_unselected
         ),
-        MainBottomBarItem(
-            route = TestConstant.ROUTE,
-            name = "Test Page",
-            iconSelectedRes = R.drawable.ic_warning,
-            iconUnselectedRes = R.drawable.ic_warning
-        )
+//        MainBottomBarItem(
+//            route = TestConstant.ROUTE,
+//            name = "Test Page",
+//            iconSelectedRes = R.drawable.ic_warning,
+//            iconUnselectedRes = R.drawable.ic_warning
+//        )
     )
     val scaffoldState = rememberScaffoldState()
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
@@ -97,7 +98,12 @@ fun HomeScreen(
         pageCount = { bottomBarItemList.size }
     )
 
-    LaunchedEffect(selectedItem) {
+    LaunchedEffect(selectedItem, historyExpandedState) {
+        if (selectedItem != 0 || historyExpandedState) {
+            appState.systemUiController.setStatusBarColor(Gray000)
+        } else {
+            appState.systemUiController.setStatusBarColor(Primary3)
+        }
         pagerState.animateScrollToPage(selectedItem)
     }
 
@@ -123,7 +129,10 @@ fun HomeScreen(
             when (bottomBarItemList[page].route) {
                 HistoryConstant.ROUTE -> {
                     HistoryScreen(
-                        appState = appState
+                        appState = appState,
+                        changeState = {
+                            historyExpandedState = it
+                        }
                     )
                 }
 
@@ -145,11 +154,11 @@ fun HomeScreen(
                     )
                 }
 
-                TestConstant.ROUTE -> {
-                    TestScreen(
-                        appState = appState
-                    )
-                }
+//                TestConstant.ROUTE -> {
+//                    TestScreen(
+//                        appState = appState
+//                    )
+//                }
             }
         }
     }
@@ -190,7 +199,7 @@ private fun HomeBottomBarScreen(
                 icon = {
                     val icon =
                         if (index == selectedItem) item.iconSelectedRes else item.iconUnselectedRes
-                    Icon(
+                    Image(
                         modifier = Modifier.size(Icon24),
                         painter = painterResource(id = icon),
                         contentDescription = "bottom icon"
