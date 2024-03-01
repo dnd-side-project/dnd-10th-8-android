@@ -21,6 +21,7 @@ import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
 import ac.dnd.mour.android.presentation.model.history.HistorySortedType
 import ac.dnd.mour.android.presentation.model.history.HistoryViewType
+import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.history.detail.HistoryDetailConstant
 import android.annotation.SuppressLint
@@ -66,7 +67,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
-import timber.log.Timber
 
 @SuppressLint("InvalidColorHexValue")
 @Composable
@@ -95,34 +95,32 @@ fun HistoryPageScreen(
                 }
             }
         )
+    }.sortedByDescending {
+        it.relationList.size
+    }.filter {
+        if (searchText.isNotEmpty()) {
+            it.name.contains(searchText)
+        } else {
+            true
+        }
     }
-    val relations =
-        if (selectedGroupId == -1L) groups.flatMap { it.relationList }
-        else if (selectedGroupId < -1L) listOf()
-        else groups.find { it.id == selectedGroupId }
-            ?.relationList
-            ?: groups.flatMap { it.relationList }
-                .sortedByDescending {
-                    if (viewSortType == HistorySortedType.LATEST) it.id else null
+
+    val relations = groups.flatMap { it.relationList }
+        .sortedByDescending {
+            when (viewSortType) {
+                HistorySortedType.LATEST -> it.id
+                HistorySortedType.INTIMACY -> when (viewType) {
+                    HistoryViewType.TOTAL -> it.giveMoney + it.takeMoney
+                    HistoryViewType.GIVE -> it.giveMoney
+                    HistoryViewType.TAKE -> it.takeMoney
                 }
-                .sortedBy {
-                    if (viewSortType == HistorySortedType.INTIMACY) {
-                        when (viewType) {
-                            HistoryViewType.TOTAL -> it.giveMoney + it.takeMoney
-                            HistoryViewType.GIVE -> it.giveMoney
-                            HistoryViewType.TAKE -> it.takeMoney
-                        }
-                    } else {
-                        null
-                    }
-                }
-                .filter {
-                    if (searchText.isNotEmpty()) {
-                        it.name.contains(searchText)
-                    } else {
-                        true
-                    }
-                }
+            }
+        }
+        .filter {
+            if (selectedGroupId == -1L) true
+            else if (selectedGroupId < 0) false
+            else it.group.id == selectedGroupId
+        }
 
     fun navigateToHistoryDetail(id: Long) {
         val route = makeRoute(
@@ -153,9 +151,9 @@ fun HistoryPageScreen(
                 contentAlignment = Alignment.CenterStart
             ) {
                 GroupChipListComponent(
-                    chipType = ChipType.MAIN,
                     currentSelectedId = selectedGroupId,
                     groups = groups,
+                    relationCount = model.groups.flatMap { it.relationList }.size,
                     onSelectChip = { groupId ->
                         selectedGroupId = groupId
                     }
@@ -166,12 +164,13 @@ fun HistoryPageScreen(
                         .width(56.dp)
                         .fillMaxHeight()
                         .background(
-                            Brush.horizontalGradient(
+                            brush = Brush.horizontalGradient(
                                 listOf(
                                     Color(0x00F6F6F7),
                                     Color(0xFFF6F6F7),
                                 )
-                            )
+                            ),
+                            alpha = 0.4f
                         )
                 )
             }
@@ -239,6 +238,9 @@ fun HistoryPageScreen(
                                 navigateToHistoryDetail(it.id)
                             },
                         )
+                    }
+                    item(1) {
+                        Spacer(modifier = Modifier.height(80.dp))
                     }
                 }
             }
@@ -317,39 +319,52 @@ fun HistoryPageScreen(
 
 @Composable
 private fun GroupChipListComponent(
-    chipType: ChipType = ChipType.LESS_BORDER,
     currentSelectedId: Long,
     onSelectChip: (Long) -> Unit,
+    relationCount: Int,
     groups: List<GroupWithRelationDetail>
 ) {
-    val defaultList = listOf("전체", "가족", "친구", "지인", "직장")
+    val defaultList = DefaultGroupType.entries
+        .map { it.getTypeName() }
         .filter { value ->
             value !in groups.map { it.name }
         }
 
     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        items(defaultList.size) { index ->
+        item(1) {
             ChipItem(
-                chipType = chipType,
+                chipType = ChipType.MAIN,
                 currentSelectedId = setOf(currentSelectedId),
-                chipId = (-index - 1).toLong(),
-                chipText = defaultList[index],
-                chipCount = if (index==0) groups.size else 0,
+                chipId = -1L,
+                chipText = "전체",
+                chipCount = relationCount,
                 onSelectChip = {
-                    onSelectChip((-index - 1).toLong())
+                    onSelectChip(-1L)
                 }
             )
         }
-
         items(groups) { group ->
             ChipItem(
-                chipType = chipType,
+                chipType = ChipType.MAIN,
                 currentSelectedId = setOf(currentSelectedId),
                 chipId = group.id,
                 chipText = group.name,
                 chipCount = group.relationList.size,
                 onSelectChip = {
                     onSelectChip(group.id)
+                }
+            )
+        }
+
+        items(defaultList.size) { index ->
+            ChipItem(
+                chipType = ChipType.MAIN,
+                currentSelectedId = setOf(currentSelectedId),
+                chipId = (-index - 2).toLong(),
+                chipText = defaultList[index],
+                chipCount = 0,
+                onSelectChip = {
+                    onSelectChip((-index - 2).toLong())
                 }
             )
         }
@@ -430,9 +445,9 @@ private fun EmptyRelationViewPreview() {
 @Preview
 private fun GroupChipListComponent1Preview() {
     GroupChipListComponent(
-        chipType = ChipType.MAIN,
         currentSelectedId = -1,
         groups = listOf(),
+        relationCount = 10,
         onSelectChip = {
 
         }
@@ -443,7 +458,6 @@ private fun GroupChipListComponent1Preview() {
 @Preview
 private fun GroupChipListComponent2Preview() {
     GroupChipListComponent(
-        chipType = ChipType.MAIN,
         currentSelectedId = -1,
         groups = listOf(
             GroupWithRelationDetail(
@@ -543,6 +557,7 @@ private fun GroupChipListComponent2Preview() {
                 )
             )
         ),
+        relationCount = 10,
         onSelectChip = {
 
         }

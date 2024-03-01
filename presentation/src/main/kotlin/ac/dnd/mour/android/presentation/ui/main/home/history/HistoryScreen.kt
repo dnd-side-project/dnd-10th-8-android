@@ -16,7 +16,6 @@ import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary3
 import ac.dnd.mour.android.presentation.common.theme.Primary4
-import ac.dnd.mour.android.presentation.common.theme.Secondary5
 import ac.dnd.mour.android.presentation.common.theme.Secondary6
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -110,7 +109,7 @@ import kotlinx.datetime.LocalTime
 @Composable
 fun HistoryScreen(
     appState: ApplicationState,
-    changeState: (Boolean) -> Unit,
+    selectedItem: Int,
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
 
@@ -132,7 +131,7 @@ fun HistoryScreen(
         event = viewModel.event,
         intent = viewModel::onIntent,
         handler = viewModel.handler,
-        changeState = changeState
+        selectedItem = selectedItem
     )
 }
 
@@ -148,7 +147,7 @@ private fun HistoryScreen(
     event: EventFlow<HistoryEvent>,
     intent: (HistoryIntent) -> Unit,
     handler: CoroutineExceptionHandler,
-    changeState: (Boolean) -> Unit
+    selectedItem: Int
 ) {
 
     LaunchedEffectWithLifecycle(context = handler) {
@@ -169,10 +168,20 @@ private fun HistoryScreen(
         (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
 
-    LaunchedEffect(swipeState.progress.to){
-        when (swipeState.progress.to) {
-            HistoryViewSwipingType.EXPANDED -> changeState(true)
-            HistoryViewSwipingType.COLLAPSED -> changeState(false)
+//    LaunchedEffect(isDropDownMenuExpanded){
+//        appState.systemUiController.isStatusBarVisible  = !isDropDownMenuExpanded
+//    }
+    LaunchedEffect(swipeState.progress.to, selectedItem, isDropDownMenuExpanded) {
+        if (selectedItem == 0) {
+            when (swipeState.progress.to) {
+                HistoryViewSwipingType.EXPANDED -> {
+                    appState.systemUiController.setStatusBarColor(Gray000)
+                }
+
+                HistoryViewSwipingType.COLLAPSED -> {
+                    appState.systemUiController.setStatusBarColor(Primary3)
+                }
+            }
         }
     }
 
@@ -218,7 +227,6 @@ private fun HistoryScreen(
     val searchBoxHeightState = animateDpAsState(
         targetValue = when (swipeState.progress.to) {
             HistoryViewSwipingType.COLLAPSED -> 0.dp
-
             HistoryViewSwipingType.EXPANDED -> 65.dp
         },
         label = "search in EXPANDED "
@@ -292,7 +300,6 @@ private fun HistoryScreen(
                 },
                 onDeleteUnrecorded = {
                     isViewUnrecordedState = false
-                    //TODO delete Unrecorded (api)
                 }
             )
             if (!isPlayingLoading) {
@@ -495,7 +502,7 @@ private fun HistoryScreen(
         }
 
         if (isDropDownMenuExpanded) {
-            val isNotEmptyRelation = true //TODO edit to prevent
+            val isNotEmptyRelation = model.groups.isNotEmpty()
 
             Box(
                 modifier = Modifier
@@ -559,6 +566,7 @@ private fun HistoryScreen(
                             x = (-14).dp,
                             y = (-92).dp
                         )
+                        .clip(RoundedCornerShape(100.dp))
                         .clickable {
                             isDropDownMenuExpanded = false
                             navigateToAddRelation()
@@ -581,8 +589,7 @@ private fun HistoryScreen(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_person),
-                        colorFilter = ColorFilter.tint(Secondary5),
+                        painter = painterResource(R.drawable.ic_person_relation),
                         modifier = Modifier.size(24.dp),
                         contentDescription = null,
                     )
@@ -762,6 +769,6 @@ private fun HistoryScreenPreview1() {
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },
-        changeState = {}
+        selectedItem = 0
     )
 }

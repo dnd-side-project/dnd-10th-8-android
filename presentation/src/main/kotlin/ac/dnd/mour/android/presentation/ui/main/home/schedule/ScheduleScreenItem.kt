@@ -18,7 +18,7 @@ import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonPropert
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
-import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
+import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding

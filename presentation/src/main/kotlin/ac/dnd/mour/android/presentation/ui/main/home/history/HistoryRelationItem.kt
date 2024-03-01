@@ -4,17 +4,15 @@ import ac.dnd.mour.android.domain.model.feature.relation.RelationDetail
 import ac.dnd.mour.android.domain.model.feature.relation.RelationDetailGroup
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Body2
-import ac.dnd.mour.android.presentation.common.theme.Caption1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
-import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
-import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Primary5
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.model.history.HistoryViewType
-import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
+import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,6 +29,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,9 +49,11 @@ fun HistoryRelationItem(
     Card(
         shape = Shapes.large,
         backgroundColor = Gray000,
-        modifier = Modifier.clickable {
-            onSelectCard(relation)
-        }
+        modifier = Modifier
+            .clip(Shapes.large)
+            .clickable {
+                onSelectCard(relation)
+            }
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp)
@@ -70,10 +71,8 @@ fun HistoryRelationItem(
                 Column {
                     Text(
                         text = relation.name,
-                        style = Headline3.merge(
-                            color = Gray700,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        fontWeight = FontWeight.SemiBold,
+                        style = Headline3.merge(color = Gray800),
                         lineHeight = 24.sp,
                         textAlign = TextAlign.Left,
                         maxLines = 1,
@@ -82,10 +81,8 @@ fun HistoryRelationItem(
                     Spacer(modifier = Modifier.height(1.dp))
                     Text(
                         text = relation.group.name,
-                        style = Caption1.merge(
-                            color = Gray600,
-                            fontWeight = FontWeight.Normal
-                        ),
+                        fontWeight = FontWeight.Medium,
+                        style = Body1.merge(color = Gray600),
                         lineHeight = 21.sp,
                     )
                 }
@@ -95,10 +92,8 @@ fun HistoryRelationItem(
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "받음",
-                        style = Body1.merge(
-                            color = Gray500,
-                            fontWeight = FontWeight.Medium
-                        ),
+                        fontWeight = FontWeight.Medium,
+                        style = Body1.merge(color = Gray600),
                         modifier = Modifier.align(Alignment.CenterStart)
                     )
                     Row(
@@ -128,10 +123,8 @@ fun HistoryRelationItem(
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "보냄",
-                        style = Body1.merge(
-                            color = Gray500,
-                            fontWeight = FontWeight.Medium
-                        ),
+                        fontWeight = FontWeight.Medium,
+                        style = Body1.merge(color = Gray600),
                         modifier = Modifier.align(Alignment.CenterStart)
                     )
                     Row(

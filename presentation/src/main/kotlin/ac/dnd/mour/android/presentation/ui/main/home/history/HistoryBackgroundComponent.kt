@@ -7,7 +7,7 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray600
-import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Primary2
 import ac.dnd.mour.android.presentation.common.theme.Primary3
@@ -166,6 +166,8 @@ fun HistoryBackgroundComponent(
                         .align(Alignment.TopEnd)
                         .padding(top = 8.dp)
                         .offset(x = 23.dp)
+                        .width(236.dp)
+                        .height(160.dp)
                 ) {
                     LottieAnimation(
                         composition = composition,
@@ -181,6 +183,7 @@ fun HistoryBackgroundComponent(
                 ) {
                     Spacer(modifier = Modifier.height(40.dp))
                     Text(
+                        fontWeight = FontWeight.SemiBold,
                         style = Headline1.merge(color = Gray000),
                         text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
                         fontSize = 20.scaledSp(),
@@ -226,18 +229,14 @@ fun HistoryBackgroundComponent(
                                     Column {
                                         Text(
                                             text = "지난 일정 ${model.unrecordedSchedule.size}개",
-                                            style = Body1.merge(
-                                                color = Gray700,
-                                                fontWeight = FontWeight.SemiBold
-                                            )
+                                            fontWeight = FontWeight.SemiBold,
+                                            style = Body1.merge(color = Gray800)
                                         )
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Text(
                                                 text = "한번에 기록하기",
-                                                style = Body1.merge(
-                                                    color = Gray600,
-                                                    fontWeight = FontWeight.Medium
-                                                )
+                                                fontWeight = FontWeight.Medium,
+                                                style = Body1.merge(color = Gray600)
                                             )
                                             Image(
                                                 painter = painterResource(R.drawable.ic_chevron_right_gray),

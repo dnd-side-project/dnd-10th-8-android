@@ -25,7 +25,7 @@ import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
-import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
+import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
