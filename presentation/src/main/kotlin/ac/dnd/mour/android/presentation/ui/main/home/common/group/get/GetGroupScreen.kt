@@ -23,10 +23,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
+import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.group.add.AddGroupScreen
 import ac.dnd.mour.android.presentation.ui.main.home.common.group.edit.EditGroupScreen
-import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

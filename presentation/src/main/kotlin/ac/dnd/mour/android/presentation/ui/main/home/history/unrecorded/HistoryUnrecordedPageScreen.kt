@@ -15,6 +15,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.theme.Headline3
+import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
 import ac.dnd.mour.android.presentation.common.view.component.FieldSubject
@@ -37,6 +38,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -57,6 +59,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 
@@ -69,7 +72,10 @@ fun HistoryUnrecordedPageScreen(
     var moneyText by remember { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
     val scrollState = rememberScrollState()
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Gray000)
+    ) {
         Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -78,27 +84,23 @@ fun HistoryUnrecordedPageScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .offset(x = 0.dp, y = (-7).dp)
                     .padding(horizontal = 20.dp)
             ) {
                 Column(
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .align(Alignment.TopStart)
+                    modifier = Modifier.align(Alignment.TopStart)
                 ) {
+                    Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = "지난 일정이 \n${unRecordSize}개 있습니다.",
-                        style = Headline1.merge(
-                            color = Gray900,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        fontWeight = FontWeight.SemiBold,
+                        style = Headline1.merge(color = Gray900),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = "얼마를 지출하셨나요?",
-                        style = Body1.merge(
-                            color = Gray700,
-                            fontWeight = FontWeight.Medium
-                        )
+                        fontWeight = FontWeight.Medium,
+                        style = Body1.merge(color = Gray700)
                     )
                 }
                 Box(
@@ -116,18 +118,15 @@ fun HistoryUnrecordedPageScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(31.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
-                    .height(83.dp)
                     .background(
                         color = Color.White,
-                        shape = RoundedCornerShape(
-                            topStart = 8.dp,
-                            bottomStart = 8.dp
-                        )
-                    ),
+                        shape = Shapes.medium
+                    )
+                    .height(83.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -142,51 +141,50 @@ fun HistoryUnrecordedPageScreen(
                             )
                         )
                 )
-                Column(
+                Box(
                     modifier = Modifier
                         .padding(
                             start = 20.dp,
+                            end = 20.dp,
                             top = 12.dp,
-                            bottom = 14.dp,
-                            end = 20.dp
+                            bottom = 14.dp
                         )
+                        .fillMaxHeight()
                 ) {
                     Text(
                         text = "${unrecordedSchedule.day.year}년 " +
                                 "${unrecordedSchedule.day.monthNumber}월 " +
                                 "${unrecordedSchedule.day.dayOfMonth}일",
-                        style = Body1.merge(
-                            color = Gray600,
-                            fontWeight = FontWeight.Normal
-                        )
+                        fontWeight = FontWeight.Normal,
+                        style = Body1.merge(color = Gray700),
+                        letterSpacing = (-0.25).sp,
+                        modifier = Modifier
+                            .height(28.dp)
+                            .align(Alignment.TopStart),
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .height(29.dp)
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = unrecordedSchedule.relation.name,
-                            style = Headline2.merge(
-                                color = Gray800,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Headline2.merge(color = Gray900)
                         )
                         Text(
                             text = "•",
-                            style = Body0.merge(
-                                color = Gray600,
-                                fontWeight = FontWeight.Normal
-                            ),
+                            fontWeight = FontWeight.Normal,
+                            style = Body0.merge(color = Gray700),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.width(16.dp)
                         )
                         Text(
-                            text = unrecordedSchedule.relation.name,
-                            style = Body0.merge(
-                                color = Gray600,
-                                fontWeight = FontWeight.Normal
-                            )
+                            text = unrecordedSchedule.relation.group.name,
+                            fontWeight = FontWeight.Normal,
+                            style = Body0.merge(color = Gray700)
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Box(
@@ -206,22 +204,18 @@ fun HistoryUnrecordedPageScreen(
                         ) {
                             Text(
                                 text = unrecordedSchedule.event,
-                                style = Body1.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                fontWeight = FontWeight.SemiBold,
+                                style = Body1.merge(color = Gray000)
                             )
                         }
                     }
                 }
             }
             Spacer(modifier = Modifier.height(28.dp))
-            Spacer(modifier = Modifier.height(24.dp))
             Column(
                 modifier = Modifier
                     .background(Gray000)
                     .verticalScroll(scrollState)
-                    .fillMaxSize()
                     .padding(horizontal = 20.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -288,11 +282,9 @@ fun HistoryUnrecordedPageScreen(
                 }
             ) {
                 Text(
-                    text = "다음",
-                    style = Headline3.merge(
-                        color = Gray000,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    text = if (unRecordSize==1) "완료" else  "다음",
+                    fontWeight = FontWeight.SemiBold,
+                    style = Headline3.merge(color = Gray000)
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))

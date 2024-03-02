@@ -1,4 +1,4 @@
-package ac.dnd.mour.android.presentation.ui.main.home.common.group.get.type
+package ac.dnd.mour.android.presentation.model.relation
 
 import ac.dnd.mour.android.presentation.R
 
@@ -10,6 +10,8 @@ enum class DefaultGroupType(
     FAMILY("가족", R.drawable.ic_group_family),
     ACQUAINTANCE("지인", R.drawable.ic_group_acquaintance),
     RECTAL("직장", R.drawable.ic_group_rectal);
+
+    fun getTypeName() = typeName
 
     companion object {
         fun checkEditable(name: String): Boolean {

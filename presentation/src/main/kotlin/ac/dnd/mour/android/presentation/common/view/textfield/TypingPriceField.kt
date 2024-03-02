@@ -120,10 +120,8 @@ fun TypingPriceField(
                 placeholder = {
                     Text(
                         text = hintText,
-                        style = Headline3.merge(
-                            color = Gray600,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Headline3.merge(color = Gray600)
                     )
                 },
                 visualTransformation = textFormat,
@@ -133,7 +131,6 @@ fun TypingPriceField(
                 contentPadding = innerPadding
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()

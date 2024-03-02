@@ -3,7 +3,6 @@ package ac.dnd.mour.android.presentation.ui.main.home
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Icon24
-import ac.dnd.mour.android.presentation.common.theme.Primary3
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
@@ -37,8 +36,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -59,7 +56,6 @@ fun HomeScreen(
     handler: CoroutineExceptionHandler
 ) {
     val scope = rememberCoroutineScope()
-    var historyExpandedState by remember { mutableStateOf(false) }
     val bottomBarItemList: List<MainBottomBarItem> = listOf(
         MainBottomBarItem(
             route = HistoryConstant.ROUTE,
@@ -98,11 +94,9 @@ fun HomeScreen(
         pageCount = { bottomBarItemList.size }
     )
 
-    LaunchedEffect(selectedItem, historyExpandedState) {
-        if (selectedItem != 0 || historyExpandedState) {
+    LaunchedEffect(selectedItem) {
+        if (selectedItem != 0) {
             appState.systemUiController.setStatusBarColor(Gray000)
-        } else {
-            appState.systemUiController.setStatusBarColor(Primary3)
         }
         pagerState.animateScrollToPage(selectedItem)
     }
@@ -129,10 +123,8 @@ fun HomeScreen(
             when (bottomBarItemList[page].route) {
                 HistoryConstant.ROUTE -> {
                     HistoryScreen(
-                        appState = appState,
-                        changeState = {
-                            historyExpandedState = it
-                        }
+                        selectedItem = selectedItem,
+                        appState = appState
                     )
                 }
 
