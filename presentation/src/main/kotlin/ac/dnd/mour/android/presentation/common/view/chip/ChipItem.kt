@@ -2,7 +2,6 @@ package ac.dnd.mour.android.presentation.common.view.chip
 
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
-import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
@@ -84,18 +83,14 @@ fun ChipItem(
     ) {
         Text(
             text = chipText,
-            style = Body1.merge(
-                color = textColor.value,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-            )
+            style = Body1.merge(color = textColor.value),
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
         )
         if (chipCount > 0) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = chipCount.toString(),
-                style = Body1.merge(
-                    color = textColor.value
-                )
+                style = Body1.merge(color = textColor.value)
             )
         }
     }
