@@ -33,6 +33,10 @@ class GetRelationViewModel @Inject constructor(
     val groups: StateFlow<List<GroupWithRelationSimple>> = _groups.asStateFlow()
 
     init {
+        getGroup()
+    }
+
+    private fun getGroup(){
         launch {
             _state.value = GetRelationState.Loading
             getGroupListWithRelationSimpleUseCase()
@@ -53,6 +57,8 @@ class GetRelationViewModel @Inject constructor(
     }
 
     fun onIntent(intent: GetRelationIntent) {
-
+        when(intent){
+            is GetRelationIntent.OnRefresh -> getGroup()
+        }
     }
 }

@@ -35,6 +35,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +65,7 @@ fun TypingTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     hintText: String = "",
+    clearFocus: Boolean = true ,
     isError: Boolean = false,
     isEnabled: Boolean = true,
     isSingleLine: Boolean = true,
@@ -88,6 +91,8 @@ fun TypingTextField(
     errorMessageContent: (@Composable () -> Unit) = { },
     onTextFieldFocusChange: (Boolean) -> Unit = {}
 ) {
+
+    val focusManager = LocalFocusManager.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
 
@@ -97,6 +102,12 @@ fun TypingTextField(
         targetValue = currentColor,
         label = "color state"
     )
+
+    if (clearFocus) {
+        LaunchedEffect(Unit) {
+            focusManager.clearFocus()
+        }
+    }
 
     Column {
         Column(

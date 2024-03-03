@@ -52,8 +52,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -124,15 +124,26 @@ private fun SearchRelationScreen(
     onDismissRequest: () -> Unit,
     onResult: (RelationSimple) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
+
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(GetRelationIntent.OnRefresh)
+    }
+
+    val scrollState = rememberScrollState()
+    var searchText by remember { mutableStateOf("") }
     var selectedRelation: RelationSimple? by remember { mutableStateOf(null) }
     var isTextFieldFocus by remember { mutableStateOf(false) }
-    val lowerText = text.lowercase()
-    val filteredGroups = model.groups.filter { group ->
-        group.relationList.any { relation ->
-            relation.name.lowercase().contains(lowerText)
-        } || group.name.lowercase().contains(lowerText)
-    }
+    val lowerText = searchText.lowercase()
+//    val filteredGroups = model.groups.filter { group ->
+//        group.relationList.any { relation ->
+//            relation.name.lowercase().contains(lowerText)
+//        } || group.name.lowercase().contains(lowerText)
+//    }
+    val filterRelations = model.groups
+        .flatMap { it.relationList }
+        .filter {
+            it.name.lowercase().contains(lowerText)
+        }
 
     fun navigateToEditRelation() {
         onDismissRequest()
@@ -156,6 +167,7 @@ private fun SearchRelationScreen(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
+                    .verticalScroll(scrollState)
                     .wrapContentHeight(),
                 verticalArrangement = Arrangement.Center
             ) {
@@ -193,9 +205,9 @@ private fun SearchRelationScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 TypingTextField(
                     textType = TypingTextFieldType.Basic,
-                    text = text,
+                    text = searchText,
                     onValueChange = {
-                        text = it
+                        searchText = it
                     },
                     fieldHeight = 39.dp,
                     isSingleLine = true,
@@ -204,14 +216,14 @@ private fun SearchRelationScreen(
                         fontWeight = FontWeight.Normal
                     ),
                     contentPadding = PaddingValues(
-                        start = if (!isTextFieldFocus && text.isEmpty()) 6.dp else 16.dp,
+                        start = if (!isTextFieldFocus && searchText.isEmpty()) 6.dp else 16.dp,
                     ),
                     backgroundColor = Gray000,
                     hintText = "이름을 입력하세요.",
                     hintTextColor = Gray500,
                     basicBorderColor = Color.Transparent,
                     leadingIconContent = {
-                        if (!isTextFieldFocus && text.isEmpty()) {
+                        if (!isTextFieldFocus && searchText.isEmpty()) {
                             Box(modifier = Modifier.padding(start = 16.dp)) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_search_group),
@@ -221,7 +233,7 @@ private fun SearchRelationScreen(
                             }
                         }
                     },
-                    trailingIconContent = if (text.isNotEmpty()) {
+                    trailingIconContent = if (searchText.isNotEmpty()) {
                         {
                             Image(
                                 painter = painterResource(R.drawable.ic_close_circle),
@@ -229,7 +241,7 @@ private fun SearchRelationScreen(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable {
-                                        text = ""
+                                        searchText = ""
                                     }
                             )
                         }
@@ -239,7 +251,7 @@ private fun SearchRelationScreen(
                     }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                if (filteredGroups.isEmpty()) {
+                if (filterRelations.isEmpty()) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -291,9 +303,11 @@ private fun SearchRelationScreen(
                         }
                     }
                 } else {
-                    LazyColumn {
-                        filteredGroups.forEach { group ->
-                            item {
+                    if (searchText.isEmpty()) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            model.groups.forEach { group ->
                                 var isExpanded by remember { mutableStateOf(false) }
                                 SearchRelationGroup(
                                     group = group,
@@ -303,6 +317,18 @@ private fun SearchRelationScreen(
                                         isExpanded = !isExpanded
                                     },
                                     onClick = { relation ->
+                                        selectedRelation = relation
+                                    }
+                                )
+                            }
+                        }
+                    } else {
+                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            filterRelations.forEach { relation ->
+                                SearchRelationRelationInFilter(
+                                    relation,
+                                    selectedRelation,
+                                    onClick = {
                                         selectedRelation = relation
                                     }
                                 )
@@ -340,7 +366,7 @@ private fun SearchRelationScreen(
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-                Spacer(modifier = Modifier.height(52.dp))
+                Spacer(modifier = Modifier.height(70.dp))
             }
             Box(
                 modifier = Modifier
@@ -398,7 +424,7 @@ private fun SearchRelationGroup(
                 .fillMaxWidth()
                 .height(56.dp),
             shape = Shapes.large,
-            border =  BorderStroke(
+            border = BorderStroke(
                 if (isExpanded) 2.dp else 1.dp,
                 if (isExpanded) Primary4 else Gray300
             ),
@@ -406,7 +432,7 @@ private fun SearchRelationGroup(
             onClick = {
                 onExpandRequest()
             },
-            elevation = if (isExpanded) 10.dp else 0.dp
+            elevation = if (isExpanded) 6.dp else 0.dp
         ) {
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -416,7 +442,7 @@ private fun SearchRelationGroup(
                 Text(
                     text = group.name,
                     style = Headline3.merge(
-                        color = if(isExpanded) Gray000 else Gray900,
+                        color = if (isExpanded) Gray000 else Gray900,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
@@ -424,13 +450,13 @@ private fun SearchRelationGroup(
                 Image(
                     painter = painterResource(id = R.drawable.ic_person),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(if(isExpanded) Gray000 else Gray500)
+                    colorFilter = ColorFilter.tint(if (isExpanded) Gray000 else Gray500)
                 )
                 Text(
                     modifier = Modifier.weight(1f),
                     text = group.relationList.size.toString(),
                     style = Body0.merge(
-                        color = if(isExpanded) Gray000 else Gray800,
+                        color = if (isExpanded) Gray000 else Gray800,
                         fontWeight = FontWeight.Normal
                     )
                 )
@@ -461,20 +487,22 @@ private fun SearchRelationGroup(
                 border = BorderStroke(2.dp, Gray500),
                 backgroundColor = Gray000,
                 shape = Shapes.large,
-                elevation = 10.dp
+                elevation = 6.dp
             ) {
                 Column {
                     group.relationList.forEachIndexed { index, relation ->
                         SearchRelationRelation(relation, selectedRelation, onClick)
                         if (index < group.relationList.size - 1) {
-                            Divider(modifier = Modifier.height(1.dp))
+                            Divider(
+                                modifier = Modifier
+                                    .height(1.dp)
+                                    .padding(horizontal = 20.dp)
+                            )
                         }
                     }
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -523,6 +551,69 @@ private fun SearchRelationRelation(
             Image(
                 modifier = Modifier
                     .size(24.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        onClick(relation)
+                    },
+                painter = if (relation == selectedRelation) {
+                    painterResource(R.drawable.ic_check_circle)
+                } else {
+                    painterResource(R.drawable.ic_check_circle_gray)
+                },
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class)
+private fun SearchRelationRelationInFilter(
+    relation: RelationSimple,
+    selectedRelation: RelationSimple?,
+    onClick: (RelationSimple) -> Unit
+) {
+    Surface(
+        color = Gray000,
+        shape = Shapes.large,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp),
+        onClick = {
+            onClick(relation)
+        }
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(20.dp))
+            Text(
+                text = relation.name,
+                style = Headline3.merge(
+                    color = Gray800,
+                    fontWeight = FontWeight.SemiBold
+                )
+            )
+            Spacer(modifier = Modifier.width(3.dp))
+            Text(
+                text = "・",
+                style = Headline3
+            )
+            Spacer(modifier = Modifier.width(3.dp))
+            Text(
+                modifier = Modifier.weight(1f),
+                text = relation.group.name,
+                style = Body0.merge(
+                    color = Gray700,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape)
                     .clickable {
                         onClick(relation)
                     },
@@ -543,22 +634,24 @@ private fun SearchRelationRelation(
 fun SearchRelationScreenPreview() {
     SearchRelationScreen(
         appState = rememberApplicationState(),
-        model = GetRelationModel(state = GetRelationState.Init, groups = listOf(
-            GroupWithRelationSimple(
-                id = 0,
-                name = "sdfdsfs",
-                relationList = listOf(
-                   RelationSimple(
-                       id = 0,
-                       name = "sdljsfldfsj",
-                       group = RelationSimpleGroup(
-                           id = 0,
-                           name = "fewljfwej"
-                       )
-                   )
+        model = GetRelationModel(
+            state = GetRelationState.Init, groups = listOf(
+                GroupWithRelationSimple(
+                    id = 0,
+                    name = "sdfdsfs",
+                    relationList = listOf(
+                        RelationSimple(
+                            id = 0,
+                            name = "sdljsfldfsj",
+                            group = RelationSimpleGroup(
+                                id = 0,
+                                name = "fewljfwej"
+                            )
+                        )
+                    )
                 )
             )
-        )),
+        ),
         event = MutableEventFlow(),
         intent = {},
         handler = CoroutineExceptionHandler { _, _ -> },

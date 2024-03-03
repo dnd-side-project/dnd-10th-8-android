@@ -120,6 +120,7 @@ fun RelationScreen(
 ) {
 
     appState.setStatusBarColor(Gray000)
+
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current

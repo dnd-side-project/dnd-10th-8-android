@@ -7,6 +7,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
+import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space24
@@ -62,7 +63,8 @@ fun HistoryDetailPageScreen(
     event: EventFlow<HistoryDetailEvent>,
     intent: (HistoryDetailIntent) -> Unit,
     handler: CoroutineExceptionHandler,
-    viewType: HistoryViewType
+    viewType: HistoryViewType,
+    onRegistration: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
@@ -127,7 +129,7 @@ fun HistoryDetailPageScreen(
                 }
             }
             if (hearts.isEmpty()) {
-                EmptyHeartView()
+                EmptyHeartView(onRegistration = onRegistration)
             } else {
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyColumn(
@@ -157,8 +159,9 @@ fun HistoryDetailPageScreen(
                     intent(HistoryDetailIntent.OnDelete(id))
                     currentSelectedHeartIndex = -1
                     scope.launch {
-                        isShowingSuccessDeleteSnackBar = true
                         delay(200L)
+                        isShowingSuccessDeleteSnackBar = true
+                        delay(1000L)
                         isShowingSuccessDeleteSnackBar = false
                     }
                 },
@@ -247,7 +250,9 @@ fun HistoryDetailPageScreen(
 }
 
 @Composable
-private fun EmptyHeartView() {
+private fun EmptyHeartView(
+    onRegistration: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
@@ -256,7 +261,7 @@ private fun EmptyHeartView() {
         Text(
             text = "아직 주고 받은 내역이 없어요",
             style = Body1.merge(
-                color = Gray600,
+                color = Gray700,
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -264,7 +269,7 @@ private fun EmptyHeartView() {
         Text(
             text = "주고 받은 금액을 기록해 보세요",
             style = Body1.merge(
-                color = Gray500,
+                color = Gray600,
                 fontWeight = FontWeight.Normal
             )
         )
@@ -275,10 +280,11 @@ private fun EmptyHeartView() {
                 .background(color = Color.White)
                 .border(
                     width = 1.dp,
-                    color = Gray400
+                    color = Gray400,
+                    shape = Shapes.medium
                 )
                 .clickable {
-
+                    onRegistration()
                 }
                 .padding(
                     horizontal = 16.dp,
@@ -301,5 +307,5 @@ private fun EmptyHeartView() {
 @Preview
 @Composable
 private fun EmptyHeartPreview() {
-    EmptyHeartView()
+    EmptyHeartView(onRegistration = {})
 }

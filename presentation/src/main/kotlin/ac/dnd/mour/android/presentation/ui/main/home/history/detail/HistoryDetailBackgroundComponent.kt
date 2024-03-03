@@ -10,6 +10,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray100
 import ac.dnd.mour.android.presentation.common.theme.Headline0
 import ac.dnd.mour.android.presentation.common.theme.Headline3
+import ac.dnd.mour.android.presentation.common.util.expansion.measureTextWidth
 import ac.dnd.mour.android.presentation.model.history.HistoryDetailGrowthType
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import androidx.compose.foundation.Image
@@ -26,16 +27,19 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -55,7 +59,7 @@ fun HistoryDetailBackgroundComponent(
     onClickBack: () -> Unit
 ) {
 
-    val animationBottomOffset = when(currentGrowthType){
+    val animationBottomOffset = when (currentGrowthType) {
         HistoryDetailGrowthType.LEVEL_ONE -> (-42.73).dp
         HistoryDetailGrowthType.LEVEL_TWO -> (-3.38).dp
         HistoryDetailGrowthType.LEVEL_THREE -> 21.92.dp
@@ -64,7 +68,7 @@ fun HistoryDetailBackgroundComponent(
         HistoryDetailGrowthType.LEVEL_SIX -> 9.37.dp
     }
 
-    val animationEndOffset = when(currentGrowthType){
+    val animationEndOffset = when (currentGrowthType) {
         HistoryDetailGrowthType.LEVEL_ONE -> (-44.24).dp
         HistoryDetailGrowthType.LEVEL_TWO -> (-15.51).dp
         HistoryDetailGrowthType.LEVEL_THREE -> (-13.78).dp
@@ -73,7 +77,7 @@ fun HistoryDetailBackgroundComponent(
         HistoryDetailGrowthType.LEVEL_SIX -> 99.14.dp
     }
 
-    val animationRaw = when(currentGrowthType){
+    val animationRaw = when (currentGrowthType) {
         HistoryDetailGrowthType.LEVEL_ONE -> R.raw.history_lv_1
         HistoryDetailGrowthType.LEVEL_TWO -> R.raw.history_lv_2
         HistoryDetailGrowthType.LEVEL_THREE -> R.raw.history_lv_3
@@ -99,10 +103,10 @@ fun HistoryDetailBackgroundComponent(
                     y = animationBottomOffset,
                     x = animationEndOffset
                 )
-        ){
+        ) {
             LottieAnimation(
                 composition = composition,
-                iterations =  LottieConstants.IterateForever
+                iterations = LottieConstants.IterateForever
             )
         }
 
@@ -118,7 +122,8 @@ fun HistoryDetailBackgroundComponent(
                 painter = painterResource(R.drawable.ic_info),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(20.dp)
+                    .clip(CircleShape)
+                    .size(24.dp)
                     .clickable {
                         onClickGrowthInfo()
                     }
@@ -209,12 +214,13 @@ fun HistoryDetailBackgroundComponent(
             }
             Spacer(modifier = Modifier.height(6.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val nameLength = model.relationDetail.name.length
                 Text(
-                    text = model.relationDetail.name,
-                    style = Headline0.merge(
-                        color = Gray000,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    text = if (nameLength < 8) model.relationDetail.name else model.relationDetail.name.substring(0,8),
+                    fontWeight = FontWeight.SemiBold,
+                    style = Headline0.merge(color = Gray000),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
                 Text(
                     text = "・",
@@ -334,9 +340,9 @@ private val sampleHistoryDetailModel = HistoryDetailModel(
     )
 )
 
-@Preview
+@Preview(apiLevel = 33)
 @Composable
-fun HistoryDetailBackgroundComponent1Preview() {
+private fun HistoryDetailBackgroundComponent1Preview() {
     HistoryDetailBackgroundComponent(
         currentGrowthType = HistoryDetailGrowthType.LEVEL_SIX,
         model = sampleHistoryDetailModel,
@@ -347,9 +353,9 @@ fun HistoryDetailBackgroundComponent1Preview() {
     )
 }
 
-@Preview
+@Preview(apiLevel = 33)
 @Composable
-fun HistoryDetailBackgroundComponent2Preview() {
+private fun HistoryDetailBackgroundComponent2Preview() {
     HistoryDetailBackgroundComponent(
         currentGrowthType = HistoryDetailGrowthType.LEVEL_ONE,
         model = sampleHistoryDetailModel,

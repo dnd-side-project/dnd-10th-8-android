@@ -24,6 +24,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -48,6 +50,7 @@ fun TypingPriceField(
     modifier: Modifier = Modifier,
     textValue: String,
     onValueChange: (String) -> Unit,
+    clearFocus: Boolean = true,
     hintText: String = "지출하신 금액을 입력해주세요",
     isError: Boolean = false,
     isEnabled: Boolean = true,
@@ -63,12 +66,19 @@ fun TypingPriceField(
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isTextFieldFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
     val currentColor = if (isError) Negative else if (isTextFieldFocused) Primary3 else Gray500
     val currentColorState = animateColorAsState(
         targetValue = currentColor,
         label = "color state"
     )
+
+    if (clearFocus) {
+        LaunchedEffect(Unit) {
+            focusManager.clearFocus()
+        }
+    }
 
     fun makeFilterText(text: String): String = text.filter { it.isDigit() }
 

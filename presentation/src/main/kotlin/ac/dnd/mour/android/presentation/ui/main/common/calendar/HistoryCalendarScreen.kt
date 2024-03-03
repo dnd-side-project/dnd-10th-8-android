@@ -5,6 +5,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline2
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Space12
@@ -101,7 +102,7 @@ fun HistoryCalendarScreen(
             Text(
                 text = "활동 날짜 선택",
                 style = Headline2.merge(
-                    color = Gray800,
+                    color = Gray900,
                     fontWeight = FontWeight.SemiBold
                 ),
                 modifier = Modifier
@@ -117,7 +118,7 @@ fun HistoryCalendarScreen(
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_chevron_left),
-                    colorFilter = ColorFilter.tint(Gray600),
+                    colorFilter = ColorFilter.tint(Gray700),
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
@@ -142,7 +143,7 @@ fun HistoryCalendarScreen(
                     Text(
                         text = "${currentSelectMonth}월",
                         style = Headline3.merge(
-                            color = Gray700,
+                            color = Gray800,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -158,7 +159,7 @@ fun HistoryCalendarScreen(
                 Image(
                     painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Gray600),
+                    colorFilter = ColorFilter.tint(Gray700),
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable {
