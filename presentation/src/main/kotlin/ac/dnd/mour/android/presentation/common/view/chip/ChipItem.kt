@@ -83,8 +83,8 @@ fun ChipItem(
     ) {
         Text(
             text = chipText,
-            style = Body1.merge(color = textColor.value),
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+            style = Body1.merge(color = textColor.value)
         )
         if (chipCount > 0) {
             Spacer(modifier = Modifier.width(4.dp))

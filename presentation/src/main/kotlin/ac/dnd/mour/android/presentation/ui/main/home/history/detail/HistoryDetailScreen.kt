@@ -166,7 +166,15 @@ fun HistoryDetailScreen(
     }
 
     fun navigateToAddHeart() {
-        appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
+        val route = makeRoute(
+            HistoryRegistrationConstant.ROUTE,
+            listOf(
+                HistoryRegistrationConstant.ROUTE_ARGUMENT_ID to model.relationDetail.id,
+                HistoryRegistrationConstant.ROUTE_ARGUMENT_NAME to model.relationDetail.name,
+                HistoryRegistrationConstant.ROUTE_ARGUMENT_IS_HOME to false
+            )
+        )
+        appState.navController.navigate(route)
     }
 
     BoxWithConstraints(

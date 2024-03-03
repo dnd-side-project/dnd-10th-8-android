@@ -7,6 +7,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray300
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,9 +55,9 @@ fun CalendarComponent(
     calendarConfig: CalendarConfig,
     calendarColorProperties: CalendarColorProperties = CalendarColorProperties(
         otherMonthColor = Color.Transparent,
-        todayBeforeColor = Gray700,
-        todayColor = Gray600,
-        todayAfterColor = Gray700
+        todayBeforeColor = Gray800,
+        todayColor = Gray700,
+        todayAfterColor = Gray800
     ),
     unClickableDays: Set<CalendarDayType> = setOf(CalendarDayType.AFTER_TODAY),
     onDaySelect: (Int) -> Unit,
@@ -84,7 +86,7 @@ fun CalendarComponent(
                     Text(
                         text = it,
                         style = Body2.merge(
-                            color = Gray600,
+                            color = Gray700,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -110,6 +112,7 @@ fun CalendarComponent(
 
                 Column(
                     modifier = Modifier
+                        .clip(CircleShape)
                         .clickable {
                             if (!unClickableDays.contains(dayItem.dayType) && dayItem.dayType != CalendarDayType.OTHER_MONTH)
                                 onDaySelect(dayItem.day)
