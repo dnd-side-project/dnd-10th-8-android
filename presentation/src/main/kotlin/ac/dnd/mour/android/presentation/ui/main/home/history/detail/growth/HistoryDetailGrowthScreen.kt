@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 @Composable
@@ -134,18 +135,15 @@ fun HistoryDetailGrowthScreen(
                     Column {
                         Text(
                             text = type.typeName,
-                            style = Headline3.merge(
-                                color = Gray800,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Headline3.merge(color = Gray900)
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = HistoryDetailGrowthType.getTypeString(type),
-                            style = Body1.merge(
-                                color = Gray600,
-                                fontWeight = FontWeight.Normal
-                            )
+                            fontWeight = FontWeight.Normal,
+                            style = Body1.merge(color = Gray700),
+                            letterSpacing = (-0.25).sp
                         )
                     }
                     Box(
@@ -168,7 +166,7 @@ fun HistoryDetailGrowthScreen(
                             .padding(end = 20.dp)
                             .align(Alignment.TopEnd)
                             .background(
-                                color = Gray700,
+                                color = Gray800,
                                 shape = RoundedCornerShape(100.dp)
                             )
                             .padding(

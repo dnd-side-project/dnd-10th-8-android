@@ -10,12 +10,12 @@ import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary1
 import ac.dnd.mour.android.presentation.common.theme.Primary4
 import ac.dnd.mour.android.presentation.common.theme.Primary5
 import ac.dnd.mour.android.presentation.common.theme.Shapes
-import ac.dnd.mour.android.presentation.common.util.expansion.measureTextWidth
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,18 +73,23 @@ fun HistoryDetailItem(
                     text = "${relatedHeart.day.year}년 " +
                             "${relatedHeart.day.monthNumber}월 " +
                             "${relatedHeart.day.dayOfMonth}일",
-                    style = Body1.merge(
-                        color = Gray600,
-                        fontWeight = FontWeight.Normal
-                    ),
-                    lineHeight = 28.sp
+                    fontWeight = FontWeight.Normal,
+                    style = Body1.merge(color = Gray700),
+                    lineHeight = 28.sp,
+                    letterSpacing = (-0.25).sp
                 )
+                val textLength = relatedHeart.event.length
+                val text =
+                    if (textLength >= 20) relatedHeart.event.substring(0,20).plus("...")
+                    else relatedHeart.event
+                Spacer(modifier = Modifier.height(1.dp))
                 Text(
-                    text = relatedHeart.event,
+                    text = text,
+                    fontWeight = FontWeight.SemiBold,
                     style = Headline3.merge(
-                        color = Gray800,
-                        fontWeight = FontWeight.SemiBold
+                        color = Gray900
                     ),
+                    lineHeight = 24.sp
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -92,10 +98,11 @@ fun HistoryDetailItem(
                             DecimalFormat("#,###")
                                 .format(relatedHeart.money)
                         }",
+                        fontWeight = FontWeight.SemiBold,
                         style = Headline3.merge(
-                            color = if (relatedHeart.give) Color(0xFF1187D8) else Primary5,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                            color = if (relatedHeart.give) Color(0xFF1187D8) else Primary5
+                        ),
+                        lineHeight = 24.sp
                     )
                     Text(
                         text = "원",
@@ -110,19 +117,20 @@ fun HistoryDetailItem(
                     color = Gray600,
                     fontWeight = FontWeight.Normal
                 )
-                if (measureTextWidth(relatedHeart.memo, memeStyle) <= currentViewWidth - 80.dp) {
-                    if (relatedHeart.memo.isNotEmpty()) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_board),
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = relatedHeart.memo,
-                                style = memeStyle
-                            )
-                        }
+                if (relatedHeart.memo.isNotEmpty()) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_board),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = relatedHeart.memo,
+                            style = memeStyle,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.width(currentViewWidth - 100.dp)
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -219,7 +227,7 @@ private fun HistoryDetailItem3Preview() {
             give = false,
             money = 500000,
             day = LocalDate(2024, 1, 23),
-            event = "생일",
+            event = "이벤트 이름 20자 이상 이벤트 이름 20자 이상 넘어가면 숨김 처리 ",
             memo = "메모 내용 한 줄 넘어가면 숨김 처리 메모 내용 한 줄 넘어가면 숨김 처리 ",
             tags = listOf("참석", "현금")
         ),

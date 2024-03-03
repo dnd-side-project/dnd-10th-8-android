@@ -331,7 +331,10 @@ fun HistoryDetailScreen(
                             event = event,
                             intent = intent,
                             handler = handler,
-                            viewType = viewType ?: HistoryViewType.TOTAL
+                            viewType = viewType ?: HistoryViewType.TOTAL,
+                            onRegistration = {
+                                navigateToAddHeart()
+                            }
                         )
                     }
                 }

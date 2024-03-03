@@ -5,7 +5,6 @@ import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray400
-import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline2
@@ -20,6 +19,7 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
@@ -78,7 +78,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -136,8 +135,8 @@ private fun HistoryDetailEditScreen(
     onDelete: (Long) -> Unit,
     onEdit: (RelatedHeart) -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     var moneyText by remember { mutableStateOf(model.relatedHeart.money.toString()) }
     var selectedYear by remember { mutableIntStateOf(model.relatedHeart.day.year) }
@@ -157,6 +156,7 @@ private fun HistoryDetailEditScreen(
     var isShowingOutPageDialog by remember { mutableStateOf(false) }
     var isShowingDeleteDialog by remember { mutableStateOf(false) }
     var isShowingSuccessEditSnackBar by remember { mutableStateOf(false) }
+    var isClearFocus by remember { mutableStateOf(false) }
 
     BackHandler(
         enabled = true,
@@ -168,6 +168,14 @@ private fun HistoryDetailEditScreen(
             }
         }
     )
+
+    fun focusOut(){
+        scope.launch {
+            isClearFocus = true
+            delay(500L)
+            isClearFocus = false
+        }
+    }
 
     fun delete(event: HistoryDetailEditEvent.DeleteRelatedHeart) {
         when (event) {
@@ -183,7 +191,7 @@ private fun HistoryDetailEditScreen(
                 onEdit(event.relatedHeart)
                 scope.launch {
                     isShowingSuccessEditSnackBar = true
-                    delay(500L)
+                    delay(1000L)
                     isShowingSuccessEditSnackBar = false
                     isEditMode = false
                 }
@@ -203,10 +211,16 @@ private fun HistoryDetailEditScreen(
                 skipCollapsed = true,
                 isDraggable = false
             )
-        )
+        ),
     ) {
         Box(
             modifier = Modifier
+                .addFocusCleaner(
+                    focusManager = focusManager,
+                    doOnClear = {
+                        focusOut()
+                    }
+                )
                 .wrapContentHeight()
                 .background(Gray000)
         ) {
@@ -251,6 +265,7 @@ private fun HistoryDetailEditScreen(
                         isEditMode = true
                     },
                     isAddFiledEnabled = false,
+                    clearFocus = isClearFocus
                 )
                 Spacer(modifier = Modifier.height(Space24))
 
@@ -274,6 +289,7 @@ private fun HistoryDetailEditScreen(
                         eventText = it
                         isEditMode = true
                     },
+                    clearFocus = isClearFocus,
                     textType = TypingTextFieldType.Basic,
                     onTextFieldFocusChange = {
                         if (it) {
@@ -314,6 +330,7 @@ private fun HistoryDetailEditScreen(
                 Spacer(modifier = Modifier.height(6.dp))
                 TypingTextField(
                     text = memoText,
+                    clearFocus = isClearFocus,
                     onValueChange = {
                         memoText = it
                         isEditMode = true
@@ -417,7 +434,8 @@ private fun HistoryDetailEditScreen(
                 }
                 Spacer(modifier = Modifier.width(Space12))
                 ConfirmButton(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f),
                     properties = ConfirmButtonProperties(
                         size = ConfirmButtonSize.Xlarge,
                         type = ConfirmButtonType.Primary
@@ -449,7 +467,7 @@ private fun HistoryDetailEditScreen(
                     }
                 ) {
                     Text(
-                        text = "확인",
+                        text = "저장하기",
                         style = Headline3.merge(
                             color = Gray000,
                             fontWeight = FontWeight.SemiBold
@@ -473,10 +491,12 @@ private fun HistoryDetailEditScreen(
         EventTypeScreen(
             onDismissRequest = {
                 isEventSelected = false
+                focusOut()
             },
             onConfirm = {
                 isEventSelected = false
                 eventText = it
+                focusOut()
             },
             onTypingMode = {
                 isEventSelected = false
@@ -651,3 +671,4 @@ private fun HistoryDetailEditScreenPreview() {
         onEdit = {}
     )
 }
+
