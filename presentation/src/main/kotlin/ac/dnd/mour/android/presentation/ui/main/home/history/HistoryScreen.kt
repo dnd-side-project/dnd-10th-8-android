@@ -170,6 +170,7 @@ private fun HistoryScreen(
         (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
 
+    //TODO edit
     LaunchedEffect(swipeState.progress.to, selectedItem, isDropDownMenuExpanded) {
         if (selectedItem == 0 && isViewInLifecycle) {
             when (swipeState.progress.to) {

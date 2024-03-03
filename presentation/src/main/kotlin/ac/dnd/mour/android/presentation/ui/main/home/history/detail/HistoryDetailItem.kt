@@ -9,7 +9,6 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
-import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Primary1
@@ -80,7 +79,7 @@ fun HistoryDetailItem(
                 )
                 val textLength = relatedHeart.event.length
                 val text =
-                    if (textLength >= 20) relatedHeart.event.substring(0,20).plus("...")
+                    if (textLength >= 20) relatedHeart.event.substring(0, 20).plus("...")
                     else relatedHeart.event
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
