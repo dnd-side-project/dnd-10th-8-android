@@ -150,7 +150,9 @@ private fun HistoryScreen(
     selectedItem: Int
 ) {
 
+    var isViewInLifecycle by remember { mutableStateOf(true) }
     LaunchedEffectWithLifecycle(context = handler) {
+        isViewInLifecycle = true
         intent(HistoryIntent.LoadData)
     }
 
@@ -168,11 +170,8 @@ private fun HistoryScreen(
         (if (model.unrecordedSchedule.isNotEmpty() && isViewUnrecordedState) 343.dp else 257.dp)
     val swipeState = rememberSwipeableState(initialValue = HistoryViewSwipingType.COLLAPSED)
 
-//    LaunchedEffect(isDropDownMenuExpanded){
-//        appState.systemUiController.isStatusBarVisible  = !isDropDownMenuExpanded
-//    }
     LaunchedEffect(swipeState.progress.to, selectedItem, isDropDownMenuExpanded) {
-        if (selectedItem == 0) {
+        if (selectedItem == 0 && isViewInLifecycle) {
             when (swipeState.progress.to) {
                 HistoryViewSwipingType.EXPANDED -> {
                     appState.systemUiController.setStatusBarColor(Gray000)
@@ -241,18 +240,22 @@ private fun HistoryScreen(
 
 
     fun navigateToUnrecorded() {
+        isViewInLifecycle = false
         appState.navController.navigate(HistoryUnrecordedConstant.ROUTE)
     }
 
     fun navigateToNotification() {
+        isViewInLifecycle = false
         appState.navController.navigate(NotificationConstant.ROUTE)
     }
 
     fun navigateToAddRelation() {
+        isViewInLifecycle = false
         appState.navController.navigate(RelationConstant.ROUTE)
     }
 
     fun navigateToAddHeart() {
+        isViewInLifecycle = false
         appState.navController.navigate(HistoryRegistrationConstant.ROUTE)
     }
 
