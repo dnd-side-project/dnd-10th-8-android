@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import java.text.DecimalFormat
 
 @Composable
@@ -73,17 +72,15 @@ fun HistoryRelationItem(
                         text = relation.name,
                         fontWeight = FontWeight.SemiBold,
                         style = Headline3.merge(color = Gray800),
-                        lineHeight = 24.sp,
                         textAlign = TextAlign.Left,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(1.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = relation.group.name,
                         fontWeight = FontWeight.Medium,
                         style = Body1.merge(color = Gray600),
-                        lineHeight = 21.sp,
                     )
                 }
             }

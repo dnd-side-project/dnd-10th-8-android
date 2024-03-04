@@ -71,6 +71,7 @@ fun HistoryBackgroundComponent(
     onClickAlarm: () -> Unit,
     onSearchValueChange: (String) -> Unit
 ) {
+    val totalCount = model.groups.flatMap { it.relationList }.size
     val compositionLoading by rememberLottieComposition(
         spec = LottieCompositionSpec.RawRes(resId = R.raw.loading)
     )
@@ -185,7 +186,7 @@ fun HistoryBackgroundComponent(
                     Text(
                         fontWeight = FontWeight.SemiBold,
                         style = Headline1.merge(color = Gray000),
-                        text = "총 ${model.groups.size}번의 마음을 \n주고 받았어요",
+                        text = "총 ${totalCount}번의 마음을 \n주고 받았어요",
                         fontSize = 20.scaledSp(),
                         letterSpacing = (-0.25).sp,
                         modifier = Modifier.height(60.dp)

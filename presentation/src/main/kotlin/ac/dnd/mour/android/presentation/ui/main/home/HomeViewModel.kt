@@ -6,10 +6,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -22,7 +22,24 @@ class HomeViewModel @Inject constructor(
     private val _event: MutableEventFlow<HomeEvent> = MutableEventFlow()
     val event: EventFlow<HomeEvent> = _event.asEventFlow()
 
+    val message: String by lazy {
+        savedStateHandle.get<String>(HomeConstant.ROUTE_ARGUMENT_MESSAGE) ?: ""
+    }
+
+    init {
+        if (message.isNotEmpty()) {
+            viewMessage(message)
+        }
+    }
+
     fun onIntent(intent: HomeIntent) {
 
+    }
+
+    private fun viewMessage(message: String) {
+        launch {
+            _event.emit(HomeEvent.ShowSnackBar(message))
+        }
+        savedStateHandle.remove<String>(HomeConstant.ROUTE_ARGUMENT_MESSAGE)
     }
 }

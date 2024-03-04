@@ -16,10 +16,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class RelationViewModel @Inject constructor(
@@ -44,24 +44,7 @@ class RelationViewModel @Inject constructor(
     val groups: StateFlow<List<Group>> = _groups.asStateFlow()
 
     init {
-        launch {
-            _state.value = RelationState.Loading
-            getGroupListUseCase()
-                .onSuccess {
-                    _groups.value = it
-                }
-                .onFailure { exception ->
-                    when (exception) {
-                        is ServerException -> {
-                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
-                        }
-
-                        else -> {
-                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
-                        }
-                    }
-                }
-        }
+        loadGroup()
     }
 
     fun onIntent(intent: RelationIntent) {
@@ -104,7 +87,7 @@ class RelationViewModel @Inject constructor(
 
             is RelationIntent.OnClickLoadFriend -> loadKakaoFriend()
 
-            is RelationIntent.OnGroupChange -> resetGroup(intent.groups)
+            is RelationIntent.OnGroupChange -> loadGroup()
         }
     }
 
@@ -303,7 +286,24 @@ class RelationViewModel @Inject constructor(
         }
     }
 
-    private fun resetGroup(newGroups: List<Group>) {
-        _groups.value = newGroups
+    private fun loadGroup() {
+        launch {
+            _state.value = RelationState.Loading
+            getGroupListUseCase()
+                .onSuccess {
+                    _groups.value = it
+                }
+                .onFailure { exception ->
+                    when (exception) {
+                        is ServerException -> {
+                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                        }
+
+                        else -> {
+                            _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                        }
+                    }
+                }
+        }
     }
 }

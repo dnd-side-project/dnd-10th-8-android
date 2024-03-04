@@ -46,8 +46,10 @@ import ac.dnd.mour.android.presentation.model.relation.RelationDetailWithUserInf
 import ac.dnd.mour.android.presentation.model.relation.RelationType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.common.gallery.GalleryScreen
+import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.group.get.GetGroupScreen
 import ac.dnd.mour.android.presentation.ui.main.home.history.registration.HistoryRegistrationConstant
+import ac.dnd.mour.android.presentation.ui.main.home.history.scaledSp
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -102,6 +104,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
@@ -144,6 +147,7 @@ fun RelationScreen(
     var isShowingGetGroup by remember { mutableStateOf(false) }
     var isShowingGalleryView by remember { mutableStateOf(false) }
     var isShowingNonGroupSnackBar by remember { mutableStateOf(false) }
+    var isShowingInvalidSnackBar by remember { mutableStateOf(false) }
     var isShowingNonNameSnackBar by remember { mutableStateOf(false) }
 
     BackHandler(
@@ -155,7 +159,7 @@ fun RelationScreen(
 
     LaunchedEffect(Unit) {
         scope.launch {
-            delay(40000L)
+            delay(20000L)
             isShowingTooltip = false
         }
     }
@@ -184,7 +188,11 @@ fun RelationScreen(
                     )
                     appState.navController.navigate(route)
                 } else {
-                    appState.navController.popBackStack()
+                    val route = makeRoute(
+                        HomeConstant.ROUTE,
+                        listOf(HomeConstant.ROUTE_ARGUMENT_MESSAGE to "등록이 완료되었습니다.")
+                    )
+                    appState.navController.navigate(route)
                 }
             }
         }
@@ -193,7 +201,11 @@ fun RelationScreen(
     fun deleteRelation(event: RelationEvent.DeleteRelation) {
         when (event) {
             is RelationEvent.DeleteRelation.Success -> {
-                appState.navController.popBackStack()
+                val route = makeRoute(
+                    HomeConstant.ROUTE,
+                    listOf(HomeConstant.ROUTE_ARGUMENT_MESSAGE to "삭제가 완료되었습니다.")
+                )
+                appState.navController.navigate(route)
             }
         }
     }
@@ -219,6 +231,13 @@ fun RelationScreen(
                 isShowingNonNameSnackBar = true
                 delay(1000L)
                 isShowingNonNameSnackBar = false
+            }
+            false
+        } else if (isNameTypeTyping && isUserNameInValid || !isNameTypeTyping && isKakaoNameInValid) {
+            scope.launch {
+                isShowingInvalidSnackBar = true
+                delay(1000L)
+                isShowingInvalidSnackBar = false
             }
             false
         } else {
@@ -250,15 +269,19 @@ fun RelationScreen(
                     .height(Space80),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier.clickable {
-                        isShowingGalleryView = true
-                    }
-                ) {
+                Box {
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .clip(CircleShape)
+                            .border(
+                                width = 1.dp,
+                                color = Gray400,
+                                shape = CircleShape
+                            )
+                            .clickable {
+                                isShowingGalleryView = true
+                            }
                             .background(Gray400)
                     ) {
                         if (currentImageUrl.isEmpty()) {
@@ -321,10 +344,9 @@ fun RelationScreen(
                                 ) {
                                     Text(
                                         text = "카카오톡에서 자동으로 친구 정보를 가져와요.",
-                                        style = Body2.merge(
-                                            color = Gray800,
-                                            fontWeight = FontWeight.SemiBold
-                                        )
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 12.scaledSp(),
+                                        style = Body2.merge(color = Gray800)
                                     )
                                 }
                             }
@@ -363,7 +385,7 @@ fun RelationScreen(
                     chipId = 1,
                     currentSelectedId = setOf(if (isNameTypeTyping) 0 else 1),
                     onSelectChip = {
-                        if (isNameTypeTyping) {
+                        if (isNameTypeTyping && kakaoNameText == "카카오톡에서 친구 선택") {
                             intent(RelationIntent.OnClickLoadFriend)
                         }
                         isNameTypeTyping = false
@@ -377,9 +399,9 @@ fun RelationScreen(
                     text = currentNameText,
                     onValueChange = {
                         currentNameText = it
-                        isUserNameInValid = currentNameText.length > 5
+                        isUserNameInValid = currentNameText.length > 8
                     },
-                    hintText = "닉네임 입력 (15자 이내)",
+                    hintText = "닉네임 입력 (8자 이내)",
                     hintTextColor = Gray700,
                     isError = isUserNameInValid,
                     errorMessageContent = {
@@ -426,8 +448,8 @@ fun RelationScreen(
                                 textType = TypingTextFieldType.Basic,
                                 text = kakaoNameText,
                                 onValueChange = {
-                                    currentNameText = it
-                                    isKakaoNameInValid = it.length > 5
+                                    kakaoNameText = it
+                                    isKakaoNameInValid = it.length > 8
                                 },
                                 isError = isKakaoNameInValid,
                                 isSingleLine = true,
@@ -499,7 +521,7 @@ fun RelationScreen(
             Spacer(modifier = Modifier.height(Space24))
 
             FieldSubject(subject = "그룹")
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -590,7 +612,7 @@ fun RelationScreen(
                 subject = "메모",
                 isViewIcon = false
             )
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(7.dp))
             when (relationType) {
                 RelationType.EDIT -> {
                     TypingTextField(
@@ -856,6 +878,16 @@ fun RelationScreen(
                 SnackBarScreen("이름이 선택되지 않았습니다.")
             }
         }
+
+        if (isShowingInvalidSnackBar) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 65.dp)
+            ) {
+                SnackBarScreen("이름이 유효하지 않습니다.")
+            }
+        }
     }
 
     if (isCancelWriteState) {
@@ -894,6 +926,7 @@ fun RelationScreen(
                             color = Gray800,
                             fontWeight = FontWeight.SemiBold
                         ),
+                        lineHeight = 25.sp,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(20.dp))
@@ -932,7 +965,7 @@ fun RelationScreen(
                             }
                         ) {
                             Text(
-                                text = "계속 ${currentText}",
+                                text = "계속 $currentText",
                                 style = Headline3.merge(
                                     color = Gray000,
                                     fontWeight = FontWeight.SemiBold
@@ -957,7 +990,7 @@ fun RelationScreen(
                 currentGroupId = it.id
             },
             onGroupChange = {
-                intent(RelationIntent.OnGroupChange(it))
+                intent(RelationIntent.OnGroupChange)
             }
         )
     }
@@ -973,10 +1006,6 @@ fun RelationScreen(
                 currentImageName = galleryImage.name
             }
         )
-    }
-
-    if (!isNameTypeTyping && kakaoNameText.isEmpty()) {
-        intent(RelationIntent.OnClickLoadFriend)
     }
 
     if (isShowingDeleteDialog) {
@@ -1022,7 +1051,7 @@ private fun errorMessage() {
         )
         Spacer(Modifier.width(Space4))
         Text(
-            text = "5자 이내로 입력해주세요",
+            text = "8자 이내로 입력해주세요",
             style = Body1.merge(color = Negative)
         )
     }

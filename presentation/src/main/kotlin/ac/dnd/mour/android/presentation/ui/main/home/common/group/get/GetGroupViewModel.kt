@@ -10,10 +10,10 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class GetGroupViewModel @Inject constructor(
@@ -33,8 +33,6 @@ class GetGroupViewModel @Inject constructor(
     fun onIntent(intent: GetGroupIntent) {
         when (intent) {
             is GetGroupIntent.OnDelete -> deleteGroup(intent.id)
-            is GetGroupIntent.OnAdd -> addGroup(intent.group)
-            is GetGroupIntent.OnEdit -> editGroup(intent.group)
         }
     }
 
@@ -59,20 +57,6 @@ class GetGroupViewModel @Inject constructor(
                         }
                     }
                 }
-        }
-    }
-
-    private fun addGroup(group: Group) {
-        _groups.value = _groups.value.toMutableList().also {
-            it.add(group)
-        }
-    }
-
-    private fun editGroup(newGroup: Group) {
-        _groups.value = _groups.value.toMutableList().also {
-            it.replaceAll { group ->
-                if (group.id == newGroup.id) newGroup else group
-            }
         }
     }
 }

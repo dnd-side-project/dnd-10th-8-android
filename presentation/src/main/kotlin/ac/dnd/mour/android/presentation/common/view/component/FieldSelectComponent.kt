@@ -44,7 +44,7 @@ fun FieldSelectComponent(
             .background(color = Gray000)
             .border(
                 width = 1.dp,
-                color = if (isSelected) Primary4 else Gray400,
+                color = if (isSelected) Primary4 else Gray500,
                 shape = Shapes.medium
             )
             .fillMaxWidth()
