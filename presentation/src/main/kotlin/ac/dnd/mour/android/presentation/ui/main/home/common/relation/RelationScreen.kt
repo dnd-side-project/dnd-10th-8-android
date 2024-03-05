@@ -192,7 +192,11 @@ fun RelationScreen(
                         HomeConstant.ROUTE,
                         listOf(HomeConstant.ROUTE_ARGUMENT_MESSAGE to "등록이 완료되었습니다.")
                     )
-                    appState.navController.navigate(route)
+                    appState.navController.navigate(route) {
+                        popUpTo(RelationConstant.ROUTE) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
         }
@@ -205,7 +209,11 @@ fun RelationScreen(
                     HomeConstant.ROUTE,
                     listOf(HomeConstant.ROUTE_ARGUMENT_MESSAGE to "삭제가 완료되었습니다.")
                 )
-                appState.navController.navigate(route)
+                appState.navController.navigate(route) {
+                    popUpTo(RelationConstant.ROUTE) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }
