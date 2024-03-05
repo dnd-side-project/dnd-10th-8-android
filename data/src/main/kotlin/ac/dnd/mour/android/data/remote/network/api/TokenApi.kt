@@ -22,7 +22,7 @@ class TokenApi @Inject constructor(
         refreshToken: String
     ): Result<GetAccessTokenRes> {
         return noAuthClient.post("$baseUrl/api/v1/token/reissue") {
-            header("Token-Refresh", refreshToken)
+            header("Token-Refresh", "Bearer $refreshToken")
         }.convert(errorMessageMapper::map)
     }
 }
