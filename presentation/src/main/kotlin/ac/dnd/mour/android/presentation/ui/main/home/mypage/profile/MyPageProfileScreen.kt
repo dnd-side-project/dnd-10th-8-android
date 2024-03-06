@@ -103,6 +103,88 @@ fun MyPageProfileScreen(
     var currentImageUrl by remember { mutableStateOf(model.profile.profileImageUrl) }
     var currentImageName by remember { mutableStateOf("") }
     var isShowingEditSnackBar by remember { mutableStateOf(false) }
+    var isShowingInvalidNameSnackBar by remember { mutableStateOf(false) }
+    var isShowingInvalidDateSnackBar by remember { mutableStateOf(false) }
+
+    fun loadProfile(event: MyPageProfileEvent.LoadProfile) {
+        when (event) {
+            is MyPageProfileEvent.LoadProfile.Success -> {
+                event.profile.apply {
+                    userNameText = nickname
+                    userYearText = birth.year.toString()
+                    userMonthText = birth.monthNumber.toString()
+                    userDayText = birth.dayOfMonth.toString()
+                    userGender = if (gender == "male") "남자" else "여자"
+                    currentImageUrl = profileImageUrl
+                }
+            }
+        }
+    }
+
+    fun checkDate(birth: LocalDate): Boolean {
+        return if (birth.year != 1) {
+            true
+        } else {
+            scope.launch {
+                isShowingInvalidDateSnackBar = true
+                delay(1000L)
+                isShowingInvalidDateSnackBar = false
+            }
+            false
+        }
+    }
+
+    fun saveProfile() {
+        val birth = try {
+            LocalDate(
+                userYearText.toInt(),
+                userMonthText.toInt(),
+                userDayText.toInt()
+            )
+        } catch (e: Exception) {
+            LocalDate(1, 1, 1)
+        }
+        if (!isUserNameInValid && userNameText.isNotEmpty() && checkDate(birth)) {
+            intent(
+                MyPageProfileIntent.OnEdit(
+                    Profile(
+                        id = model.profile.id,
+                        email = model.profile.email,
+                        profileImageUrl = currentImageUrl,
+                        name = model.profile.name,
+                        nickname = userNameText,
+                        gender = if (userGender == "남자") "male" else "female",
+                        birth = birth
+                    ),
+                    imageName = currentImageName
+                )
+            )
+        }
+    }
+
+    fun checkNicknameChange() {
+        if (model.profile.nickname != userNameText) {
+            intent(MyPageProfileIntent.CheckName(userNameText))
+        } else {
+            saveProfile()
+        }
+    }
+
+    fun checkNickName(event: MyPageProfileEvent.CheckName) {
+        when (event) {
+            is MyPageProfileEvent.CheckName.Success -> {
+                saveProfile()
+            }
+
+            is MyPageProfileEvent.CheckName.Fail -> {
+                scope.launch {
+                    isShowingInvalidNameSnackBar = true
+                    delay(1000L)
+                    isShowingInvalidNameSnackBar = false
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -183,7 +265,7 @@ fun MyPageProfileScreen(
             }
             Spacer(modifier = Modifier.height(60.dp))
             Text(
-                text = "이름",
+                text = "닉네임",
                 style = Body1.merge(
                     color = Gray700,
                     fontWeight = FontWeight.SemiBold
@@ -335,31 +417,7 @@ fun MyPageProfileScreen(
                     type = ConfirmButtonType.Primary
                 ),
                 onClick = {
-                    val birth = try {
-                        LocalDate(
-                            userYearText.toInt(),
-                            userMonthText.toInt(),
-                            userDayText.toInt()
-                        )
-                    } catch (e: Exception) {
-                        LocalDate(1, 1, 1)
-                    }
-                    if (!isUserNameInValid && userNameText.isNotEmpty() && birth.year != 1) {
-                        intent(
-                            MyPageProfileIntent.OnEdit(
-                                Profile(
-                                    id = model.profile.id,
-                                    email = model.profile.email,
-                                    profileImageUrl = currentImageUrl,
-                                    name = model.profile.name,
-                                    nickname = userNameText,
-                                    gender = if (userGender == "남자") "male" else "female",
-                                    birth = birth
-                                ),
-                                imageName = currentImageName
-                            )
-                        )
-                    }
+                    checkNicknameChange()
                 }
             ) {
                 Text(
@@ -381,6 +439,26 @@ fun MyPageProfileScreen(
                 SnackBarScreen("저장이 완료되었습니다.")
             }
         }
+
+        if (isShowingInvalidNameSnackBar) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 71.dp)
+            ) {
+                SnackBarScreen("이미 존재하는 닉네임입니다.")
+            }
+        }
+
+        if (isShowingInvalidDateSnackBar) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 71.dp)
+            ) {
+                SnackBarScreen("생년월일이 유효하지 않습니다.")
+            }
+        }
     }
 
     if (isShowingGalleryView) {
@@ -397,9 +475,12 @@ fun MyPageProfileScreen(
     }
 
 
+
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
+                is MyPageProfileEvent.LoadProfile -> loadProfile(event)
+
                 is MyPageProfileEvent.Edit -> {
                     scope.launch {
                         isShowingEditSnackBar = true
@@ -407,6 +488,8 @@ fun MyPageProfileScreen(
                         isShowingEditSnackBar = false
                     }
                 }
+
+                is MyPageProfileEvent.CheckName -> checkNickName(event)
             }
         }
     }

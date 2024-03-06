@@ -104,6 +104,10 @@ private fun MyPageScreen(
     handler: CoroutineExceptionHandler
 ) {
 
+    LaunchedEffectWithLifecycle(context = handler) {
+        intent(MyPageIntent.OnLoad)
+    }
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var isShowingLogoutDialog by remember { mutableStateOf(false) }
@@ -118,7 +122,7 @@ private fun MyPageScreen(
         ContextCompat.startActivity(context, browserIntent, null)
     }
 
-    fun navigateToTermsOfUse(){
+    fun navigateToTermsOfUse() {
         val browserIntent =
             Intent(
                 Intent.ACTION_VIEW,

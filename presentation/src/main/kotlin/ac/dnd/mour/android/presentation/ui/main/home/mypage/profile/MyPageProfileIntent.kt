@@ -7,4 +7,8 @@ sealed interface MyPageProfileIntent {
         val profile: Profile,
         val imageName: String
     ) : MyPageProfileIntent
+
+    data class CheckName(
+        val name: String
+    ) : MyPageProfileIntent
 }

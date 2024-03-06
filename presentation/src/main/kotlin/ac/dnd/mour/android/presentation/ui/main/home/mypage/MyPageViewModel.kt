@@ -50,6 +50,7 @@ class MyPageViewModel @Inject constructor(
     fun onIntent(intent: MyPageIntent) {
         when (intent) {
             MyPageIntent.OnLogout -> logout()
+            MyPageIntent.OnLoad -> getProfile()
         }
     }
 

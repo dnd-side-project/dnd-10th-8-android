@@ -2,6 +2,7 @@ package ac.dnd.mour.android.presentation.ui.main.home.mypage.profile
 
 import ac.dnd.mour.android.domain.model.error.ServerException
 import ac.dnd.mour.android.domain.model.member.Profile
+import ac.dnd.mour.android.domain.usecase.member.CheckNicknameUseCase
 import ac.dnd.mour.android.domain.usecase.member.EditProfileUseCase
 import ac.dnd.mour.android.domain.usecase.member.EditProfileWithUploadUseCase
 import ac.dnd.mour.android.domain.usecase.member.GetProfileUseCase
@@ -24,6 +25,7 @@ class MyPageProfileViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase,
     private val editProfileWithUploadUseCase: EditProfileWithUploadUseCase,
     private val getProfileUseCase: GetProfileUseCase,
+    private val checkNicknameUseCase: CheckNicknameUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<MyPageProfileState> =
@@ -62,6 +64,10 @@ class MyPageProfileViewModel @Inject constructor(
                     )
                 }
             }
+
+            is MyPageProfileIntent.CheckName -> {
+                checkUserNameValid(intent.name)
+            }
         }
     }
 
@@ -72,6 +78,7 @@ class MyPageProfileViewModel @Inject constructor(
                 .onSuccess {
                     _state.value = MyPageProfileState.Init
                     _profile.value = it
+                    _event.emit(MyPageProfileEvent.LoadProfile.Success(it))
                 }
                 .onFailure { exception ->
                     _state.value = MyPageProfileState.Init
@@ -99,6 +106,7 @@ class MyPageProfileViewModel @Inject constructor(
             )
                 .onSuccess {
                     _state.value = MyPageProfileState.Init
+                    _profile.value = profile
                     _event.emit(MyPageProfileEvent.Edit.Success)
                 }
                 .onFailure { exception ->
@@ -144,6 +152,22 @@ class MyPageProfileViewModel @Inject constructor(
                             _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
                         }
                     }
+                }
+        }
+    }
+
+    private fun checkUserNameValid(name: String) {
+        launch {
+            checkNicknameUseCase(name)
+                .onSuccess {
+                    if (it) {
+                        _event.emit(MyPageProfileEvent.CheckName.Success)
+                    } else {
+                        _event.emit(MyPageProfileEvent.CheckName.Fail)
+                    }
+                }
+                .onFailure {
+                    _event.emit(MyPageProfileEvent.CheckName.Fail)
                 }
         }
     }
