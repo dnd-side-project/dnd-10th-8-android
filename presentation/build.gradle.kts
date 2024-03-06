@@ -23,12 +23,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "clarity_key", getLocalProperty("CLARITY_KEY"))
         }
         release {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "clarity_key", getLocalProperty("CLARITY_KEY"))
         }
     }
 
