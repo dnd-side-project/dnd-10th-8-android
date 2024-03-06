@@ -37,6 +37,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           KAKAO_APP_KEY: ${{ secrets.KAKAO_APP_KEY }}
           KAKAO_OAUTH_KEY: ${{ secrets.KAKAO_OAUTH_KEY }}
+          CLARITY_KEY: ${{ secrets.CLARITY_KEY }}
 
       - name: Build Release
         run: ./gradlew assembleRelease
@@ -45,3 +46,4 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           KAKAO_APP_KEY: ${{ secrets.KAKAO_APP_KEY }}
           KAKAO_OAUTH_KEY: ${{ secrets.KAKAO_OAUTH_KEY }}
+          CLARITY_KEY: ${{ secrets.CLARITY_KEY }}
