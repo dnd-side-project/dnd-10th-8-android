@@ -38,6 +38,7 @@ android {
             )
             buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("KAKAO_APP_KEY"))
             resValue("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
+            resValue("string", "clarity_key", getLocalProperty("CLARITY_KEY"))
         }
         debug {
             isMinifyEnabled = false
@@ -50,6 +51,7 @@ android {
             )
             buildConfigField("String", "KAKAO_APP_KEY", getLocalProperty("KAKAO_APP_KEY"))
             resValue("string", "kakao_oauth_key", getLocalProperty("KAKAO_OAUTH_KEY"))
+            resValue("string", "clarity_key", getLocalProperty("CLARITY_KEY"))
         }
     }
 

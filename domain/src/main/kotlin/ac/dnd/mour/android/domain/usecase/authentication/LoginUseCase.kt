@@ -5,6 +5,7 @@ import ac.dnd.mour.android.domain.repository.AuthenticationRepository
 import ac.dnd.mour.android.domain.usecase.member.GetProfileUseCase
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.microsoft.clarity.Clarity
 import io.sentry.Sentry
 import io.sentry.protocol.User
 import javax.inject.Inject
@@ -36,6 +37,7 @@ class LoginUseCase @Inject constructor(
                         this.username = profile.nickname
                     }
                 )
+                Clarity.setCustomUserId(profile.id.toString())
             }.getOrThrow()
         }
     }

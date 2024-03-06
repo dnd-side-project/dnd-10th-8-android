@@ -47,6 +47,7 @@ constraintlayout-compose = "1.0.1"
 timber = "5.0.1"
 sentry = "7.1.0"
 firebase-bom = "32.7.2"
+clarity = "2.1.1"
 # Debug
 leakcanary = "2.12"
 okhttp3-logging-interceptor = "4.9.1"
@@ -106,6 +107,7 @@ sentry = { module = "io.sentry:sentry-android", version.ref = "sentry" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+clarity = { module = "com.microsoft.clarity:clarity", version.ref = "clarity" }
 # Debug
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3-logging-interceptor" }
@@ -132,5 +134,5 @@ androidx-presentation = ["androidx-core", "androidx-appcompat", "androidx-compos
     "androidx-compose-ui-preview", "androidx-compose-navigation", "androidx-compose-lifecycle", "coil-compose"]
 network = ["ktor-core", "ktor-okhttp", "ktor-resources", "ktor-content-negotiation", "ktor-kotlinx-serialization",
     "ktor-auth", "kotlinx-serialization"]
-logging = ["timber", "sentry", "firebase-analytics", "firebase-crashlytics"]
+logging = ["timber", "sentry", "firebase-analytics", "firebase-crashlytics", "clarity"]
 kakao = ["kakao-user", "kakao-friend"]

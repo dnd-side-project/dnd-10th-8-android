@@ -20,6 +20,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.common.KakaoSdk
+import com.microsoft.clarity.Clarity
+import com.microsoft.clarity.ClarityConfig
 import dagger.hilt.android.HiltAndroidApp
 import io.sentry.Sentry
 import javax.inject.Inject
@@ -48,6 +50,7 @@ open class MourApplication : Application() {
         }
 
         initializeFirebase()
+        initializeClarity()
         observeRefreshTokenValidation()
     }
 
@@ -78,6 +81,11 @@ open class MourApplication : Application() {
 
     private fun initializeFirebase() {
         Firebase.analytics
+    }
+
+    private fun initializeClarity() {
+        val config = ClarityConfig(getString(R.string.clarity_key))
+        Clarity.initialize(applicationContext, config)
     }
 
     private fun observeRefreshTokenValidation() {
