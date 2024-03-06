@@ -12,14 +12,23 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
 fun NavGraphBuilder.homeDestination(
     appState: ApplicationState
 ) {
     composable(
-        route = HomeConstant.ROUTE
+        route = HomeConstant.ROUTE_STRUCTURE,
+        arguments = listOf(
+            navArgument(HomeConstant.ROUTE_ARGUMENT_MESSAGE) {
+                type = NavType.StringType
+                defaultValue = ""
+            }
+        )
     ) {
+
         val viewModel: HomeViewModel = hiltViewModel()
 
         val model: HomeModel = let {

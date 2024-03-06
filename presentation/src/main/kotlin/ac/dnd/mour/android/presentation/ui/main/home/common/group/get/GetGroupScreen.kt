@@ -73,7 +73,7 @@ fun GetGroupScreen(
     appState: ApplicationState,
     groups: List<Group>,
     onDismissRequest: () -> Unit,
-    onGroupChange: (List<Group>) -> Unit,
+    onGroupChange: () -> Unit,
     onResult: (Group) -> Unit,
     viewModel: GetGroupViewModel = hiltViewModel()
 ) {
@@ -104,7 +104,7 @@ private fun GetGroupScreen(
     appState: ApplicationState,
     onDismissRequest: () -> Unit,
     onResult: (Group) -> Unit,
-    onGroupChange: (List<Group>) -> Unit,
+    onGroupChange: () -> Unit,
     model: GetGroupModel,
     intent: (GetGroupIntent) -> Unit,
     event: EventFlow<GetGroupEvent>,
@@ -287,8 +287,11 @@ private fun GetGroupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = Gray200)
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 12.dp
+                    )
                     .height(56.dp)
-                    .padding(horizontal = 20.dp)
                     .align(Alignment.BottomCenter),
                 contentAlignment = Alignment.CenterStart
             ) {
@@ -332,7 +335,7 @@ private fun GetGroupScreen(
             },
             onConfirm = {
                 intent(GetGroupIntent.OnDelete(model.groups[currentDeleteGroupIndex].id))
-                onGroupChange(model.groups)
+                onGroupChange()
                 currentDeleteGroupIndex = -1
             },
             onDismissRequest = {
@@ -349,8 +352,7 @@ private fun GetGroupScreen(
             },
             prevGroup = model.groups[currentEditGroupIndex],
             onResult = {
-                intent(GetGroupIntent.OnEdit(it))
-                onGroupChange(model.groups)
+                onGroupChange()
                 currentEditGroupIndex = -1
             }
         )
@@ -363,9 +365,8 @@ private fun GetGroupScreen(
                 isShowingAddGroupSheet = false
             },
             onResult = {
+                onGroupChange()
                 isShowingAddGroupSheet = false
-                intent(GetGroupIntent.OnAdd(it))
-                onGroupChange(model.groups)
             }
         )
     }

@@ -74,23 +74,21 @@ fun HistoryDetailItem(
                             "${relatedHeart.day.dayOfMonth}일",
                     fontWeight = FontWeight.Normal,
                     style = Body1.merge(color = Gray700),
-                    lineHeight = 28.sp,
                     letterSpacing = (-0.25).sp
                 )
                 val textLength = relatedHeart.event.length
                 val text =
                     if (textLength >= 20) relatedHeart.event.substring(0, 20).plus("...")
                     else relatedHeart.event
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = text,
                     fontWeight = FontWeight.SemiBold,
                     style = Headline3.merge(
                         color = Gray900
-                    ),
-                    lineHeight = 24.sp
+                    )
                 )
-                Spacer(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "${if (relatedHeart.give) "-" else ""}${
@@ -100,8 +98,7 @@ fun HistoryDetailItem(
                         fontWeight = FontWeight.SemiBold,
                         style = Headline3.merge(
                             color = if (relatedHeart.give) Color(0xFF1187D8) else Primary5
-                        ),
-                        lineHeight = 24.sp
+                        )
                     )
                     Text(
                         text = "원",
@@ -151,8 +148,7 @@ fun HistoryDetailItem(
                                     style = Caption2.merge(
                                         color = Gray700,
                                         fontWeight = FontWeight.Medium
-                                    ),
-                                    lineHeight = 18.sp
+                                    )
                                 )
                             }
                         }
