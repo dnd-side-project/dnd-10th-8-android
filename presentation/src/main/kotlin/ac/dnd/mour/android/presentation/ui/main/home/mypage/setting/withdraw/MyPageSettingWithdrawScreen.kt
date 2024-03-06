@@ -161,9 +161,9 @@ fun MyPageSettingWithdrawScreen(
         ) {
             ConfirmButton(
                 modifier = Modifier.fillMaxWidth(),
-                properties = ConfirmButtonProperties(
+                   properties = ConfirmButtonProperties(
                     size = ConfirmButtonSize.Xlarge,
-                    type = ConfirmButtonType.Primary
+                    type = if (isCheckAgree) ConfirmButtonType.Primary else ConfirmButtonType.Secondary
                 ),
                 isEnabled = isCheckAgree,
                 onClick = {

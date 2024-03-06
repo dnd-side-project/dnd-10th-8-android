@@ -1,12 +1,11 @@
 package ac.dnd.mour.android.presentation.ui.main.login.main
 
 import ac.dnd.mour.android.presentation.R
-import ac.dnd.mour.android.presentation.common.theme.Body1
+import ac.dnd.mour.android.presentation.common.theme.Body0
 import ac.dnd.mour.android.presentation.common.theme.Body2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
-import ac.dnd.mour.android.presentation.common.theme.Primary2
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
@@ -48,9 +47,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineExceptionHandler
 
@@ -121,10 +123,8 @@ fun LoginMainScreen(
         ) {
             Text(
                 text = "감사한 마음을 잊지 않도록",
-                style = Body1.merge(
-                    color = Gray800,
-                    fontWeight = FontWeight.Normal
-                )
+                fontWeight = FontWeight.Normal,
+                style = Body0.merge(color = Gray800)
             )
             Spacer(modifier = Modifier.height(12.64.dp))
             Image(
@@ -161,10 +161,8 @@ fun LoginMainScreen(
                     ) {
                         Text(
                             text = "3초만에 시작하기",
-                            style = Body2.merge(
-                                color = Gray700,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body2.merge(color = Gray800)
                         )
                     }
                 }
@@ -187,18 +185,32 @@ fun LoginMainScreen(
                     start = 22.dp,
                     end = 14.dp
                 )
-                .fillMaxWidth()
                 .clip(Shapes.medium)
+                .fillMaxWidth()
+                .height(47.dp)
+                .background(
+                    color = Color(0xFFFEE500),
+                    shape = Shapes.medium
+                )
+                .clickable {
+                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
+                }
+                .padding(horizontal = 17.dp),
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_kakao_login_button),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
-                    },
-                contentScale = ContentScale.Crop
+                modifier = Modifier.align(Alignment.CenterStart),
+                painter = painterResource(R.drawable.ic_kakao_logo),
+                contentDescription = null
+            )
+
+            Text(
+                text = "카카오로 로그인",
+                modifier = Modifier.align(Alignment.Center),
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily(Font(R.font.pretendard)),
+                color = Gray700,
+                letterSpacing = (-0.25).sp,
+                fontSize = 16.sp
             )
         }
     }
