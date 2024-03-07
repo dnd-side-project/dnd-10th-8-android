@@ -11,6 +11,7 @@ import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Icon24
 import ac.dnd.mour.android.presentation.common.theme.Secondary1
@@ -51,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -115,7 +117,8 @@ fun NotificationScreen(
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = "알림",
-                style = Headline1
+                fontWeight = FontWeight.SemiBold,
+                style = Headline1.merge(color = Gray900)
             )
         }
         if (recentAlarmList.isEmpty() && lateAlarmList.isEmpty()) {
@@ -133,6 +136,7 @@ fun NotificationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = "새로운 알림이 없어요",
+                    fontWeight = FontWeight.SemiBold,
                     style = Body1.merge(Gray700)
                 )
             }
@@ -150,6 +154,7 @@ fun NotificationScreen(
                         Text(
                             modifier = Modifier.padding(horizontal = 20.dp),
                             text = "최근 7일",
+                            fontWeight = FontWeight.SemiBold,
                             style = Body1.merge(Gray800)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -179,6 +184,7 @@ fun NotificationScreen(
                         Text(
                             modifier = Modifier.padding(horizontal = 20.dp),
                             text = "이전 알림",
+                            fontWeight = FontWeight.SemiBold,
                             style = Body1.merge(Gray800)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -207,6 +213,7 @@ fun NotificationScreen(
                         Text(
                             modifier = Modifier.padding(horizontal = 20.dp),
                             text = "받은 소식은 30일 동안 보관됩니다",
+                            fontWeight = FontWeight.Normal,
                             style = Body2.merge(Gray600)
                         )
                         Spacer(modifier = Modifier.height(32.dp))
@@ -322,17 +329,20 @@ private fun NotificationScreenItem(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = "미리 알림",
-                    style = Body1
+                    fontWeight = FontWeight.SemiBold,
+                    style = Body1.merge(color = Gray900)
                 )
                 Text(
                     text = formattedDate,
-                    style = Body2
+                    fontWeight = FontWeight.Normal,
+                    style = Body2.merge(Gray600)
                 )
             }
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = formattedContent,
-                style = Body1
+                fontWeight = FontWeight.Normal,
+                style = Body1.merge(color = Gray900),
             )
             if (item.location.isNotEmpty()) {
                 Row(
@@ -348,6 +358,7 @@ private fun NotificationScreenItem(
                     Spacer(modifier = Modifier.width(2.dp))
                     Text(
                         text = item.location,
+                        fontWeight = FontWeight.Medium,
                         style = Caption2.merge(Gray700)
                     )
                 }

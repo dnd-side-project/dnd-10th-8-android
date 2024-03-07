@@ -6,9 +6,11 @@ import ac.dnd.mour.android.presentation.common.theme.Body0
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
+import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Icon24
@@ -36,6 +38,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldTyp
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
@@ -43,6 +46,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -75,6 +79,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -202,7 +207,9 @@ fun ScheduleAddScreen(
             message = "일정을 추가하였습니다.",
             isCancelable = false,
             onConfirm = {
-                appState.navController.navigateUp()
+                // TODO : 뒤로가기 메시지 전달 추가 + 다이얼 로그 삭제
+                appState.navController.popBackStack()
+
             },
             onDismissRequest = {
                 isAddSuccessShowing = false
@@ -252,10 +259,8 @@ fun ScheduleAddScreen(
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "페이지를 나가면\n수정중인 내용이 삭제돼요.",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800),
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(20.dp))
@@ -274,10 +279,8 @@ fun ScheduleAddScreen(
                         ) {
                             Text(
                                 text = "나가기",
-                                style = Headline3.merge(
-                                    color = Gray700,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                fontWeight = FontWeight.SemiBold,
+                                style = Headline3.merge(color = Gray700)
                             )
                         }
 
@@ -295,10 +298,8 @@ fun ScheduleAddScreen(
                         ) {
                             Text(
                                 text = "계속 수정",
-                                style = Headline3.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                fontWeight = FontWeight.SemiBold,
+                                style = Headline3.merge(color = Gray000)
                             )
                         }
                     }
@@ -354,39 +355,13 @@ fun ScheduleAddScreen(
             .fillMaxSize()
             .background(color = Color.White)
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(
-                modifier = Modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = false),
-                        onClick = {
-                            appState.navController.navigateUp()
-                        }
-                    )
-                ) {
-                    Icon(
-                        modifier = Modifier.size(Icon24),
-                        painter = painterResource(id = R.drawable.ic_chevron_left),
-                        contentDescription = null
-                    )
-                }
-                Text(
-                    text = if (model.isEdit) "일정 수정하기" else "일정 추가하기",
-                    style = Headline1
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height((16 + 56).dp))
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
@@ -435,14 +410,17 @@ fun ScheduleAddScreen(
                         ) {
                             Text(
                                 text = relation?.name.orEmpty(),
+                                fontWeight = FontWeight.SemiBold,
                                 style = Headline3.merge(Gray800)
                             )
                             Text(
                                 text = "・",
+                                fontWeight = FontWeight.SemiBold,
                                 style = Headline3.merge(Gray800)
                             )
                             Text(
                                 text = relation?.group?.name.orEmpty(),
+                                fontWeight = FontWeight.Normal,
                                 style = Body0.merge(Gray800)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
@@ -461,14 +439,13 @@ fun ScheduleAddScreen(
                 ) {
                     Text(
                         text = "날짜",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = "*",
+                        fontWeight = FontWeight.SemiBold,
                         style = Body1.merge(color = Negative)
                     )
                 }
@@ -486,14 +463,13 @@ fun ScheduleAddScreen(
                 ) {
                     Text(
                         text = "경사 종류",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = "*",
+                        fontWeight = FontWeight.SemiBold,
                         style = Body1.merge(color = Negative)
                     )
                 }
@@ -546,16 +522,14 @@ fun ScheduleAddScreen(
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
-                        painter = painterResource(id = R.drawable.ic_alarm_mini),
+                        painter = painterResource(id = R.drawable.ic_alarm_gray),
                         contentDescription = null,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "미리 알림",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -579,10 +553,8 @@ fun ScheduleAddScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "시간",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -606,10 +578,8 @@ fun ScheduleAddScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "위치",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -638,10 +608,8 @@ fun ScheduleAddScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "초대장 링크",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -670,10 +638,8 @@ fun ScheduleAddScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "메모",
-                        style = Body1.merge(
-                            color = Gray800,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(color = Gray800)
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -696,47 +662,90 @@ fun ScheduleAddScreen(
                     hintText = "경사 관련 메모를 입력해주세요"
                 )
             }
-            Spacer(modifier = Modifier.height(46.dp))
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
-                    .fillMaxWidth()
-            ) {
-                if (model.isEdit) {
-                    ConfirmButton(
-                        properties = ConfirmButtonProperties(
-                            size = ConfirmButtonSize.Large,
-                            type = ConfirmButtonType.Secondary
-                        ),
-                        isEnabled = isConfirmEnabled,
-                        onClick = {
-                            onRemove()
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(Icon24),
-                            painter = painterResource(id = R.drawable.ic_trash),
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                }
-                ConfirmButton(
-                    properties = ConfirmButtonProperties(
-                        size = ConfirmButtonSize.Large,
-                        type = ConfirmButtonType.Primary
-                    ),
-                    modifier = Modifier.weight(1f),
-                    isEnabled = isConfirmEnabled,
+            Spacer(modifier = Modifier.height((50 + 76).dp))
+        }
+
+        Row(
+            modifier = Modifier
+                .background(Gray000)
+                .height(56.dp)
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false),
                     onClick = {
-                        onConfirm()
+                        appState.navController.navigateUp()
                     }
-                ) { style ->
-                    Text(
-                        text = "저장하기",
-                        style = style
+                )
+            ) {
+                Icon(
+                    modifier = Modifier.size(Icon24),
+                    painter = painterResource(id = R.drawable.ic_chevron_left),
+                    contentDescription = null
+                )
+            }
+            Text(
+                text = if (model.isEdit) "일정 수정하기" else "일정 추가하기",
+                fontWeight = FontWeight.SemiBold,
+                style = Headline1.merge(color = Gray900)
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .background(Gray000)
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .fillMaxWidth()
+        ) {
+            if (model.isEdit) {
+                Box(
+                    modifier = Modifier
+                        .clip(Shapes.large)
+                        .border(
+                            width = 1.dp,
+                            color = Gray400,
+                            shape = Shapes.large
+                        )
+                        .clickable {
+                            if (isConfirmEnabled) {
+                                onRemove()
+                            }
+                        }
+                        .padding(
+                            vertical = 14.dp,
+                            horizontal = 24.dp
+                        )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(Icon24),
+                        painter = painterResource(id = R.drawable.ic_trash_schedule),
+                        contentDescription = null
                     )
                 }
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+            ConfirmButton(
+                properties = ConfirmButtonProperties(
+                    size = ConfirmButtonSize.Large,
+                    type = ConfirmButtonType.Primary
+                ),
+                modifier = Modifier.weight(1f),
+                isEnabled = isConfirmEnabled,
+                onClick = {
+                    onConfirm()
+                }
+            ) {
+                Text(
+                    text = "저장하기",
+                    fontWeight = FontWeight.SemiBold,
+                    style = Headline3.merge(color = Gray000)
+                )
             }
         }
 
@@ -749,6 +758,7 @@ fun ScheduleAddScreen(
                 SnackBarScreen("수정이 완료되었습니다.")
             }
         }
+
     }
 
     fun loadSchedule(event: ScheduleAddEvent.LoadSchedule) {

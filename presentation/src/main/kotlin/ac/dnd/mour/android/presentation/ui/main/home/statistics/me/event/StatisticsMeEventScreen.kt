@@ -24,8 +24,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
-import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
+import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,9 +62,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlin.random.Random
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.datetime.LocalDate
+import kotlin.random.Random
 
 @Composable
 fun StatisticsMeEventScreen(
@@ -234,7 +234,7 @@ private fun StatisticsMeEventItemScreen(
     item: MyStatisticsItem,
     isGive: Boolean
 ) {
-    val iconRes = DefaultGroupType.getGroupResource(item.event)
+    val iconRes = DefaultGroupType.getGroupResource(item.groupName)
     val formattedIsGive = if (isGive) {
         "보냄"
     } else {

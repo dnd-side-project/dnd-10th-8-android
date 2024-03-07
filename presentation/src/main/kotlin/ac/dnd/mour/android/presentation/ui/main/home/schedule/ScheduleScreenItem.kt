@@ -8,17 +8,15 @@ import ac.dnd.mour.android.presentation.common.theme.Body0
 import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Caption2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
+import ac.dnd.mour.android.presentation.common.theme.Gray300
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Headline3
 import ac.dnd.mour.android.presentation.common.theme.Icon24
 import ac.dnd.mour.android.presentation.common.theme.Shapes
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
-import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
+import ac.dnd.mour.android.presentation.ui.main.home.history.scaledSp
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -90,14 +89,16 @@ fun ScheduleScreenItem(
                 Image(
                     modifier = Modifier.size(20.dp),
                     contentScale = ContentScale.Crop,
-                    painter = painterResource(DefaultGroupType.getGroupResource(schedule.relation.group.name)),
+                    painter = painterResource(HistoryEventType.getEventIconRes(schedule.event)),
                     contentDescription = null
                 )
             }
             if (dDay in (1..30)) {
                 Text(
                     text = "D-$dDay",
-                    style = Caption2.merge(Gray600),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.scaledSp(),
+                    style = Caption2.merge(color = Gray600)
                 )
             }
         }
@@ -120,7 +121,7 @@ fun ScheduleScreenItem(
                     onClickSchedule(schedule)
                 }
             ) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(13.dp))
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -129,22 +130,25 @@ fun ScheduleScreenItem(
                 ) {
                     Text(
                         text = schedule.relation.name,
-                        style = Headline3
+                        fontWeight = FontWeight.SemiBold,
+                        style = Headline3.merge(Gray900)
                     )
                     Text(
                         text = "・",
+                        fontWeight = FontWeight.Normal,
                         style = Body0.merge(color = Gray700)
                     )
                     Text(
                         text = schedule.relation.group.name,
+                        fontWeight = FontWeight.Normal,
                         style = Body0.merge(color = Gray700)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
-                    Icon(
+                    Image(
                         modifier = Modifier.size(Icon24),
-                        painter = painterResource(id = R.drawable.ic_chevron_right),
+                        painter = painterResource(id = R.drawable.ic_chevron_right_schedule),
                         contentDescription = null,
-                        tint = Gray600
+                        colorFilter = ColorFilter.tint(Gray600)
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Card(
@@ -153,14 +157,12 @@ fun ScheduleScreenItem(
                         elevation = 0.dp
                     ) {
                         Box(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 1.5.dp)
                         ) {
                             Text(
                                 text = schedule.event,
-                                style = Body1.merge(
-                                    color = Gray000,
-                                    fontWeight = FontWeight.SemiBold
-                                )
+                                fontWeight = FontWeight.SemiBold,
+                                style = Body1.merge(color = Gray000)
                             )
                         }
                     }
@@ -187,20 +189,21 @@ fun ScheduleScreenItem(
                         text = schedule.memo
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
                 if (schedule.link.isNotEmpty()) {
-                    ConfirmButton(
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
+                            .clip(Shapes.medium)
+                            .background(color = Gray300)
+                            .clickable {
+                                onClickInvitation(schedule)
+                            }
+                            .padding(vertical = 6.5.dp)
                             .fillMaxWidth(),
-                        properties = ConfirmButtonProperties(
-                            size = ConfirmButtonSize.Medium,
-                            type = ConfirmButtonType.Secondary
-                        ),
-                        onClick = {
-                            onClickInvitation(schedule)
-                        }
-                    ) { style ->
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
                             painter = painterResource(id = R.drawable.ic_link),
@@ -209,7 +212,8 @@ fun ScheduleScreenItem(
                         )
                         Text(
                             text = "초대장 보기",
-                            style = style
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Gray700)
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
@@ -242,14 +246,18 @@ fun ScheduleScreenItemDescription(
             text = text,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
+            fontWeight = FontWeight.Medium,
             style = Body1.merge(color = Gray700)
         )
     }
 }
 
-@Preview
+@Preview(
+    backgroundColor = 0xFFF9F9FA,
+    showBackground = true
+)
 @Composable
-private fun ScheduleScreenItemPreview() {
+private fun ScheduleScreenItemPreview1() {
     ScheduleScreenItem(
         schedule = Schedule(
             id = 4830,
@@ -270,6 +278,38 @@ private fun ScheduleScreenItemPreview() {
             link = "graeco",
             location = "aliquet",
             memo = "메모입니다."
+        ),
+        onClickSchedule = {},
+        onClickInvitation = {}
+    )
+}
+
+@Preview(
+    backgroundColor = 0xFFF9F9FA,
+    showBackground = true
+)
+@Composable
+private fun ScheduleScreenItemPreview2() {
+    ScheduleScreenItem(
+        schedule = Schedule(
+            id = 4830,
+            relation = RelationSimple(
+                id = 7220,
+                name = "Marietta Justice",
+                group = RelationSimpleGroup(
+                    id = 2824,
+                    name = "Allen O'Neil"
+                )
+            ),
+            day = LocalDate(2024, 2, 25),
+            event = "돌잔치",
+            repeatType = null,
+            repeatFinish = null,
+            alarm = null,
+            time = null,
+            link = "",
+            location = "",
+            memo = ""
         ),
         onClickSchedule = {},
         onClickInvitation = {}
