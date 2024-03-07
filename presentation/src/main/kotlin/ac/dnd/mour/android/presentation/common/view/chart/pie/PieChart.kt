@@ -1,10 +1,10 @@
 package ac.dnd.mour.android.presentation.common.view.chart.pie
 
+import ac.dnd.mour.android.presentation.common.theme.Gray200
 import ac.dnd.mour.android.presentation.common.theme.Gray300
 import ac.dnd.mour.android.presentation.common.theme.Gray400
 import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
-import ac.dnd.mour.android.presentation.common.theme.Gray700
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -67,23 +67,23 @@ fun PieChart(
 
 private val emptyDataList: List<PieChartData> = listOf(
     PieChartData(
-        color = Gray700,
+        color = Gray600,
         value = 7
     ),
     PieChartData(
-        color = Gray600,
+        color = Gray500,
         value = 5
     ),
     PieChartData(
-        color = Gray500,
+        color = Gray400,
         value = 2
     ),
     PieChartData(
-        color = Gray400,
+        color = Gray300,
         value = 1
     ),
     PieChartData(
-        color = Gray300,
+        color = Gray200,
         value = 2
     ),
 )

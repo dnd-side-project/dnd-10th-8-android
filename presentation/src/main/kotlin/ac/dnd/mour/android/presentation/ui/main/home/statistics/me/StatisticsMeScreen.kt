@@ -282,7 +282,7 @@ private fun StatisticsMeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier.width(108.dp)
+                    modifier = Modifier.width(115.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -381,18 +381,14 @@ private fun StatisticsMeScreen(
                     ) {
                         Text(
                             text = "받은 마음",
-                            style = Body1.merge(
-                                color = Primary1,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Primary1)
                         )
                         Text(
                             text = formattedTakeSum,
                             maxLines = 1,
-                            style = Body1.merge(
-                                color = Primary1,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Gray000)
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
@@ -402,18 +398,14 @@ private fun StatisticsMeScreen(
                     ) {
                         Text(
                             text = "보낸 마음",
-                            style = Body1.merge(
-                                color = Primary1,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Gray000)
                         )
                         Text(
                             text = formattedGiveSum,
                             maxLines = 1,
-                            style = Body1.merge(
-                                color = Primary1,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Primary1)
                         )
                     }
                 }
@@ -475,11 +467,15 @@ private fun StatisticsMeScreen(
             MyStatisticsChipType.Give -> "보낸"
             MyStatisticsChipType.Take -> "받은"
         }
+        val dateText = when (selectedSegmentType) {
+            MyStatisticsSegmentType.Monthly -> "달은"
+            MyStatisticsSegmentType.Yearly -> "연도는"
+        }
         if (statisticsData.isEmpty()) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "이번달은 $chipText 내역이 없어요",
+                text = "이번 $dateText $chipText 내역이 없어요",
                 style = Body1.merge(
                     color = Gray700,
                     fontWeight = FontWeight.SemiBold

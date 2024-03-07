@@ -46,8 +46,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
@@ -114,6 +119,7 @@ private fun StatisticsUserGroupScreen(
         ) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(bounded = false),
@@ -123,7 +129,9 @@ private fun StatisticsUserGroupScreen(
                     ).padding(8.dp)
             ) {
                 Icon(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .size(24.dp),
                     painter = painterResource(id = R.drawable.ic_close),
                     contentDescription = "",
                     tint = Gray900
@@ -250,7 +258,13 @@ private fun StatisticsUserGroupScreen(
             ) { style ->
                 Text(
                     text = "선택 완료",
-                    style = style
+                    style = TextStyle(
+                        color = Gray000,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily(Font(R.font.pretendard)),
+                        letterSpacing = (-0.25).sp,
+                        fontSize = 16.sp
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
