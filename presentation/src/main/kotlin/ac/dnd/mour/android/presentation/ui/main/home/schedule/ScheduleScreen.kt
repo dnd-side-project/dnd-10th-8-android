@@ -8,11 +8,13 @@ import ac.dnd.mour.android.presentation.common.theme.Body1
 import ac.dnd.mour.android.presentation.common.theme.Body2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray200
+import ac.dnd.mour.android.presentation.common.theme.Gray500
 import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Headline1
 import ac.dnd.mour.android.presentation.common.theme.Headline3
+import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.theme.Space20
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
@@ -21,10 +23,6 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.calendar.CalendarPicker
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
-import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.ScheduleAddConstant
@@ -33,6 +31,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -58,10 +57,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -204,70 +206,93 @@ private fun ScheduleScreen(
                     selectedDate = it
                 }
             )
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(Space20)
-            ) {
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = formattedTitle,
-                        style = Headline3
-                    )
-                }
-                if (scheduleList.isEmpty()) {
-                    item {
-                        Column(
-                            modifier = Modifier.fillParentMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = "아직 작성한 일정이 없어요",
-                                style = Body1.merge(Gray700)
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = formattedTitle,
+                style = Headline3,
+                modifier = Modifier.padding(start = 20.dp)
+            )
+            Spacer(modifier = Modifier.height(14.dp))
+            if (scheduleList.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(103.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Spacer(modifier = Modifier.weight(7f))
+                        Text(
+                            text = "아직 작성한 일정이 없어요",
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(Gray700),
+                            letterSpacing = (-0.25).sp,
+
                             )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = "일정을 등록하고 미리 알림 받아보세요",
-                                style = Body2.merge(Gray600)
-                            )
-                            Spacer(modifier = Modifier.height(24.dp))
-                            ConfirmButton(
-                                properties = ConfirmButtonProperties(
-                                    size = ConfirmButtonSize.Medium,
-                                    type = ConfirmButtonType.Outline
-                                ),
-                                onClick = {
+                        Spacer(modifier = Modifier.weight(6f))
+                        Text(
+                            text = "일정을 등록하고 미리 알림 받아보세요",
+                            fontWeight = FontWeight.Normal,
+                            style = Body2.merge(Gray600),
+                            letterSpacing = (-0.25).sp
+                        )
+                        Spacer(modifier = Modifier.weight(24f))
+                        Box(
+                            modifier = Modifier
+                                .clip(Shapes.medium)
+                                .background(color = Gray000)
+                                .clickable {
                                     navigateToScheduleAdd()
                                 }
-                            ) { style ->
-                                Text(
-                                    text = "일정 등록하기",
-                                    style = style.merge(Gray600)
+                                .border(
+                                    width = 1.dp,
+                                    color = Gray500,
+                                    shape = Shapes.medium
                                 )
-                            }
+                                .padding(
+                                    horizontal = 16.dp,
+                                    vertical = 6.5.dp
+                                )
+                        ) {
+                            Text(
+                                text = "일정 등록하기",
+                                fontWeight = FontWeight.SemiBold,
+                                style = Body1.merge(color = Gray600),
+                                letterSpacing = (-0.25).sp
+                            )
                         }
                     }
                 }
-                items(scheduleList) { schedule ->
-                    ScheduleScreenItem(
-                        schedule = schedule,
-                        onClickSchedule = {
-                            navigateToScheduleEdit(
-                                id = schedule.id
-                            )
-                        },
-                        onClickInvitation = {
-                            navigateToInvitation(
-                                link = schedule.link
-                            )
-                        }
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(80.dp))
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(Space20)
+                ) {
+                    items(scheduleList) { schedule ->
+                        ScheduleScreenItem(
+                            schedule = schedule,
+                            onClickSchedule = {
+                                navigateToScheduleEdit(
+                                    id = schedule.id
+                                )
+                            },
+                            onClickInvitation = {
+                                navigateToInvitation(
+                                    link = schedule.link
+                                )
+                            }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(80.dp))
+                    }
                 }
             }
         }

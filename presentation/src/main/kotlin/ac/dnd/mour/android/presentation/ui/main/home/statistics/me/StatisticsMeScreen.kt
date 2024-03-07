@@ -481,6 +481,7 @@ private fun StatisticsMeScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             )
+            Spacer(modifier = Modifier.height(39.dp))
         } else {
             Spacer(modifier = Modifier.height(6.dp))
             statisticsData.forEach { (key, item) ->
@@ -502,6 +503,7 @@ private fun StatisticsMeScreen(
                     }
                 )
             }
+            Spacer(modifier = Modifier.height(55.dp))
         }
     }
 
