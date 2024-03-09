@@ -295,31 +295,31 @@ private fun StatisticsUserScreenPreview1() {
             groupStatistics = listOf(
                 GroupStatistics(
                     event = "결혼",
-                    amount = Random.nextLong(50_000, 200_000)
+                    amount = Random.nextDouble(50_000.0, 200_000.0)
                 ),
                 GroupStatistics(
                     event = "생일",
-                    amount = Random.nextLong(50_000, 400_000)
+                    amount = Random.nextDouble(50_000.0, 400_000.0)
                 ),
                 GroupStatistics(
                     event = "돌잔치",
-                    amount = Random.nextLong(0, 50_000)
+                    amount = Random.nextDouble(0.0, 50_000.0)
                 ),
                 GroupStatistics(
                     event = "출산",
-                    amount = Random.nextLong(0, 50_000)
+                    amount = Random.nextDouble(0.0, 50_000.0)
                 ),
                 GroupStatistics(
                     event = "개업",
-                    amount = Random.nextLong(40_000, 300_000)
+                    amount = Random.nextDouble(40_000.0, 300_000.0)
                 ),
                 GroupStatistics(
                     event = "랜덤이벤트1",
-                    amount = Random.nextLong(0, 500_000)
+                    amount = Random.nextDouble(0.0, 500_000.0)
                 ),
                 GroupStatistics(
                     event = "랜덤이벤트2",
-                    amount = Random.nextLong(50_000, 100_000)
+                    amount = Random.nextDouble(50_000.0, 100_000.0)
                 ),
             )
         ),
