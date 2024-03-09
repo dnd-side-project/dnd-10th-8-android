@@ -11,6 +11,7 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.loginWithKakao
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
@@ -45,6 +46,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -193,7 +195,17 @@ fun LoginMainScreen(
                     shape = Shapes.medium
                 )
                 .clickable {
-                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
+                    if (model.state == LoginMainState.Init) {
+                        loginWithKakao(
+                            context = LocalContext.current,
+                            onSuccess = {
+                                intent(LoginMainIntent.Click)
+                            },
+                            onFailure = {
+                                isDialogShowing = true
+                            }
+                        )
+                    }
                 }
                 .padding(horizontal = 17.dp),
         ) {
