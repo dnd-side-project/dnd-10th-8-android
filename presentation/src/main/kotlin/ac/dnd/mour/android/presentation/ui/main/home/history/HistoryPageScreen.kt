@@ -97,12 +97,6 @@ fun HistoryPageScreen(
         )
     }.sortedByDescending {
         it.relationList.size
-    }.filter {
-        if (searchText.isNotEmpty()) {
-            it.name.contains(searchText)
-        } else {
-            true
-        }
     }
 
     val relations = groups.flatMap { it.relationList }
@@ -120,6 +114,13 @@ fun HistoryPageScreen(
             if (selectedGroupId == -1L) true
             else if (selectedGroupId < 0) false
             else it.group.id == selectedGroupId
+        }
+        .filter {
+            if (searchText.isNotEmpty()) {
+                it.name.contains(searchText)
+            } else {
+                true
+            }
         }
 
     fun navigateToHistoryDetail(id: Long) {
