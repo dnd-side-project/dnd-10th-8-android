@@ -6,6 +6,7 @@ import ac.dnd.mour.android.presentation.common.theme.Body2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
@@ -220,7 +221,7 @@ fun LoginMainScreen(
                 modifier = Modifier.align(Alignment.Center),
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = FontFamily(Font(R.font.pretendard)),
-                color = Gray700,
+                color = Gray900,
                 letterSpacing = (-0.25).sp,
                 fontSize = 16.sp
             )
