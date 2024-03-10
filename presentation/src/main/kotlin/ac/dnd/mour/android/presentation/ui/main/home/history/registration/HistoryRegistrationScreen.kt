@@ -73,6 +73,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,23 +108,23 @@ fun HistoryRegistrationScreen(
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
-    var isContinuousState by remember { mutableStateOf(false) }
-    var historyTypeState by remember { mutableStateOf(HistoryRegistrationType.TAKE) }
-    var priceText by remember { mutableStateOf("") }
-    var userNameText by remember { mutableStateOf(name) }
-    var relationId by remember { mutableLongStateOf(id) }
-    var selectedYear by remember { mutableIntStateOf(calendarConfig.getCalendarYear()) }
-    var selectedMonth by remember { mutableIntStateOf(calendarConfig.getCalendarMonth()) }
-    var selectedDay by remember { mutableIntStateOf(calendarConfig.getCalendarDay()) }
-    var eventTypeText by remember { mutableStateOf("") }
-    var selectedEventId by remember { mutableLongStateOf(-1) }
-    var memoText by remember { mutableStateOf("") }
+    var isContinuousState by rememberSaveable { mutableStateOf(false) }
+    var historyTypeState by rememberSaveable { mutableStateOf(HistoryRegistrationType.TAKE) }
+    var priceText by rememberSaveable { mutableStateOf("") }
+    var userNameText by rememberSaveable { mutableStateOf(name) }
+    var relationId by rememberSaveable { mutableLongStateOf(id) }
+    var selectedYear by rememberSaveable { mutableIntStateOf(calendarConfig.getCalendarYear()) }
+    var selectedMonth by rememberSaveable { mutableIntStateOf(calendarConfig.getCalendarMonth()) }
+    var selectedDay by rememberSaveable { mutableIntStateOf(calendarConfig.getCalendarDay()) }
+    var eventTypeText by rememberSaveable { mutableStateOf("") }
+    var selectedEventId by rememberSaveable { mutableLongStateOf(-1) }
+    var memoText by rememberSaveable { mutableStateOf("") }
     val tagIdList = remember { mutableStateListOf<Long>() }
 
-    var isCalendarShowingState by remember { mutableStateOf(false) }
-    var isAddNameShowingState by remember { mutableStateOf(false) }
+    var isCalendarShowingState by rememberSaveable { mutableStateOf(false) }
+    var isAddNameShowingState by rememberSaveable { mutableStateOf(false) }
 
-    var isViewUnRecordMessage by remember { mutableStateOf("") }
+    var isViewUnRecordMessage by rememberSaveable { mutableStateOf("") }
 
     val typePositionState = animateDpAsState(
         targetValue = if (historyTypeState == HistoryRegistrationType.TAKE) 0.dp else 106.dp,
