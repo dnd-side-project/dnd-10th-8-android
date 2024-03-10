@@ -744,6 +744,14 @@ fun ScheduleAddScreen(
 
     }
 
+    fun loadDate(event: ScheduleAddEvent.LoadLocalDate) {
+        when (event) {
+            is ScheduleAddEvent.LoadLocalDate.Success -> {
+                date = event.date
+            }
+        }
+    }
+
     fun loadSchedule(event: ScheduleAddEvent.LoadSchedule) {
         when (event) {
             is ScheduleAddEvent.LoadSchedule.Success -> {
@@ -834,6 +842,10 @@ fun ScheduleAddScreen(
 
                 is ScheduleAddEvent.RemoveSchedule -> {
                     removeSchedule(event)
+                }
+
+                is ScheduleAddEvent.LoadLocalDate -> {
+                    loadDate(event)
                 }
             }
         }

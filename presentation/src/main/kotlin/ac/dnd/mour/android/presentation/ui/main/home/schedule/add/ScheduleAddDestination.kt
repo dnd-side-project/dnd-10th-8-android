@@ -19,7 +19,19 @@ fun NavGraphBuilder.scheduleAddDestination(
             navArgument(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID) {
                 type = NavType.LongType
                 defaultValue = -1L
-            }
+            },
+            navArgument(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_YEAR){
+                type = NavType.IntType
+                defaultValue = 1
+            },
+            navArgument(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_MONTH){
+                type = NavType.IntType
+                defaultValue = 1
+            },
+            navArgument(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_DAY){
+                type = NavType.IntType
+                defaultValue = 1
+            },
         )
     ) {
         val viewModel: ScheduleAddViewModel = hiltViewModel()

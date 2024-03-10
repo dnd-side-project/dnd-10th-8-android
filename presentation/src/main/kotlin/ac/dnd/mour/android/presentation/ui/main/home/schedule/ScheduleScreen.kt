@@ -132,7 +132,15 @@ private fun ScheduleScreen(
 
 
     fun navigateToScheduleAdd() {
-        appState.navController.navigate(ScheduleAddConstant.ROUTE)
+        val route = makeRoute(
+            ScheduleAddConstant.ROUTE,
+            listOf(
+                ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_YEAR to selectedDate.year,
+                ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_MONTH to selectedDate.monthNumber,
+                ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_DAY to selectedDate.dayOfMonth
+            )
+        )
+        appState.navController.navigate(route)
     }
 
     fun navigateToNotification() {
@@ -209,7 +217,6 @@ private fun ScheduleScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .clickable {
                             isDatePickerShowing = true
                         },
