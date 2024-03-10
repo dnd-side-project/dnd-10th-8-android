@@ -20,7 +20,7 @@ fun ManageSystemUiState(
     }.orEmpty()
 
     when (route) {
-        HomeConstant.ROUTE,
+        HomeConstant.ROUTE_STRUCTURE,
         ScheduleAddConstant.ROUTE -> {
             SideEffect {
                 appState.systemUiController.setStatusBarColor(Gray000)

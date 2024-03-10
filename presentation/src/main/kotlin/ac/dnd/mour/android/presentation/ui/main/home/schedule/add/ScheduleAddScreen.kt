@@ -131,7 +131,6 @@ fun ScheduleAddScreen(
     var isDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAlarmDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isAddSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isEditSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isRemoveSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isOutPageShowing: Boolean by remember { mutableStateOf(false) }
@@ -197,22 +196,6 @@ fun ScheduleAddScreen(
             onDismissRequest = { isTimePickerShowing = false },
             onConfirm = {
                 time = it
-            }
-        )
-    }
-
-    if (isAddSuccessShowing) {
-        DialogScreen(
-            title = "일정 추가하기",
-            message = "일정을 추가하였습니다.",
-            isCancelable = false,
-            onConfirm = {
-                // TODO : 뒤로가기 메시지 전달 추가 + 다이얼 로그 삭제
-                appState.navController.popBackStack()
-
-            },
-            onDismissRequest = {
-                isAddSuccessShowing = false
             }
         )
     }
@@ -805,7 +788,11 @@ fun ScheduleAddScreen(
     fun addSchedule(event: ScheduleAddEvent.AddSchedule) {
         when (event) {
             ScheduleAddEvent.AddSchedule.Success -> {
-                isAddSuccessShowing = true
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set(
+                    HomeConstant.ROUTE_ARGUMENT_MESSAGE,
+                    "일정이 추가되었습니다.",
+                )
+                appState.navController.popBackStack()
             }
         }
     }

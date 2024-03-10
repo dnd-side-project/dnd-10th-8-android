@@ -117,7 +117,7 @@ fun RegistrationNamingScreen(
     )
 
     fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE) {
+        appState.navController.navigate(HomeConstant.ROUTE_STRUCTURE) {
             popUpTo(RegistrationMainConstant.CONTAIN_USER_MODEL) {
                 inclusive = true
             }

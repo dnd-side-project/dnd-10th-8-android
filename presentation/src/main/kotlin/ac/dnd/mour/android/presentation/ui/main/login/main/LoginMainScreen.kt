@@ -67,13 +67,13 @@ fun LoginMainScreen(
     handler: CoroutineExceptionHandler
 ) {
     var isDialogShowing by remember { mutableStateOf(false) }
-
+    val context = LocalContext.current
     fun navigateToOnBoarding(kakaoUserModel: KakaoUserInformationModel) {
         appState.navController.sendKakaoUserModel(kakaoUserModel)
     }
 
     fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE) {
+        appState.navController.navigate(HomeConstant.ROUTE_STRUCTURE) {
             popUpTo(LoginConstant.ROUTE) {
                 inclusive = true
             }
@@ -197,7 +197,7 @@ fun LoginMainScreen(
                 .clickable {
                     if (model.state == LoginMainState.Init) {
                         loginWithKakao(
-                            context = LocalContext.current,
+                            context = context,
                             onSuccess = {
                                 intent(LoginMainIntent.Click)
                             },

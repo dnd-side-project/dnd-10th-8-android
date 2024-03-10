@@ -55,7 +55,7 @@ fun SplashScreen(
     }
 
     fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE) {
+        appState.navController.navigate(HomeConstant.ROUTE_STRUCTURE) {
             popUpTo(SplashConstant.ROUTE) {
                 inclusive = true
             }

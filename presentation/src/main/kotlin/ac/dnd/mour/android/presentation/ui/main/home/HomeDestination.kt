@@ -8,6 +8,8 @@ import ac.dnd.mour.android.presentation.ui.main.home.history.historyDestination
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.myPageDestination
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.scheduleDestination
 import ac.dnd.mour.android.presentation.ui.main.home.statistics.statisticsDestination
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,9 +29,20 @@ fun NavGraphBuilder.homeDestination(
                 defaultValue = ""
             }
         )
-    ) {
+    ) { entry ->
+
+        val message = entry.savedStateHandle.getStateFlow(
+            HomeConstant.ROUTE_ARGUMENT_MESSAGE,
+            initialValue = ""
+        ).collectAsState()
 
         val viewModel: HomeViewModel = hiltViewModel()
+        if(message.value.isNotEmpty()){
+            LaunchedEffect(Unit) {
+                viewModel.viewMessage(message.value)
+                entry.savedStateHandle.remove<String>(HomeConstant.ROUTE_ARGUMENT_MESSAGE)
+            }
+        }
 
         val model: HomeModel = let {
             val state by viewModel.state.collectAsStateWithLifecycle()

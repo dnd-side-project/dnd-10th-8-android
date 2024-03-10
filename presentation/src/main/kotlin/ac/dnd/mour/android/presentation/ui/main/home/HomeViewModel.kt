@@ -26,20 +26,13 @@ class HomeViewModel @Inject constructor(
         savedStateHandle.get<String>(HomeConstant.ROUTE_ARGUMENT_MESSAGE) ?: ""
     }
 
-    init {
-        if (message.isNotEmpty()) {
-            viewMessage(message)
-        }
-    }
-
     fun onIntent(intent: HomeIntent) {
 
     }
 
-    private fun viewMessage(message: String) {
+    fun viewMessage(message: String) {
         launch {
             _event.emit(HomeEvent.ShowSnackBar(message))
         }
-        savedStateHandle.remove<String>(HomeConstant.ROUTE_ARGUMENT_MESSAGE)
     }
 }
