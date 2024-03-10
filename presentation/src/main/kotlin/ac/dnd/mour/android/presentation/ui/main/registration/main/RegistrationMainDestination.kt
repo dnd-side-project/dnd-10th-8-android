@@ -1,6 +1,8 @@
 package ac.dnd.mour.android.presentation.ui.main.registration.main
 
 import ac.dnd.mour.android.presentation.common.util.ErrorObserver
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import androidx.compose.runtime.LaunchedEffect

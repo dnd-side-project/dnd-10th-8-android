@@ -17,6 +17,8 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties

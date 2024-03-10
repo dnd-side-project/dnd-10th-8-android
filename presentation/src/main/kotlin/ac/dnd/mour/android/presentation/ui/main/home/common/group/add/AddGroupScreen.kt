@@ -17,6 +17,8 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
@@ -41,6 +43,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,6 +75,13 @@ fun AddGroupScreen(
         )
     }
     ErrorObserver(viewModel)
+
+    LaunchedEffect(Unit) {
+        viewLogEvent(
+            LogEventUtil.VIEW_ADD_NEW_GROUP,
+            LogEventUtil.VIEW_ADD_NEW_GROUP
+        )
+    }
 
     AddGroupScreen(
         appState = appState,
@@ -192,6 +202,10 @@ private fun AddGroupScreen(
                 ),
                 isEnabled = text.isNotEmpty(),
                 onClick = {
+                    viewLogEvent(
+                        LogEventUtil.VIEW_ADD_NEW_GROUP,
+                        LogEventUtil.CLICK_REGISTRATION_ADD_NEW_GROUP
+                    )
                     intent(AddGroupIntent.OnConfirm(text))
                 }
             ) {

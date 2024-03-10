@@ -24,6 +24,8 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
@@ -62,6 +64,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -102,6 +105,13 @@ fun SearchRelationScreen(
         )
     }
     ErrorObserver(viewModel)
+
+    LaunchedEffect(Unit){
+        viewLogEvent(
+            LogEventUtil.VIEW_SELECT_NAME,
+            LogEventUtil.VIEW_SELECT_NAME
+        )
+    }
 
     SearchRelationScreen(
         appState = appState,
@@ -273,6 +283,10 @@ private fun SearchRelationScreen(
                             modifier = Modifier
                                 .clip(Shapes.medium)
                                 .clickable {
+                                    viewLogEvent(
+                                        LogEventUtil.VIEW_SELECT_NAME,
+                                        LogEventUtil.CLICK_SAVE_RELATION_SELECT_NAME
+                                    )
                                     navigateToEditRelation()
                                 }
                                 .background(color = Gray000)
@@ -384,6 +398,10 @@ private fun SearchRelationScreen(
                     ),
                     isEnabled = selectedRelation != null,
                     onClick = {
+                        viewLogEvent(
+                            LogEventUtil.VIEW_SELECT_NAME,
+                            LogEventUtil.CLICK_SELECION_NAME
+                        )
                         selectedRelation?.let { relation ->
                             onResult(relation)
                             onDismissRequest()

@@ -8,6 +8,8 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButton
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonProperties
 import ac.dnd.mour.android.presentation.common.view.confirm.ConfirmButtonSize
@@ -35,6 +37,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -64,6 +67,31 @@ fun LoginOnBoardingScreen(
     val pagerState = rememberPagerState(
         pageCount = { 3 }
     )
+
+    LaunchedEffect(pagerState) {
+        when (pagerState.currentPage) {
+            0 -> {
+                viewLogEvent(
+                    LogEventUtil.VIEW_ONBOARDING,
+                    LogEventUtil.VIEW_ONBOARDING
+                )
+            }
+
+            1 -> {
+                viewLogEvent(
+                    LogEventUtil.VIEW_ONBOARDING,
+                    LogEventUtil.VIEW_ONBOARDING_SECOND
+                )
+            }
+
+            2 -> {
+                viewLogEvent(
+                    LogEventUtil.VIEW_ONBOARDING,
+                    LogEventUtil.VIEW_ONBOARDING_THIRD
+                )
+            }
+        }
+    }
 
     fun navigateToRegistration(kakaoUserModel: KakaoUserInformationModel) {
         appState.navController.sendKakaoUserModel(kakaoUserModel)
@@ -129,6 +157,28 @@ fun LoginOnBoardingScreen(
                 ),
             onClick = {
                 intent(LoginOnBoardingIntent.Click)
+                when (pagerState.currentPage) {
+                    0 -> {
+                        viewLogEvent(
+                            LogEventUtil.VIEW_ONBOARDING,
+                            LogEventUtil.CLICK_NEXT_ONBOARDING
+                        )
+                    }
+
+                    1 -> {
+                        viewLogEvent(
+                            LogEventUtil.VIEW_ONBOARDING,
+                            LogEventUtil.CLICK_NEXT_ONBOARDING_SECOND
+                        )
+                    }
+
+                    2 -> {
+                        viewLogEvent(
+                            LogEventUtil.VIEW_ONBOARDING,
+                            LogEventUtil.CLICK_NEXT_ONBOARDING_THIRD
+                        )
+                    }
+                }
             }
         ) { style ->
             Text(

@@ -13,6 +13,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.loginWithKakao
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
@@ -36,6 +38,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +70,14 @@ fun LoginMainScreen(
     intent: (LoginMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+
+    LaunchedEffect(Unit){
+        viewLogEvent(
+            LogEventUtil.VIEW_LOG_IN,
+            LogEventUtil.VIEW_LOG_IN
+        )
+    }
+
     var isDialogShowing by remember { mutableStateOf(false) }
     val context = LocalContext.current
     fun navigateToOnBoarding(kakaoUserModel: KakaoUserInformationModel) {
@@ -196,6 +207,10 @@ fun LoginMainScreen(
                     shape = Shapes.medium
                 )
                 .clickable {
+                    viewLogEvent(
+                        LogEventUtil.VIEW_LOG_IN,
+                        LogEventUtil.CLICK_KAKAO_LOG_IN
+                    )
                     if (model.state == LoginMainState.Init) {
                         loginWithKakao(
                             context = context,

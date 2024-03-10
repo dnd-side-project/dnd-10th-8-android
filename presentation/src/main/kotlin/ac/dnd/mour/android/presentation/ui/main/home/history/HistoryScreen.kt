@@ -23,6 +23,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.mour.android.presentation.model.history.HistoryViewSwipingType
@@ -105,6 +107,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
+import timber.log.Timber
 
 @Composable
 fun HistoryScreen(
@@ -149,6 +152,12 @@ private fun HistoryScreen(
     handler: CoroutineExceptionHandler,
     selectedItem: Int
 ) {
+    LaunchedEffect(Unit){
+        viewLogEvent(
+            LogEventUtil.VIEW_MAIN,
+            LogEventUtil.VIEW_MAIN
+        )
+    }
 
     var isViewInLifecycle by remember { mutableStateOf(true) }
     LaunchedEffectWithLifecycle(context = handler) {
@@ -527,6 +536,10 @@ private fun HistoryScreen(
                         )
                         .clip(RoundedCornerShape(100.dp))
                         .clickable {
+                            viewLogEvent(
+                                LogEventUtil.VIEW_FAB_BUTTON_MAIN,
+                                LogEventUtil.CLICK_MONEY_MAIN
+                            )
                             isDropDownMenuExpanded = false
                             if (isNotEmptyRelation) {
                                 isDropDownMenuExpanded = false
@@ -574,6 +587,10 @@ private fun HistoryScreen(
                         )
                         .clip(RoundedCornerShape(100.dp))
                         .clickable {
+                            viewLogEvent(
+                                LogEventUtil.VIEW_FAB_BUTTON_MAIN,
+                                LogEventUtil.CLICK_RELATION_MAIN
+                            )
                             isDropDownMenuExpanded = false
                             navigateToAddRelation()
                         }
@@ -620,6 +637,21 @@ private fun HistoryScreen(
                 backgroundColor = if (isDropDownMenuExpanded) Gray000 else Gray800,
                 onClick = {
                     isDropDownMenuExpanded = !isDropDownMenuExpanded
+                    if(isDropDownMenuExpanded){
+                        viewLogEvent(
+                            LogEventUtil.VIEW_FAB_BUTTON_MAIN,
+                            LogEventUtil.CLICK_CLOSE_MAIN
+                        )
+                    }else{
+                        viewLogEvent(
+                            LogEventUtil.VIEW_MAIN,
+                            LogEventUtil.CLICK_PLUSFLOATING_MAIN
+                        )
+                        viewLogEvent(
+                            LogEventUtil.VIEW_FAB_BUTTON_MAIN,
+                            LogEventUtil.VIEW_FAB_BUTTON_MAIN
+                        )
+                    }
                 }
             ) {
                 if (isDropDownMenuExpanded) {
