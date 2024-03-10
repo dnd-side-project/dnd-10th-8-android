@@ -237,90 +237,101 @@ private fun ScheduleScreen(
                 }
                 Spacer(modifier = Modifier.height(5.dp))
             }
-            LazyColumn(
-                modifier = Modifier.weight(1f)
-            ) {
-                item {
-                    ScheduleScreenHeader(
-                        appState = appState,
-                        model = model,
-                        event = event,
-                        intent = intent,
-                        handler = handler,
-                        showingDate = showingDate,
-                        selectedDate = selectedDate,
-                        onClickDay = {
-                            selectedDate = it
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = formattedTitle,
-                        style = Headline3,
-                        modifier = Modifier.padding(start = 20.dp)
-                    )
-                    Spacer(modifier = Modifier.height(14.dp))
-                }
-                if (scheduleList.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(103.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Spacer(modifier = Modifier.weight(7f))
-                                Text(
-                                    text = "아직 작성한 일정이 없어요",
-                                    fontWeight = FontWeight.SemiBold,
-                                    style = Body1.merge(Gray700),
-                                    letterSpacing = (-0.25).sp,
 
-                                    )
-                                Spacer(modifier = Modifier.weight(6f))
-                                Text(
-                                    text = "일정을 등록하고 미리 알림 받아보세요",
-                                    fontWeight = FontWeight.Normal,
-                                    style = Body2.merge(Gray600),
-                                    letterSpacing = (-0.25).sp
-                                )
-                                Spacer(modifier = Modifier.weight(24f))
-                                Box(
-                                    modifier = Modifier
-                                        .clip(Shapes.medium)
-                                        .background(color = Gray000)
-                                        .clickable {
-                                            navigateToScheduleAdd()
-                                        }
-                                        .border(
-                                            width = 1.dp,
-                                            color = Gray500,
-                                            shape = Shapes.medium
-                                        )
-                                        .padding(
-                                            horizontal = 16.dp,
-                                            vertical = 6.5.dp
-                                        )
-                                ) {
-                                    Text(
-                                        text = "일정 등록하기",
-                                        fontWeight = FontWeight.SemiBold,
-                                        style = Body1.merge(color = Gray600),
-                                        letterSpacing = (-0.25).sp
-                                    )
-                                }
-                            }
-                        }
+            if (scheduleList.isEmpty()) {
+                ScheduleScreenHeader(
+                    appState = appState,
+                    model = model,
+                    event = event,
+                    intent = intent,
+                    handler = handler,
+                    showingDate = showingDate,
+                    selectedDate = selectedDate,
+                    onClickDay = {
+                        selectedDate = it
                     }
-                } else {
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = formattedTitle,
+                    style = Headline3,
+                    modifier = Modifier.padding(start = 20.dp)
+                )
+                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.weight(100f))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .height(103.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.weight(7f))
+                    Text(
+                        text = "아직 작성한 일정이 없어요",
+                        fontWeight = FontWeight.SemiBold,
+                        style = Body1.merge(Gray700),
+                        letterSpacing = (-0.25).sp,
+
+                        )
+                    Spacer(modifier = Modifier.weight(6f))
+                    Text(
+                        text = "일정을 등록하고 미리 알림 받아보세요",
+                        fontWeight = FontWeight.Normal,
+                        style = Body2.merge(Gray600),
+                        letterSpacing = (-0.25).sp
+                    )
+                    Spacer(modifier = Modifier.weight(24f))
+                    Box(
+                        modifier = Modifier
+                            .clip(Shapes.medium)
+                            .background(color = Gray000)
+                            .clickable {
+                                navigateToScheduleAdd()
+                            }
+                            .border(
+                                width = 1.dp,
+                                color = Gray500,
+                                shape = Shapes.medium
+                            )
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 6.5.dp
+                            )
+                    ) {
+                        Text(
+                            text = "일정 등록하기",
+                            fontWeight = FontWeight.SemiBold,
+                            style = Body1.merge(color = Gray600),
+                            letterSpacing = (-0.25).sp
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.weight(176f))
+            } else {
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    item {
+                        ScheduleScreenHeader(
+                            appState = appState,
+                            model = model,
+                            event = event,
+                            intent = intent,
+                            handler = handler,
+                            showingDate = showingDate,
+                            selectedDate = selectedDate,
+                            onClickDay = {
+                                selectedDate = it
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(
+                            text = formattedTitle,
+                            style = Headline3,
+                            modifier = Modifier.padding(start = 20.dp)
+                        )
+                        Spacer(modifier = Modifier.height(14.dp))
+                    }
                     items(scheduleList) { schedule ->
                         Column(
                             modifier = Modifier.padding(horizontal = 20.dp)

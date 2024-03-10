@@ -124,7 +124,7 @@ fun HistoryRegistrationScreen(
     var isCalendarShowingState by rememberSaveable { mutableStateOf(false) }
     var isAddNameShowingState by rememberSaveable { mutableStateOf(false) }
 
-    var isViewUnRecordMessage by rememberSaveable { mutableStateOf("") }
+    var isViewUnRecordMessage by remember { mutableStateOf("") }
 
     val typePositionState = animateDpAsState(
         targetValue = if (historyTypeState == HistoryRegistrationType.TAKE) 0.dp else 106.dp,

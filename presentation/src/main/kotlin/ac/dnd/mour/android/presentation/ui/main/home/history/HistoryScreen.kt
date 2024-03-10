@@ -224,6 +224,7 @@ private fun HistoryScreen(
             }
         }
     }
+
     val searchBoxHeightState = animateDpAsState(
         targetValue = when (swipeState.progress.to) {
             HistoryViewSwipingType.COLLAPSED -> 0.dp
@@ -497,7 +498,8 @@ private fun HistoryScreen(
                                 searchText = searchText,
                                 onRecord = {
                                     navigateToAddRelation()
-                                }
+                                },
+                                isExpanded = swipeState.progress.to == HistoryViewSwipingType.EXPANDED
                             )
                         }
                     }

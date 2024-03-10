@@ -78,7 +78,8 @@ fun HistoryPageScreen(
     handler: CoroutineExceptionHandler,
     viewType: HistoryViewType,
     searchText: String,
-    onRecord: () -> Unit
+    onRecord: () -> Unit,
+    isExpanded: Boolean
 ) {
     var selectedGroupId by remember { mutableLongStateOf(-1) }
     var isDropDownMenuExpanded by remember { mutableStateOf(false) }
@@ -218,7 +219,8 @@ fun HistoryPageScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     EmptyRelationView(
-                        onRecord = onRecord
+                        onRecord = onRecord,
+                        isExpanded = isExpanded
                     )
                 }
             } else {
@@ -374,6 +376,7 @@ private fun GroupChipListComponent(
 
 @Composable
 private fun EmptyRelationView(
+    isExpanded: Boolean,
     onRecord: () -> Unit
 ) {
     Column(
@@ -383,7 +386,7 @@ private fun EmptyRelationView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.weight(60f))
+        Spacer(modifier = Modifier.weight(if (isExpanded) 1f else 60f))
         Text(
             text = "아직 주고 받은 내역이 없어요.",
             style = Body1.merge(
@@ -428,7 +431,7 @@ private fun EmptyRelationView(
                 letterSpacing = (-0.25).sp
             )
         }
-        Spacer(modifier = Modifier.weight(118f))
+        Spacer(modifier = Modifier.weight(if (isExpanded) 1f else 118f))
     }
 }
 
@@ -437,7 +440,8 @@ private fun EmptyRelationView(
 private fun EmptyRelationViewPreview() {
     Box(modifier = Modifier.height(198.dp)) {
         EmptyRelationView(
-            onRecord = {}
+            onRecord = {},
+            isExpanded = true
         )
     }
 }

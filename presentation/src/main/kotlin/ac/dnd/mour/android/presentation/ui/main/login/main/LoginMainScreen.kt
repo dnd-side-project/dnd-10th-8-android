@@ -74,7 +74,7 @@ fun LoginMainScreen(
     }
 
     fun navigateToHome() {
-        appState.navController.navigate(HomeConstant.ROUTE_STRUCTURE) {
+        appState.navController.navigate(HomeConstant.ROUTE) {
             popUpTo(LoginConstant.ROUTE) {
                 inclusive = true
             }
