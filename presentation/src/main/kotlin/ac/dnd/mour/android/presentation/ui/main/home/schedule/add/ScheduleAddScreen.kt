@@ -24,7 +24,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
-import ac.dnd.mour.android.presentation.common.view.calendar.CalendarPicker
+import ac.dnd.mour.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.mour.android.presentation.common.view.calendar.TimePicker
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
@@ -38,6 +38,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldTyp
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
 import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
@@ -169,12 +170,17 @@ fun ScheduleAddScreen(
     }
 
     if (isDatePickerShowing) {
-        CalendarPicker(
-            localDate = date,
-            isDaySelectable = true,
-            onDismissRequest = { isDatePickerShowing = false },
-            onConfirm = {
-                date = it
+        HistoryCalendarScreen(
+            calendarConfig = CalendarConfig(),
+            selectedYear = date.year,
+            selectedMonth = date.monthNumber,
+            selectedDay = date.dayOfMonth,
+            onClose = {
+                isDatePickerShowing = false
+            },
+            onConfirm = { year, month, day ->
+                date = LocalDate(year, month, day)
+                isDatePickerShowing = false
             }
         )
     }

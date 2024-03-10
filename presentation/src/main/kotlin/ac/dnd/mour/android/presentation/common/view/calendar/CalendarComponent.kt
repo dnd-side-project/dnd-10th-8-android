@@ -67,7 +67,7 @@ fun CalendarComponent(
     LaunchedEffect(selectedYear, selectedMonth) {
         dayItems.clear()
         dayItems.addAll(calendarConfig.getCurrentCalendarDate(selectedYear, selectedMonth))
-        onDaySelect(calendarConfig.getCalendarDay())
+        onDaySelect(selectedDay)
     }
 
     Column(
