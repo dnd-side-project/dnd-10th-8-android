@@ -109,7 +109,9 @@ fun SearchRelationScreen(
     LaunchedEffect(Unit){
         viewLogEvent(
             LogEventUtil.VIEW_SELECT_NAME,
-            LogEventUtil.VIEW_SELECT_NAME
+            block = {
+
+            }
         )
     }
 
@@ -284,8 +286,10 @@ private fun SearchRelationScreen(
                                 .clip(Shapes.medium)
                                 .clickable {
                                     viewLogEvent(
-                                        LogEventUtil.VIEW_SELECT_NAME,
-                                        LogEventUtil.CLICK_SAVE_RELATION_SELECT_NAME
+                                        LogEventUtil.CLICK_SAVE_RELATION_SELECT_NAME,
+                                        block = {
+
+                                        }
                                     )
                                     navigateToEditRelation()
                                 }
@@ -399,8 +403,10 @@ private fun SearchRelationScreen(
                     isEnabled = selectedRelation != null,
                     onClick = {
                         viewLogEvent(
-                            LogEventUtil.VIEW_SELECT_NAME,
-                            LogEventUtil.CLICK_SELECION_NAME
+                            LogEventUtil.CLICK_SELECION_NAME,
+                            block = {
+
+                            }
                         )
                         selectedRelation?.let { relation ->
                             onResult(relation)

@@ -414,8 +414,10 @@ private fun EmptyRelationView(
                 .clickable {
                     onRecord()
                     viewLogEvent(
-                        LogEventUtil.VIEW_MAIN,
-                        LogEventUtil.CLICK_PLUSBTN_MAIN
+                        LogEventUtil.CLICK_PLUSBTN_MAIN,
+                        block = {
+
+                        }
                     )
                 }
                 .border(

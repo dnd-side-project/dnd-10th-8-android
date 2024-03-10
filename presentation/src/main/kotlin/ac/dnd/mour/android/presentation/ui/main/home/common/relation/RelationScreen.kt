@@ -128,7 +128,9 @@ fun RelationScreen(
         if (relationType == RelationType.ADD) {
             viewLogEvent(
                 LogEventUtil.VIEW_RELATION,
-                LogEventUtil.VIEW_RELATION
+                block = {
+
+                }
             )
         }
     }
@@ -402,8 +404,10 @@ fun RelationScreen(
                         isNameTypeTyping = true
                         if (relationType == RelationType.ADD) {
                             viewLogEvent(
-                                LogEventUtil.VIEW_RELATION,
-                                LogEventUtil.CLICK_DIRECT_INPUT_RELATION
+                                LogEventUtil.CLICK_DIRECT_INPUT_RELATION,
+                                block = {
+
+                                }
                             )
                         }
                     }
@@ -420,8 +424,10 @@ fun RelationScreen(
                         isNameTypeTyping = false
                         if (relationType == RelationType.ADD) {
                             viewLogEvent(
-                                LogEventUtil.VIEW_RELATION,
-                                LogEventUtil.CLICK_KAKAO_RELATION
+                                LogEventUtil.CLICK_KAKAO_RELATION,
+                                block = {
+
+                                }
                             )
                         }
                     }
@@ -622,8 +628,10 @@ fun RelationScreen(
                     .clickable {
                         if (relationType == RelationType.ADD) {
                             viewLogEvent(
-                                LogEventUtil.VIEW_RELATION,
-                                LogEventUtil.CLICK_EDIT_RELATION
+                                LogEventUtil.CLICK_EDIT_RELATION,
+                                block = {
+
+                                }
                             )
                         }
                         isShowingGetGroup = true
@@ -838,8 +846,10 @@ fun RelationScreen(
                             if (checkSubmitState()) {
                                 isRecordState = true
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_RELATION,
-                                    LogEventUtil.CLICK_MONEY_RELATION
+                                    LogEventUtil.CLICK_MONEY_RELATION,
+                                    block = {
+
+                                    }
                                 )
                                 intent(
                                     if (currentImageName.isEmpty()) {
@@ -880,8 +890,10 @@ fun RelationScreen(
                         onClick = {
                             if (checkSubmitState()) {
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_RELATION,
-                                    LogEventUtil.CLICK_SAVE_RELATION
+                                    LogEventUtil.CLICK_SAVE_RELATION,
+                                    block = {
+
+                                    }
                                 )
                                 intent(
                                     if (currentImageName.isEmpty()) {

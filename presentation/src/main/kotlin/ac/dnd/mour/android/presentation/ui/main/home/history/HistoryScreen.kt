@@ -155,7 +155,9 @@ private fun HistoryScreen(
     LaunchedEffect(Unit){
         viewLogEvent(
             LogEventUtil.VIEW_MAIN,
-            LogEventUtil.VIEW_MAIN
+            block = {
+
+            }
         )
     }
 
@@ -537,8 +539,10 @@ private fun HistoryScreen(
                         .clip(RoundedCornerShape(100.dp))
                         .clickable {
                             viewLogEvent(
-                                LogEventUtil.VIEW_FAB_BUTTON_MAIN,
-                                LogEventUtil.CLICK_MONEY_MAIN
+                                LogEventUtil.CLICK_MONEY_MAIN,
+                                block = {
+
+                                }
                             )
                             isDropDownMenuExpanded = false
                             if (isNotEmptyRelation) {
@@ -588,8 +592,10 @@ private fun HistoryScreen(
                         .clip(RoundedCornerShape(100.dp))
                         .clickable {
                             viewLogEvent(
-                                LogEventUtil.VIEW_FAB_BUTTON_MAIN,
-                                LogEventUtil.CLICK_RELATION_MAIN
+                                LogEventUtil.CLICK_RELATION_MAIN,
+                                block = {
+
+                                }
                             )
                             isDropDownMenuExpanded = false
                             navigateToAddRelation()
@@ -639,17 +645,23 @@ private fun HistoryScreen(
                     isDropDownMenuExpanded = !isDropDownMenuExpanded
                     if(isDropDownMenuExpanded){
                         viewLogEvent(
-                            LogEventUtil.VIEW_FAB_BUTTON_MAIN,
-                            LogEventUtil.CLICK_CLOSE_MAIN
+                            LogEventUtil.CLICK_CLOSE_MAIN,
+                            block = {
+
+                            }
                         )
                     }else{
                         viewLogEvent(
-                            LogEventUtil.VIEW_MAIN,
-                            LogEventUtil.CLICK_PLUSFLOATING_MAIN
+                            LogEventUtil.CLICK_PLUSFLOATING_MAIN,
+                            block = {
+
+                            }
                         )
                         viewLogEvent(
                             LogEventUtil.VIEW_FAB_BUTTON_MAIN,
-                            LogEventUtil.VIEW_FAB_BUTTON_MAIN
+                            block = {
+
+                            }
                         )
                     }
                 }

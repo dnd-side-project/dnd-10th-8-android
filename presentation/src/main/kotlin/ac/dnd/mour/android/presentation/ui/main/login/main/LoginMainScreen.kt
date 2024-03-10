@@ -74,7 +74,9 @@ fun LoginMainScreen(
     LaunchedEffect(Unit){
         viewLogEvent(
             LogEventUtil.VIEW_LOG_IN,
-            LogEventUtil.VIEW_LOG_IN
+            block = {
+
+            }
         )
     }
 
@@ -208,8 +210,10 @@ fun LoginMainScreen(
                 )
                 .clickable {
                     viewLogEvent(
-                        LogEventUtil.VIEW_LOG_IN,
-                        LogEventUtil.CLICK_KAKAO_LOG_IN
+                        LogEventUtil.CLICK_KAKAO_LOG_IN,
+                        block = {
+
+                        }
                     )
                     if (model.state == LoginMainState.Init) {
                         loginWithKakao(

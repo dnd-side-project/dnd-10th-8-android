@@ -145,13 +145,17 @@ fun HistoryRegistrationScreen(
             HistoryRegistrationType.TAKE -> {
                 viewLogEvent(
                     LogEventUtil.VIEW_MONEY_TAKE,
-                    LogEventUtil.VIEW_MONEY_TAKE
+                    block = {
+
+                    }
                 )
             }
             HistoryRegistrationType.GIVE -> {
                 viewLogEvent(
                     LogEventUtil.VIEW_MONEY_GIVE,
-                    LogEventUtil.VIEW_MONEY_GIVE
+                    block = {
+
+                    }
                 )
             }
         }
@@ -449,14 +453,18 @@ fun HistoryRegistrationScreen(
                         when(historyTypeState){
                             HistoryRegistrationType.TAKE -> {
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_MONEY_TAKE,
-                                    LogEventUtil.CLICK_NEXT_SAVE_TAKE
+                                    LogEventUtil.CLICK_NEXT_SAVE_TAKE,
+                                    block = {
+
+                                    }
                                 )
                             }
                             HistoryRegistrationType.GIVE -> {
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_MONEY_GIVE,
-                                    LogEventUtil.CLICK_NEXT_SAVE_GIVE
+                                    LogEventUtil.CLICK_NEXT_SAVE_GIVE,
+                                    block = {
+
+                                    }
                                 )
                             }
                         }
@@ -489,14 +497,18 @@ fun HistoryRegistrationScreen(
                         when(historyTypeState){
                             HistoryRegistrationType.TAKE -> {
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_MONEY_TAKE,
-                                    LogEventUtil.CLICK_SAVE_TAKE
+                                    LogEventUtil.CLICK_SAVE_TAKE,
+                                    block = {
+
+                                    }
                                 )
                             }
                             HistoryRegistrationType.GIVE -> {
                                 viewLogEvent(
-                                    LogEventUtil.VIEW_MONEY_GIVE,
-                                    LogEventUtil.CLICK_SAVE_GIVE
+                                    LogEventUtil.CLICK_SAVE_GIVE,
+                                    block = {
+
+                                    }
                                 )
                             }
                         }

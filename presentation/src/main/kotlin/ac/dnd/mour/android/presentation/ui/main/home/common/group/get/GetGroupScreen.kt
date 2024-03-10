@@ -93,7 +93,9 @@ fun GetGroupScreen(
     LaunchedEffect(Unit) {
         viewLogEvent(
             LogEventUtil.VIEW_EDIT_GROUP,
-            LogEventUtil.VIEW_EDIT_GROUP
+            block = {
+
+            }
         )
     }
 
@@ -309,8 +311,10 @@ private fun GetGroupScreen(
                     modifier = Modifier
                         .clickable {
                             viewLogEvent(
-                                LogEventUtil.VIEW_EDIT_GROUP,
-                                LogEventUtil.CLICK_SAVE_GROUP_EDIT_GROUP
+                                LogEventUtil.CLICK_SAVE_GROUP_EDIT_GROUP,
+                                block = {
+
+                                }
                             )
                             isShowingAddGroupSheet = true
                         }

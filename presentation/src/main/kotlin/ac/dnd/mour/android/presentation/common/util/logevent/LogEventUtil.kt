@@ -1,15 +1,16 @@
 package ac.dnd.mour.android.presentation.common.util.logevent
 
+import com.google.firebase.analytics.ParametersBuilder
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.ktx.Firebase
 
 fun viewLogEvent(
     eventName: String,
-    screenName: String
+    block: ParametersBuilder.() -> Unit
 ) {
-    Firebase.analytics.logEvent(eventName) {
-        param(screenName, screenName)
+    Firebase.analytics.logEvent(eventName){
+        block()
     }
 }
 

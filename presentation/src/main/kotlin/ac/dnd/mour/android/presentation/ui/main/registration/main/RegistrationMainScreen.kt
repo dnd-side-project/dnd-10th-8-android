@@ -95,7 +95,9 @@ fun RegistrationNamingScreen(
     LaunchedEffect(Unit){
         viewLogEvent(
             LogEventUtil.VIEW_REQUIRED_INFO,
-            LogEventUtil.VIEW_REQUIRED_INFO
+            block = {
+
+            }
         )
     }
 
@@ -516,8 +518,10 @@ fun RegistrationNamingScreen(
                             )
                         )
                         viewLogEvent(
-                            LogEventUtil.VIEW_REQUIRED_INFO,
-                            LogEventUtil.CLICK_START_REQUIRED_INFO
+                            LogEventUtil.CLICK_START_REQUIRED_INFO,
+                            block = {
+
+                            }
                         )
                     }
                 },

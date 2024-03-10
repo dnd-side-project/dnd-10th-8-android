@@ -73,21 +73,27 @@ fun LoginOnBoardingScreen(
             0 -> {
                 viewLogEvent(
                     LogEventUtil.VIEW_ONBOARDING,
-                    LogEventUtil.VIEW_ONBOARDING
+                    block = {
+
+                    }
                 )
             }
 
             1 -> {
                 viewLogEvent(
-                    LogEventUtil.VIEW_ONBOARDING,
-                    LogEventUtil.VIEW_ONBOARDING_SECOND
+                    LogEventUtil.VIEW_ONBOARDING_SECOND,
+                    block = {
+
+                    }
                 )
             }
 
             2 -> {
                 viewLogEvent(
-                    LogEventUtil.VIEW_ONBOARDING,
-                    LogEventUtil.VIEW_ONBOARDING_THIRD
+                    LogEventUtil.VIEW_ONBOARDING_THIRD,
+                    block = {
+
+                    }
                 )
             }
         }
@@ -160,22 +166,28 @@ fun LoginOnBoardingScreen(
                 when (pagerState.currentPage) {
                     0 -> {
                         viewLogEvent(
-                            LogEventUtil.VIEW_ONBOARDING,
-                            LogEventUtil.CLICK_NEXT_ONBOARDING
+                            LogEventUtil.CLICK_NEXT_ONBOARDING,
+                            block = {
+
+                            }
                         )
                     }
 
                     1 -> {
                         viewLogEvent(
-                            LogEventUtil.VIEW_ONBOARDING,
-                            LogEventUtil.CLICK_NEXT_ONBOARDING_SECOND
+                            LogEventUtil.CLICK_NEXT_ONBOARDING_SECOND,
+                            block = {
+
+                            }
                         )
                     }
 
                     2 -> {
                         viewLogEvent(
-                            LogEventUtil.VIEW_ONBOARDING,
-                            LogEventUtil.CLICK_NEXT_ONBOARDING_THIRD
+                            LogEventUtil.CLICK_NEXT_ONBOARDING_THIRD,
+                            block = {
+
+                            }
                         )
                     }
                 }

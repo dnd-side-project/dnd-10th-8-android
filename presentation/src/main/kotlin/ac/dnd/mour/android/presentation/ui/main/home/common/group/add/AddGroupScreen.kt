@@ -79,7 +79,9 @@ fun AddGroupScreen(
     LaunchedEffect(Unit) {
         viewLogEvent(
             LogEventUtil.VIEW_ADD_NEW_GROUP,
-            LogEventUtil.VIEW_ADD_NEW_GROUP
+            block = {
+
+            }
         )
     }
 
@@ -203,8 +205,10 @@ private fun AddGroupScreen(
                 isEnabled = text.isNotEmpty(),
                 onClick = {
                     viewLogEvent(
-                        LogEventUtil.VIEW_ADD_NEW_GROUP,
-                        LogEventUtil.CLICK_REGISTRATION_ADD_NEW_GROUP
+                        LogEventUtil.CLICK_REGISTRATION_ADD_NEW_GROUP,
+                        block = {
+
+                        }
                     )
                     intent(AddGroupIntent.OnConfirm(text))
                 }
