@@ -153,7 +153,7 @@ fun HistoryRegistrationScreen(
             tagIdList.clear()
         } else {
             if (isHome) {
-                appState.navController.navigate(HomeConstant.ROUTE_STRUCTURE)
+                appState.navController.navigate(HomeConstant.ROUTE)
             } else {
                 appState.navController.popBackStack()
             }
