@@ -13,7 +13,6 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.asEventFlow
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +21,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.minus
+import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleAddViewModel @Inject constructor(
@@ -38,7 +38,7 @@ class ScheduleAddViewModel @Inject constructor(
     private val _event: MutableEventFlow<ScheduleAddEvent> = MutableEventFlow()
     val event: EventFlow<ScheduleAddEvent> = _event.asEventFlow()
 
-    val scheduleId: Long by lazy {
+    private val scheduleId: Long by lazy {
         savedStateHandle.get<Long>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_ID) ?: -1L
     }
 
@@ -46,9 +46,29 @@ class ScheduleAddViewModel @Inject constructor(
         scheduleId != -1L
     }
 
+    private val scheduleDate: LocalDate by lazy {
+        val year =
+            savedStateHandle.get<Int>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_YEAR) ?: 1
+        val month =
+            savedStateHandle.get<Int>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_MONTH) ?: 1
+        val day =
+            savedStateHandle.get<Int>(ScheduleAddConstant.ROUTE_ARGUMENT_SCHEDULE_DAY) ?: 1
+        LocalDate(year, month, day)
+    }
+
     init {
         if (scheduleId != -1L) {
             loadSchedule()
+        } else {
+            if (scheduleDate.year != 1) {
+                setSelectedDate()
+            }
+        }
+    }
+
+    private fun setSelectedDate() {
+        launch {
+            _event.emit(ScheduleAddEvent.LoadLocalDate.Success(scheduleDate))
         }
     }
 

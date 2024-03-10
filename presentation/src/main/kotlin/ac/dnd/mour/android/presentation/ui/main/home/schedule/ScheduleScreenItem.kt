@@ -81,7 +81,7 @@ fun ScheduleScreenItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
                     .background(Gray000),
                 contentAlignment = Alignment.Center

@@ -20,7 +20,7 @@ data class GetGroupStatisticsItemRes(
     @SerialName("event")
     val event: String,
     @SerialName("amount")
-    val amount: Long
+    val amount: Double
 ) : DataMapper<GroupStatistics> {
     override fun toDomain(): GroupStatistics {
         return GroupStatistics(

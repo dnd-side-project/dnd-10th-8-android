@@ -70,6 +70,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.logging)
 
+    implementation(libs.kakao.user)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 

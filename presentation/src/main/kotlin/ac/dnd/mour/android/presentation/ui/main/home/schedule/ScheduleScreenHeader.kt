@@ -71,17 +71,9 @@ fun ScheduleScreenHeader(
     handler: CoroutineExceptionHandler,
     showingDate: LocalDate,
     selectedDate: LocalDate,
-    onClickDate: () -> Unit,
     onClickDay: (LocalDate) -> Unit
 ) {
     var isExpanded: Boolean by remember { mutableStateOf(true) }
-
-    val formattedDate = Unit.let {
-        val year = showingDate.year
-        val month = showingDate.month.number
-
-        "${year}년 ${month}월"
-    }
 
     Card(
         shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp),
@@ -93,25 +85,25 @@ fun ScheduleScreenHeader(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.clickable {
-                    onClickDate()
-                },
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = formattedDate,
-                    style = Headline1.merge(Gray900)
-                )
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(R.drawable.ic_drop_down),
-                    contentDescription = null,
-                    tint = Gray900
-                )
-            }
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Row(
+//                modifier = Modifier.clickable {
+//                    onClickDate()
+//                },
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = formattedDate,
+//                    style = Headline1.merge(Gray900)
+//                )
+//                Icon(
+//                    modifier = Modifier.size(20.dp),
+//                    painter = painterResource(R.drawable.ic_drop_down),
+//                    contentDescription = null,
+//                    tint = Gray900
+//                )
+//            }
             Spacer(modifier = Modifier.height(20.dp))
             ScheduleScreenHeaderCalendar(
                 appState = appState,
@@ -426,7 +418,6 @@ private fun ScheduleScreenHeaderPreview() {
         handler = CoroutineExceptionHandler { _, _ -> },
         showingDate = LocalDate(2024, 2, 25),
         selectedDate = LocalDate(2024, 2, 1),
-        onClickDate = {},
         onClickDay = {}
     )
 }

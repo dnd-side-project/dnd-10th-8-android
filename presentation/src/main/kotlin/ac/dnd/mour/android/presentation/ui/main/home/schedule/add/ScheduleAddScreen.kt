@@ -24,7 +24,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
-import ac.dnd.mour.android.presentation.common.view.calendar.CalendarPicker
+import ac.dnd.mour.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.mour.android.presentation.common.view.calendar.TimePicker
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
@@ -38,6 +38,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldTyp
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
 import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
@@ -131,7 +132,6 @@ fun ScheduleAddScreen(
     var isDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isAlarmDatePickerShowing: Boolean by remember { mutableStateOf(false) }
     var isTimePickerShowing: Boolean by remember { mutableStateOf(false) }
-    var isAddSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isEditSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isRemoveSuccessShowing: Boolean by remember { mutableStateOf(false) }
     var isOutPageShowing: Boolean by remember { mutableStateOf(false) }
@@ -170,12 +170,17 @@ fun ScheduleAddScreen(
     }
 
     if (isDatePickerShowing) {
-        CalendarPicker(
-            localDate = date,
-            isDaySelectable = true,
-            onDismissRequest = { isDatePickerShowing = false },
-            onConfirm = {
-                date = it
+        HistoryCalendarScreen(
+            calendarConfig = CalendarConfig(),
+            selectedYear = date.year,
+            selectedMonth = date.monthNumber,
+            selectedDay = date.dayOfMonth,
+            onClose = {
+                isDatePickerShowing = false
+            },
+            onConfirm = { year, month, day ->
+                date = LocalDate(year, month, day)
+                isDatePickerShowing = false
             }
         )
     }
@@ -197,22 +202,6 @@ fun ScheduleAddScreen(
             onDismissRequest = { isTimePickerShowing = false },
             onConfirm = {
                 time = it
-            }
-        )
-    }
-
-    if (isAddSuccessShowing) {
-        DialogScreen(
-            title = "일정 추가하기",
-            message = "일정을 추가하였습니다.",
-            isCancelable = false,
-            onConfirm = {
-                // TODO : 뒤로가기 메시지 전달 추가 + 다이얼 로그 삭제
-                appState.navController.popBackStack()
-
-            },
-            onDismissRequest = {
-                isAddSuccessShowing = false
             }
         )
     }
@@ -520,7 +509,7 @@ fun ScheduleAddScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
+                    Image(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.ic_alarm_gray),
                         contentDescription = null,
@@ -761,6 +750,14 @@ fun ScheduleAddScreen(
 
     }
 
+    fun loadDate(event: ScheduleAddEvent.LoadLocalDate) {
+        when (event) {
+            is ScheduleAddEvent.LoadLocalDate.Success -> {
+                date = event.date
+            }
+        }
+    }
+
     fun loadSchedule(event: ScheduleAddEvent.LoadSchedule) {
         when (event) {
             is ScheduleAddEvent.LoadSchedule.Success -> {
@@ -805,7 +802,11 @@ fun ScheduleAddScreen(
     fun addSchedule(event: ScheduleAddEvent.AddSchedule) {
         when (event) {
             ScheduleAddEvent.AddSchedule.Success -> {
-                isAddSuccessShowing = true
+                appState.navController.previousBackStackEntry?.savedStateHandle?.set(
+                    HomeConstant.ROUTE_ARGUMENT_MESSAGE,
+                    "일정이 추가되었습니다.",
+                )
+                appState.navController.popBackStack()
             }
         }
     }
@@ -847,6 +848,10 @@ fun ScheduleAddScreen(
 
                 is ScheduleAddEvent.RemoveSchedule -> {
                     removeSchedule(event)
+                }
+
+                is ScheduleAddEvent.LoadLocalDate -> {
+                    loadDate(event)
                 }
             }
         }

@@ -6,11 +6,13 @@ import ac.dnd.mour.android.presentation.common.theme.Body2
 import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
+import ac.dnd.mour.android.presentation.common.theme.Gray900
 import ac.dnd.mour.android.presentation.common.theme.Shapes
 import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.loginWithKakao
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
@@ -45,6 +47,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -65,7 +68,7 @@ fun LoginMainScreen(
     handler: CoroutineExceptionHandler
 ) {
     var isDialogShowing by remember { mutableStateOf(false) }
-
+    val context = LocalContext.current
     fun navigateToOnBoarding(kakaoUserModel: KakaoUserInformationModel) {
         appState.navController.sendKakaoUserModel(kakaoUserModel)
     }
@@ -193,7 +196,17 @@ fun LoginMainScreen(
                     shape = Shapes.medium
                 )
                 .clickable {
-                    if (model.state == LoginMainState.Init) intent(LoginMainIntent.Click)
+                    if (model.state == LoginMainState.Init) {
+                        loginWithKakao(
+                            context = context,
+                            onSuccess = {
+                                intent(LoginMainIntent.Click)
+                            },
+                            onFailure = {
+                                isDialogShowing = true
+                            }
+                        )
+                    }
                 }
                 .padding(horizontal = 17.dp),
         ) {
@@ -208,7 +221,7 @@ fun LoginMainScreen(
                 modifier = Modifier.align(Alignment.Center),
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = FontFamily(Font(R.font.pretendard)),
-                color = Gray700,
+                color = Gray900,
                 letterSpacing = (-0.25).sp,
                 fontSize = 16.sp
             )

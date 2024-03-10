@@ -12,10 +12,10 @@ import ac.dnd.mour.android.presentation.model.login.KakaoUserInformationModel
 import ac.dnd.mour.android.presentation.model.login.toUiModel
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class LoginMainViewModel @Inject constructor(
@@ -44,27 +44,8 @@ class LoginMainViewModel @Inject constructor(
     private fun loginFlow() {
         launch {
             _state.emit(LoginMainState.Loading)
-            loginKakao()
+            getUserInfo()
         }
-    }
-
-    private fun loginKakao() = launch {
-        loginKakaoUseCase()
-            .onSuccess {
-                getUserInfo()
-            }
-            .onFailure { error ->
-                when (error) {
-                    is ServerException -> {
-                        _event.emit(LoginMainEvent.Login.Failure(error))
-                    }
-
-                    else -> {
-                        _event.emit(LoginMainEvent.Login.Error(error))
-                    }
-                }
-                _state.emit(LoginMainState.Init)
-            }
     }
 
     private fun getUserInfo() = launch {
