@@ -503,7 +503,7 @@ fun ScheduleAddScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
+                    Image(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.ic_alarm_gray),
                         contentDescription = null,

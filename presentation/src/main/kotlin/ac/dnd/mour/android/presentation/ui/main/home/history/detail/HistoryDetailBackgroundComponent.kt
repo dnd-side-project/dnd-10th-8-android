@@ -10,7 +10,6 @@ import ac.dnd.mour.android.presentation.common.theme.Gray000
 import ac.dnd.mour.android.presentation.common.theme.Gray100
 import ac.dnd.mour.android.presentation.common.theme.Headline0
 import ac.dnd.mour.android.presentation.common.theme.Headline3
-import ac.dnd.mour.android.presentation.common.util.expansion.measureTextWidth
 import ac.dnd.mour.android.presentation.model.history.HistoryDetailGrowthType
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import androidx.compose.foundation.Image
@@ -48,6 +47,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.datetime.LocalDate
+import java.text.DecimalFormat
 
 @Composable
 fun HistoryDetailBackgroundComponent(
@@ -216,7 +216,10 @@ fun HistoryDetailBackgroundComponent(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val nameLength = model.relationDetail.name.length
                 Text(
-                    text = if (nameLength < 8) model.relationDetail.name else model.relationDetail.name.substring(0,8),
+                    text = if (nameLength < 8) model.relationDetail.name else model.relationDetail.name.substring(
+                        0,
+                        8
+                    ),
                     fontWeight = FontWeight.SemiBold,
                     style = Headline0.merge(color = Gray000),
                     overflow = TextOverflow.Ellipsis,
@@ -248,7 +251,7 @@ fun HistoryDetailBackgroundComponent(
                 )
                 Spacer(modifier = Modifier.width(14.dp))
                 Text(
-                    text = "${model.relationDetail.takeMoney}원",
+                    text = DecimalFormat("#,###").format(model.relationDetail.takeMoney) + "원",
                     style = Headline3.merge(
                         color = Gray000,
                         fontWeight = FontWeight.SemiBold
@@ -266,7 +269,7 @@ fun HistoryDetailBackgroundComponent(
                 )
                 Spacer(modifier = Modifier.width(14.dp))
                 Text(
-                    text = "-${model.relationDetail.giveMoney}원",
+                    text = "-" + DecimalFormat("#,###").format(model.relationDetail.giveMoney) + "원",
                     style = Headline3.merge(
                         color = Gray000,
                         fontWeight = FontWeight.SemiBold
