@@ -15,6 +15,7 @@ import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import java.io.File
 import javax.inject.Inject
 
@@ -58,6 +59,9 @@ class FileApi @Inject constructor(
                         append(HttpHeaders.ContentDisposition, "filename=$name")
                     }
                 )
+            },
+            block = {
+                method = HttpMethod.Put
             }
         ).convert(errorMessageMapper::map)
     }
