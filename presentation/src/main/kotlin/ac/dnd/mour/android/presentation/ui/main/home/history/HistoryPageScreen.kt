@@ -16,6 +16,8 @@ import ac.dnd.mour.android.presentation.common.theme.Space16
 import ac.dnd.mour.android.presentation.common.theme.Space24
 import ac.dnd.mour.android.presentation.common.theme.Space4
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
@@ -411,6 +413,12 @@ private fun EmptyRelationView(
                 .background(color = Gray000)
                 .clickable {
                     onRecord()
+                    viewLogEvent(
+                        LogEventUtil.CLICK_PLUSBTN_MAIN,
+                        block = {
+
+                        }
+                    )
                 }
                 .border(
                     width = 1.dp,

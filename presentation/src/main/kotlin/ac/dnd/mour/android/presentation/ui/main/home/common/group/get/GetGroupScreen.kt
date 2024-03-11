@@ -21,6 +21,8 @@ import ac.dnd.mour.android.presentation.common.util.LaunchedEffectWithLifecycle
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
@@ -49,6 +51,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -86,6 +89,15 @@ fun GetGroupScreen(
         )
     }
     ErrorObserver(viewModel)
+
+    LaunchedEffect(Unit) {
+        viewLogEvent(
+            LogEventUtil.VIEW_EDIT_GROUP,
+            block = {
+
+            }
+        )
+    }
 
     GetGroupScreen(
         appState = appState,
@@ -298,6 +310,12 @@ private fun GetGroupScreen(
                 Row(
                     modifier = Modifier
                         .clickable {
+                            viewLogEvent(
+                                LogEventUtil.CLICK_SAVE_GROUP_EDIT_GROUP,
+                                block = {
+
+                                }
+                            )
                             isShowingAddGroupSheet = true
                         }
                         .padding(

@@ -20,6 +20,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
 import ac.dnd.mour.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
@@ -66,6 +68,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -136,6 +139,27 @@ fun HistoryRegistrationScreen(
         targetValue = if (historyTypeState == currentType) Gray900 else Gray700,
         label = "type text color"
     )
+
+    LaunchedEffect(historyTypeState){
+        when(historyTypeState){
+            HistoryRegistrationType.TAKE -> {
+                viewLogEvent(
+                    LogEventUtil.VIEW_MONEY_TAKE,
+                    block = {
+
+                    }
+                )
+            }
+            HistoryRegistrationType.GIVE -> {
+                viewLogEvent(
+                    LogEventUtil.VIEW_MONEY_GIVE,
+                    block = {
+
+                    }
+                )
+            }
+        }
+    }
 
     fun navigateToStep() {
         if (isContinuousState) {
@@ -426,6 +450,24 @@ fun HistoryRegistrationScreen(
                         event = eventTypeText
                     )
                     if (isViewUnRecordMessage.isEmpty() && model.state == HistoryRegistrationState.Init) {
+                        when(historyTypeState){
+                            HistoryRegistrationType.TAKE -> {
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_NEXT_SAVE_TAKE,
+                                    block = {
+
+                                    }
+                                )
+                            }
+                            HistoryRegistrationType.GIVE -> {
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_NEXT_SAVE_GIVE,
+                                    block = {
+
+                                    }
+                                )
+                            }
+                        }
                         register(continuousState = true)
                     }
                 },
@@ -452,6 +494,24 @@ fun HistoryRegistrationScreen(
                         event = eventTypeText
                     )
                     if (isViewUnRecordMessage.isEmpty() && model.state == HistoryRegistrationState.Init) {
+                        when(historyTypeState){
+                            HistoryRegistrationType.TAKE -> {
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_SAVE_TAKE,
+                                    block = {
+
+                                    }
+                                )
+                            }
+                            HistoryRegistrationType.GIVE -> {
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_SAVE_GIVE,
+                                    block = {
+
+                                    }
+                                )
+                            }
+                        }
                         register(continuousState = false)
                     }
                 },

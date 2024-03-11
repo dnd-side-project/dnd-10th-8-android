@@ -24,6 +24,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType
@@ -59,6 +61,7 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -89,6 +92,15 @@ fun RegistrationNamingScreen(
     intent: (RegistrationMainIntent) -> Unit,
     handler: CoroutineExceptionHandler
 ) {
+    LaunchedEffect(Unit){
+        viewLogEvent(
+            LogEventUtil.VIEW_REQUIRED_INFO,
+            block = {
+
+            }
+        )
+    }
+
     val scope = rememberCoroutineScope() + handler
     val focusManager = LocalFocusManager.current
     var isDialogShowing by remember { mutableStateOf(false) }
@@ -504,6 +516,12 @@ fun RegistrationNamingScreen(
                                     userDayText
                                 ).joinToString("-")
                             )
+                        )
+                        viewLogEvent(
+                            LogEventUtil.CLICK_START_REQUIRED_INFO,
+                            block = {
+
+                            }
                         )
                     }
                 },

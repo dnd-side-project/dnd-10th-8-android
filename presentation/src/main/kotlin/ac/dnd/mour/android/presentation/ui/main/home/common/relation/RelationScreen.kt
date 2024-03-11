@@ -28,6 +28,8 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.MutableEventFlow
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
+import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
+import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
@@ -122,6 +124,16 @@ fun RelationScreen(
     handler: CoroutineExceptionHandler
 ) {
 
+    LaunchedEffect(Unit) {
+        if (relationType == RelationType.ADD) {
+            viewLogEvent(
+                LogEventUtil.VIEW_RELATION,
+                block = {
+
+                }
+            )
+        }
+    }
     appState.setStatusBarColor(Gray000)
 
     val scope = rememberCoroutineScope()
@@ -390,6 +402,14 @@ fun RelationScreen(
                     chipId = 0,
                     onSelectChip = {
                         isNameTypeTyping = true
+                        if (relationType == RelationType.ADD) {
+                            viewLogEvent(
+                                LogEventUtil.CLICK_DIRECT_INPUT_RELATION,
+                                block = {
+
+                                }
+                            )
+                        }
                     }
                 )
                 ChipItem(
@@ -402,6 +422,14 @@ fun RelationScreen(
                             intent(RelationIntent.OnClickLoadFriend)
                         }
                         isNameTypeTyping = false
+                        if (relationType == RelationType.ADD) {
+                            viewLogEvent(
+                                LogEventUtil.CLICK_KAKAO_RELATION,
+                                block = {
+
+                                }
+                            )
+                        }
                     }
                 )
             }
@@ -598,6 +626,14 @@ fun RelationScreen(
                     .clip(Shapes.medium)
                     .background(color = Gray200)
                     .clickable {
+                        if (relationType == RelationType.ADD) {
+                            viewLogEvent(
+                                LogEventUtil.CLICK_EDIT_RELATION,
+                                block = {
+
+                                }
+                            )
+                        }
                         isShowingGetGroup = true
                     }
                     .padding(
@@ -809,6 +845,12 @@ fun RelationScreen(
                         onClick = {
                             if (checkSubmitState()) {
                                 isRecordState = true
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_MONEY_RELATION,
+                                    block = {
+
+                                    }
+                                )
                                 intent(
                                     if (currentImageName.isEmpty()) {
                                         RelationIntent.OnClickAdd(
@@ -847,6 +889,12 @@ fun RelationScreen(
                         },
                         onClick = {
                             if (checkSubmitState()) {
+                                viewLogEvent(
+                                    LogEventUtil.CLICK_SAVE_RELATION,
+                                    block = {
+
+                                    }
+                                )
                                 intent(
                                     if (currentImageName.isEmpty()) {
                                         RelationIntent.OnClickAdd(
