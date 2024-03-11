@@ -168,6 +168,7 @@ private fun ScheduleScreen(
             onDismissRequest = { isDatePickerShowing = false },
             onConfirm = {
                 showingDate = it
+                intent(ScheduleIntent.ChangeDate(showingDate))
             }
         )
     }
