@@ -39,7 +39,7 @@ import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.model.history.HistoryRegistrationType
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
-import ac.dnd.mour.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
+import ac.dnd.mour.android.presentation.ui.main.common.calendar.SelectCalendarScreen
 import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
@@ -542,7 +542,7 @@ fun HistoryRegistrationScreen(
         }
 
         if (isCalendarShowingState) {
-            HistoryCalendarScreen(
+            SelectCalendarScreen(
                 calendarConfig = calendarConfig,
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,

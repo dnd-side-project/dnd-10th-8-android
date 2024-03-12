@@ -315,6 +315,7 @@ private fun HistoryScreen(
                     navigateToUnrecorded()
                 },
                 onDeleteUnrecorded = {
+                    intent(HistoryIntent.HideSchedules)
                     isViewUnrecordedState = false
                 }
             )

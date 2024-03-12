@@ -205,15 +205,6 @@ fun RelationScreen(
                         "등록이 완료되었습니다.",
                     )
                     appState.navController.popBackStack()
-//                    val route = makeRoute(
-//                        HomeConstant.ROUTE,
-//                        listOf(HomeConstant.ROUTE_ARGUMENT_MESSAGE to "등록이 완료되었습니다.")
-//                    )
-//                    appState.navController.navigate(route) {
-//                        popUpTo(RelationConstant.ROUTE) {
-//                            inclusive = true
-//                        }
-//                    }
                 }
             }
         }

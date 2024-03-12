@@ -23,7 +23,7 @@ import ac.dnd.mour.android.presentation.common.util.expansion.addFocusCleaner
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
-import ac.dnd.mour.android.presentation.common.view.calendar.CalendarPicker
+import ac.dnd.mour.android.presentation.common.view.calendar.CalendarConfig
 import ac.dnd.mour.android.presentation.common.view.chip.ChipItem
 import ac.dnd.mour.android.presentation.common.view.chip.ChipType
 import ac.dnd.mour.android.presentation.common.view.component.FieldSelectComponent
@@ -37,6 +37,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextField
 import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldType
 import ac.dnd.mour.android.presentation.model.history.HistoryTagType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.common.calendar.SelectCalendarScreen
 import ac.dnd.mour.android.presentation.ui.main.common.event.EventTypeScreen
 import ac.dnd.mour.android.presentation.ui.main.rememberApplicationState
 import android.annotation.SuppressLint
@@ -169,7 +170,7 @@ private fun HistoryDetailEditScreen(
         }
     )
 
-    fun focusOut(){
+    fun focusOut() {
         scope.launch {
             isClearFocus = true
             delay(500L)
@@ -506,20 +507,19 @@ private fun HistoryDetailEditScreen(
     }
 
     if (isCalendarSelected) {
-        CalendarPicker(
-            localDate = LocalDate(
-                year = selectedYear,
-                monthNumber = selectedMonth,
-                dayOfMonth = selectedDay
-            ),
-            isDaySelectable = true,
-            onDismissRequest = {
+        SelectCalendarScreen(
+            calendarConfig = CalendarConfig(),
+            selectedYear = selectedYear,
+            selectedMonth = selectedMonth,
+            selectedDay = selectedDay,
+            onClose = {
                 isCalendarSelected = false
             },
-            onConfirm = {
-                selectedYear = it.year
-                selectedMonth = it.monthNumber
-                selectedDay = it.dayOfMonth
+            onConfirm = { year, month, day ->
+                selectedYear = year
+                selectedMonth = month
+                selectedDay = day
+                isCalendarSelected = false
             }
         )
     }

@@ -38,7 +38,7 @@ import ac.dnd.mour.android.presentation.common.view.textfield.TypingTextFieldTyp
 import ac.dnd.mour.android.presentation.model.history.HistoryEventType
 import ac.dnd.mour.android.presentation.model.schedule.ScheduleAlarmType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
-import ac.dnd.mour.android.presentation.ui.main.common.calendar.HistoryCalendarScreen
+import ac.dnd.mour.android.presentation.ui.main.common.calendar.SelectCalendarScreen
 import ac.dnd.mour.android.presentation.ui.main.home.HomeConstant
 import ac.dnd.mour.android.presentation.ui.main.home.common.relation.get.SearchRelationScreen
 import ac.dnd.mour.android.presentation.ui.main.home.schedule.add.notification.ScheduleAddNotificationScreen
@@ -170,7 +170,7 @@ fun ScheduleAddScreen(
     }
 
     if (isDatePickerShowing) {
-        HistoryCalendarScreen(
+        SelectCalendarScreen(
             calendarConfig = CalendarConfig(),
             selectedYear = date.year,
             selectedMonth = date.monthNumber,
@@ -412,13 +412,16 @@ fun ScheduleAddScreen(
                                 fontWeight = FontWeight.Normal,
                                 style = Body0.merge(Gray800)
                             )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Icon(
-                                modifier = Modifier.size(Icon24),
-                                painter = painterResource(id = R.drawable.ic_chevron_right),
-                                contentDescription = null,
-                                tint = Gray600
-                            )
+                            if (!model.isEdit) {
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Icon(
+                                    modifier = Modifier.size(Icon24),
+                                    painter = painterResource(id = R.drawable.ic_chevron_right),
+                                    contentDescription = null,
+                                    tint = Gray600
+                                )
+                            }
+
                         }
                     }
                 }

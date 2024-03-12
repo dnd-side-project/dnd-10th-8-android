@@ -36,6 +36,10 @@ interface ScheduleRepository {
         memo: String,
     ): Result<Unit>
 
+    suspend fun hideSchedule(
+        id: Long
+    ): Result<Unit>
+
     suspend fun deleteSchedule(
         id: Long,
     ): Result<Unit>

@@ -25,6 +25,7 @@ import ac.dnd.mour.android.presentation.common.util.logevent.LogEventUtil
 import ac.dnd.mour.android.presentation.common.util.logevent.viewLogEvent
 import ac.dnd.mour.android.presentation.common.view.BottomSheetScreen
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
+import ac.dnd.mour.android.presentation.common.view.SnackBarScreen
 import ac.dnd.mour.android.presentation.model.relation.DefaultGroupType
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
 import ac.dnd.mour.android.presentation.ui.main.home.common.group.add.AddGroupScreen
@@ -56,6 +57,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,6 +72,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.holix.android.bottomsheetdialog.compose.BottomSheetBehaviorProperties
 import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun GetGroupScreen(
@@ -122,9 +126,25 @@ private fun GetGroupScreen(
     event: EventFlow<GetGroupEvent>,
     handler: CoroutineExceptionHandler
 ) {
+    val scope = rememberCoroutineScope()
     var currentDeleteGroupIndex by remember { mutableIntStateOf(-1) }
     var currentEditGroupIndex by remember { mutableIntStateOf(-1) }
     var isShowingAddGroupSheet by remember { mutableStateOf(false) }
+    var isShowingDeleteFailToast by remember { mutableStateOf(false) }
+
+    fun deleteEvent(event: GetGroupEvent.DeleteGroup) {
+        when (event) {
+            is GetGroupEvent.DeleteGroup.Fail -> {
+                scope.launch {
+                    isShowingDeleteFailToast = true
+                    delay(1000L)
+                    isShowingDeleteFailToast = false
+                }
+            }
+
+            is GetGroupEvent.DeleteGroup.Success -> {}
+        }
+    }
 
     BottomSheetScreen(
         onDismissRequest = onDismissRequest,
@@ -339,6 +359,16 @@ private fun GetGroupScreen(
                 }
                 Spacer(modifier = Modifier.height(Space12))
             }
+
+            if (isShowingDeleteFailToast) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 65.dp)
+                ) {
+                    SnackBarScreen("등록된 관계가 존재하기 때문에 삭제할 수 없습니다.")
+                }
+            }
         }
     }
 
@@ -392,9 +422,7 @@ private fun GetGroupScreen(
     LaunchedEffectWithLifecycle(event, handler) {
         event.eventObserve { event ->
             when (event) {
-                is GetGroupEvent.DeleteGroup -> {
-
-                }
+                is GetGroupEvent.DeleteGroup -> deleteEvent(event)
             }
         }
     }

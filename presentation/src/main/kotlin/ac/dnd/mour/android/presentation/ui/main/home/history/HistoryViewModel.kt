@@ -5,6 +5,7 @@ import ac.dnd.mour.android.domain.model.feature.group.GroupWithRelationDetail
 import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.mour.android.domain.usecase.feature.group.GetGroupHeartHistoryUseCase
 import ac.dnd.mour.android.domain.usecase.feature.schedule.GetUnrecordedScheduleListUseCase
+import ac.dnd.mour.android.domain.usecase.feature.schedule.HideScheduleUseCase
 import ac.dnd.mour.android.presentation.common.base.BaseViewModel
 import ac.dnd.mour.android.presentation.common.base.ErrorEvent
 import ac.dnd.mour.android.presentation.common.util.coroutine.event.EventFlow
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getGroupHeartHistoryUseCase: GetGroupHeartHistoryUseCase,
-    private val getUnrecordedScheduleListUseCase: GetUnrecordedScheduleListUseCase
+    private val getUnrecordedScheduleListUseCase: GetUnrecordedScheduleListUseCase,
+    private val hideScheduleUseCase: HideScheduleUseCase
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<HistoryState> = MutableStateFlow(HistoryState.Init)
@@ -71,6 +73,31 @@ class HistoryViewModel @Inject constructor(
     fun onIntent(intent: HistoryIntent) {
         when (intent) {
             HistoryIntent.LoadData -> loadData()
+            HistoryIntent.HideSchedules -> hideSchedules()
+        }
+    }
+
+    private fun hideSchedules() {
+        val scheduleIdList = unrecordedSchedule.value.map { it.id }
+        scheduleIdList.forEach { scheduleId ->
+            launch {
+                hideScheduleUseCase(scheduleId)
+                    .onSuccess {
+                        _unrecordedSchedule.value =
+                            unrecordedSchedule.value.filter { it.id != scheduleId }
+                    }
+                    .onFailure { exception ->
+                        when (exception) {
+                            is ServerException -> {
+                                _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                            }
+
+                            else -> {
+                                _errorEvent.emit(ErrorEvent.UnavailableServer(exception))
+                            }
+                        }
+                    }
+            }
         }
     }
 }

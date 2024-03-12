@@ -2,7 +2,6 @@ package ac.dnd.mour.android.presentation.ui.main.common.calendar
 
 import ac.dnd.mour.android.presentation.R
 import ac.dnd.mour.android.presentation.common.theme.Gray000
-import ac.dnd.mour.android.presentation.common.theme.Gray600
 import ac.dnd.mour.android.presentation.common.theme.Gray700
 import ac.dnd.mour.android.presentation.common.theme.Gray800
 import ac.dnd.mour.android.presentation.common.theme.Gray900
@@ -55,7 +54,7 @@ import com.holix.android.bottomsheetdialog.compose.BottomSheetDialogProperties
 import kotlinx.datetime.LocalDate
 
 @Composable
-fun HistoryCalendarScreen(
+fun SelectCalendarScreen(
     calendarConfig: CalendarConfig,
     selectedYear: Int,
     selectedMonth: Int,
@@ -239,7 +238,7 @@ fun HistoryCalendarScreen(
 @Preview(apiLevel = 33)
 @Composable
 fun HistoryCalendarScreenPreview() {
-    HistoryCalendarScreen(
+    SelectCalendarScreen(
         calendarConfig = CalendarConfig(),
         selectedYear = 2024,
         selectedMonth = 1,
