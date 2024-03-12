@@ -519,6 +519,7 @@ private fun HistoryDetailEditScreen(
                 selectedYear = year
                 selectedMonth = month
                 selectedDay = day
+                isCalendarSelected = false
             }
         )
     }

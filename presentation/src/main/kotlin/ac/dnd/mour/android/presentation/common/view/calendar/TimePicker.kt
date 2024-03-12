@@ -46,7 +46,7 @@ fun TimePicker(
     localTime: LocalTime = LocalTime(0, 0),
     properties: BottomSheetDialogProperties = BottomSheetDialogProperties(),
     onDismissRequest: () -> Unit,
-    onConfirm: (LocalTime) -> Unit,
+    onConfirm: (LocalTime?) -> Unit,
 
     ) {
     val timeTextStyle = Headline3.merge(
@@ -105,7 +105,7 @@ fun TimePicker(
                             }
                             onConfirm(
                                 if (isCheckNotValue) {
-                                    LocalTime(0, 0)
+                                    null
                                 } else {
                                     LocalTime(
                                         hour = hourValue + transHour,
