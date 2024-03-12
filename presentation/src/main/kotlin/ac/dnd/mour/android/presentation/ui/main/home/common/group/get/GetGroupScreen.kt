@@ -132,8 +132,8 @@ private fun GetGroupScreen(
     var isShowingAddGroupSheet by remember { mutableStateOf(false) }
     var isShowingDeleteFailToast by remember { mutableStateOf(false) }
 
-    fun deleteEvent(event: GetGroupEvent.DeleteGroup){
-        when(event){
+    fun deleteEvent(event: GetGroupEvent.DeleteGroup) {
+        when (event) {
             is GetGroupEvent.DeleteGroup.Fail -> {
                 scope.launch {
                     isShowingDeleteFailToast = true
@@ -141,6 +141,7 @@ private fun GetGroupScreen(
                     isShowingDeleteFailToast = false
                 }
             }
+
             is GetGroupEvent.DeleteGroup.Success -> {}
         }
     }
@@ -359,7 +360,7 @@ private fun GetGroupScreen(
                 Spacer(modifier = Modifier.height(Space12))
             }
 
-            if(isShowingDeleteFailToast) {
+            if (isShowingDeleteFailToast) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)

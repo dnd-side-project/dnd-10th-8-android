@@ -367,6 +367,15 @@ fun ScheduleAddScreen(
                         text = "*",
                         style = Body1.merge(color = Negative)
                     )
+                    if (relation == null) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Icon(
+                            modifier = Modifier.size(Icon24),
+                            painter = painterResource(id = R.drawable.ic_chevron_right),
+                            contentDescription = null,
+                            tint = Gray600
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 if (relation == null) {
@@ -411,13 +420,6 @@ fun ScheduleAddScreen(
                                 text = relation?.group?.name.orEmpty(),
                                 fontWeight = FontWeight.Normal,
                                 style = Body0.merge(Gray800)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Icon(
-                                modifier = Modifier.size(Icon24),
-                                painter = painterResource(id = R.drawable.ic_chevron_right),
-                                contentDescription = null,
-                                tint = Gray600
                             )
                         }
                     }
