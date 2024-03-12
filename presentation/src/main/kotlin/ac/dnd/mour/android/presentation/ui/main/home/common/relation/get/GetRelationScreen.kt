@@ -50,6 +50,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -173,11 +174,13 @@ private fun SearchRelationScreen(
     ) {
         Box(
             modifier = Modifier
+                .imePadding()
                 .wrapContentHeight()
                 .background(Gray200)
         ) {
             Column(
                 modifier = Modifier
+                    .imePadding()
                     .padding(horizontal = 20.dp)
                     .verticalScroll(scrollState)
                     .wrapContentHeight(),
