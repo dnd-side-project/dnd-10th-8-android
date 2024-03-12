@@ -23,6 +23,7 @@ import ac.dnd.mour.android.presentation.common.util.coroutine.event.eventObserve
 import ac.dnd.mour.android.presentation.common.util.makeRoute
 import ac.dnd.mour.android.presentation.common.view.DialogScreen
 import ac.dnd.mour.android.presentation.ui.main.ApplicationState
+import ac.dnd.mour.android.presentation.ui.main.home.common.notification.NotificationConstant
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.profile.MyPageProfileConstant
 import ac.dnd.mour.android.presentation.ui.main.home.mypage.setting.withdraw.MyPageSettingWithdrawConstant
 import ac.dnd.mour.android.presentation.ui.main.login.main.LoginMainConstant
@@ -144,6 +145,10 @@ private fun MyPageScreen(
         appState.navController.navigate(route)
     }
 
+    fun navigateToNotification() {
+        appState.navController.navigate(NotificationConstant.ROUTE)
+    }
+
     fun logout(event: MyPageEvent.Logout) {
         when (event) {
             is MyPageEvent.Logout.Success -> {
@@ -181,7 +186,12 @@ private fun MyPageScreen(
             Image(
                 painter = painterResource(R.drawable.ic_notification),
                 contentDescription = null,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clip(CircleShape)
+                    .clickable {
+                        navigateToNotification()
+                    }
             )
         }
         Spacer(modifier = Modifier.height(43.dp))
