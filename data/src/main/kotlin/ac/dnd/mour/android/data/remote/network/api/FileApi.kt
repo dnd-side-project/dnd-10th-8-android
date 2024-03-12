@@ -8,7 +8,6 @@ import ac.dnd.mour.android.data.remote.network.model.file.GetPreSignedUrlRes
 import ac.dnd.mour.android.data.remote.network.util.convert
 import ac.dnd.mour.android.data.remote.network.util.parameterFiltered
 import android.net.Uri
-import android.webkit.MimeTypeMap
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
@@ -46,7 +45,6 @@ class FileApi @Inject constructor(
         }
         val file = File(image)
         val name = fileName ?: file.name
-        val contentType = getContentType(file.path)
 
         return noAuthClient.submitFormWithBinaryData(
             url = preSignedUrl,
@@ -55,7 +53,7 @@ class FileApi @Inject constructor(
                     "image",
                     file.readBytes(),
                     Headers.build {
-                        contentType?.let { append(HttpHeaders.ContentType, it) }
+                        append(HttpHeaders.ContentType, "image/jpeg")
                         append(HttpHeaders.ContentDisposition, "filename=$name")
                     }
                 )
@@ -64,13 +62,5 @@ class FileApi @Inject constructor(
                 method = HttpMethod.Put
             }
         ).convert(errorMessageMapper::map)
-    }
-
-    private fun getContentType(
-        url: String
-    ): String? {
-        return MimeTypeMap.getFileExtensionFromUrl(url)?.let { fileExtension ->
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension)
-        }
     }
 }
