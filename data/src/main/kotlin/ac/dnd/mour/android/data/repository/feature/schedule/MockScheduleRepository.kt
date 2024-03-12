@@ -57,6 +57,10 @@ class MockScheduleRepository @Inject constructor() : ScheduleRepository {
         return Result.success(Unit)
     }
 
+    override suspend fun hideSchedule(id: Long): Result<Unit> {
+        return Result.success(Unit)
+    }
+
     override suspend fun deleteSchedule(
         id: Long
     ): Result<Unit> {

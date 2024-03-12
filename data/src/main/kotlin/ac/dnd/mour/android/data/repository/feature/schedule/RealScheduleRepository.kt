@@ -8,10 +8,10 @@ import ac.dnd.mour.android.domain.model.feature.schedule.AlarmRepeatType
 import ac.dnd.mour.android.domain.model.feature.schedule.Schedule
 import ac.dnd.mour.android.domain.model.feature.schedule.UnrecordedSchedule
 import ac.dnd.mour.android.domain.repository.ScheduleRepository
-import javax.inject.Inject
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import javax.inject.Inject
 
 class RealScheduleRepository @Inject constructor(
     private val scheduleApi: ScheduleApi,
@@ -66,6 +66,14 @@ class RealScheduleRepository @Inject constructor(
             link = link,
             location = location,
             memo = memo
+        )
+    }
+
+    override suspend fun hideSchedule(
+        id: Long
+    ): Result<Unit> {
+        return scheduleApi.hideSchedule(
+            id = id
         )
     }
 

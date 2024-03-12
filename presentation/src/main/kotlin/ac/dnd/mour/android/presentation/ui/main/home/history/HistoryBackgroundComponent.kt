@@ -207,6 +207,7 @@ fun HistoryBackgroundComponent(
                                     contentDescription = null,
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
+                                        .clip(CircleShape)
                                         .clickable {
                                             onDeleteUnrecorded()
                                         }

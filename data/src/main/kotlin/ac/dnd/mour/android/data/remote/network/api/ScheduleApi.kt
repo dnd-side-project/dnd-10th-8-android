@@ -18,10 +18,10 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import javax.inject.Inject
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import javax.inject.Inject
 
 class ScheduleApi @Inject constructor(
     @AuthHttpClient private val client: HttpClient,
@@ -88,6 +88,13 @@ class ScheduleApi @Inject constructor(
                 )
             )
         }.convert(errorMessageMapper::map)
+    }
+
+    suspend fun hideSchedule(
+        id: Long
+    ): Result<Unit> {
+        return client.patch("$baseUrl/api/v1/schedules/${id}/hide")
+            .convert(errorMessageMapper::map)
     }
 
     suspend fun deleteSchedule(
