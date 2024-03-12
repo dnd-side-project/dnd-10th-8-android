@@ -49,7 +49,7 @@ class GetGroupViewModel @Inject constructor(
                     _state.value = GetGroupState.Init
                     when (exception) {
                         is ServerException -> {
-                            _errorEvent.emit(ErrorEvent.InvalidRequest(exception))
+                            _event.emit(GetGroupEvent.DeleteGroup.Fail)
                         }
 
                         else -> {
