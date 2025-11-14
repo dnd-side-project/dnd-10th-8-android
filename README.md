@@ -2,6 +2,11 @@
 
 [![Android CI](https://github.com/dnd-side-project/dnd-10th-8-android/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/dnd-side-project/dnd-10th-8-android/actions/workflows/android.yml)
 
+## Description
+<img width="5334" height="3000" alt="DND 10-8 최종발표-01" src="https://github.com/user-attachments/assets/ccae543f-ae1b-4643-beac-b37bb2fdf6c9" />
+
+Mour 안드로이드 프로젝트입니다.
+
 ### Build
 
 - Gradle 8.5
